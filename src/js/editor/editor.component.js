@@ -1,8 +1,9 @@
 import React, { useState, createContext, useEffect } from "react";
-import { getTokens } from "../parser-vtl";
+import PropTypes from "prop-types";
 import Suggestions from "./sugestions.component";
 import Line from "./line.component";
 import "./editor.scss";
+import createSuggester from "./suggestions-manager";
 
 // const test = rule => {
 //   //
@@ -20,8 +21,9 @@ import "./editor.scss";
 // };
 
 /* */
-const Editor = ({ content = [{}] }) => {
+const Editor = ({ content = [{}], getTokens, dictionnary = {} }) => {
   // token suggestions
+  const [suggest, setSuggest] = useState(undefined);
   const [pos, setPos] = useState({ x: undefined, y: undefined });
   const [token, setToken] = useState(undefined);
   const [open, setOpen] = useState(false);
@@ -31,8 +33,12 @@ const Editor = ({ content = [{}] }) => {
   });
   const [focused, setFocused] = useState(0);
   useEffect(() => {
-    console.log(pos, token);
-  }, [pos, token]);
+    const prepareIndex = async () => {
+      const sug = await createSuggester(dictionnary);
+      setSuggest(() => sug);
+    };
+    prepareIndex();
+  }, [dictionnary]);
 
   return (
     <TokenContext.Provider value={{ setPos, setToken, setOpen, open }}>
@@ -61,7 +67,9 @@ const Editor = ({ content = [{}] }) => {
             getTokens={getTokens}
           />
         ))}
-        <Suggestions pos={pos} token={token} open={open} />
+        {suggest ? (
+          <Suggestions pos={pos} prefix={token} open={open} suggest={suggest} />
+        ) : null}
       </div>
     </TokenContext.Provider>
   );
@@ -94,6 +102,14 @@ const changeRow = (tab = {}, value, index) => {
     []
   );
   return rows;
+};
+
+Editor.proTypes = {
+  getTokens: PropTypes.func.isRequired,
+  content: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string })),
+  dictionnary: PropTypes.shape({
+    variables: PropTypes.arrayOf(PropTypes.string)
+  })
 };
 
 export const TokenContext = createContext({});
