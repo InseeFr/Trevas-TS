@@ -1,0 +1,100 @@
+@mixin cursor {
+  animation: blinker 1s linear infinite;
+  position: absolute;
+  font-weight: bolder;
+  &:before {
+    content: "|";
+    color: black;
+  }
+}
+
+.editor {
+  width: 500px;
+  height: auto;
+  border: 1px solid darkgray;
+  border-radius: 4px;
+  .editor-line {
+    height: 22px;
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+
+    .num {
+      display: block;
+      padding: 0px 2px;
+      width: 32px;
+      height: 100%;
+      background-color: gainsboro;
+      border-right: 1px solid darkgray;
+      font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro,
+        monospace;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .content {
+      padding: 1px 4px;
+      display: block;
+      width: 100%;
+      position: relative;
+      .cursor {
+        @include cursor;
+        left: -1px;
+      }
+      .cursor-end {
+        @include cursor;
+      }
+
+      @keyframes blinker {
+        50% {
+          opacity: 0;
+        }
+      }
+    }
+
+    .num-focused {
+      background-color: gray;
+      color: gainsboro;
+    }
+    .content-focused {
+      background-color: gainsboro;
+    }
+    /* language plus */
+    .plus-variable {
+      color: orangered;
+    }
+    .plus-symbol {
+      color: limegreen;
+    }
+    .plus-number {
+      font-weight: bolder;
+      color: gray;
+    }
+
+    /* language vtl */
+    .vtl-integer {
+      color: red;
+    }
+    .vtl-identifier {
+      color: green;
+    }
+    .vtl-keyword {
+      color: blue;
+    }
+    .vtl-function {
+      color: goldenrod;
+    }
+    .vtl-string {
+      color: hotpink;
+    }
+  }
+
+  .suggestions {
+    display: block;
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    border: solid red 1px;
+    background-color: snow;
+  }
+}
