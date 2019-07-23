@@ -19,6 +19,8 @@ const reducer = (state, action) => {
 				...state,
 				focusedRow: Math.min(state.lines.length - 1, state.focusedRow + 1)
 			};
+		case KEY.BACK_SPACE:
+			return reduceKeyBackspace(state);
 		case 'check-index':
 			return { ...state, index: Math.min(state.index, getRowLength(state)) };
 		case 'pressed-char':
@@ -56,6 +58,27 @@ const reduceKeyRight = (state) => {
 
 	return { ...state, index, focusedRow };
 };
+
+/* */
+const reduceKeyBackspace = (state) => {
+	const { lines, index, focusedRow } = state;
+	const newFocusedRow = index === 0 ? (focusedRow === 0 ? 0 : focusedRow - 1) : focusedRow;
+	const newIndex =
+		index === 0 ? (focusedRow === 0 ? 0 : getRowLength({ ...state, focusedRow: newFocusedRow })) : index - 1;
+	const newLines = index === 0 ? (focusedRow === 0 ? lines : mergeRow(state)) : removeCharFromRow(state);
+
+	return { ...state, lines: newLines, focusedRow: newFocusedRow, index: newIndex };
+};
+
+const mergeRow = (state) => state.lines; // TODO
+const removeCharFromRow = ({ lines, focusedRow, index }) =>
+	lines.reduce(
+		(a, line, i) =>
+			i === focusedRow
+				? [ ...a, { ...line, value: `${line.value.substr(0, index - 1)}${line.value.substr(index)}` } ]
+				: [ ...a, line ],
+		[]
+	);
 
 /* */
 const getRow = ({ lines, focusedRow }) => lines[focusedRow];

@@ -62,10 +62,13 @@ const keyDownCallback = (dispatch) => (key) => {
 	switch (key) {
 		case KEY.ARROW_UP:
 		case KEY.ARROW_DOWN:
+			dispatch({ type: key });
+			dispatch({ type: 'check-index' });
+			break;
+		case KEY.BACK_SPACE:
 		case KEY.ARROW_LEFT:
 		case KEY.ARROW_RIGHT:
 			dispatch({ type: key });
-			dispatch({ type: 'check-index' });
 			break;
 		default:
 			if (isCharCode(key)) {
