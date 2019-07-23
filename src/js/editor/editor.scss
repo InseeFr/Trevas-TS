@@ -8,6 +8,9 @@
   }
 }
 
+@mixin token {
+}
+
 .editor {
   width: 500px;
   height: auto;
@@ -73,20 +76,30 @@
 
     /* language vtl */
     .vtl-integer {
+      @include token();
       color: red;
     }
     .vtl-identifier {
+      @include token();
       color: green;
     }
     .vtl-keyword {
+      @include token();
       color: blue;
     }
     .vtl-function {
+      @include token();
       color: goldenrod;
     }
     .vtl-string {
+      @include token();
       color: hotpink;
     }
+    .vtl-common {
+      @include token();
+      color: black;
+    }
+    /* */
   }
 
   .suggestions {
