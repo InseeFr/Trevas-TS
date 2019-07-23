@@ -1,81 +1,140 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
-import Suggestions from "./sugestions.component";
 import Line from "./line.component";
-import "./editor.scss";
+import KEY, { isUnbindedKey } from "./key-bind";
+import Suggestions from "./sugestions.component";
 import createSuggester from "./suggestions-manager";
 
-/* */
-// const Editor = ({ content = [{}], getTokens, dictionnary = {} }) => {
-//   // token suggestions
-//   const [suggest, setSuggest] = useState(undefined);
-//   const [pos, setPos] = useState({ x: undefined, y: undefined });
-//   const [token, setToken] = useState(undefined);
-//   const [open, setOpen] = useState(false);
-//   // lines
-//   const [lines, setLines] = useState(() => {
-//     return content.map((value, num) => ({ value, num, focused: num === 0 }));
-//   });
-//   const [focused, setFocused] = useState(0);
-//   useEffect(() => {
-//     const prepareIndex = async () => {
-//       const sug = await createSuggester(dictionnary);
-//       setSuggest(() => sug);
-//     };
-//     prepareIndex();
-//   }, [dictionnary]);
+import "./editor.scss";
 
-//   return (
-//     <TokenContext.Provider value={{ setPos, setToken, setOpen, open }}>
-//       <div
-//         className="editor"
-//         onClick={e => {
-//           if (open) setOpen(false);
-//         }}
-//       >
-//         {lines.map(({ value }, i) => (
-//           <Line
-//             key={`${i}`}
-//             num={i}
-//             focused={i === focused}
-//             value={value || ""}
-//             focus={ix => setFocused(ix)}
-//             add={(ix, start, end) => {
-//               setLines(addRow(lines, ix, start, end));
-//               setFocused(ix + 1);
-//             }}
-//             remove={(ix, rest) => {
-//               setLines(removeRow(lines, ix, rest));
-//               setFocused(Math.max(0, ix - 1));
-//             }}
-//             change={(val, ix) => setLines(changeRow(lines, val, ix))}
-//             getTokens={getTokens}
-//           />
-//         ))}
-//         {suggest ? (
-//           <Suggestions pos={pos} prefix={token} open={open} suggest={suggest} />
-//         ) : null}
-//       </div>
-//     </TokenContext.Provider>
-//   );
-// };
+const initialState = {
+  lines: [{ value: "", tokens: [] }],
+  index: 0,
+  focusedRow: undefined
+};
+
+const reducer = (state, action) => {
+  const { index, focusedRow, lines } = action;
+  switch (action.type) {
+    case "change-cursor-position":
+      return { ...state, index, focusedRow };
+    case "change-editor-content":
+      return { ...state, lines };
+    case KEY.ARROW_LEFT:
+      return reduceKeyLeft(state);
+    case KEY.ARROW_RIGHT:
+      return reduceKeyRight(state);
+    case KEY.ARROW_UP:
+      return { ...state, focusedRow: Math.max(0, state.focusedRow - 1) };
+    case KEY.ARROW_DOWN:
+      return {
+        ...state,
+        focusedRow: Math.min(state.lines.length - 1, state.focusedRow + 1)
+      };
+    case "check-index":
+      return { ...state, index: Math.min(state.index, getRowLength(state)) };
+    default:
+      throw new Error(`Unbinded event ${action.type}`);
+  }
+};
+
+/* */
+const reduceKeyLeft = state => {
+  const focusedRow =
+    state.index - 1 < 0 ? Math.max(0, state.focusedRow - 1) : state.focusedRow;
+  const index =
+    state.index - 1 < 0
+      ? state.focusedRow === 0
+        ? state.focusedRow
+        : getRowLength({ ...state, focusedRow })
+      : state.index - 1;
+
+  return { ...state, index, focusedRow };
+};
+
+/* */
+const reduceKeyRight = state => {
+  const currentLength = getRowLength(state);
+  // Math.min(getRowLength(state), state.index + 1)
+  const focusedRow =
+    state.index + 1 > currentLength
+      ? Math.min(state.lines.length - 1, state.focusedRow + 1)
+      : state.focusedRow;
+  const index =
+    state.index + 1 > currentLength
+      ? state.focusedRow === state.lines.length - 1
+        ? getRowLength({ ...state, focusedRow })
+        : 0
+      : state.index + 1;
+
+  return { ...state, index, focusedRow };
+};
 
 const Editor = ({ content = [{}], getTokens, dictionnary = {} }) => {
-  const [lines, setLines] = useState([{}]);
-  const [index, setIndex] = useState(0);
-  const [focusedRow, setFocusedRow] = useState(undefined);
+  const [{ lines, index, focusedRow }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   useEffect(() => {
-    setLines(content.map(row => ({ tokens: getTokens(row), value: row })));
+    dispatch({
+      type: "change-editor-content",
+      lines: content.map(row => ({ tokens: getTokens(row), value: row }))
+    });
   }, [content, getTokens]);
 
   return (
-    <div className="editor">
-      {lines.map(({ tokens, value }, i) => (
-        <Line key={`${i}-value`} tokens={tokens} number={i} />
-      ))}
-    </div>
+    <EditorContext.Provider value={{ index, dispatch }}>
+      <div
+        className="editor"
+        onKeyDown={e => {
+          e.stopPropagation();
+          keyDownCallback(dispatch)(e.key);
+        }}
+      >
+        {lines.map(({ tokens, value }, i) => (
+          <Line
+            key={`${i}-value`}
+            tokens={tokens}
+            length={value.length}
+            number={i}
+            index={index}
+            focused={focusedRow === i}
+          />
+        ))}
+      </div>
+    </EditorContext.Provider>
   );
+};
+
+/* */
+const keyDownCallback = dispatch => key => {
+  if (KEY.isUnbindedKey(key)) return;
+  switch (key) {
+    case KEY.ARROW_UP:
+    case KEY.ARROW_DOWN:
+    case KEY.ARROW_LEFT:
+    case KEY.ARROW_RIGHT:
+      dispatch({ type: key });
+      dispatch({ type: "check-index" });
+      break;
+    default:
+      break;
+  }
+};
+
+const getRow = ({ lines, focusedRow }) => lines[focusedRow];
+
+const getRowLength = state => getRow(state).value.length;
+
+/* */
+const createHandlerClickRow = ({ setIndex, setFocusedRow }) => (
+  numberRow,
+  indexInRow
+) => {
+  setIndex(indexInRow);
+  setFocusedRow(numberRow);
+  return false;
 };
 
 /* */
@@ -119,4 +178,5 @@ Editor.proTypes = {
 };
 
 export const TokenContext = createContext({});
+export const EditorContext = createContext({});
 export default Editor;

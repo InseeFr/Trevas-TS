@@ -1,81 +1,85 @@
 import React, { useContext, useEffect } from "react";
 import classnames from "classnames";
 import Cursor from "./cursor.component";
-import { TokenContext } from "./editor.component";
+import { EditorContext } from "./editor.component";
 import { tokenProps } from "./editor-prop-types";
 
-// const Token = ({
-//   value,
-//   select,
-//   focused,
-//   index,
-//   start,
-//   className,
-//   sub = false
-// }) => {
-//   const { setToken } = useContext(TokenContext);
-//   useEffect(() => {
-//     if (!sub) setToken(value);
-//   }, [value, setToken, sub]);
-//   return focused ? (
-//     <span className="word">
-//       <Token
-//         value={value.substr(0, index - start)}
-//         start={start}
-//         index={index}
-//         className={className}
-//         focused={false}
-//         sub={true}
-//         select={() => select(window.getSelection().anchorOffset + start)}
-//       />
-//       <span style={{ position: "relative" }}>
-//         <Token
-//           value={value.substr(index - start)}
-//           start={start}
-//           index={index}
-//           className={className}
-//           focused={false}
-//           sub={true}
-//           select={() => select(window.getSelection().anchorOffset + index)}
-//         />
-//         <Cursor />
-//       </span>
-//     </span>
-//   ) : (
-//     <span
-//       className={classnames("word", className)}
-//       onClick={() => {
-//         select(window.getSelection().anchorOffset + start);
-//       }}
-//     >
-//       {value.replace(/\s/g, " ")}
-//     </span>
-//   );
-// };
+const Token = props => {
+  const { className, focused } = props;
 
-// Token.propTypes = {
-//   value: PropTypes.string,
-//   select: PropTypes.func.isRequired,
-//   focused: PropTypes.bool.isRequired,
-//   index: PropTypes.number.isRequired,
-//   start: PropTypes.number.isRequired,
-//   className: PropTypes.string
-// };
-
-const Token = ({ className, value }) =>
-  className === "unmapped" ? (
-    <Unmapped value={value} />
+  return className === "unmapped" ? (
+    <Unmapped {...props} />
+  ) : focused ? (
+    <Focused {...props} />
   ) : (
-    <span className={className}>{value}</span>
+    <Unfocused {...props} />
   );
+};
 
 Token.propTypes = tokenProps;
 
-const Unmapped = ({ value }) => (
-  <span className={classnames("unmapped", "vtl-commons")}>
-    {value.replace(/\s/g, " ")}
-  </span>
-);
+/* */
+const Focused = ({ start, stop, value, ...rest }) => {
+  const { index } = useContext(EditorContext);
+  return (
+    <span className="word">
+      <Unfocused
+        {...rest}
+        value={value.substr(0, index - start)}
+        start={start}
+        stop={index - 1}
+      />
+      <span style={{ position: "relative" }}>
+        <Unfocused
+          {...rest}
+          value={value.substr(index - start)}
+          start={index}
+          stop={stop}
+        />
+        <Cursor />
+      </span>
+    </span>
+  );
+};
+
+/* */
+const Unfocused = ({ className, numberRow, value, start }) => {
+  const { dispatch } = useContext(EditorContext);
+  return (
+    <span
+      className={className}
+      onDoubleClick={e => e.stopPropagation()}
+      onClick={e => {
+        e.stopPropagation();
+        dispatch({
+          type: "change-cursor-position",
+          focusedRow: numberRow,
+          index: window.getSelection().anchorOffset + start
+        });
+        // handleClickRow(numberRow, window.getSelection().anchorOffset + start);
+      }}
+    >
+      {value}
+    </span>
+  );
+};
+
+/* */
+const Unmapped = ({ value, focused, ...props }) => {
+  const classNames = classnames("unmapped", "vtl-commons");
+  const value_ = value.replace(/\s/g, " ");
+  return focused ? (
+    <Focused className={classNames} value={value_} {...props} />
+  ) : (
+    <Unfocused className={classNames} value={value_} {...props} />
+  );
+};
+
+// (
+//   <span className={classnames("unmapped", "vtl-commons")} onClick={handleClick}>
+//     {value.replace(/\s/g, " ")}
+//   </span>
+// );
 
 export default Token;
 

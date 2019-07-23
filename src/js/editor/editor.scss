@@ -1,6 +1,6 @@
 @mixin cursor {
   animation: blinker 1s linear infinite;
-  position: absolute;
+
   font-weight: bolder;
   &:before {
     content: "|";
@@ -16,6 +16,7 @@
   height: auto;
   border: 1px solid darkgray;
   border-radius: 4px;
+
   .editor-line {
     height: 22px;
     display: flex;
@@ -35,17 +36,32 @@
       text-align: right;
     }
 
+    &:focus {
+      .num {
+        background-color: darkgray;
+        color: snow;
+      }
+
+      .content {
+        background-color: lightgray;
+        color: snow;
+      }
+    }
+
     .content {
       padding: 1px 4px;
       display: block;
       width: 100%;
       position: relative;
-      .cursor {
-        @include cursor;
-        left: -1px;
+
+      .cursor-end-line {
+        @include cursor();
       }
-      .cursor-end {
-        @include cursor;
+
+      .cursor {
+        @include cursor();
+        position: absolute;
+        left: -2px;
       }
 
       @keyframes blinker {
@@ -55,13 +71,6 @@
       }
     }
 
-    .num-focused {
-      background-color: gray;
-      color: gainsboro;
-    }
-    .content-focused {
-      background-color: gainsboro;
-    }
     /* language plus */
     .plus-variable {
       color: orangered;

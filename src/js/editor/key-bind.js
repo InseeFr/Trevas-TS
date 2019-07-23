@@ -44,4 +44,11 @@ const KEY = {
   isUnbindedKey
 };
 
+/* */
+KEY.ENTER = "Enter";
+KEY.ARROW_LEFT = "ArrowLeft";
+KEY.ARROW_RIGHT = "ArrowRight";
+KEY.ARROW_UP = "ArrowUp";
+KEY.ARROW_DOWN = "ArrowDown";
+
 export default KEY;

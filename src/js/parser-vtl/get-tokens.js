@@ -43,7 +43,7 @@ const getTokens = ligne => {
   const tokens = lexer.getAllTokens().map(tokenize(lexer.symbolicNames)(ligne));
 
   // console.log(tokens, ligne);
-  console.log(fillUnmappedToken(tokens, ligne));
+  // console.log(fillUnmappedToken(tokens, ligne));
 
   return fillUnmappedToken(tokens, ligne);
 };
