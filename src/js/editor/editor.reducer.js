@@ -21,6 +21,8 @@ const reducer = (state, action) => {
       };
     case KEY.BACK_SPACE:
       return reduceKeyBackspace(state);
+    case KEY.DELETE:
+      return reduceKeyDelete(state);
     case KEY.ENTER:
       return reduceKeyEnter(state);
     case KEY.HOME:
@@ -67,6 +69,33 @@ const reduceKeyRight = state => {
 
   return { ...state, index, focusedRow };
 };
+/* DELETE */
+const reduceKeyDelete = ({ lines, index, focusedRow, ...rest }) => {
+  const rowSize = getRowLength({ lines, focusedRow });
+  const isMerging =
+    (rowSize - 1 < 0 || index === rowSize) && focusedRow !== lines.length - 1;
+  const nextLines = lines.reduce(
+    (a, line, i) =>
+      i === focusedRow
+        ? isMerging
+          ? mergeRow({
+              lines: [...a, line, { ...lines[focusedRow + 1] }],
+              focusedRow: focusedRow + 1
+            })
+          : [
+              ...a,
+              getNewRow(
+                `${line.value.substr(0, index)}${line.value.substr(index + 1)}`
+              )
+            ]
+        : i === focusedRow + 1 && isMerging
+        ? a
+        : [...a, line],
+    []
+  );
+
+  return { lines: nextLines, index, focusedRow, ...rest };
+};
 
 /* BACK_SPACE */
 const reduceKeyBackspace = ({ lines, index, focusedRow, ...rest }) => {
@@ -97,10 +126,7 @@ const mergeRow = ({ lines, focusedRow }) =>
   lines.reduce(
     (a, line, i) =>
       i === focusedRow - 1
-        ? [
-            ...a,
-            { value: line.value.concat(lines[focusedRow].value), tokens: [] }
-          ]
+        ? [...a, getNewRow(line.value.concat(lines[focusedRow].value))]
         : i === focusedRow
         ? a
         : [...a, line],
@@ -113,12 +139,9 @@ const removeCharFromRow = ({ lines, focusedRow, index }) =>
       i === focusedRow
         ? [
             ...a,
-            {
-              ...line,
-              value: `${line.value.substr(0, index - 1)}${line.value.substr(
-                index
-              )}`
-            }
+            getNewRow(
+              `${line.value.substr(0, index - 1)}${line.value.substr(index)}`
+            )
           ]
         : [...a, line],
     []
