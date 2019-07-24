@@ -15,10 +15,11 @@
   ::selection {
     background: none;
   }
-  // .token::selection {
-  //   color: inherit;
-  //   background: grey;
-  // }
+  .token::selection {
+    color: inherit;
+    background: grey;
+  }
+  
 }
 
 .editor {
