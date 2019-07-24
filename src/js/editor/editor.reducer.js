@@ -1,9 +1,31 @@
 import KEY from "./key-bind";
+import * as actions from "./editor.actions";
 
 /* */
 const reducer = (state, action) => {
+  //   console.log(action.type, state, action);
   const { index, focusedRow, lines } = action;
   switch (action.type) {
+    case actions.START_SELECTION:
+      return {
+        ...state,
+        focusedRow: undefined,
+        selection: {
+          rowStart: action.payload.numberRow,
+          anchorOffset: action.payload.start
+        }
+      };
+    case actions.STOP_SELECTION:
+      return stopSelectionEvent(state, {
+        rowStart: state.selection.rowStart,
+        rowStop: action.payload.rowStop,
+        anchorOffset:
+          state.selection.anchorOffset + action.payload.anchorOffset,
+        extentOffset: action.payload.extentOffset
+      });
+    case actions.ERASE_SELECTION:
+      return { ...state, selection: undefined };
+
     case "change-cursor-position":
       return { ...state, index, focusedRow };
     case "change-editor-content":
@@ -39,6 +61,44 @@ const reducer = (state, action) => {
   }
 };
 
+/* STOP_SELECTION */
+const stopSelectionEvent = (
+  state,
+  { rowStart, rowStop, anchorOffset, extentOffset }
+) => {
+  const selection = validateSelection({
+    rowStart,
+    rowStop,
+    anchorOffset,
+    extentOffset
+  });
+  return selection
+    ? { ...state, selection }
+    : {
+        ...state,
+        index: extentOffset,
+        focusedRow: rowStop,
+        selection: undefined
+      };
+};
+
+const validateSelection = ({
+  rowStart,
+  rowStop,
+  anchorOffset,
+  extentOffset
+}) => {
+  if (rowStart === rowStop && anchorOffset === extentOffset) return undefined;
+  return {
+    rowStart: Math.min(rowStart, rowStop),
+    rowStop: Math.max(rowStart, rowStop),
+    // anchorOffset: Math.min(anchorOffset, extentOffset),
+    // extentOffset: Math.max(anchorOffset, extentOffset)
+
+    anchorOffset, // TODO
+    extentOffset
+  };
+};
 /* ARROW_LEFT */
 const reduceKeyLeft = state => {
   const focusedRow =

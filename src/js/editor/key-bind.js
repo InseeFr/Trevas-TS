@@ -17,7 +17,14 @@ const UNBINDED_KEY = [
   "CapsLock",
   "Escape",
   "AltGraph",
-  "Insert"
+  "Insert",
+  "Dead",
+  "Meta",
+  "ScrollLock",
+  "AudioVolumeMute",
+  "AudioVolumeDown",
+  "AudioVolumeUp",
+  "NumLock"
 ];
 
 /* */
@@ -39,5 +46,6 @@ KEY.END = "End";
 KEY.TAB = "Tab";
 KEY.PAGE_UP = "PageUp";
 KEY.PAGE_DOWN = "PageDown";
+KEY.CONTEXT_MENU = "ContextMenu";
 
 export default KEY;

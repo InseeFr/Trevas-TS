@@ -11,6 +11,16 @@
 @mixin token {
 }
 
+.editor:nth-child(n) {
+  ::selection {
+    background: none;
+  }
+  // .token::selection {
+  //   color: inherit;
+  //   background: grey;
+  // }
+}
+
 .editor {
   width: 500px;
   height: auto;
@@ -54,6 +64,8 @@
       width: 100%;
       position: relative;
 
+      line-height: 18px;
+
       .cursor-end-line {
         @include cursor();
       }
@@ -68,6 +80,11 @@
         50% {
           opacity: 0;
         }
+      }
+
+      .unfocused-token-selection {
+        background-color: darkblue;
+        color: snow;
       }
     }
 

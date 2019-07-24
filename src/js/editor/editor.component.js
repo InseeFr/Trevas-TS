@@ -2,6 +2,7 @@ import React, { useMemo, createContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import Line from "./line.component";
 import editorReducer from "./editor.reducer";
+import * as actions from "./editor.actions";
 import KEY from "./key-bind";
 // import Suggestions from './sugestions.component';
 // import createSuggester from './suggestions-manager';
@@ -11,11 +12,12 @@ import "./editor.scss";
 const initialState = {
   lines: [{ value: "", tokens: [] }],
   index: 0,
-  focusedRow: undefined
+  focusedRow: undefined,
+  selection: undefined
 };
 
 const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
-  const [{ lines, index, focusedRow }, dispatch] = useReducer(
+  const [{ lines, index, focusedRow, selection }, dispatch] = useReducer(
     editorReducer,
     initialState
   );
@@ -32,15 +34,22 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
     [lines, getTokens]
   );
 
+  const checkSelection = createCheckSelection(selection);
+  // if (selection) console.log("global", selection);
   return (
     <EditorContext.Provider value={{ index, dispatch }}>
       <div
         className="editor"
         onKeyDown={e => {
+          if (KEY.isUnbindedKey(e.key)) return;
           e.stopPropagation();
           e.preventDefault();
           keyDownCallback(dispatch)(e.key);
         }}
+        // onMouseDown={e => {
+        //   e.stopPropagation();
+        //   dispatch(actions.eraseSelection());
+        // }}
       >
         {transformedLines.map(({ tokens, value }, i) => (
           <Line
@@ -50,6 +59,7 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
             number={i}
             index={index}
             focused={focusedRow === i}
+            selection={checkSelection(i, value.length)}
           />
         ))}
       </div>
@@ -58,14 +68,29 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 };
 
 /* */
+const createCheckSelection = selection => (numberRow, length = -1) => {
+  const t =
+    selection &&
+    "rowStop" in selection &&
+    numberRow >= selection.rowStart &&
+    numberRow <= selection.rowStop
+      ? {
+          start: numberRow === selection.rowStart ? selection.anchorOffset : 0,
+          stop:
+            numberRow === selection.rowStop ? selection.extentOffset : length
+        }
+      : undefined;
+  return t;
+};
+/* */
 const keyDownCallback = dispatch => key => {
-  if (KEY.isUnbindedKey(key)) return;
   switch (key) {
     case KEY.ARROW_UP:
     case KEY.ARROW_DOWN:
       dispatch({ type: key });
       dispatch({ type: "check-index" });
       break;
+    case KEY.CONTEXT_MENU:
     case KEY.DELETE:
     case KEY.PAGE_UP:
     case KEY.PAGE_DOWN:
@@ -87,38 +112,6 @@ const keyDownCallback = dispatch => key => {
 };
 
 const isCharCode = c => true; //c && /[\w!@#$%^&*(),.?":{}|<>].{1}/g.test(c);
-
-/* */
-const createHandlerClickRow = ({ setIndex, setFocusedRow }) => (
-  numberRow,
-  indexInRow
-) => {
-  setIndex(indexInRow);
-  setFocusedRow(numberRow);
-  return false;
-};
-
-/* */
-const addRow = (tab = {}, index, start = "", end = "") =>
-  tab.reduce(
-    (a, o, i) =>
-      i !== index ? [...a, o] : [...a, { ...o, value: start }, { value: end }],
-    []
-  );
-
-/* */
-const removeRow = (tab = [], index, rest) => {
-  const result = tab.reduce(
-    (a, o, i) =>
-      i === index - 1
-        ? [...a, { ...o, value: `${o.value}${rest}` }]
-        : i !== index
-        ? [...a, o]
-        : a,
-    []
-  );
-  return result.length === 0 ? [{}] : result;
-};
 
 /* */
 Editor.proTypes = {

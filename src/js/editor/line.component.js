@@ -5,7 +5,7 @@ import Cursor from "./cursor.component";
 import { lineProps } from "./editor-prop-types";
 import { EditorContext } from "./editor.component";
 
-const Line = ({ tokens = [], number, length, index, focused }) => {
+const Line = ({ tokens = [], number, length, index, focused, selection }) => {
   const { dispatch } = useContext(EditorContext);
   const divEl = createRef();
   useEffect(() => {
@@ -21,7 +21,7 @@ const Line = ({ tokens = [], number, length, index, focused }) => {
       onDoubleClick={e => {
         e.stopPropagation();
       }}
-      onClick={e => {
+      onMouseUp={e => {
         e.stopPropagation();
         dispatch({
           type: "change-cursor-position",
@@ -39,6 +39,7 @@ const Line = ({ tokens = [], number, length, index, focused }) => {
             numberRow={number}
             numberToken={i}
             focused={focused && index >= token.start && index <= token.stop}
+            selection={checkSelection(selection)(token)}
           />
         ))}
         {focused && index === length ? <Cursor endLine={true} /> : null}
@@ -46,6 +47,20 @@ const Line = ({ tokens = [], number, length, index, focused }) => {
     </div>
   );
 };
+
+const checkSelection = selection => token => {
+  const result =
+    selection && !tokenOutoffSelection(selection)(token)
+      ? {
+          start: Math.max(token.start, selection.start) - token.start,
+          stop: Math.min(token.stop, selection.stop) - token.start
+        }
+      : undefined;
+  return result;
+};
+
+const tokenOutoffSelection = s => token =>
+  token.start >= s.stop || token.stop < s.start;
 
 /* */
 const NumberLine = ({ focused = false, number }) => (
