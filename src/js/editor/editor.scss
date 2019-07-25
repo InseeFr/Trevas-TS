@@ -132,31 +132,30 @@
   .suggestions {
     display: block;
     position: fixed;
-    width: 200px;
-    height: 200px;
+    width: auto;
+    height: auto;
+    padding: 2px 2px;
     border: solid red 1px;
     background-color: snow;
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0px;
-    }
-    .suggestion-variable {
+     
+    .suggestion  {
+      width: 20em;
+      margin: 1px 0;
       padding: 1px 1px;
-      &:hover {
-        background-color: darkslategray;
-        .prefix {
-          color: darkturquoise;
-        }
-        .token {
-          color: white;
-        }
+      font-size: 12px;
+      &:hover{
+        background-color: lightgrey;
+        cursor: pointer;
       }
-      .prefix {
-        color: blue;
+      .type{
+        display: inline-block;
+        width: 2em;
+         
       }
-      .token {
-        color: gray;
+      .valeur{
+        display: inline-block;
+        width: 18em;
+        text-align: right;
       }
     }
   }
