@@ -62,7 +62,7 @@ const Unfocused = ({ className, numberRow, value, start }) => {
         );
       }}
     >
-      {value}
+      {value.replace(/\s/g, " ")}
     </span>
   );
 };
@@ -70,7 +70,7 @@ const Unfocused = ({ className, numberRow, value, start }) => {
 /* */
 const Unmapped = ({ value, focused, ...props }) => {
   const classNames = classnames("unmapped", "vtl-commons");
-  const value_ = value.replace(/\s/g, " ");
+  const value_ = value.replace(/\s/g, " ");
   return focused ? (
     <Focused className={classNames} value={value_} {...props} />
   ) : (
