@@ -1,13 +1,28 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useMemo, useState, useContext } from "react";
 import { EditorContext } from "./editor.component";
 
-const Suggestions = ({ suggest, token }) => {
-  const { dispatch, cursorRect } = useContext(EditorContext);
-  const [open, setOpen] = useState(false);
+const Suggestions = ({ suggest }) => {
+  const { cursorRect, prefix } = useContext(EditorContext);
 
-  useEffect(() => {}, []);
-
-  return open ? <div className=".suggestions" /> : null;
+  const suggestions = useMemo(() => (prefix ? suggest(prefix) : {}), [
+    suggest,
+    prefix
+  ]);
+  return getState(suggestions) ? (
+    <div
+      className="suggestions"
+      style={{
+        left: `${Math.round(cursorRect.right)}px`,
+        top: `${Math.round(cursorRect.bottom)}px`
+      }}
+    />
+  ) : null;
 };
+
+const getState = (suggestions = {}) =>
+  Object.values(suggestions).reduce(
+    (a, t) => (t && Array.isArray(t) && t.length > 0) || a,
+    false
+  );
 
 export default Suggestions;

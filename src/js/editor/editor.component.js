@@ -21,13 +21,13 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
   }, [content, getTokens]);
 
   const suggester = useMemo(() => createSuggester(dictionnary), [dictionnary]);
-
   return (
-    <EditorContext.Provider value={{ index, dispatch }}>
+    <EditorContext.Provider value={{ ...state, dispatch }}>
       <div
         className="editor"
-        onKeyDown={e => keyDownCallback(dispatch)(e)}
-        onMouseDown={e => onMouseDownCallback(dispatch, state)(e)}
+        onKeyDown={keyDownCallback(dispatch)}
+        onMouseDown={onMouseDownCallback(dispatch, state)}
+        onBlur={onBlurCallback(dispatch, state)}
       >
         {lines.map(({ tokens, value }, i) => (
           <Line
@@ -46,15 +46,12 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 };
 
 /* */
-const getFocusedToken = lines => (focusedRow, index) =>
-  focusedRow >= 0
-    ? lines[focusedRow].value.length === index
-      ? lines[focusedRow].tokens[lines[focusedRow].tokens.length - 1]
-      : lines[focusedRow].tokens.reduce(
-          (a, t) => (index >= t.start && index < t.stop ? t : a),
-          undefined
-        )
-    : undefined;
+const onBlurCallback = dispatch => e => {
+  e.stopPropagation();
+  e.preventDefault();
+  // console.log("Blur !!!");
+  // dispatch(actions.exitEditor());
+};
 
 /* */
 const onMouseDownCallback = (dispatch, state) => e => {
@@ -74,15 +71,18 @@ const keyDownCallback = dispatch => e => {
       dispatch({ type: key });
       dispatch(actions.checkIndex());
       break;
-    case KEY.CONTEXT_MENU:
     case KEY.DELETE:
+    case KEY.ENTER:
+    case KEY.BACK_SPACE:
+      dispatch({ type: key });
+      dispatch(actions.checkPrefix());
+      break;
     case KEY.PAGE_UP:
     case KEY.PAGE_DOWN:
     case KEY.TAB:
-    case KEY.ENTER:
     case KEY.HOME:
     case KEY.END:
-    case KEY.BACK_SPACE:
+    case KEY.CONTEXT_MENU:
     case KEY.ARROW_LEFT:
     case KEY.ARROW_RIGHT:
       dispatch({ type: key });
@@ -90,7 +90,7 @@ const keyDownCallback = dispatch => e => {
       break;
     default:
       if (isCharCode(key)) {
-        dispatch({ type: "pressed-char", key });
+        dispatch(actions.insertCharacter(key));
         dispatch(actions.checkPrefix());
       }
       break;

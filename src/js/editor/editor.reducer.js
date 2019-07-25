@@ -7,7 +7,6 @@ const initialState = {
   lines: [{ value: "", tokens: [] }],
   index: 0,
   focusedRow: undefined,
-  focusedToken: undefined,
   prefix: undefined,
   cursorRect: undefined
 };
@@ -22,13 +21,22 @@ export const initializer = getTokens => {
 const reducer = (state, action) => {
   const newState = (() => {
     switch (action.type) {
+      case actions.EXIT_EDITOR:
+        return {
+          ...state,
+          focusedRow: undefined,
+          prefix: undefined,
+          cursorRect: undefined,
+          index: undefined
+        };
+
       case actions.SET_CURSOR_RECT:
         return { ...state, cursorRect: action.payload.rect };
 
       case actions.RESET_PREFIX:
         return { ...state, prefix: undefined };
       case actions.CHECK_PREFIX:
-        return { ...state };
+        return { ...state, prefix: checkPrefix(state) };
 
       case actions.SET_CURSOR_POSITION:
         return {
@@ -61,10 +69,8 @@ const reducer = (state, action) => {
         return { ...state, index: getRowLength(state) };
       case actions.CHECK_INDEX:
         return { ...state, index: Math.min(state.index, getRowLength(state)) };
-      case "pressed-char":
-        return {
-          ...appendCharAtCursor(state)(action.key)
-        };
+      case actions.INSERT_CHARACTER:
+        return appendCharAtCursor(state)(action.payload.char || "");
       default:
         console.warn(`Unbind event ${action.type}`);
         return state;
@@ -73,6 +79,22 @@ const reducer = (state, action) => {
   console.debug("%cDebug", "color: purple;", { action, state, newState });
   return newState;
 };
+
+/* CHECK_PREFIX */
+const checkPrefix = ({ lines, focusedRow, index }) => {
+  const token = getFocusedToken(lines)(focusedRow, index);
+  return token ? token.value.substr(0, index - token.start) : undefined;
+};
+
+const getFocusedToken = lines => (focusedRow, index) =>
+  focusedRow >= 0
+    ? lines[focusedRow].value.length === index
+      ? lines[focusedRow].tokens[lines[focusedRow].tokens.length - 1]
+      : lines[focusedRow].tokens.reduce(
+          (a, t) => (index >= t.start && index < t.stop ? t : a),
+          undefined
+        )
+    : undefined;
 
 /* ARROW_LEFT */
 const reduceKeyLeft = state => {
