@@ -10,17 +10,24 @@ export const tokenProps = {
   name: propTypes.string,
   className: propTypes.string.isRequired,
   focused: propTypes.bool,
-  numberToken: propTypes.number,
-  numberRow: propTypes.number,
+  numberToken: propTypes.number.isRequired,
+  numberRow: propTypes.number.isRequired,
   start: propTypes.number.isRequired,
   stop: propTypes.number.isRequired,
   selection: propTypes.shape(selectionProps)
-  // index: propTypes.number
 };
 
 export const lineProps = {
   length: propTypes.number.isRequired,
-  tokens: propTypes.arrayOf(propTypes.shape(tokenProps)),
+  tokens: propTypes.arrayOf(
+    propTypes.shape({
+      name: propTypes.string,
+      value: propTypes.string.isRequired,
+      start: propTypes.number.isRequired,
+      stop: propTypes.number.isRequired,
+      className: propTypes.string.isRequired
+    })
+  ),
   number: propTypes.number.isRequired,
   index: propTypes.number,
   focused: propTypes.bool.isRequired,
