@@ -1,16 +1,35 @@
 import KEY from "./key-bind";
 import * as actions from "./editor.actions";
 
+let getTokens_ = undefined;
+/* */
+const initialState = {
+  lines: [{ value: "", tokens: [] }],
+  index: 0,
+  focusedRow: undefined,
+  focusedToken: undefined,
+  prefix: undefined,
+  cursorRect: undefined
+};
+
+/* */
+export const initializer = getTokens => {
+  getTokens_ = getTokens;
+  return initialState;
+};
+
 /* */
 const reducer = (state, action) => {
   const newState = (() => {
-    const { lines } = action;
     switch (action.type) {
-      case actions.MOUSE_DOWN_TOKEN:
-        return { ...state, focusedRow: undefined };
-      case actions.MOUSE_UP_TOKEN:
-        const { start, numberRow, numberToken, anchorOffset } = action.payload;
-        return { ...state, focusedRow: numberRow, index: start + anchorOffset };
+      case actions.SET_CURSOR_RECT:
+        return { ...state, cursorRect: action.payload.rect };
+
+      case actions.RESET_PREFIX:
+        return { ...state, prefix: undefined };
+      case actions.CHECK_PREFIX:
+        return { ...state };
+
       case actions.SET_CURSOR_POSITION:
         return {
           ...state,
@@ -18,7 +37,7 @@ const reducer = (state, action) => {
           focusedRow: action.payload.numberRow
         };
       case "change-editor-content":
-        return { ...state, lines };
+        return { ...state, lines: action.lines.map(row => getNewRow(row)) };
       case KEY.ARROW_LEFT:
         return reduceKeyLeft(state);
       case KEY.ARROW_RIGHT:
@@ -40,16 +59,18 @@ const reducer = (state, action) => {
         return { ...state, index: 0 };
       case KEY.END:
         return { ...state, index: getRowLength(state) };
-      case "check-index":
+      case actions.CHECK_INDEX:
         return { ...state, index: Math.min(state.index, getRowLength(state)) };
       case "pressed-char":
-        return appendCharAtCursor(state)(action.key);
+        return {
+          ...appendCharAtCursor(state)(action.key)
+        };
       default:
         console.warn(`Unbind event ${action.type}`);
         return state;
     }
   })();
-  console.debug({ action, state, newState });
+  console.debug("%cDebug", "color: purple;", { action, state, newState });
   return newState;
 };
 
@@ -170,8 +191,8 @@ const reduceKeyEnter = ({ focusedRow, index, lines, ...rest }) => {
       i === focusedRow
         ? [
             ...a,
-            { value: line.value.substr(0, index), tokens: [] },
-            { value: line.value.substr(index) }
+            getNewRow(line.value.substr(0, index)),
+            getNewRow(line.value.substr(index))
           ]
         : [...a, line],
     []
@@ -210,6 +231,10 @@ const appendCharAtCursor = state => char =>
     { ...state, lines: [] }
   );
 
-const getNewRow = string => ({ value: string, tokens: [] });
+const getNewRow = (string, old = {}) => ({
+  value: string,
+  tokens: getTokens_(string),
+  ...old
+});
 
 export default reducer;

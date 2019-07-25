@@ -20,24 +20,21 @@ const Token = props => {
 Token.propTypes = tokenProps;
 
 /* */
-const Focused = ({ start, numberRow, stop, value, ...rest }) => {
+const Focused = props => {
+  const { start, value } = props;
   const { index } = useContext(EditorContext);
   return (
     <span className="token-with-cursor">
       <Unfocused
-        {...rest}
-        numberRow={numberRow}
+        {...props}
         value={value.substr(0, index - start)}
-        start={start}
         stop={index - 1}
       />
       <span style={{ position: "relative" }}>
         <Unfocused
-          {...rest}
-          numberRow={numberRow}
+          {...props}
           value={value.substr(index - start)}
           start={index}
-          stop={stop}
         />
         <Cursor />
       </span>
@@ -46,12 +43,11 @@ const Focused = ({ start, numberRow, stop, value, ...rest }) => {
 };
 
 /* */
-const Unfocused = ({ className, numberRow, value, start }) => {
+const Unfocused = ({ className, numberRow, numberToken, value, start }) => {
   const { dispatch } = useContext(EditorContext);
   return (
     <span
       className={classnames("token", className)}
-      onDoubleClick={e => e.stopPropagation()}
       onMouseUp={e => {
         e.stopPropagation();
         dispatch(

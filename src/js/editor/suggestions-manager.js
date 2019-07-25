@@ -1,8 +1,6 @@
 /* */
-const createSuggester = async ({ variables = [] }) => {
-  const varIndex = await mergeTokens(
-    variables.map(token => prepareToken(token))
-  );
+const createSuggester = ({ variables = [] }) => {
+  const varIndex = mergeTokens(variables.map(token => prepareToken(token)));
   return suggest({ variables: varIndex });
 };
 
@@ -14,7 +12,7 @@ const suggest = index => prefix => {
 };
 
 /* */
-const prepareToken = (token, index) =>
+const prepareToken = token =>
   token.split("").reduce(
     ({ result, step }, letter) => ({
       result: { ...result, [`${step}${letter}`]: token },
@@ -27,18 +25,16 @@ const prepareToken = (token, index) =>
   );
 
 const mergeTokens = tokenized =>
-  Promise.resolve(
-    tokenized.reduce(
-      (dico, { result }) =>
-        Object.entries(result).reduce(
-          (p, [c, step]) => ({
-            ...p,
-            [c]: c in dico ? [...dico[c], step] : [step]
-          }),
-          dico
-        ),
-      {}
-    )
+  tokenized.reduce(
+    (dico, { result }) =>
+      Object.entries(result).reduce(
+        (p, [c, step]) => ({
+          ...p,
+          [c]: c in dico ? [...dico[c], step] : [step]
+        }),
+        dico
+      ),
+    {}
   );
 
 export default createSuggester;

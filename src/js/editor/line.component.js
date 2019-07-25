@@ -19,9 +19,6 @@ const Line = ({ tokens = [], number, length, index, focused }) => {
       className="editor-line"
       tabIndex="0"
       ref={divEl}
-      onDoubleClick={e => {
-        e.stopPropagation();
-      }}
       onMouseUp={e => {
         e.stopPropagation();
         dispatch(actions.setCursorPosition(number, length));

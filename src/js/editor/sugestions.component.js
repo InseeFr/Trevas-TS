@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { EditorContext } from "./editor.component";
 
-const Suggestions = ({ open, pos, prefix, suggest }) => {
-  const [openReally, setOpenReally] = useState(false);
-  const [variables, setVariables] = useState([]);
+const Suggestions = ({ suggest, token }) => {
+  const { dispatch, cursorRect } = useContext(EditorContext);
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (suggest && open) {
-      const suggestions = suggest(prefix);
-      const how = suggestions.variables.length;
-      setOpenReally(open && how > 0);
-      setVariables(suggestions.variables);
-    } else {
-      setOpenReally(false);
-      setVariables([]);
-    }
-  }, [suggest, prefix, open]);
+  useEffect(() => {}, []);
 
-  return open ? (
-    <span
-      className="suggestions"
-      style={{ left: `${Math.round(pos.x)}px`, top: `${Math.round(pos.y)}px` }}
-    >
-      <ul>
-        {variables.length > 0
-          ? variables.map(v => <Item key={v} token={v} prefix={prefix} />)
-          : null}
-      </ul>
-    </span>
-  ) : null;
-};
-
-const Item = ({ prefix, token }) => {
-  return (
-    <li key={`${token}`} className="suggestion-variable">
-      <span className="prefix">{prefix}</span>
-      <span className="token">{token.substr(prefix.length)}</span>
-    </li>
-  );
+  return open ? <div className=".suggestions" /> : null;
 };
 
 export default Suggestions;

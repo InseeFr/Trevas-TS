@@ -13,10 +13,13 @@ const VTL_TYPES = {
   INTEGER_CONSTANT: VtlClassname.integer,
   STRING_CONSTANT: VtlClassname.string,
   IDENTIFIER: VtlClassname.identifier,
+
   IF: VtlClassname.keyword,
   THEN: VtlClassname.keyword,
   ELSE: VtlClassname.keyword,
-  LEAD: VtlClassname.function
+
+  LEAD: VtlClassname.function,
+  LAST: VtlClassname.function
 };
 
 const tokenize = symbolicNames => ligne => ({ type, start, stop }) => {

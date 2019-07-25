@@ -19,7 +19,6 @@
     color: inherit;
     background: grey;
   }
-  
 }
 
 .editor {
@@ -117,6 +116,7 @@
     .vtl-function {
       @include token();
       color: goldenrod;
+      font-weight: bold;
     }
     .vtl-string {
       @include token();
