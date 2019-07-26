@@ -8,14 +8,6 @@
   }
 }
 
-@mixin token {
-  white-space: pre;
-  font-variant-ligatures: contextual;
-  &:hover {
-    background-color: yellow;
-  }
-}
-
 .editor:nth-child(n) {
   ::selection {
     background: none;
@@ -103,32 +95,28 @@
         padding-left: 0;
       }
     }
-
+    .token {
+      white-space: pre;
+      font-variant-ligatures: contextual;
+    }
     /* language vtl */
     .vtl-integer {
-      @include token();
       color: tomato;
     }
     .vtl-identifier {
-      @include token();
       color: tan;
     }
     .vtl-keyword {
-      @include token();
       color: paleturquoise;
     }
     .vtl-function {
-      @include token();
       color: goldenrod;
       font-weight: bold;
     }
     .vtl-string {
-      @include token();
       color: hotpink;
     }
     .vtl-common {
-      @include token();
-
       color: lightgreen;
     }
     /* */

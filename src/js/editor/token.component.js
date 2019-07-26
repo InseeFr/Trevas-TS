@@ -62,15 +62,18 @@ const Unfocused = ({
       })}
       onClick={e => {
         e.stopPropagation();
+        const selectionData = window.getSelection().anchorNode.data;
         dispatch(
           actions.setCursorPosition(
             numberRow,
-            window.getSelection().anchorOffset + start
+            selectionData === value
+              ? window.getSelection().anchorOffset + start
+              : start
           )
         );
       }}
     >
-      {value.replace(/\s/g, " ")}
+      {value}
     </span>
   );
 };
@@ -78,11 +81,10 @@ const Unfocused = ({
 /* */
 const Unmapped = ({ value, focused, ...props }) => {
   const classNames = classnames("unmapped", "vtl-commons");
-  const value_ = value.replace(/\s/g, " ");
   return focused ? (
-    <Focused className={classNames} value={value_} {...props} />
+    <Focused className={classNames} value={value} {...props} />
   ) : (
-    <Unfocused className={classNames} value={value_} {...props} />
+    <Unfocused className={classNames} value={value} {...props} />
   );
 };
 
