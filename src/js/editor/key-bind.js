@@ -48,4 +48,6 @@ KEY.PAGE_UP = "PageUp";
 KEY.PAGE_DOWN = "PageDown";
 KEY.CONTEXT_MENU = "ContextMenu";
 
+KEY._TABULATION = String.fromCharCode(9);
+
 export default KEY;

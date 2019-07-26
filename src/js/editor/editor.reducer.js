@@ -75,6 +75,8 @@ const reducer = (state, action) => {
         return { ...state, index: getRowLength(state) };
       case actions.CHECK_INDEX:
         return { ...state, index: Math.min(state.index, getRowLength(state)) };
+      case KEY.TAB:
+        return appendCharAtCursor(state)(KEY._TABULATION);
       case actions.INSERT_CHARACTER:
         return appendCharAtCursor(state)(action.payload.char || "");
       default:
