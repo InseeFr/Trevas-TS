@@ -8,10 +8,12 @@ import Suggestions from "./sugestions.component";
 import createSuggester from "./suggestions-manager";
 
 import "./editor.scss";
+import { isNullOrUndefined } from "util";
 
 const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
   const [state, dispatch] = useReducer(editorReducer, getTokens, initializer);
   const { lines, index, focusedRow } = state;
+  const tokensEl = [];
 
   useEffect(() => {
     dispatch({
@@ -22,10 +24,10 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 
   const suggester = useMemo(() => createSuggester(dictionnary), [dictionnary]);
   return (
-    <EditorContext.Provider value={{ ...state, dispatch }}>
+    <EditorContext.Provider value={{ ...state, dispatch, tokensEl }}>
       <div
         className="editor"
-        onKeyDown={keyDownCallback(dispatch)}
+        onKeyDown={keyDownCallback(dispatch, state, tokensEl)}
         onMouseDown={onMouseDownCallback(dispatch, state)}
         onBlur={onBlurCallback(dispatch, state)}
       >
@@ -49,8 +51,7 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 const onBlurCallback = dispatch => e => {
   e.stopPropagation();
   e.preventDefault();
-  // console.log("Blur !!!");
-  // dispatch(actions.exitEditor());
+  dispatch(actions.exitEditor());
 };
 
 /* */
@@ -60,7 +61,7 @@ const onMouseDownCallback = (dispatch, state) => e => {
 };
 
 /* */
-const keyDownCallback = dispatch => e => {
+const keyDownCallback = (dispatch, state, tokensEl) => e => {
   if (KEY.isUnbindedKey(e.key)) return;
   e.stopPropagation();
   e.preventDefault();
@@ -75,6 +76,10 @@ const keyDownCallback = dispatch => e => {
     case KEY.DELETE:
     case KEY.ENTER:
     case KEY.BACK_SPACE:
+      if (isSelection()) {
+        checkForDeleteSelection(state, tokensEl);
+        break;
+      }
       dispatch({ type: key });
       dispatch(actions.checkPrefix());
       break;
@@ -99,6 +104,68 @@ const keyDownCallback = dispatch => e => {
 };
 
 const isCharCode = c => true; //c && /[\w!@#$%^&*(),.?":{}|<>].{1}/g.test(c);
+
+const isSelection = () => {
+  const {
+    anchorOffset,
+    focusOffset,
+    anchorNode,
+    focusNode
+  } = window.getSelection();
+  return !focusNode.isEqualNode(anchorNode) || anchorOffset !== focusOffset;
+};
+
+const checkForDeleteSelection = (state, tokensEl) => {
+  const what = tokensEl.reduce(
+    (a, { spanEl, numberToken, numberRow, start, stop }) => {
+      return window
+        .getSelection()
+        .containsNode(spanEl.current.firstChild || spanEl.current)
+        ? numberRow in a
+          ? {
+              ...a,
+              [numberRow]: [
+                ...a[numberRow],
+                getNodeInformation({
+                  node: spanEl.current.firstChild,
+                  numberToken,
+                  start,
+                  stop
+                })
+              ]
+            }
+          : {
+              ...a,
+              [numberRow]: [
+                getNodeInformation({
+                  node: spanEl.current.firstChild,
+                  numberToken,
+                  start,
+                  stop
+                })
+              ]
+            }
+        : a;
+    },
+    {}
+  );
+
+  // console.log(what);
+};
+
+const getNodeInformation = ({ node, numberToken, start, stop }) => {
+  const {
+    anchorOffset,
+    focusOffset,
+    anchorNode,
+    focusNode
+  } = window.getSelection();
+  if (anchorNode.isEqualNode(node))
+    return { numberToken, start: start + anchorOffset, stop };
+  else if (focusNode.isEqualNode(node))
+    return { numberToken, start, stop: start + focusOffset - 1 };
+  return { numberToken, start, stop };
+};
 
 /* */
 Editor.proTypes = {

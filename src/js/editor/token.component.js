@@ -1,4 +1,4 @@
-import React, { useContext, createRef } from "react";
+import React, { useContext, createRef, useEffect } from "react";
 import classnames from "classnames";
 import Cursor from "./cursor.component";
 import * as actions from "./editor.actions";
@@ -51,11 +51,24 @@ const Unfocused = ({
   numberToken,
   value,
   start,
+  stop,
   cursored
 }) => {
-  const { dispatch } = useContext(EditorContext);
+  const { dispatch, tokensEl, index } = useContext(EditorContext);
+  const spanEl = createRef();
+
+  useEffect(() => {
+    tokensEl.push({
+      spanEl,
+      numberRow,
+      numberToken,
+      start,
+      stop
+    });
+  }, [spanEl, numberRow, numberToken, tokensEl, start, stop, index]);
   return (
     <span
+      ref={spanEl}
       className={classnames("token", className, {
         "cursor-left": cursored === "left",
         "cursor-right": cursored === "right"

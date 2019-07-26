@@ -14,11 +14,13 @@ const Line = ({ tokens = [], number, length, index, focused }) => {
       divEl.current.focus();
     }
   }, [divEl, focused]);
+
   return (
     <div
       className="editor-line"
       tabIndex="0"
       ref={divEl}
+      onBlur={e => e.stopPropagation()}
       onClick={e => {
         e.stopPropagation();
         dispatch(actions.setCursorPosition(number, length));

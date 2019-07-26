@@ -44,7 +44,7 @@ const getTokens = ligne => {
   const lexer = new VtlLexer(chars);
   const tokens = lexer.getAllTokens().map(tokenize(lexer.symbolicNames)(ligne));
 
-  console.log(tokens, ligne);
+  // console.log(tokens, ligne);
   // console.log(fillUnmappedToken(tokens, ligne));
 
   return fillUnmappedToken(tokens, ligne);
