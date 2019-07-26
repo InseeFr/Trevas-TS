@@ -8,11 +8,13 @@ VtlClassname.identifier = "vtl-identifier";
 VtlClassname.function = "vtl-function";
 VtlClassname.keyword = "vtl-keyword";
 VtlClassname.string = "vtl-string";
+VtlClassname.float = "vtl-float";
 
 const VTL_TYPES = {
   INTEGER_CONSTANT: VtlClassname.integer,
   STRING_CONSTANT: VtlClassname.string,
   IDENTIFIER: VtlClassname.identifier,
+  FLOAT_CONSTANT: VtlClassname.float,
 
   IF: VtlClassname.keyword,
   THEN: VtlClassname.keyword,
@@ -42,7 +44,7 @@ const getTokens = ligne => {
   const lexer = new VtlLexer(chars);
   const tokens = lexer.getAllTokens().map(tokenize(lexer.symbolicNames)(ligne));
 
-  // console.log(tokens, ligne);
+  console.log(tokens, ligne);
   // console.log(fillUnmappedToken(tokens, ligne));
 
   return fillUnmappedToken(tokens, ligne);
