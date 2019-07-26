@@ -21,6 +21,8 @@ export const initializer = getTokens => {
 const reducer = (state, action) => {
   const newState = (() => {
     switch (action.type) {
+      case actions.DELETE_SELECTION:
+        return deleteSelection(state, action.payload.selection);
       case actions.EXIT_EDITOR:
         return {
           ...state,
@@ -291,5 +293,41 @@ const getNewRow = (string, old = {}) => ({
   tokens: getTokens_(string),
   ...old
 });
+
+/* DELETE_SELECTION */
+const deleteSelection = (state, selection = {}) => {
+  const newLines = state.lines
+    .reduce(
+      (a, line, i) =>
+        i in selection
+          ? [...a, getNewRow(deleteOnLine(line.value, selection[i]))]
+          : [...a, line],
+      []
+    )
+    .reduce((a, line) => (line.value.length > 0 ? [...a, line] : a), []);
+
+  const min = Math.min(...Object.keys(selection));
+  const max = Math.max(...Object.keys(selection));
+
+  const merged =
+    min === max ? newLines : mergeRow({ lines: newLines, focusedRow: min + 1 });
+
+  return {
+    ...state,
+    lines: merged
+  };
+};
+
+const deleteOnLine = (value, tokens) => {
+  return tokens.reduce(
+    ({ pas, value }, { start, stop }) => {
+      return {
+        pas: pas + stop - start + 1,
+        value: `${value.substr(0, start - pas)}${value.substr(stop + 1 - pas)}`
+      };
+    },
+    { pas: 0, value }
+  ).value;
+};
 
 export default reducer;

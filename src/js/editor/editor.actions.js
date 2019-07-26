@@ -58,3 +58,10 @@ export const suggestToken = suggestion => ({
   type: SUGGEST_TOKEN,
   payload: { suggestion }
 });
+
+/* DELETE_SELECTION */
+export const DELETE_SELECTION = "editor/delete-selection";
+export const deleteSelction = selection => ({
+  type: DELETE_SELECTION,
+  payload: { selection }
+});

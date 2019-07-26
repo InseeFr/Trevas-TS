@@ -8,7 +8,6 @@ import Suggestions from "./sugestions.component";
 import createSuggester from "./suggestions-manager";
 
 import "./editor.scss";
-import { isNullOrUndefined } from "util";
 
 const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
   const [state, dispatch] = useReducer(editorReducer, getTokens, initializer);
@@ -77,7 +76,7 @@ const keyDownCallback = (dispatch, state, tokensEl) => e => {
     case KEY.ENTER:
     case KEY.BACK_SPACE:
       if (isSelection()) {
-        checkForDeleteSelection(state, tokensEl);
+        checkForDeleteSelection(dispatch, tokensEl);
         break;
       }
       dispatch({ type: key });
@@ -105,6 +104,7 @@ const keyDownCallback = (dispatch, state, tokensEl) => e => {
 
 const isCharCode = c => true; //c && /[\w!@#$%^&*(),.?":{}|<>].{1}/g.test(c);
 
+/* */
 const isSelection = () => {
   const {
     anchorOffset,
@@ -115,8 +115,8 @@ const isSelection = () => {
   return !focusNode.isEqualNode(anchorNode) || anchorOffset !== focusOffset;
 };
 
-const checkForDeleteSelection = (state, tokensEl) => {
-  const what = tokensEl.reduce(
+const checkForDeleteSelection = (dispatch, tokensEl) => {
+  const selection = tokensEl.reduce(
     (a, { spanEl, numberToken, numberRow, start, stop }) => {
       return window
         .getSelection()
@@ -149,8 +149,9 @@ const checkForDeleteSelection = (state, tokensEl) => {
     },
     {}
   );
-
-  // console.log(what);
+  dispatch(actions.deleteSelction(selection));
+  const sel = window.getSelection();
+  sel.extend(sel.anchorNode, 0);
 };
 
 const getNodeInformation = ({ node, numberToken, start, stop }) => {
@@ -160,6 +161,7 @@ const getNodeInformation = ({ node, numberToken, start, stop }) => {
     anchorNode,
     focusNode
   } = window.getSelection();
+
   if (anchorNode.isEqualNode(node))
     return { numberToken, start: start + anchorOffset, stop };
   else if (focusNode.isEqualNode(node))
