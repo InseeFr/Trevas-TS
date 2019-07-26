@@ -4,11 +4,16 @@
   font-weight: bolder;
   &:before {
     content: "|";
-    color: black;
+    color: ivory;
   }
 }
 
 @mixin token {
+  white-space: pre;
+  font-variant-ligatures: contextual;
+  &:hover {
+    background-color: yellow;
+  }
 }
 
 .editor:nth-child(n) {
@@ -17,7 +22,7 @@
   }
   .token::selection {
     color: inherit;
-    background: grey;
+    background: paleturquoise;
   }
 }
 
@@ -38,8 +43,9 @@
       padding: 0px 2px;
       width: 32px;
       height: 100%;
-      background-color: gainsboro;
-      border-right: 1px solid darkgray;
+      background-color: #303030;
+      color: antiquewhite;
+      border-right: 1px solid lightgray;
       font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro,
         monospace;
       font-size: 12px;
@@ -48,13 +54,13 @@
 
     &:focus {
       .num {
-        background-color: darkgray;
+        background-color: #505050;
         color: snow;
       }
 
       .content {
-        background-color: lightgray;
-        color: snow;
+        background-color: #505050;
+        color: antiquewhite;
       }
     }
 
@@ -63,7 +69,8 @@
       display: block;
       width: 100%;
       position: relative;
-
+      background-color: #303030;
+      color: antiquewhite;
       line-height: 18px;
 
       .cursor-end-line {
@@ -83,35 +90,32 @@
       }
 
       .unfocused-token-selection {
-        background-color: darkblue;
+        background-color: paleturquoise;
         color: snow;
       }
     }
 
-    /* language plus */
-    .plus-variable {
-      color: orangered;
-    }
-    .plus-symbol {
-      color: limegreen;
-    }
-    .plus-number {
-      font-weight: bolder;
-      color: gray;
+    .token-with-cursor {
+      .cursor-left {
+        padding-right: 0;
+      }
+      .cursor-right {
+        padding-left: 0;
+      }
     }
 
     /* language vtl */
     .vtl-integer {
       @include token();
-      color: red;
+      color: tomato;
     }
     .vtl-identifier {
       @include token();
-      color: green;
+      color: tan;
     }
     .vtl-keyword {
       @include token();
-      color: blue;
+      color: paleturquoise;
     }
     .vtl-function {
       @include token();
@@ -124,7 +128,8 @@
     }
     .vtl-common {
       @include token();
-      color: black;
+
+      color: lightgreen;
     }
     /* */
   }
@@ -135,27 +140,33 @@
     width: auto;
     height: auto;
     padding: 2px 2px;
-    border: solid red 1px;
-    background-color: snow;
-     
-    .suggestion  {
+    border: solid lightgray 1px;
+    background-color: #303030;
+
+    .suggestion {
       width: 20em;
       margin: 1px 0;
       padding: 1px 1px;
+      color: antiquewhite;
       font-size: 12px;
-      &:hover{
-        background-color: lightgrey;
+      font-weight: bold;
+      font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+
+      &:hover {
+        background-color: #505050;
         cursor: pointer;
       }
-      .type{
+      .type {
         display: inline-block;
         width: 2em;
-         
       }
-      .valeur{
+      .valeur {
+        .prefix {
+          color: turquoise;
+        }
+
         display: inline-block;
         width: 18em;
-        text-align: right;
       }
     }
   }

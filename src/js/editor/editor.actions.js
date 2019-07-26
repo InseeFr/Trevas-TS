@@ -14,7 +14,7 @@ export const mouseUpToken = args => ({
 
 /* SET_CURSOR_POSITION */
 export const SET_CURSOR_POSITION = "editor/set-cursor-position";
-export const setCursorPosition = (numberRow, index, numberToken) => ({
+export const setCursorPosition = (numberRow, index) => ({
   type: SET_CURSOR_POSITION,
   payload: { numberRow, index }
 });
@@ -52,3 +52,9 @@ export const insertCharacter = char => ({
 /* EXIT_EDITOR */
 export const EXIT_EDITOR = "editor/exit-editor";
 export const exitEditor = () => ({ type: EXIT_EDITOR });
+
+export const SUGGEST_TOKEN = "editor/uggest-token";
+export const suggestToken = suggestion => ({
+  type: SUGGEST_TOKEN,
+  payload: { suggestion }
+});

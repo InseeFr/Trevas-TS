@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, createRef } from "react";
 import classnames from "classnames";
 import Cursor from "./cursor.component";
 import * as actions from "./editor.actions";
@@ -29,12 +29,14 @@ const Focused = props => {
         {...props}
         value={value.substr(0, index - start)}
         stop={index - 1}
+        cursored="left"
       />
       <span style={{ position: "relative" }}>
         <Unfocused
           {...props}
           value={value.substr(index - start)}
           start={index}
+          cursored="right"
         />
         <Cursor />
       </span>
@@ -43,12 +45,22 @@ const Focused = props => {
 };
 
 /* */
-const Unfocused = ({ className, numberRow, numberToken, value, start }) => {
+const Unfocused = ({
+  className,
+  numberRow,
+  numberToken,
+  value,
+  start,
+  cursored
+}) => {
   const { dispatch } = useContext(EditorContext);
   return (
     <span
-      className={classnames("token", className)}
-      onMouseUp={e => {
+      className={classnames("token", className, {
+        "cursor-left": cursored === "left",
+        "cursor-right": cursored === "right"
+      })}
+      onClick={e => {
         e.stopPropagation();
         dispatch(
           actions.setCursorPosition(
