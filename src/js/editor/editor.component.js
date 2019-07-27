@@ -142,9 +142,8 @@ const checkForDeleteSelection = (dispatch, tokensEl) => {
 					}
 			: a;
 	}, {});
-	console.log(selection);
-	dispatch(actions.deleteSelction(selection));
 	const sel = window.getSelection();
+	dispatch(actions.deleteSelction(selection));
 	sel.extend(sel.anchorNode, 0);
 };
 
