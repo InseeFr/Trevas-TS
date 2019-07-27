@@ -29,7 +29,7 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 		<EditorContext.Provider value={{ ...state, dispatch, tokensEl }}>
 			<div
 				className="editor"
-				onKeyDown={keyDownCallback(dispatch, state, tokensEl)}
+				onKeyDown={suggesterKeyDownProxy(keyDownCallback)(dispatch, state, tokensEl)}
 				onMouseDown={onMouseDownCallback(dispatch, state)}
 				onBlur={onBlurCallback(dispatch, state)}
 			>
@@ -43,8 +43,8 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 						focused={focusedRow === i}
 					/>
 				))}
-				<Suggestions suggest={suggester} />
 			</div>
+			<Suggestions suggest={suggester} />
 		</EditorContext.Provider>
 	);
 };
@@ -60,6 +60,31 @@ const onBlurCallback = (dispatch) => (e) => {
 const onMouseDownCallback = (dispatch, state) => (e) => {
 	const { prefix } = state;
 	if (prefix) dispatch(actions.resetPrefix());
+};
+
+/* */
+const suggesterKeyDownProxy = (callback) => (dispatch, state, tokensEl) => {
+	const callee = callback(dispatch, state, tokensEl);
+
+	return (e) => {
+		const { open, index } = state.suggesterState;
+		if (open) {
+			switch (e.key) {
+				case KEY.ARROW_UP:
+					dispatch(actions.previousSuggestion());
+					return false;
+				case KEY.ARROW_DOWN:
+					dispatch(actions.nextSuggestion());
+					return false;
+				case KEY.ENTER:
+					// TODO valider la sélection
+					if (index > -1) return false;
+				default:
+					return callee(e);
+			}
+		}
+		return callee(e);
+	};
 };
 
 /* */
@@ -114,37 +139,47 @@ const isSelection = () => {
 };
 
 const checkForDeleteSelection = (dispatch, tokensEl) => {
-	const selection = tokensEl.reduce((a, { spanEl, numberToken, numberRow, start, stop }) => {
-		return window.getSelection().containsNode(spanEl.current.firstChild || spanEl.current)
-			? numberRow in a
-				? {
-						...a,
-						[numberRow]: [
-							...a[numberRow],
-							getNodeInformation({
-								node: spanEl.current.firstChild,
-								numberToken,
-								start,
-								stop
-							})
-						]
-					}
-				: {
-						...a,
-						[numberRow]: [
-							getNodeInformation({
-								node: spanEl.current.firstChild,
-								numberToken,
-								start,
-								stop
-							})
-						]
-					}
-			: a;
-	}, {});
-	const sel = window.getSelection();
-	dispatch(actions.deleteSelction(selection));
-	sel.extend(sel.anchorNode, 0);
+	// const range = window.getSelection().getRangeAt(0);
+	// const documentRange = range.extractContents();
+	// const lines = document.querySelectorAll('.editor-line');
+	// const contents = [ ...lines.entries() ].reduce(
+	// 	(a, [ index, el ]) => [ ...a, el.querySelectorAll('.content .token') ],
+	// 	[]
+	// );
+	//
+	// window.getSelection().deleteFromDocument();
+	//
+	// const selection = tokensEl.reduce((a, { spanEl, numberToken, numberRow, start, stop }) => {
+	// 	return window.getSelection().containsNode(spanEl.current.firstChild || spanEl.current)
+	// 		? numberRow in a
+	// 			? {
+	// 					...a,
+	// 					[numberRow]: [
+	// 						...a[numberRow],
+	// 						getNodeInformation({
+	// 							node: spanEl.current.firstChild,
+	// 							numberToken,
+	// 							start,
+	// 							stop
+	// 						})
+	// 					]
+	// 				}
+	// 			: {
+	// 					...a,
+	// 					[numberRow]: [
+	// 						getNodeInformation({
+	// 							node: spanEl.current.firstChild,
+	// 							numberToken,
+	// 							start,
+	// 							stop
+	// 						})
+	// 					]
+	// 				}
+	// 		: a;
+	// }, {});
+	// const sel = window.getSelection();
+	// dispatch(actions.deleteSelction(selection));
+	// sel.extend(sel.anchorNode, 0);
 };
 
 const getNodeInformation = ({ node, numberToken, start, stop }) => {

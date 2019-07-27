@@ -8,7 +8,8 @@ const initialState = {
 	index: 0,
 	focusedRow: undefined,
 	prefix: undefined,
-	cursorRect: undefined
+	cursorRect: undefined,
+	suggesterState: { open: false, index: -1, value: undefined, size: 0 }
 };
 
 /* */
@@ -21,6 +22,26 @@ export const initializer = (getTokens) => {
 const reducer = (state, action) => {
 	const newState = (() => {
 		switch (action.type) {
+			/* */
+			case actions.RESET_SUGGESTER_INDEX:
+				return { ...state, suggesterState: { ...state.suggesterState, index: -1 } };
+			case actions.NEXT_SUGGESTION: {
+				const { index, size } = state.suggesterState;
+				return { ...state, suggesterState: { ...state.suggesterState, index: Math.min(size - 1, index + 1) } };
+			}
+			case actions.PREVIOUS_SUGGESTION: {
+				const { index } = state.suggesterState;
+				return { ...state, suggesterState: { ...state.suggesterState, index: Math.max(0, index - 1) } };
+			}
+			case actions.SET_SUGGESTER_STATE: {
+				return { ...state, suggesterState: { ...state.suggesterState, ...action.payload } };
+			}
+			case actions.SUGGEST_TOKEN:
+				return {
+					...replaceToken(state, action.payload.suggestion),
+					prefix: undefined
+				};
+			/* */
 			case actions.DELETE_SELECTION:
 				return deleteSelection(state, action.payload.selection);
 			case actions.EXIT_EDITOR:
@@ -31,13 +52,6 @@ const reducer = (state, action) => {
 					cursorRect: undefined,
 					index: undefined
 				};
-
-			case actions.SUGGEST_TOKEN:
-				return {
-					...replaceToken(state, action.payload.suggestion),
-					prefix: undefined
-				};
-
 			case actions.SET_CURSOR_RECT:
 				return { ...state, cursorRect: action.payload.rect };
 
