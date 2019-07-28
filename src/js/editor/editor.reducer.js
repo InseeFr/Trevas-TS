@@ -43,7 +43,8 @@ const reducer = (state, action) => {
 				};
 			/* */
 			case actions.DELETE_SELECTION:
-				return deleteSelection(state, action.payload.selection);
+				// TODO
+				return deleteSelection(state);
 			case actions.EXIT_EDITOR:
 				return {
 					...state,
@@ -267,20 +268,9 @@ const getNewRow = (string, old = {}) => ({
 });
 
 /* DELETE_SELECTION */
-const deleteSelection = (state, selection = {}) => {
-	const min = Math.min(...Object.keys(selection));
-	const max = Math.max(...Object.keys(selection));
-	const noMerge = true;
-
-	const newLines = state.lines.reduce(
-		(a, line, i) => (i in selection ? computeLines(a, line, selection[i]) : [ ...a, line ]),
-		[]
-	);
-
-	return {
-		...state,
-		lines: min === max || noMerge ? newLines : mergeRow({ lines: newLines, focusedRow: min + 1 })
-	};
+const deleteSelection = (state) => {
+	// TODO
+	return { ...state };
 };
 
 const computeLines = (lines, line, tokens) => {

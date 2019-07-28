@@ -137,50 +137,57 @@ const isCharCode = (c) => true; //c && /[\w!@#$%^&*(),.?":{}|<>].{1}/g.test(c);
 /* */
 const isSelection = () => {
 	const { anchorOffset, focusOffset, anchorNode, focusNode } = window.getSelection();
-	return !focusNode.isEqualNode(anchorNode) || anchorOffset !== focusOffset;
+	return (focusNode && !focusNode.isEqualNode(anchorNode)) || anchorOffset !== focusOffset;
 };
 
+/* */
+const isInSelection = (node) => window.getSelection().containsNode(node.firstChild || node);
+
+const isAnchorNode = (anchor, node) => (anchor.isSameNode(node.firstChild || node) ? true : false);
+
+const deleteOnLine = (line, token) => `${line.substr(0)}`;
+
 const checkForDeleteSelection = (dispatch, tokensEl) => {
-	// const range = window.getSelection().getRangeAt(0);
-	// const documentRange = range.extractContents();
-	// const lines = document.querySelectorAll('.editor-line');
-	// const contents = [ ...lines.entries() ].reduce(
-	// 	(a, [ index, el ]) => [ ...a, el.querySelectorAll('.content .token') ],
-	// 	[]
-	// );
-	//
-	// window.getSelection().deleteFromDocument();
-	//
-	// const selection = tokensEl.reduce((a, { spanEl, numberToken, numberRow, start, stop }) => {
-	// 	return window.getSelection().containsNode(spanEl.current.firstChild || spanEl.current)
-	// 		? numberRow in a
-	// 			? {
-	// 					...a,
-	// 					[numberRow]: [
-	// 						...a[numberRow],
-	// 						getNodeInformation({
-	// 							node: spanEl.current.firstChild,
-	// 							numberToken,
-	// 							start,
-	// 							stop
-	// 						})
-	// 					]
-	// 				}
-	// 			: {
-	// 					...a,
-	// 					[numberRow]: [
-	// 						getNodeInformation({
-	// 							node: spanEl.current.firstChild,
-	// 							numberToken,
-	// 							start,
-	// 							stop
-	// 						})
-	// 					]
-	// 				}
-	// 		: a;
-	// }, {});
+	const selection = window.getSelection();
+	const { anchor, extent, tokens } = tokensEl.reduce(
+		({ tokens, anchor, extent }, { spanEl, numberRow, numberToken, start, stop, value }) =>
+			isInSelection(spanEl.current)
+				? {
+						tokens:
+							isAnchorNode(selection.extentNode, spanEl.current) ||
+							isAnchorNode(selection.anchorNode, spanEl.current)
+								? tokens
+								: [ ...tokens, { numberRow, numberToken, start, stop, value } ],
+						anchor: isAnchorNode(selection.anchorNode, spanEl.current)
+							? { numberRow, numberToken, start, stop, value }
+							: anchor,
+						extent: isAnchorNode(selection.extentNode, spanEl.current)
+							? { numberRow, numberToken, start, stop, value }
+							: extent
+					}
+				: { tokens, anchor, extent },
+		{
+			tokens: [],
+			anchor: undefined,
+			extent: undefined
+		}
+	);
+
+	// const tokensFinalized =
+	// 	anchor.numberRow < extent.numberRow || anchor.numberToken < extent.numberToken
+	// 		? [
+	// 				...tokens,
+	// 				{ ...anchor, start: anchor.start + selection.anchorOffset, stop: anchor.stop },
+	// 				{ ...extent, start: extent.start, stop: extent.start + selection.extentOffset - 1 }
+	// 			]
+	// 		: [
+	// 				...tokens,
+	// 				{ ...anchor, start: anchor.start, stop: anchor.start + selection.anchorOffset },
+	// 				{ ...extent, start: extent.start + selection.extentOffset, stop: extent.stop }
+	// 			];
+
 	// const sel = window.getSelection();
-	// dispatch(actions.deleteSelction(selection));
+	// dispatch(actions.deleteSelection(selection));
 	// sel.extend(sel.anchorNode, 0);
 };
 
