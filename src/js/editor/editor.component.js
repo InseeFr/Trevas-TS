@@ -82,6 +82,7 @@ const suggesterKeyDownProxy = (callback) => (dispatch, state, tokensEl) => {
 						return false;
 					}
 				default:
+					dispatch(actions.resetSuggesterIndex());
 					return callee(e);
 			}
 		}
