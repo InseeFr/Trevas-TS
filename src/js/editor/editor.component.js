@@ -77,8 +77,10 @@ const suggesterKeyDownProxy = (callback) => (dispatch, state, tokensEl) => {
 					dispatch(actions.nextSuggestion());
 					return false;
 				case KEY.ENTER:
-					// TODO valider la sélection
-					if (index > -1) return false;
+					if (index > -1) {
+						dispatch(actions.suggestToken(state.suggesterState.value));
+						return false;
+					}
 				default:
 					return callee(e);
 			}
