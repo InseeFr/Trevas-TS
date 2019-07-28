@@ -9,7 +9,7 @@ import createSuggester from './suggestions-manager';
 
 import './editor.scss';
 
-const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
+const Editor = ({ content = [], getTokens, parse, dictionnary = {} }) => {
 	const [ state, dispatch ] = useReducer(editorReducer, getTokens, initializer);
 	const { lines, index, focusedRow } = state;
 	const tokensEl = [];
@@ -22,6 +22,14 @@ const Editor = ({ content = [], getTokens, dictionnary = {} }) => {
 			});
 		},
 		[ content, getTokens ]
+	);
+
+	const code = lines.reduce((a, { value }) => (value.length > 0 ? `${a}${value}\n` : a), '');
+	useMemo(
+		() => {
+			parse(code);
+		},
+		[ code, parse ]
 	);
 
 	const suggester = useMemo(() => createSuggester(dictionnary), [ dictionnary ]);

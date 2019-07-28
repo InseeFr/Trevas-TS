@@ -21,7 +21,6 @@ Token.propTypes = tokenProps;
 
 /* */
 const Focused = (props) => {
-	console.log(props);
 	const { token: { start, value } } = props;
 	const { index } = useContext(EditorContext);
 	return (
@@ -44,7 +43,7 @@ const Focused = (props) => {
 };
 
 /* */
-const Unfocused = ({ numberRow, numberToken, token: { className, value, start, stop }, cursored }) => {
+const Unfocused = ({ numberRow, numberToken, token: { className, typeName, value, start, stop }, cursored }) => {
 	const { dispatch, tokensEl, index } = useContext(EditorContext);
 	const spanEl = createRef();
 
@@ -59,11 +58,12 @@ const Unfocused = ({ numberRow, numberToken, token: { className, value, start, s
 				value
 			});
 		},
-		[ spanEl, numberRow, numberToken, tokensEl, start, stop, index ]
+		[ spanEl, numberRow, numberToken, tokensEl, start, stop, index, value ]
 	);
 	return (
 		<span
 			ref={spanEl}
+			title={`${typeName} : ${value}`}
 			className={classnames('token', className, {
 				'cursor-left': cursored === 'left',
 				'cursor-right': cursored === 'right'

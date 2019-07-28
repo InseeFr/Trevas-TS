@@ -10,12 +10,6 @@ const token = {
 };
 
 export const tokenProps = {
-	// value: propTypes.string.isRequired,
-	// name: propTypes.string,
-	// className: propTypes.string.isRequired,
-	// start: propTypes.number.isRequired,
-	// stop: propTypes.number.isRequired,
-
 	token: propTypes.shape({ ...token }),
 
 	focused: propTypes.bool,

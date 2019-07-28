@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Editor from './js/editor';
-import { getTokens } from './js/parser-vtl';
+import { getTokens, parse } from './js/parser-vtl';
 import * as serviceWorker from './serviceWorker';
 import { LoremIpsum } from 'lorem-ipsum';
 
@@ -25,7 +25,7 @@ const dico = { variables: [ 'toto', 'var_1', 'TATA', 'TITI', 'var_2', 'titi', 'r
 
 ReactDOM.render(
 	<React.Fragment>
-		<Editor content={content} dictionnary={{ variables: getWords() }} getTokens={getTokens} />
+		<Editor content={content} dictionnary={{ variables: getWords() }} getTokens={getTokens} parse={parse} />
 	</React.Fragment>,
 	document.getElementById('root')
 );
