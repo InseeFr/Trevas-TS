@@ -7,7 +7,7 @@ import { tokenProps } from './editor-prop-types';
 
 /* */
 const Token = (props) => {
-	const { className, focused } = props;
+	const { token: { className }, focused } = props;
 	return className === 'unmapped' ? (
 		<Unmapped {...props} />
 	) : focused ? (
@@ -21,13 +21,22 @@ Token.propTypes = tokenProps;
 
 /* */
 const Focused = (props) => {
-	const { start, value } = props;
+	console.log(props);
+	const { token: { start, value } } = props;
 	const { index } = useContext(EditorContext);
 	return (
 		<span className="token-with-cursor">
-			<Unfocused {...props} value={value.substr(0, index - start)} stop={index - 1} cursored="left" />
+			<Unfocused
+				{...props}
+				token={{ ...props.token, value: value.substr(0, index - start), stop: index - 1 }}
+				cursored="left"
+			/>
 			<span style={{ position: 'relative' }}>
-				<Unfocused {...props} value={value.substr(index - start)} start={index} cursored="right" />
+				<Unfocused
+					{...props}
+					token={{ ...props.token, value: value.substr(index - start), start: index }}
+					cursored="right"
+				/>
 				<Cursor />
 			</span>
 		</span>
@@ -35,7 +44,7 @@ const Focused = (props) => {
 };
 
 /* */
-const Unfocused = ({ className, numberRow, numberToken, value, start, stop, cursored }) => {
+const Unfocused = ({ numberRow, numberToken, token: { className, value, start, stop }, cursored }) => {
 	const { dispatch, tokensEl, index } = useContext(EditorContext);
 	const spanEl = createRef();
 
@@ -76,7 +85,8 @@ const Unfocused = ({ className, numberRow, numberToken, value, start, stop, curs
 };
 
 /* */
-const Unmapped = ({ value, focused, ...props }) => {
+const Unmapped = (props) => {
+	const { token: { value }, focused } = props;
 	const classNames = classnames('unmapped', 'vtl-commons');
 	return focused ? (
 		<Focused className={classNames} value={value} {...props} />

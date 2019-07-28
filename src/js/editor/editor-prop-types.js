@@ -1,37 +1,38 @@
-import propTypes from "prop-types";
+import propTypes from 'prop-types';
 
-export const selectionProps = {
-  rowStart: propTypes.number,
-  rowEnd: propTypes.number
+const token = {
+	name: propTypes.string,
+	value: propTypes.string.isRequired,
+	start: propTypes.number.isRequired,
+	stop: propTypes.number.isRequired,
+	className: propTypes.string.isRequired,
+	typeName: propTypes.string
 };
 
 export const tokenProps = {
-  value: propTypes.string.isRequired,
-  name: propTypes.string,
-  className: propTypes.string.isRequired,
-  focused: propTypes.bool,
-  numberToken: propTypes.number.isRequired,
-  numberRow: propTypes.number.isRequired,
-  start: propTypes.number.isRequired,
-  stop: propTypes.number.isRequired,
-  selection: propTypes.shape(selectionProps)
+	// value: propTypes.string.isRequired,
+	// name: propTypes.string,
+	// className: propTypes.string.isRequired,
+	// start: propTypes.number.isRequired,
+	// stop: propTypes.number.isRequired,
+
+	token: propTypes.shape({ ...token }),
+
+	focused: propTypes.bool,
+	numberToken: propTypes.number.isRequired,
+	numberRow: propTypes.number.isRequired
 };
 
 export const lineProps = {
-  length: propTypes.number.isRequired,
-  tokens: propTypes.arrayOf(
-    propTypes.shape({
-      name: propTypes.string,
-      value: propTypes.string.isRequired,
-      start: propTypes.number.isRequired,
-      stop: propTypes.number.isRequired,
-      className: propTypes.string.isRequired
-    })
-  ),
-  number: propTypes.number.isRequired,
-  index: propTypes.number,
-  focused: propTypes.bool.isRequired,
-  selection: propTypes.shape(selectionProps)
+	length: propTypes.number.isRequired,
+	tokens: propTypes.arrayOf(
+		propTypes.shape({
+			...token
+		})
+	),
+	number: propTypes.number.isRequired,
+	index: propTypes.number,
+	focused: propTypes.bool.isRequired
 };
 
 export const EditorProps = {};
