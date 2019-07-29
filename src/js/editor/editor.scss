@@ -18,121 +18,131 @@
   }
 }
 
-.editor {
+.panel-editor {
   width: 500px;
   height: auto;
-  border: 1px solid darkgray;
-  border-radius: 4px;
+  .editor {
+    border: 1px solid darkgray;
+    border-radius: 4px;
 
-  .editor-line {
-    height: 22px;
-    display: flex;
-    flex-direction: row;
-    font-size: 18px;
+    .editor-line {
+      height: 22px;
+      display: flex;
+      flex-direction: row;
+      font-size: 18px;
 
-    .num {
-      display: block;
-      padding: 0px 2px;
-      width: 32px;
-      height: 100%;
-      background-color: #303030;
-      color: antiquewhite;
-      border-right: 1px solid lightgray;
-      font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro,
-        monospace;
-      font-size: 12px;
-      text-align: right;
-    }
-
-    &:focus {
       .num {
-        background-color: #505050;
-        color: snow;
-      }
-
-      .content {
-        background-color: #505050;
+        display: block;
+        padding: 0px 2px;
+        width: 32px;
+        height: 100%;
+        background-color: #303030;
         color: antiquewhite;
-      }
-    }
-
-    .content {
-      padding: 1px 4px;
-      display: block;
-      width: 100%;
-      position: relative;
-      background-color: #303030;
-      color: antiquewhite;
-      line-height: 18px;
-
-      .cursor-end-line {
-        @include cursor();
+        border-right: 1px solid lightgray;
+        font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro,
+          monospace;
+        font-size: 12px;
+        text-align: right;
       }
 
-      .cursor {
-        @include cursor();
-        position: absolute;
-        left: -2px;
-      }
+      &:focus {
+        .num {
+          background-color: #505050;
+          color: snow;
+        }
 
-      @keyframes blinker {
-        50% {
-          opacity: 0;
+        .content {
+          background-color: #505050;
+          color: antiquewhite;
         }
       }
 
-      .unfocused-token-selection {
-        background-color: paleturquoise;
-        color: snow;
+      .content {
+        padding: 1px 4px;
+        display: block;
+        width: 100%;
+        position: relative;
+        background-color: #303030;
+        color: antiquewhite;
+        line-height: 18px;
+
+        .cursor-end-line {
+          @include cursor();
+        }
+
+        .cursor {
+          @include cursor();
+          position: absolute;
+          left: -2px;
+        }
+
+        @keyframes blinker {
+          50% {
+            opacity: 0;
+          }
+        }
+
+        .unfocused-token-selection {
+          background-color: paleturquoise;
+          color: snow;
+        }
       }
+
+      .token-with-cursor {
+        .cursor-left {
+          padding-right: 0;
+        }
+        .cursor-right {
+          padding-left: 0;
+        }
+      }
+      .token {
+        white-space: pre;
+        font-variant-ligatures: contextual;
+      }
+      /* language vtl */
+      .vtl-integer {
+        color: tomato;
+      }
+      .vtl-identifier {
+        color: tan;
+      }
+      .vtl-keyword {
+        color: paleturquoise;
+      }
+      .vtl-function {
+        color: goldenrod;
+        font-weight: bold;
+      }
+      .vtl-string {
+        color: hotpink;
+      }
+      .vtl-float {
+        color: crimson;
+      }
+      .vtl-common {
+        color: lightgreen;
+      }
+      /* */
     }
 
-    .token-with-cursor {
-      .cursor-left {
-        padding-right: 0;
-      }
-      .cursor-right {
-        padding-left: 0;
+    #reset-this-parent {
+      all: initial;
+      * {
+        all: unset;
       }
     }
-    .token {
-      white-space: pre;
-      font-variant-ligatures: contextual;
-    }
-    /* language vtl */
-    .vtl-integer {
-      color: tomato;
-    }
-    .vtl-identifier {
-      color: tan;
-    }
-    .vtl-keyword {
-      color: paleturquoise;
-    }
-    .vtl-function {
-      color: goldenrod;
-      font-weight: bold;
-    }
-    .vtl-string {
-      color: hotpink;
-    }
-    .vtl-float {
-      color: crimson;
-    }
-    .vtl-common {
-      color: lightgreen;
-    }
-    /* */
-
-
-    
   }
 
-  
-  #reset-this-parent {
-    all: initial;
-    * {
-      all: unset;
+  .console {
+    border: solid 1px blue;
+    border-radius: 4px;
+    margin-top: 5px;
+    width: 100%;
+    height: 150px;
+    overflow-y: auto;
+    background-color: azure;
+    .erreur {
     }
   }
 }
@@ -147,7 +157,7 @@
   background-color: #303030;
   z-index: 1;
 
-  .active{
+  .active {
     background-color: #505050;
   }
 
@@ -178,5 +188,3 @@
     }
   }
 }
-
-
