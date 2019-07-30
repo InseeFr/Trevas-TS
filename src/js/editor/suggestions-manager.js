@@ -1,15 +1,22 @@
 /* */
-const createSuggester = ({ variables = [] }) => {
-  const varIndex = mergeTokens(variables.map(token => prepareToken(token)));
-  return suggest({ variables: varIndex });
-};
+const createSuggester = (dictionnary = {}) =>
+  suggest(
+    Object.entries(dictionnary).reduce(
+      (a, [section, values]) => ({
+        ...a,
+        [section]: mergeTokens(values.map(token => prepareToken(token)))
+      }),
+      {}
+    )
+  );
 
 /* */
-const suggest = index => prefix => {
-  const variables =
-    prefix in index.variables ? [...index.variables[prefix]] : [];
-  return { variables };
-};
+const suggest = index => prefix =>
+  Object.entries(index).reduce(
+    (a, [section, dico]) =>
+      prefix in dico ? { ...a, [section]: [...dico[prefix]] } : a,
+    {}
+  );
 
 /* */
 const prepareToken = token =>
@@ -38,10 +45,3 @@ const mergeTokens = tokenized =>
   );
 
 export default createSuggester;
-/*
-
-dictionnary : {
-    variables: [...string]
-}
-
-*/

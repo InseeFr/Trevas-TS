@@ -18,7 +18,6 @@ const Suggestions = ({ suggest }) => {
   ]);
   const size = getSuggestionsLength(suggestions);
   const open = size > 0;
-  // if (index > -1) console.log(getSuggestionsValue(suggestions, index));
   useEffect(() => {
     dispatch(
       actions.setSuggesterState({
@@ -29,6 +28,22 @@ const Suggestions = ({ suggest }) => {
     );
   }, [open, size, dispatch, suggestions, index]);
   //
+  let i = 0;
+  const sections = Object.entries(suggestions).reduce(
+    (a, [section, valeurs]) => [
+      ...a,
+      ...valeurs.map(value => (
+        <Item
+          key={`${section}-${value}`}
+          active={index === i++}
+          value={value}
+          type={section.substr(0, 3)}
+          prefix={prefix}
+        />
+      ))
+    ],
+    []
+  );
 
   return open ? (
     <React.Fragment>
@@ -42,19 +57,21 @@ const Suggestions = ({ suggest }) => {
           if (index !== -1) dispatch(actions.resetSuggesterIndex());
         }}
       >
-        {suggestions.variables.map((value, i) => (
-          <Item
-            key={value}
-            active={index === i}
-            value={value}
-            type="var"
-            prefix={prefix}
-          />
-        ))}
+        {sections}
       </div>
     </React.Fragment>
   ) : null;
 };
+
+// {suggestions.variables.map((value, i) => (
+//   <Item
+//     key={value}
+//     active={index === i}
+//     value={value}
+//     type="var"
+//     prefix={prefix}
+//   />
+// ))
 
 /* */
 const getSuggestionsLength = (suggestions = {}) =>

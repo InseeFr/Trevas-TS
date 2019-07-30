@@ -1,7 +1,6 @@
 import { VtlParser } from ".";
 import { VtlLexer } from ".";
 import antlr4 from "antlr4";
-import { VtlListener } from ".";
 
 // const old = console.error;
 // console.error = function() {
@@ -11,7 +10,6 @@ import { VtlListener } from ".";
 
 const parse = code => {
   try {
-    console.log(code);
     const chars = new antlr4.InputStream(code);
     const lexer = new VtlLexer(chars);
     const tokens = new antlr4.CommonTokenStream(lexer);

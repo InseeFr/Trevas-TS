@@ -1,5 +1,3 @@
-@import "./editor-for-js.scss";
-
 @mixin cursor {
   animation: blinker 1s linear infinite;
 
@@ -150,6 +148,25 @@
     overflow-y: auto;
     background-color: azure;
     .erreur {
+      font-size: 8;
+      .message {
+        color: red;
+      }
+      .line {
+        margin-left: 2px;
+        .count {
+          margin-left: 2px;
+          color: blue;
+        }
+      }
+
+      .column {
+        margin-left: 2px;
+        .count {
+          margin-left: 5px;
+          color: blue;
+        }
+      }
     }
   }
 }

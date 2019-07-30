@@ -4046,9 +4046,9 @@ JavaScriptParser.prototype.classElement = function() {
 
             } else if(la_===2) {
                 this.state = 389;
-                if (!( n("static"))) {
-                    throw new antlr4.error.FailedPredicateException(this, "n(\"static\")");
-                }
+                // if (!( n("static"))) {
+                //     throw new antlr4.error.FailedPredicateException(this, "n(\"static\")");
+                // }
                 this.state = 390;
                 this.match(JavaScriptParser.Identifier);
 
@@ -9460,8 +9460,8 @@ JavaScriptParser.prototype.throwStatement_sempred = function(localctx, predIndex
 
 JavaScriptParser.prototype.classElement_sempred = function(localctx, predIndex) {
 	switch(predIndex) {
-		case 7:
-			return n("static");
+		// case 7:
+		// 	return n("static");
 		default:
 			throw "No predicate with index:" + predIndex;
 	}

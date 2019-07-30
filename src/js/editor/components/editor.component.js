@@ -10,10 +10,12 @@ const Editor = ({ parse }) => {
 
   useEffect(() => {
     const code = lines.reduce(
-      (a, { value }) => (value.length > 0 ? `${a}${value}\r\n` : a),
+      (a, { value }) => (value.length > 0 ? `${a}${value}\n` : a),
       ""
     );
-    dispatch(actions.updateErrors(parse(code)));
+    const { errors, dico } = parse(code);
+
+    dispatch(actions.updateErrors(errors));
   }, [lines, parse, dispatch]);
 
   return (

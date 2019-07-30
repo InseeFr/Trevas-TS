@@ -5,6 +5,8 @@ import { getTokens, parse } from "./js/parser-js";
 import * as serviceWorker from "./serviceWorker";
 import { LoremIpsum } from "lorem-ipsum";
 
+import "./editor-for-js.scss";
+
 const getWords = () => {
   const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -25,18 +27,67 @@ const getWords = () => {
   );
 };
 
+const dictionnary = {
+  variables: getWords(),
+  keywords: [
+    "if",
+    "then",
+    "else",
+    "for",
+    "return",
+    "while",
+    "break",
+    "case",
+    "switch"
+  ]
+};
+
 const content = [
-  "/* COMMENTAIRES */",
-  'const toto = function(){";',
-  '\tconsole.log("coucou");',
-  "}"
+  'const toto = "toto";'
+  /* */
+  // "const fillUnmappedToken = (tokensOriginal, ligne) => {",
+  // "  const result = tokensOriginal.reduce(",
+  // "    ({ index, tokens }, token) =>",
+  // "      index < token.start",
+  // "        ? {",
+  // "            index: token.stop + 1,",
+  // "            tokens: [",
+  // "              ...tokens,",
+  // "              {",
+  // "                start: index,",
+  // "                stop: token.start - 1,",
+  // '                className: "unmapped",',
+  // "                value: ligne.substr(index, token.start - index)",
+  // "              },",
+  // "              token",
+  // "            ]",
+  // "          }",
+  // "        : { index: token.stop + 1, tokens: [...tokens, token] },",
+  // "    { index: 0, tokens: [] }",
+  // "  );",
+  // "",
+  // "  if (result.index < ligne.length) {",
+  // "    return [",
+  // "      ...result.tokens,",
+  // "      {",
+  // "        start: result.index,",
+  // "        stop: ligne.length - 1,",
+  // '        className: "unmapped",',
+  // '        typeName: "unknow",',
+  // "        value: ligne.substr(result.index, ligne.length - result.index)",
+  // "      }",
+  // "    ];",
+  // "  }",
+  // "",
+  // "  return result.tokens;",
+  // "};"
 ];
 
 ReactDOM.render(
   <React.Fragment>
     <Editor
       content={content}
-      dictionnary={{ variables: getWords() }}
+      dictionnary={dictionnary}
       getTokens={getTokens}
       parse={parse}
     />

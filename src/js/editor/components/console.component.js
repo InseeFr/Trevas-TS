@@ -11,7 +11,18 @@ const Console = ({ errors }) => {
 };
 
 const Error = ({ trace }) => {
-  return <div className="erreur">one</div>;
+  const { msg, line, column } = trace;
+  return (
+    <div className="erreur">
+      <span className="message">{`"${msg}"`}</span>
+      <span className="line">
+        row <span className="count">{line}</span>
+      </span>
+      <span className="column">
+        col <span className="count">{column}</span>
+      </span>
+    </div>
+  );
 };
 
 export default Console;
