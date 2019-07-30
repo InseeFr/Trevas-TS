@@ -1,16 +1,16 @@
 import React, { useContext, useEffect } from "react";
-import KEY from "./key-bind";
+import KEY from "../key-bind";
 import { EditorContext } from "./editor-panel.component";
 import Line from "./line.component";
-import * as actions from "./editor.actions";
+import * as actions from "../editor.actions";
 
-const Editor = ({ getTokens, parse, content }) => {
+const Editor = ({ parse }) => {
   const state = useContext(EditorContext);
   const { lines, focusedRow, index, dispatch, tokensEl } = state;
 
   useEffect(() => {
     const code = lines.reduce(
-      (a, { value }) => (value.length > 0 ? `${a}${value}\n` : a),
+      (a, { value }) => (value.length > 0 ? `${a}${value}\r\n` : a),
       ""
     );
     dispatch(actions.updateErrors(parse(code)));

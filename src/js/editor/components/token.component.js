@@ -1,9 +1,9 @@
 import React, { useContext, createRef, useEffect } from "react";
 import classnames from "classnames";
 import Cursor from "./cursor.component";
-import * as actions from "./editor.actions";
+import * as actions from "../editor.actions";
 import { EditorContext } from "./editor-panel.component";
-import { tokenProps } from "./editor-prop-types";
+import { tokenProps } from "../editor-prop-types";
 
 /* */
 const Token = props => {
@@ -62,8 +62,10 @@ const Unfocused = ({
   token: { className, typeName, value, start, stop },
   cursored
 }) => {
-  const { dispatch, tokensEl, index } = useContext(EditorContext);
+  const { dispatch, tokensEl, index, errors } = useContext(EditorContext);
   const spanEl = createRef();
+
+  // errors.map(err => console.log(err));
 
   useEffect(() => {
     tokensEl.push({

@@ -1,15 +1,20 @@
 import React, { useMemo, createContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
-import editorReducer, { initializer } from "./editor.reducer";
+import editorReducer, { initializer } from "../editor.reducer";
 import Suggestions from "./sugestions.component";
 import Console from "./console.component";
 import Editor from "./editor.component";
-import createSuggester from "./suggestions-manager";
-
+import createSuggester from "../suggestions-manager";
+import createFulTokenizer from "../create-full-tokenizer";
 import "./editor.scss";
 
 const EditorPanel = ({ content = [], getTokens, parse, dictionnary = {} }) => {
-  const [state, dispatch] = useReducer(editorReducer, getTokens, initializer);
+  const getFullTokens = createFulTokenizer(getTokens);
+  const [state, dispatch] = useReducer(
+    editorReducer,
+    getFullTokens,
+    initializer
+  );
   const { errors } = state;
   const tokensEl = [];
   useEffect(() => {
@@ -23,7 +28,7 @@ const EditorPanel = ({ content = [], getTokens, parse, dictionnary = {} }) => {
   return (
     <EditorContext.Provider value={{ ...state, tokensEl, dispatch }}>
       <div className="panel-editor">
-        <Editor getToken={getTokens} parse={parse} />
+        <Editor getTokens={getFullTokens} parse={parse} />
         <Suggestions suggest={suggester} />
         <Console errors={errors} />
       </div>

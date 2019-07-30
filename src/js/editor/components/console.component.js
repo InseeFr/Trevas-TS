@@ -3,8 +3,8 @@ import React from "react";
 const Console = ({ errors }) => {
   return (
     <div className="console">
-      {errors.map(trace => (
-        <Error trace={trace} />
+      {errors.map((trace, i) => (
+        <Error key={i} trace={trace} />
       ))}
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Editor from "./js/editor";
-import { getTokens, parse } from "./js/parser-vtl";
+import { Editor } from "./js/editor/components";
+import { getTokens, parse } from "./js/parser-js";
 import * as serviceWorker from "./serviceWorker";
 import { LoremIpsum } from "lorem-ipsum";
 
@@ -25,7 +25,12 @@ const getWords = () => {
   );
 };
 
-const content = ['var1 = "toto";'];
+const content = [
+  "/* COMMENTAIRES */",
+  'const toto = function(){";',
+  '\tconsole.log("coucou");',
+  "}"
+];
 
 ReactDOM.render(
   <React.Fragment>

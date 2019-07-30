@@ -10,12 +10,14 @@ VtlClassname.function = { className: "vtl-function", typeName: "func" };
 VtlClassname.keyword = { className: "vtl-keyword", typeName: "keyword" };
 VtlClassname.string = { className: "vtl-string", typeName: "string" };
 VtlClassname.float = { className: "vtl-float", typeName: "float" };
+VtlClassname.mlComment = { className: "vtl-ml-comment", typeName: "comment" };
 
 const VTL_TYPES = {
   INTEGER_CONSTANT: VtlClassname.integer,
   STRING_CONSTANT: VtlClassname.string,
   IDENTIFIER: VtlClassname.identifier,
   FLOAT_CONSTANT: VtlClassname.float,
+  ML_COMMENT: VtlClassname.mlComment,
 
   IF: VtlClassname.keyword,
   THEN: VtlClassname.keyword,
@@ -53,45 +55,7 @@ const getTokens = ligne => {
   // console.log(tokens, ligne);
   // console.log(fillUnmappedToken(tokens, ligne));
 
-  return fillUnmappedToken(tokens, ligne);
-};
-
-// TODO is not the best place !
-const fillUnmappedToken = (tokensOriginal, ligne) => {
-  const result = tokensOriginal.reduce(
-    ({ index, tokens }, token) =>
-      index < token.start
-        ? {
-            index: token.stop + 1,
-            tokens: [
-              ...tokens,
-              {
-                start: index,
-                stop: token.start - 1,
-                className: "unmapped",
-                value: ligne.substr(index, token.start - index)
-              },
-              token
-            ]
-          }
-        : { index: token.stop + 1, tokens: [...tokens, token] },
-    { index: 0, tokens: [] }
-  );
-
-  if (result.index < ligne.length) {
-    return [
-      ...result.tokens,
-      {
-        start: result.index,
-        stop: ligne.length - 1,
-        className: "unmapped",
-        typeName: "unknow",
-        value: ligne.substr(result.index, ligne.length - result.index)
-      }
-    ];
-  }
-
-  return result.tokens;
+  return tokens;
 };
 
 export default getTokens;

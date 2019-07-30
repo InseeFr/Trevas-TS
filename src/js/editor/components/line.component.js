@@ -2,8 +2,8 @@ import React, { createRef, useEffect, useContext } from "react";
 import classnames from "classnames";
 import Token from "./token.component";
 import Cursor from "./cursor.component";
-import { lineProps } from "./editor-prop-types";
-import * as actions from "./editor.actions";
+import { lineProps } from "../editor-prop-types";
+import * as actions from "../editor.actions";
 import { EditorContext } from "./editor-panel.component";
 
 const Line = ({ tokens = [], number, length, index, focused }) => {

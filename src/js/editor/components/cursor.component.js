@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useContext, useState } from "react";
 import { EditorContext } from "./editor-panel.component";
-import { setCursorRect } from "./editor.actions";
+import { setCursorRect } from "../editor.actions";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 

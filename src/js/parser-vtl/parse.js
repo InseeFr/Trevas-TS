@@ -1,6 +1,7 @@
 import { VtlParser } from ".";
 import { VtlLexer } from ".";
 import antlr4 from "antlr4";
+import { VtlListener } from ".";
 
 // const old = console.error;
 // console.error = function() {
@@ -10,6 +11,7 @@ import antlr4 from "antlr4";
 
 const parse = code => {
   try {
+    console.log(code);
     const chars = new antlr4.InputStream(code);
     const lexer = new VtlLexer(chars);
     const tokens = new antlr4.CommonTokenStream(lexer);
@@ -17,10 +19,10 @@ const parse = code => {
     parser.buildParseTrees = true;
     lexer.removeErrorListeners();
     parser.removeErrorListeners();
-
     const errorsListener = new VtlErrorsListener();
     parser.addErrorListener(errorsListener);
-    parser.start();
+    const tree = parser.start();
+    // antlr4.tree.ParseTreeWalker.DEFAULT.walk(new VtlListener(), tree);
 
     return errorsListener.errors;
   } catch (e) {
@@ -40,7 +42,7 @@ class VtlErrorsListener {
   reportAttemptingFullContext() {}
   reportContextSensitivity() {}
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-    // console.debug("%csyntaxError", "color: red;", msg, line, column);
+    console.debug("%csyntaxError", "color: red;", msg, line, column);
     this.errors.push({ msg, line, column, trace: e });
   }
 }
