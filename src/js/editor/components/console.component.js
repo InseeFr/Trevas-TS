@@ -13,7 +13,6 @@ const Console = ({ errors }) => {
 
 const Error = ({ trace }) => {
   const { msg, line, column, stack } = trace;
-  console.log(stack);
   const [showTrace, setShowTrace] = useState(false);
   return (
     <div className="erreur">

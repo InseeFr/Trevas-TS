@@ -22,7 +22,7 @@ const parse = code => {
     const tree = parser.start();
     // antlr4.tree.ParseTreeWalker.DEFAULT.walk(new VtlListener(), tree);
 
-    return errorsListener.errors;
+    return { errors: errorsListener.errors, dico: [] };
   } catch (e) {
     console.error(e);
     return undefined;
@@ -41,7 +41,7 @@ class VtlErrorsListener {
   reportContextSensitivity() {}
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
     console.debug("%csyntaxError", "color: red;", msg, line, column);
-    this.errors.push({ msg, line, column, trace: e });
+    this.errors.push({ msg, line, column, stack: e });
   }
 }
 
