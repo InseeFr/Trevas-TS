@@ -64,6 +64,6 @@ class JavaScriptErrorsListener {
   reportContextSensitivity() {}
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
     console.debug("%csyntaxError", "color: red;", msg, line, column);
-    this.errors.push({ msg, line, column, trace: e });
+    this.errors.push({ msg, line, column, stack: e });
   }
 }
