@@ -1,5 +1,5 @@
 import antlr4 from "antlr4";
-import { VtlLexer } from ".";
+import { VtlLexer } from "./parser-vtl";
 
 export const VtlClassname = {};
 VtlClassname.common = { className: "vtl-common", typeName: "common" };

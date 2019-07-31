@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Editor } from "./js/editor/components";
-import { getTokens, parse } from "./js/parser-js";
+import { getTokens, parse } from "./js/vtl-integration";
 import * as serviceWorker from "./serviceWorker";
 import { LoremIpsum } from "lorem-ipsum";
 
@@ -29,21 +29,15 @@ const getWords = () => {
 
 const dictionnary = {
   variables: getWords(),
-  keywords: [
-    "if",
-    "then",
-    "else",
-    "for",
-    "return",
-    "while",
-    "break",
-    "case",
-    "switch"
-  ]
+  keywords: ["if", "then", "else"],
+  operator: ["=", ">", "<", "+", "-", "*", "/"]
 };
 
 const content = [
-  'const toto = "toto";'
+  'toto := "toto";',
+  'if toto = "toto"',
+  "\tthen true",
+  "\t else false;"
   /* */
   // "const fillUnmappedToken = (tokensOriginal, ligne) => {",
   // "  const result = tokensOriginal.reduce(",
@@ -90,6 +84,7 @@ ReactDOM.render(
       dictionnary={dictionnary}
       getTokens={getTokens}
       parse={parse}
+      edit={true}
     />
   </React.Fragment>,
   document.getElementById("root")

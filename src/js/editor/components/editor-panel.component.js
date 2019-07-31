@@ -8,7 +8,13 @@ import createSuggester from "../suggestions-manager";
 import createFulTokenizer from "../create-full-tokenizer";
 import "./editor.scss";
 
-const EditorPanel = ({ content = [], getTokens, parse, dictionnary = {} }) => {
+const EditorPanel = ({
+  content = [],
+  edit = true,
+  getTokens,
+  parse,
+  dictionnary = {}
+}) => {
   const getFullTokens = createFulTokenizer(getTokens);
   const [state, dispatch] = useReducer(
     editorReducer,
@@ -26,7 +32,7 @@ const EditorPanel = ({ content = [], getTokens, parse, dictionnary = {} }) => {
 
   const suggester = useMemo(() => createSuggester(dictionnary), [dictionnary]);
   return (
-    <EditorContext.Provider value={{ ...state, tokensEl, dispatch }}>
+    <EditorContext.Provider value={{ ...state, edit, tokensEl, dispatch }}>
       <div className="panel-editor">
         <Editor getTokens={getFullTokens} parse={parse} />
         <Suggestions suggest={suggester} />

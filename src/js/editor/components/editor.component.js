@@ -47,6 +47,7 @@ const Editor = ({ parse }) => {
 
 /* */
 const suggesterKeyDownProxy = callback => (dispatch, state, tokensEl) => {
+  if (!state.edit) return;
   const callee = callback(dispatch, state, tokensEl);
 
   return e => {

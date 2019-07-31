@@ -1,5 +1,5 @@
-import { VtlParser } from ".";
-import { VtlLexer } from ".";
+import { VtlParser } from "./parser-vtl";
+import { VtlLexer } from "./parser-vtl";
 import antlr4 from "antlr4";
 
 // const old = console.error;
