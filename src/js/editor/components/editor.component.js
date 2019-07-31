@@ -92,7 +92,7 @@ const keyDownCallback = (dispatch, state, tokensEl) => e => {
     case KEY.ENTER:
     case KEY.BACK_SPACE:
       if (isSelection()) {
-        checkForDeleteSelection(dispatch, tokensEl);
+        checkForDeleteSelection(dispatch, state, tokensEl);
         break;
       }
       dispatch({ type: key });
@@ -156,7 +156,7 @@ const isAnchorNode = (anchor, node) =>
 
 const deleteOnLine = (line, token) => `${line.substr(0)}`;
 
-const checkForDeleteSelection = (dispatch, tokensEl) => {
+const checkForDeleteSelection = (dispatch, { lines }, tokensEl) => {
   const selection = window.getSelection();
   const { anchor, extent, tokens } = tokensEl.reduce(
     (
@@ -166,42 +166,57 @@ const checkForDeleteSelection = (dispatch, tokensEl) => {
       isInSelection(spanEl.current)
         ? {
             tokens:
-              isAnchorNode(selection.extentNode, spanEl.current) ||
-              isAnchorNode(selection.anchorNode, spanEl.current)
+              isAnchorNode(selection.anchorNode, spanEl.current) ||
+              isAnchorNode(selection.extentNode, spanEl.current)
                 ? tokens
-                : [...tokens, { numberRow, numberToken, start, stop, value }],
+                : {
+                    ...tokens,
+                    [numberRow]:
+                      numberRow in tokens
+                        ? [
+                            ...tokens[numberRow],
+                            { numberRow, numberToken, start, stop, value }
+                          ]
+                        : [{ numberRow, numberToken, start, stop, value }]
+                  },
             anchor: isAnchorNode(selection.anchorNode, spanEl.current)
-              ? { numberRow, numberToken, start, stop, value }
+              ? { numberRow, numberToken, value }
               : anchor,
             extent: isAnchorNode(selection.extentNode, spanEl.current)
-              ? { numberRow, numberToken, start, stop, value }
+              ? { numberRow, numberToken, value }
               : extent
           }
         : { tokens, anchor, extent },
     {
-      tokens: [],
+      tokens: {},
       anchor: undefined,
       extent: undefined
     }
   );
 
-  // const tokensFinalized =
-  // 	anchor.numberRow < extent.numberRow || anchor.numberToken < extent.numberToken
-  // 		? [
-  // 				...tokens,
-  // 				{ ...anchor, start: anchor.start + selection.anchorOffset, stop: anchor.stop },
-  // 				{ ...extent, start: extent.start, stop: extent.start + selection.extentOffset - 1 }
-  // 			]
-  // 		: [
-  // 				...tokens,
-  // 				{ ...anchor, start: anchor.start, stop: anchor.start + selection.anchorOffset },
-  // 				{ ...extent, start: extent.start + selection.extentOffset, stop: extent.stop }
-  // 			];
+  const values = Object.entries(tokens).reduce(
+    (a, [numberRow, tokensRow]) => [
+      ...a,
+      reduceRow(lines[numberRow].value, tokensRow)
+    ],
+    []
+  );
+
+  console.log(values);
 
   // const sel = window.getSelection();
   // dispatch(actions.deleteSelection(selection));
   // sel.extend(sel.anchorNode, 0);
 };
+
+const reduceRow = (value, tokens) =>
+  tokens.reduce(
+    ({ val, index }, { start, stop, value }) => ({
+      val: `${val.substr(0, start - index)}${val.substr(stop + 1 - index)}`,
+      index: index + value.length
+    }),
+    { val: value, index: 0 }
+  ).val;
 
 // const getNodeInformation = ({ node, numberToken, start, stop }) => {
 //   const {

@@ -37,7 +37,8 @@ const content = [
   'toto := "toto";',
   'if toto = "toto"',
   "\tthen true",
-  "\t else false;"
+  "\t else false;",
+  "if toto >=30 then 50 else 60;"
   /* */
   // "const fillUnmappedToken = (tokensOriginal, ligne) => {",
   // "  const result = tokensOriginal.reduce(",

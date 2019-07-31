@@ -1,12 +1,7 @@
 import { VtlParser } from "./parser-vtl";
 import { VtlLexer } from "./parser-vtl";
+import { VtlListener } from "./parser-vtl";
 import antlr4 from "antlr4";
-
-// const old = console.error;
-// console.error = function() {
-// 	console.log('hoooo !');
-// 	return old(...arguments);
-// };
 
 const parse = code => {
   try {
@@ -20,9 +15,10 @@ const parse = code => {
     const errorsListener = new VtlErrorsListener();
     parser.addErrorListener(errorsListener);
     const tree = parser.start();
-    // antlr4.tree.ParseTreeWalker.DEFAULT.walk(new VtlListener(), tree);
+    const inspector = new VtlInspector();
+    antlr4.tree.ParseTreeWalker.DEFAULT.walk(inspector, tree);
 
-    return { errors: errorsListener.errors, dico: [] };
+    return { errors: errorsListener.errors, userIdentifiers: [] };
   } catch (e) {
     console.error(e);
     return undefined;
@@ -42,6 +38,20 @@ class VtlErrorsListener {
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
     console.debug("%csyntaxError", "color: red;", msg, line, column);
     this.errors.push({ msg, line, column, stack: e });
+  }
+}
+
+class VtlInspector extends VtlListener {
+  exitExpr(ctx) {
+    // console.log("exp", ctx.getText());
+  }
+
+  exitCeilAtom(ctx) {
+    // console.log(ctx);
+    // console.log("ceil", ctx.getText());
+    // console.log("ceil", ctx.CEIL());
+    // const [args] = ctx.getText().match(/\(.*\)/);
+    // console.log(args);
   }
 }
 

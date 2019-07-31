@@ -44,4 +44,10 @@ const mergeTokens = tokenized =>
     {}
   );
 
+/* */
+export const appendSection = index => (section, values) => ({
+  ...index,
+  [section]: null
+});
+
 export default createSuggester;

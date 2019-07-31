@@ -62,7 +62,7 @@ const Unfocused = ({
   token: { className, typeName, value, start, stop },
   cursored
 }) => {
-  const { dispatch, tokensEl, index, errors } = useContext(EditorContext);
+  const { dispatch, tokensEl, index } = useContext(EditorContext);
   const spanEl = createRef();
 
   // errors.map(err => console.log(err));
