@@ -1,4 +1,4 @@
-import { PlusListener } from ".";
+import { PlusListener } from '.';
 
 class CustomPlusListener extends PlusListener {}
 

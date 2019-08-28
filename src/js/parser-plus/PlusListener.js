@@ -12,40 +12,27 @@ PlusListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 PlusListener.prototype.constructor = PlusListener;
 
 // Enter a parse tree produced by PlusParser#plus.
-PlusListener.prototype.enterPlus = function(ctx) {
-};
+PlusListener.prototype.enterPlus = function(ctx) {};
 
 // Exit a parse tree produced by PlusParser#plus.
-PlusListener.prototype.exitPlus = function(ctx) {
-};
-
+PlusListener.prototype.exitPlus = function(ctx) {};
 
 // Enter a parse tree produced by PlusParser#ligne.
-PlusListener.prototype.enterLigne = function(ctx) {
-};
+PlusListener.prototype.enterLigne = function(ctx) {};
 
 // Exit a parse tree produced by PlusParser#ligne.
-PlusListener.prototype.exitLigne = function(ctx) {
-};
-
+PlusListener.prototype.exitLigne = function(ctx) {};
 
 // Enter a parse tree produced by PlusParser#affectation.
-PlusListener.prototype.enterAffectation = function(ctx) {
-};
+PlusListener.prototype.enterAffectation = function(ctx) {};
 
 // Exit a parse tree produced by PlusParser#affectation.
-PlusListener.prototype.exitAffectation = function(ctx) {
-};
-
+PlusListener.prototype.exitAffectation = function(ctx) {};
 
 // Enter a parse tree produced by PlusParser#addition.
-PlusListener.prototype.enterAddition = function(ctx) {
-};
+PlusListener.prototype.enterAddition = function(ctx) {};
 
 // Exit a parse tree produced by PlusParser#addition.
-PlusListener.prototype.exitAddition = function(ctx) {
-};
-
-
+PlusListener.prototype.exitAddition = function(ctx) {};
 
 exports.PlusListener = PlusListener;

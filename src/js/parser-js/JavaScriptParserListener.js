@@ -1,15 +1,15 @@
 // Generated from JavaScriptParser.g4 by ANTLR 4.7.2
 // jshint ignore: start
-var antlr4 = require("antlr4/index");
+var antlr4 = require('antlr4/index');
 
 // This class defines a complete listener for a parse tree produced by JavaScriptParser.
 function JavaScriptParserListener() {
-  antlr4.tree.ParseTreeListener.call(this);
-  return this;
+	antlr4.tree.ParseTreeListener.call(this);
+	return this;
 }
 
 JavaScriptParserListener.prototype = Object.create(
-  antlr4.tree.ParseTreeListener.prototype
+	antlr4.tree.ParseTreeListener.prototype
 );
 JavaScriptParserListener.prototype.constructor = JavaScriptParserListener;
 
@@ -51,12 +51,12 @@ JavaScriptParserListener.prototype.exitVariableStatement = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#variableDeclarationList.
 JavaScriptParserListener.prototype.enterVariableDeclarationList = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#variableDeclarationList.
 JavaScriptParserListener.prototype.exitVariableDeclarationList = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#variableDeclaration.
@@ -265,12 +265,12 @@ JavaScriptParserListener.prototype.exitFormalParameterArg = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#lastFormalParameterArg.
 JavaScriptParserListener.prototype.enterLastFormalParameterArg = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#lastFormalParameterArg.
 JavaScriptParserListener.prototype.exitLastFormalParameterArg = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#functionBody.
@@ -311,22 +311,22 @@ JavaScriptParserListener.prototype.exitObjectLiteral = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#PropertyExpressionAssignment.
 JavaScriptParserListener.prototype.enterPropertyExpressionAssignment = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#PropertyExpressionAssignment.
 JavaScriptParserListener.prototype.exitPropertyExpressionAssignment = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#ComputedPropertyExpressionAssignment.
 JavaScriptParserListener.prototype.enterComputedPropertyExpressionAssignment = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#ComputedPropertyExpressionAssignment.
 JavaScriptParserListener.prototype.exitComputedPropertyExpressionAssignment = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#PropertyGetter.
@@ -379,12 +379,12 @@ JavaScriptParserListener.prototype.exitExpressionSequence = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#TemplateStringExpression.
 JavaScriptParserListener.prototype.enterTemplateStringExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#TemplateStringExpression.
 JavaScriptParserListener.prototype.exitTemplateStringExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#TernaryExpression.
@@ -401,22 +401,22 @@ JavaScriptParserListener.prototype.exitLogicalAndExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#PreIncrementExpression.
 JavaScriptParserListener.prototype.enterPreIncrementExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#PreIncrementExpression.
 JavaScriptParserListener.prototype.exitPreIncrementExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#ObjectLiteralExpression.
 JavaScriptParserListener.prototype.enterObjectLiteralExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#ObjectLiteralExpression.
 JavaScriptParserListener.prototype.exitObjectLiteralExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#InExpression.
@@ -439,7 +439,7 @@ JavaScriptParserListener.prototype.exitNotExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#PreDecreaseExpression.
 JavaScriptParserListener.prototype.enterPreDecreaseExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#PreDecreaseExpression.
@@ -477,12 +477,12 @@ JavaScriptParserListener.prototype.exitAssignmentExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#PostDecreaseExpression.
 JavaScriptParserListener.prototype.enterPostDecreaseExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#PostDecreaseExpression.
 JavaScriptParserListener.prototype.exitPostDecreaseExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#TypeofExpression.
@@ -511,12 +511,12 @@ JavaScriptParserListener.prototype.exitDeleteExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#ArrowFunctionExpression.
 JavaScriptParserListener.prototype.enterArrowFunctionExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#ArrowFunctionExpression.
 JavaScriptParserListener.prototype.exitArrowFunctionExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#EqualityExpression.
@@ -539,12 +539,12 @@ JavaScriptParserListener.prototype.exitSuperExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#MultiplicativeExpression.
 JavaScriptParserListener.prototype.enterMultiplicativeExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#MultiplicativeExpression.
 JavaScriptParserListener.prototype.exitMultiplicativeExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#BitShiftExpression.
@@ -555,12 +555,12 @@ JavaScriptParserListener.prototype.exitBitShiftExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#ParenthesizedExpression.
 JavaScriptParserListener.prototype.enterParenthesizedExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#ParenthesizedExpression.
 JavaScriptParserListener.prototype.exitParenthesizedExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#AdditiveExpression.
@@ -577,12 +577,12 @@ JavaScriptParserListener.prototype.exitRelationalExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#PostIncrementExpression.
 JavaScriptParserListener.prototype.enterPostIncrementExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#PostIncrementExpression.
 JavaScriptParserListener.prototype.exitPostIncrementExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#BitNotExpression.
@@ -605,12 +605,12 @@ JavaScriptParserListener.prototype.exitLiteralExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#ArrayLiteralExpression.
 JavaScriptParserListener.prototype.enterArrayLiteralExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#ArrayLiteralExpression.
 JavaScriptParserListener.prototype.exitArrayLiteralExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#MemberDotExpression.
@@ -627,7 +627,7 @@ JavaScriptParserListener.prototype.exitClassExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#MemberIndexExpression.
 JavaScriptParserListener.prototype.enterMemberIndexExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#MemberIndexExpression.
@@ -653,12 +653,12 @@ JavaScriptParserListener.prototype.exitBitOrExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#AssignmentOperatorExpression.
 JavaScriptParserListener.prototype.enterAssignmentOperatorExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#AssignmentOperatorExpression.
 JavaScriptParserListener.prototype.exitAssignmentOperatorExpression = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#VoidExpression.
@@ -669,12 +669,12 @@ JavaScriptParserListener.prototype.exitVoidExpression = function(ctx) {};
 
 // Enter a parse tree produced by JavaScriptParser#arrowFunctionParameters.
 JavaScriptParserListener.prototype.enterArrowFunctionParameters = function(
-  ctx
+	ctx
 ) {};
 
 // Exit a parse tree produced by JavaScriptParser#arrowFunctionParameters.
 JavaScriptParserListener.prototype.exitArrowFunctionParameters = function(
-  ctx
+	ctx
 ) {};
 
 // Enter a parse tree produced by JavaScriptParser#arrowFunctionBody.

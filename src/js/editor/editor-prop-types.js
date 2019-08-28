@@ -6,7 +6,7 @@ const token = {
 	start: propTypes.number.isRequired,
 	stop: propTypes.number.isRequired,
 	className: propTypes.string.isRequired,
-	typeName: propTypes.string
+	typeName: propTypes.string,
 };
 
 export const tokenProps = {
@@ -14,19 +14,19 @@ export const tokenProps = {
 
 	focused: propTypes.bool,
 	numberToken: propTypes.number.isRequired,
-	numberRow: propTypes.number.isRequired
+	numberRow: propTypes.number.isRequired,
 };
 
 export const lineProps = {
 	length: propTypes.number.isRequired,
 	tokens: propTypes.arrayOf(
 		propTypes.shape({
-			...token
+			...token,
 		})
 	),
 	number: propTypes.number.isRequired,
 	index: propTypes.number,
-	focused: propTypes.bool.isRequired
+	focused: propTypes.bool.isRequired,
 };
 
 export const EditorProps = {};
