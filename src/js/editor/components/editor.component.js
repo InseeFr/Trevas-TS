@@ -13,7 +13,7 @@ const Editor = ({ parse }) => {
 			(a, { value }) => (value.length > 0 ? `${a}${value}\n` : a),
 			''
 		);
-		const { errors, dico } = parse(code);
+		const { errors } = parse(code);
 
 		dispatch(actions.updateErrors(errors));
 	}, [lines, parse, dispatch]);
@@ -154,11 +154,11 @@ const isInSelection = node =>
 const isAnchorNode = (anchor, node) =>
 	anchor.isSameNode(node.firstChild || node) ? true : false;
 
-const deleteOnLine = (line, token) => `${line.substr(0)}`;
+// const deleteOnLine = (line, token) => `${line.substr(0)}`;
 
 const checkForDeleteSelection = (dispatch, { lines }, tokensEl) => {
 	const selection = window.getSelection();
-	const { anchor, extent, tokens } = tokensEl.reduce(
+	const { tokens } = tokensEl.reduce(
 		(
 			{ tokens, anchor, extent },
 			{ spanEl, numberRow, numberToken, start, stop, value }

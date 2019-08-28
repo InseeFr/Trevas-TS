@@ -1,9 +1,10 @@
 // Generated from Vtl.g4 by ANTLR 4.7.2
 // jshint ignore: start
-var antlr4 = require('antlr4/index');
+
+/* eslint-disable */
+var antlr4 = require('antlr4');
 var VtlListener = require('./VtlListener').VtlListener;
 var grammarFileName = "Vtl.g4";
-
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003\u00fc\u0730\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
