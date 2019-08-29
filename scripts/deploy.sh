@@ -44,8 +44,6 @@ function publish() {
 
   cp -a "../$DOC_FOLDER/_book/." .
   cp -R "../$STORYBOOK_FOLDER/." .
-  cp -R "../$EXAMPLE_FOLDER/." .
-  mv "build" "example"
 
   git init
   git remote add upstream "$UPSTREAM"
