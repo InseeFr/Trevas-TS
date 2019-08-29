@@ -1,6 +1,6 @@
 // Generated from JavaScriptParser.g4 by ANTLR 4.7.2
 // jshint ignore: start
-var antlr4 = require('antlr4/index');
+var antlr4 = require('antlr4');
 
 // This class defines a complete listener for a parse tree produced by JavaScriptParser.
 function JavaScriptParserListener() {
