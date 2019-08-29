@@ -35,6 +35,7 @@
 		"eslint-config-airbnb": "^18.0.1",
 		"eslint-config-prettier": "^6.1.0",
 		"eslint-plugin-prettier": "^3.1.0",
+		"jest": "^24.9.0",
 		"node-sass": "^4.12.0",
 		"postcss-scss": "^2.0.0",
 		"prettier": "1.18.2",
@@ -49,7 +50,7 @@
 	"scripts": {
 		"start-storybook": "cross-env NODE_PATH=src/ start-storybook -p 9999",
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
-		"test": "cross-env NODE_PATH=src/ test"
+		"test": "cross-env NODE_PATH=src/ jest"
 	},
 	"prettier": {
 		"bracketSpacing": true,
