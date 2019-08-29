@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - 10.16.0
+cache: yarn
+install:
+  - yarn
+after_script:
+  - bash scripts/deploy.sh
