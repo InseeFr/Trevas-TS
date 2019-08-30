@@ -29,7 +29,9 @@ export default {
 			exclude: 'node_modules/**',
 			ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
 		}),
-		commonjs(),
+		commonjs({
+			exclude: 'src/**',
+		}),
 		autoExternal(),
 	],
 };
