@@ -2,14 +2,28 @@
 	"presets": [
 		[
 			"@babel/preset-env",
+
 			{
 				"modules": false
 			}
-		]
+		],
+		"@babel/preset-react"
 	],
 	"plugins": [
 		"@babel/plugin-proposal-class-properties",
 		"@babel/plugin-transform-react-jsx",
 		"@babel/plugin-syntax-dynamic-import"
-	]
+	],
+	"env": {
+		"test": {
+			"presets": [
+				["@babel/preset-env", { "modules": "commonjs" }],
+				"@babel/preset-react"
+			],
+			"plugins": [
+				"@babel/plugin-proposal-class-properties",
+				"@babel/plugin-transform-modules-commonjs"
+			]
+		}
+	}
 }
