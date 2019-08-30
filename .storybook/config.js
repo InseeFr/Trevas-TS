@@ -9,6 +9,6 @@ addDecorator(withKnobs);
 
 const requireAll = requireContext => requireContext.keys().map(requireContext);
 const loadStories = () =>
-	requireAll(require.context('js/stories', true, /stories\.js?$/));
+	requireAll(require.context('stories', true, /stories\.js?$/));
 
 configure(loadStories, module);

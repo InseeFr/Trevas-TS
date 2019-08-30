@@ -1,1 +1,1 @@
-export { default } from './js/components/editor';
+export { default } from './components/editor';

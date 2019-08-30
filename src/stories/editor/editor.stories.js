@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withReadme } from 'storybook-readme';
 import readme from './README.md';
-import Editor from 'js/components/editor';
+import Editor from 'components/editor';
 import { select, boolean } from '@storybook/addon-knobs/react';
 
 const grammars = {
