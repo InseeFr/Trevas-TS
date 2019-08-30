@@ -737,4 +737,4 @@ JavaScriptParserListener.prototype.enterEos = function(ctx) {};
 // Exit a parse tree produced by JavaScriptParser#eos.
 JavaScriptParserListener.prototype.exitEos = function(ctx) {};
 
-exports.JavaScriptParserListener = JavaScriptParserListener;
+export default JavaScriptParserListener;

@@ -1,6 +1,6 @@
-import { JavaScriptParser } from './JavaScriptParser';
-import { JavaScriptLexer } from './JavaScriptLexer';
-import { JavaScriptParserListener } from './JavaScriptParserListener';
+import { default as JavaScriptParser } from './JavaScriptParser';
+import { default as JavaScriptLexer } from './JavaScriptLexer';
+import { default as JavaScriptParserListener } from './JavaScriptParserListener';
 import antlr4 from 'antlr4';
 
 export default code => {

@@ -2623,4 +2623,4 @@ VtlLexer.prototype.ruleNames = [
 
 VtlLexer.prototype.grammarFileName = 'Vtl.g4';
 
-exports.VtlLexer = VtlLexer;
+export default VtlLexer;

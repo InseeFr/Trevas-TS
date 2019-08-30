@@ -1031,4 +1031,4 @@ VtlListener.prototype.enterDefineDataStructure = function(ctx) {};
 // Exit a parse tree produced by VtlParser#defineDataStructure.
 VtlListener.prototype.exitDefineDataStructure = function(ctx) {};
 
-exports.VtlListener = VtlListener;
+export default VtlListener;

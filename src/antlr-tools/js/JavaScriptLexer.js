@@ -1158,5 +1158,5 @@ JavaScriptLexer.prototype.Yield_sempred = function(localctx, predIndex) {
 
 
 
-exports.JavaScriptLexer = JavaScriptLexer;
+export default JavaScriptLexer;
 

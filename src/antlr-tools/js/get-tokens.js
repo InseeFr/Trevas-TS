@@ -1,5 +1,5 @@
 import antlr4 from 'antlr4';
-import { JavaScriptLexer } from './JavaScriptLexer';
+import { default as JavaScriptLexer } from './JavaScriptLexer';
 
 export const JsClassname = {};
 JsClassname.common = { className: 'js-common', typeName: 'common' };

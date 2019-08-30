@@ -17768,4 +17768,4 @@ VtlParser.prototype.expr_sempred = function(localctx, predIndex) {
 };
 
 
-exports.VtlParser = VtlParser;
+export default VtlParser;
