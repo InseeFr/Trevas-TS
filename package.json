@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/vtl-tools",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/InseeFr/vtl-tools"
@@ -71,7 +71,8 @@
 	},
 	"dependencies": {
 		"antlr4": "^4.7.2",
-		"classnames": "^2.2.6"
+		"classnames": "^2.2.6",
+		"react-sortable-tree": "^2.6.2"
 	},
 	"prettier": {
 		"bracketSpacing": true,
