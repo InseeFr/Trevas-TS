@@ -22,9 +22,16 @@ export default {
 		builtins(),
 		resolve(),
 		postcss(),
-		babel(),
-		replace(),
-		commonjs(),
+		babel({
+			exclude: 'node_modules/**',
+		}),
+		replace({
+			exclude: 'node_modules/**',
+			ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+		}),
+		commonjs({
+			exclude: 'src/**',
+		}),
 		autoExternal(),
 	],
 };
