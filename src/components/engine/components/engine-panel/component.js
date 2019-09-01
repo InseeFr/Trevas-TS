@@ -25,6 +25,7 @@ const EnginePanel = () => {
 		setShow(true);
 	};
 	console.log(buildExecObject(variables));
+	console.log(ctx);
 	return (
 		<>
 			<h2 className="centered">VTL Exec</h2>
