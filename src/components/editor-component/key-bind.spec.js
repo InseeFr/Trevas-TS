@@ -1,12 +1,12 @@
-import { isUnbindedKey } from './key-bind';
+import KEY from './key-bind';
 
 describe('key-bind', () => {
 	describe('isUnbindedKey', () => {
 		it('should return false', () => {
-			expect(isUnbindedKey('aaaaaaaaaaaaaaa')).toBeFalsy();
+			expect(KEY.isUnbindedKey('aaaaaaaaaaaaaaa')).toBeFalsy();
 		});
 		it('should return true', () => {
-			expect(isUnbindedKey('F5')).toBeTruthy();
+			expect(KEY.isUnbindedKey('F5')).toBeTruthy();
 		});
 	});
 });
