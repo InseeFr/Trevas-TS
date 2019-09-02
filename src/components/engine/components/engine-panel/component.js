@@ -5,7 +5,7 @@ import {
 	VtlLexer,
 	VtlParser,
 	EngineVtlVisitor,
-} from '../../../../antlr-tools/vtl-2.0/parser-vtl';
+} from '../../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { buildExecObject } from '../../utils';
 
 const EnginePanel = () => {
