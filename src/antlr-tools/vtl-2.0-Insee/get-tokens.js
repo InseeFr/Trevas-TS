@@ -59,10 +59,10 @@ const VTL_TYPES = {
 	CHARSET_MATCH: VtlClassname.function,
 	ISNULL: VtlClassname.function,
 	NVL: VtlClassname.function,
-	MOD: VtlClassname.function,
+	MOD: VtlClassname.function
 };
 
-const tokenize = (symbolicNames, lexer) => ligne => ({ type, start, stop }) => {
+const tokenize = (symbolicNames, lexer) => (ligne) => ({ type, start, stop }) => {
 	// console.log(symbolicNames[type], ligne.substr(start, stop - start + 1));
 	const name = symbolicNames[type];
 	return {
@@ -72,21 +72,18 @@ const tokenize = (symbolicNames, lexer) => ligne => ({ type, start, stop }) => {
 		start,
 		stop,
 
-		...getKind(name),
+		...getKind(name)
 	};
 };
 
-const getKind = type =>
-	type in VTL_TYPES ? VTL_TYPES[type] : VtlClassname.common;
+const getKind = (type) => (type in VTL_TYPES ? VTL_TYPES[type] : VtlClassname.common);
 
 /* */
-const getTokens = ligne => {
+const getTokens = (ligne) => {
 	const chars = new antlr4.InputStream(ligne);
 	const lexer = new VtlLexer(chars);
 	lexer.removeErrorListeners();
-	const tokens = lexer
-		.getAllTokens()
-		.map(tokenize(lexer.symbolicNames, lexer)(ligne));
+	const tokens = lexer.getAllTokens().map(tokenize(lexer.symbolicNames, lexer)(ligne));
 
 	// console.log(tokens, ligne);
 	// console.log(fillUnmappedToken(tokens, ligne));
