@@ -1,8 +1,25 @@
-import VtlVisitor from '../../antlr-tools/vtl-2.0-Insee/parser-vtl/VtlVisitor';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { getTokenType } from '../utils/context';
 
 class LiteralVisitor extends VtlVisitor {
 	visitConstantExpr = ctx => {
-		console.log(ctx);
+		let value;
+		switch (getTokenType(ctx)) {
+			case VtlParser.INTEGER_CONSTANT:
+				value = parseInt(ctx.getText());
+				break;
+			case VtlParser.FLOAT_CONSTANT:
+				value = parseFloat(ctx.getText());
+				break;
+			default:
+				throw new Error('Bad type');
+		}
+
+		// Unused bindings param
+		return { resolve: () => value, type: getTokenType(ctx) };
 	};
 }
 
