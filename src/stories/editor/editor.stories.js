@@ -6,6 +6,7 @@ import Editor from 'components/editor';
 import { select, boolean } from '@storybook/addon-knobs/react';
 
 const grammars = {
+	'VTL 2.0 Insee': 'vtl-2.0-Insee',
 	'VTL 2.0': 'vtl-2.0',
 	JavaScript: 'js',
 };
@@ -38,6 +39,6 @@ stories.add('Editor', () => (
 		content={content}
 		dictionnary={dictionnary}
 		edit={boolean('Edit', true)}
-		grammar={select('Grammar', grammars, 'vtl-2.0')}
+		grammar={select('Grammar', grammars, 'vtl-2.0-Insee')}
 	/>
 ));
