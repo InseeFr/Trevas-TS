@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import antlr4 from 'antlr4';
 import Input from './input';
 import { buildExecObject } from '../../utils';
+import interpret from '../../../../engine/interpretor';
 
 const EnginePanel = () => {
-	const [value, setValue] = useState('a + b');
+	const [value, setValue] = useState('2 + a ');
 	const [variables, setVariables] = useState([
 		{ key: 'a', value: '2' },
 		{ key: 'b', value: '18' },
@@ -13,8 +14,7 @@ const EnginePanel = () => {
 		setValue(v);
 	};
 	const onClick = () => {
-		console.log('Expr : ', value);
-		console.log('Variables : ', buildExecObject(variables));
+		console.log(interpret(value, buildExecObject(variables)));
 	};
 
 	return (
