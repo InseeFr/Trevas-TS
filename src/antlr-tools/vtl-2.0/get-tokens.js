@@ -84,6 +84,7 @@ const getTokens = ligne => {
 	const chars = new antlr4.InputStream(ligne);
 	const lexer = new VtlLexer(chars);
 	lexer.removeErrorListeners();
+
 	const tokens = lexer
 		.getAllTokens()
 		.map(tokenize(lexer.symbolicNames, lexer)(ligne));

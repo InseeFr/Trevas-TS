@@ -17,6 +17,9 @@ const dictionnary = {
 
 const content = [
 	'toto := "toto";',
+	'/* un commentaire',
+	'\t sur plusieurs ',
+	'\t lignes. */',
 	'if toto = "toto"',
 	'\tthen true',
 	'\t else false;',
