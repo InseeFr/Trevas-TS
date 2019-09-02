@@ -27,6 +27,7 @@
 		"start-storybook": "cross-env NODE_PATH=src/ start-storybook -p 9999",
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
+		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
 		"build": "rollup -c rollup.config.js",
 		"prepublish": "npm test && npm run build"
 	},
