@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
+// import propTypes from 'prop-types';
 import classnames from 'classnames';
 
+import './console.scss';
+
 const Console = ({ errors }) => {
-	return (
-		<div className="console">
-			{errors.map((trace, i) => (
-				<Error key={i} trace={trace} />
-			))}
-		</div>
-	);
+	return <div className="console">{errors.map((trace, i) => <Error key={i} trace={trace} />)}</div>;
 };
 
 const Error = ({ trace }) => {
 	const { msg, line, column, stack } = trace;
-	const [showTrace, setShowTrace] = useState(false);
+	const [ showTrace, setShowTrace ] = useState(false);
 	return (
 		<div className="erreur">
 			{stack ? (
@@ -21,7 +18,7 @@ const Error = ({ trace }) => {
 					onClick={() => setShowTrace(!showTrace)}
 					className={classnames('button-trace', {
 						'hide-trace': showTrace,
-						'show-trace': !showTrace,
+						'show-trace': !showTrace
 					})}
 				/>
 			) : null}
@@ -32,11 +29,21 @@ const Error = ({ trace }) => {
 			<span className="column">
 				col <span className="count">{column}</span>
 			</span>
-			{showTrace && stack ? (
-				<div className="stack-trace">{stack.stack}</div>
-			) : null}
+			{showTrace && stack ? <div className="stack-trace">{stack.stack}</div> : null}
 		</div>
 	);
 };
+
+// Error.propTypes = {
+// 	errors: propTypes.array(
+// 		propTypes.shape({
+// 			trace: propTypes.shape(
+// 				{
+// 					// TODO
+// 				}
+// 			)
+// 		})
+// 	).isRequired
+// };
 
 export default Console;

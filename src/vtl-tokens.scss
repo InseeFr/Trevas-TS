@@ -1,0 +1,42 @@
+.panel-editor {
+  .editor {
+    .row {
+      /* language vtl */
+      .vtl-integer {
+        color: tomato;
+      }
+      .vtl-identifier {
+        color: tan;
+      }
+      .vtl-keyword {
+        color: paleturquoise;
+      }
+      .vtl-function {
+        color: goldenrod;
+        font-weight: bold;
+      }
+      .vtl-string {
+        color: hotpink;
+      }
+      .vtl-float {
+        color: crimson;
+      }
+      .vtl-common {
+        color: lightgreen;
+      }
+
+      .vtl-ml-comment {
+        font-style: italic;
+        color: pink;
+      }
+
+      .vtl-boolean {
+        color: yellow;
+      }
+
+      .vtl-operator {
+        color: orchid;
+      }
+    }
+  }
+}

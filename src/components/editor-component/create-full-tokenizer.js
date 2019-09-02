@@ -1,4 +1,6 @@
-export default getTokens => line => {
+/* add custom tokens to fill unmapped parts of row */
+
+export default (getTokens) => (line) => {
 	return fillUnmappedToken(getTokens(line), line);
 };
 
@@ -15,12 +17,12 @@ const fillUnmappedToken = (tokensOriginal, ligne) => {
 								start: index,
 								stop: token.start - 1,
 								className: 'unmapped',
-								value: ligne.substr(index, token.start - index),
+								value: ligne.substr(index, token.start - index)
 							},
-							token,
-						],
-				  }
-				: { index: token.stop + 1, tokens: [...tokens, token] },
+							token
+						]
+					}
+				: { index: token.stop + 1, tokens: [ ...tokens, token ] },
 		{ index: 0, tokens: [] }
 	);
 
@@ -32,8 +34,8 @@ const fillUnmappedToken = (tokensOriginal, ligne) => {
 				stop: ligne.length - 1,
 				className: 'unmapped',
 				typeName: 'unknow',
-				value: ligne.substr(result.index, ligne.length - result.index),
-			},
+				value: ligne.substr(result.index, ligne.length - result.index)
+			}
 		];
 	}
 

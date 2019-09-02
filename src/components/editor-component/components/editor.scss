@@ -1,252 +1,209 @@
+$defaultBgColor: rgb(30, 30, 30);
+$bgLighterColor: rgb(90, 90, 90);
+$numberWidth: 50px;
+$rowHeight: 22px;
 @mixin cursor {
-	animation: blinker 1s linear infinite;
-
-	font-weight: bolder;
-	&:before {
-		content: '|';
-		color: ivory;
-	}
+  animation: blinker 0.5s step-end infinite;
+  position: absolute;
+  font-weight: bolder;
+  &:before {
+    content: "\007c";
+    font-weight: 800;
+    color: ivory;
+  }
 }
 
-.editor:nth-child(n) {
-	::selection {
-		background: none;
-	}
-	.token::selection {
-		color: inherit;
-		background: paleturquoise;
-	}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+@mixin layer($zindex) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: $zindex;
 }
 
 .panel-editor {
-	width: 500px;
-	height: auto;
-	.editor {
-		border: 1px solid darkgray;
-		border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  background-color: $defaultBgColor;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
 
-		.editor-line {
-			height: 22px;
-			display: flex;
-			flex-direction: row;
-			font-size: 18px;
+  .row-numbers {
+    width: $numberWidth;
 
-			.num {
-				display: block;
-				padding: 0px 2px;
-				width: 32px;
-				height: 100%;
-				background-color: #303030;
-				color: antiquewhite;
-				border-right: 1px solid lightgray;
-				font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro,
-					monospace;
-				font-size: 12px;
-				text-align: right;
-			}
+    .row-numbers-container {
+      border-right: 1px solid $bgLighterColor;
+      width: 33px;
+      .row {
+        height: $rowHeight;
+        .num {
+          display: inline-block;
+          color: lightslategray;
+          width: 30px;
+          font-size: 13px;
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          text-align: right;
+        }
 
-			&:focus {
-				.num {
-					background-color: #505050;
-					color: snow;
-				}
+        .focused {
+          color: antiquewhite;
+        }
+      }
+    }
+  }
 
-				.content {
-					background-color: #505050;
-					color: antiquewhite;
-				}
-			}
+  .editor-container {
+    position: relative;
+    width: 100%; //calc(100% - $numberWidth);
 
-			.content {
-				padding: 1px 4px;
-				display: block;
-				width: 100%;
-				position: relative;
-				background-color: #303030;
-				color: antiquewhite;
-				line-height: 18px;
+    .scroll-up-down {
+      z-index: 4;
+      cursor: default;
+      position: relative;
+      width: 12px;
+      background-color: transparent;
+      position: absolute;
+      right: 0;
+      top: 0;
+      border-left: solid $bgLighterColor 1px;
+      margin: 0;
 
-				.cursor-end-line {
-					@include cursor();
-				}
+      .selection {
+        z-index: 3;
+        position: absolute;
+        display: inline-block;
+        background-color: rgba(250, 74, 215, 0.8);
+        width: 4px;
+        margin: auto;
+        left: 0;
+        right: 0;
+      }
 
-				.cursor {
-					@include cursor();
-					position: absolute;
-					left: -2px;
-				}
+      .cursor-selection {
+        z-index: 3;
+        position: absolute;
+        display: inline-block;
+        background-color: rgba(198, 228, 31, 0.8);
+        width: 12px;
+        height: 2px;
+      }
 
-				@keyframes blinker {
-					50% {
-						opacity: 0;
-					}
-				}
+      .dragger {
+        z-index: 4;
+        position: absolute;
+        display: inline-block;
+        background-color: rgba(224, 218, 218, 0.4);
+        width: 12px;
+        &:hover {
+          background-color: rgba(224, 218, 218, 0.6);
+        }
+      }
+    }
 
-				.unfocused-token-selection {
-					background-color: paleturquoise;
-					color: snow;
-				}
-			}
+    /* */
+    .front-editor {
+      cursor: text;
+      @include layer(2);
+      &:focus {
+        outline: none;
+      }
+      background-color: transparent;
+      .cursor {
+        @include cursor();
+        position: absolute;
+      }
+      .bloc-selection {
+        position: absolute;
+        height: $rowHeight;
+        background-color: rgba(23, 93, 173, 0.568);
+      }
+    }
 
-			.token-with-cursor {
-				.cursor-left {
-					padding-right: 0;
-				}
-				.cursor-right {
-					padding-left: 0;
-				}
-			}
-			.token {
-				white-space: pre;
-				font-variant-ligatures: contextual;
-			}
-			/* language vtl */
-			.vtl-integer {
-				color: tomato;
-			}
-			.vtl-identifier {
-				color: tan;
-			}
-			.vtl-keyword {
-				color: paleturquoise;
-			}
-			.vtl-function {
-				color: goldenrod;
-				font-weight: bold;
-			}
-			.vtl-string {
-				color: hotpink;
-			}
-			.vtl-float {
-				color: crimson;
-			}
-			.vtl-common {
-				color: lightgreen;
-			}
-
-			.vtl-ml-comment {
-				font-style: italic;
-				color: pink;
-			}
-
-			.vtl-boolean {
-				color: yellow;
-			}
-
-			.vtl-operator {
-				color: orchid;
-			}
-			/* */
-		}
-
-		#reset-this-parent {
-			all: initial;
-			* {
-				all: unset;
-			}
-		}
-	}
-
-	.console {
-		border: solid 1px blue;
-		border-radius: 4px;
-		margin-top: 5px;
-		width: 100%;
-		height: 150px;
-		overflow-y: auto;
-		background-color: azure;
-		.erreur {
-			font-size: 12px;
-			height: 14px;
-			display: inline-block;
-			width: 100%;
-			.button-trace {
-				margin: 2px 2px;
-				width: 0;
-				height: 0;
-				float: left;
-				&:hover {
-					cursor: pointer;
-				}
-			}
-			.hide-trace {
-				border-left: 4px solid transparent;
-				border-right: 4px solid transparent;
-				border-bottom: 4px solid black;
-			}
-			.show-trace {
-				border-left: 4px solid transparent;
-				border-right: 4px solid transparent;
-				border-top: 4px solid black;
-			}
-
-			.message {
-				color: red;
-				overflow: hidden;
-				height: 14px;
-				width: 80%;
-				display: inline-block;
-			}
-			.stack-trace {
-				margin-left: 14px;
-			}
-			.line {
-				margin-left: 2px;
-				.count {
-					margin-left: 2px;
-					color: blue;
-				}
-			}
-
-			.column {
-				margin-left: 2px;
-				.count {
-					margin-left: 5px;
-					color: blue;
-				}
-			}
-		}
-	}
+    /* */
+    .editor {
+      z-index: 0;
+      height: 100%;
+      .row {
+        white-space: pre;
+        height: $rowHeight;
+        font-size: 15px;
+        tab-size: 0.55em;
+        font-family: Consolas, Monaco, "Courier New", Courier, monospace;
+        background-color: $defaultBgColor;
+        color: antiquewhite;
+      }
+    }
+  }
 }
 
+/* */
 .editor-suggestions {
-	display: block;
-	position: fixed;
-	width: auto;
-	height: auto;
-	padding: 2px 2px;
-	border: solid lightgray 1px;
-	background-color: #303030;
-	z-index: 1;
+  display: block;
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 2px 2px;
+  border: solid lightgray 1px;
+  background-color: #303030;
+  z-index: 4;
 
-	.active {
-		background-color: #505050;
-	}
+  .active {
+    background-color: #505050;
+  }
 
-	.suggestion {
-		width: 20em;
-		margin: 1px 0;
-		padding: 1px 1px;
-		color: antiquewhite;
-		font-size: 12px;
-		font-weight: bold;
-		font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  .suggestion {
+    width: 20em;
+    margin: 1px 0;
+    padding: 1px 1px;
+    color: antiquewhite;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
 
-		&:hover {
-			background-color: #505050;
-			cursor: pointer;
-		}
-		.type {
-			display: inline-block;
-			width: 2em;
-		}
-		.valeur {
-			.prefix {
-				color: turquoise;
-			}
+    &:hover {
+      background-color: #505050;
+      cursor: pointer;
+    }
+    .type {
+      display: inline-block;
+      width: 2em;
+    }
+    .valeur {
+      .prefix {
+        color: turquoise;
+      }
 
-			display: inline-block;
-			width: 18em;
-		}
-	}
+      display: inline-block;
+      width: 18em;
+    }
+  }
+}
+
+.row-test {
+  white-space: pre;
+  height: $rowHeight;
+  font-size: 15px;
+  tab-size: 1em;
+  font-family: Consolas, Monaco, "Courier New", Courier, monospace;
+  background-color: $defaultBgColor;
+  color: antiquewhite;
 }

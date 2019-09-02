@@ -1,0 +1,38 @@
+.workbench {
+  .toolbar {
+    width: 100%;
+    height: 35px;
+    background-color: darkslategrey;
+  }
+  .panel {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: row;
+
+    .workbench-nav {
+      background-color: darkslategrey;
+      width: 390px;
+    }
+    .workbench-editor {
+      display: flex;
+      flex-flow: column;
+      width: calc(100% - 400px);
+
+      .workbench-display {
+        background-color: rgb(30, 30, 30);
+        border: 1px solid black;
+        height: 600px; //calc(100% - 150px);
+        overflow-x: hidden;
+        overflow-y: hidden;
+      }
+
+      .workbench-console {
+      }
+    }
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
