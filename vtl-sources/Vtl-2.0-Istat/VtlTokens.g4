@@ -1,4 +1,29 @@
 lexer grammar VtlTokens;
+  LPAREN            : '(';
+  RPAREN            : ')';
+
+  GLPAREN           : '{';
+  GRPAREN           : '}';
+
+  QLPAREN           : '[';
+  QRPAREN           : ']';
+
+
+  PLUS              : '+';
+  MINUS             : '-';
+  MUL               : '*';
+  DIV               : '/';
+  COMMA             : ',';
+  CUSTOMPIVOT       : 'TODO-CUSTOMPIVOT';
+  EQ                : '=';
+  NEQ                : '<>';
+
+  LT                : '<';
+  MT                : '>';
+  LE                : '<=';
+  ME                : '>=';
+
+
   ASSIGN            : ':=';
   MEMBERSHIP		: '#';
   EVAL              : 'eval';
