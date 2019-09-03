@@ -3,8 +3,12 @@ import { default as ArithmeticVisitor } from './Arithmetic';
 import { default as BooleanAlgebraVisitor } from './BooleanAlgebra';
 import { default as VariableVisitor } from './Variable';
 import { default as LiteralVisitor } from './Literal';
+import ComparisonVisitor from "./Comparison";
 
 class ExpressionVisitor extends VtlVisitor {
+
+	visitComparisonExpr = ctx => new ComparisonVisitor(this).visit(ctx);
+
 	visitArithmeticExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
 
 	visitBooleanExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
