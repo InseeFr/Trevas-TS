@@ -8,6 +8,10 @@ class LiteralVisitor extends VtlVisitor {
 	visitConstantExpr = ctx => {
 		let value;
 		switch (getTokenType(ctx)) {
+			case VtlParser.STRING_CONSTANT:
+				const text = ctx.getText();
+				value = text.substring(1, text.length - 1);
+				break;
 			case VtlParser.INTEGER_CONSTANT:
 				value = parseInt(ctx.getText());
 				break;
