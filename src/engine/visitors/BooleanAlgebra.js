@@ -6,13 +6,13 @@ import { getTokenType } from '../utils/context';
 
 class BooleanAlgebra extends VtlVisitor {
 	constructor(exprVisitor) {
-        super()
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 	visitBooleanExpr = ctx => {
 		const { left, right, op } = ctx;
-		const leftOperand = exprVisitor.visit(left);
-		const rightOperand = exprVisitor.visit(right);
+		const leftOperand = this.exprVisitor.visit(left);
+		const rightOperand = this.exprVisitor.visit(right);
 
 		let operatorFunction;
 
