@@ -36,5 +36,9 @@ describe('interpretor', () => {
 				interpret('3 or false', {})
 			}).toThrow();
 		});
+		it('should preserve null literal', () => {
+			// String between double quotes otherwise interpreted as variable
+			expect(interpret('null', {})).toEqual(null);
+		});
 	});
 });

@@ -47,7 +47,7 @@ class BooleanAlgebra extends VtlVisitor {
 				operatorFunction = (left, right) => left !== right;
 				break;
 			default:
-				throw new Error('Bad type');
+				throw new Error('Unsupported operator ' + op.type);
 		}
 
 		return {
