@@ -4,12 +4,11 @@ import {
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { getTokenType } from '../utils/context';
 
-class ArithmeticVisitor extends VtlVisitor {
+class BooleanAlgebra extends VtlVisitor {
 	constructor(exprVisitor) {
 		this.exprVisitor = exprVisitor;
 	}
-
-	visitArithmeticExpr = ctx => {
+	visitBooleanExpr = ctx => {
 		const { left, right, op } = ctx;
 		const leftOperand = exprVisitor.visit(left);
 		const rightOperand = exprVisitor.visit(right);
@@ -17,11 +16,14 @@ class ArithmeticVisitor extends VtlVisitor {
 		let operatorFunction;
 
 		switch (op.type) {
-			case VtlParser.PLUS:
-				operatorFunction = (left, right) => left + right;
+			case VtlParser.AND:
+				operatorFunction = (left, right) => left && right;
 				break;
-			case VtlParser.MINUS:
-				operatorFunction = (left, right) => left - right;
+			case VtlParser.OR:
+				operatorFunction = (left, right) => left || right;
+				break;
+			case VtlParser.XOR:
+				operatorFunction = (left, right) => left ^ right;
 				break;
 			default:
 				throw new Error('Bad type');
@@ -38,4 +40,4 @@ class ArithmeticVisitor extends VtlVisitor {
 	};
 }
 
-export default ArithmeticVisitor;
+export default BooleanAlgebra;
