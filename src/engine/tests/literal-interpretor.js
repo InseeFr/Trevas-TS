@@ -1,6 +1,6 @@
 import antlr4 from 'antlr4';
-import { VtlLexer, VtlParser } from '../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import { default as ArithmeticVisitor } from './visitors/Arithmetic';
+import { VtlLexer, VtlParser } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { default as LiteralVisitor } from '../visitors/Literal';
 
 const getParser = text => {
 	const chars = new antlr4.InputStream(text);
@@ -13,7 +13,7 @@ const getParser = text => {
 
 const interpret = (expr, bindings) => {
 	const parser = getParser(expr);
-	const visitor = new ArithmeticVisitor();
+	const visitor = new LiteralVisitor();
 	return visitor.visit(parser.expr()).resolve(bindings);
 };
 
