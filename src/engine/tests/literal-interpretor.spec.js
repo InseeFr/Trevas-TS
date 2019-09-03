@@ -1,4 +1,4 @@
-import interpret from './literal-interpretor';
+import interpret from '../interpretor';
 
 describe('interpretor', () => {
 	describe('interpret', () => {
