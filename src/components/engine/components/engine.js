@@ -3,7 +3,7 @@ import TreePanel from './tree-panel';
 import EnginePanel from './engine-panel';
 import './engine.scss';
 
-const Engine = () => (
+const Engine = ({ value, variables }) => (
 	<>
 		<h1 className="centered">VTL tools</h1>
 		<div className="container">
@@ -11,7 +11,7 @@ const Engine = () => (
 				<TreePanel />
 			</div>
 			<div className="engine">
-				<EnginePanel />
+				<EnginePanel value={value} variables={variables} />
 			</div>
 		</div>
 	</>

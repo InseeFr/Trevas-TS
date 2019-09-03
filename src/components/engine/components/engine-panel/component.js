@@ -3,17 +3,15 @@ import Input from './input';
 import { buildExecObject } from '../../utils';
 import interpret from '../../../../engine/interpretor';
 
-const EnginePanel = () => {
-	const [value, setValue] = useState('substr("abc", 1, 2)');
-	const [variables, setVariables] = useState([
-		{ key: 'a', value: '2' },
-		{ key: 'b', value: '18' },
-	]);
+const EnginePanel = ({ value, variables }) => {
+	const [input, setInput] = useState(value || '');
+	const [vars, setVars] = useState(variables || [{ key: '', value: '' }]);
+	const [res, setRes] = useState('');
 	const handleChange = v => {
-		setValue(v);
+		setInput(v);
 	};
 	const onClick = () => {
-		console.log(interpret(value, buildExecObject(variables)));
+		setRes(interpret(input, buildExecObject(vars)));
 	};
 
 	return (
@@ -24,17 +22,23 @@ const EnginePanel = () => {
 				type="text"
 				id="input"
 				name="input"
-				value={value}
+				value={input}
 				onChange={e => handleChange(e.target.value)}
 				style={{ width: '26em' }}
 			/>
 			<h3>Key / Values</h3>
-			<Input variables={variables} save={setVariables} />
+			<Input variables={vars} save={setVars} />
 			<div className="btn-res">
 				<button type="button" onClick={onClick}>
 					Get Result!
 				</button>
 			</div>
+			{res && (
+				<>
+					<h2>Result:</h2>
+					<h1 className="res">{res}</h1>
+				</>
+			)}
 		</>
 	);
 };
