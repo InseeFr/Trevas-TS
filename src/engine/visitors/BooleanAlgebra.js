@@ -6,6 +6,7 @@ import { getTokenType } from '../utils/context';
 
 class BooleanAlgebra extends VtlVisitor {
 	constructor(exprVisitor) {
+        super()
 		this.exprVisitor = exprVisitor;
 	}
 	visitBooleanExpr = ctx => {

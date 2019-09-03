@@ -6,6 +6,7 @@ import { getTokenType } from '../utils/context';
 
 class ArithmeticVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 

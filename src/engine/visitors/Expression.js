@@ -1,3 +1,4 @@
+import { VtlVisitor } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { default as ArithmeticVisitor } from './Arithmetic';
 import { default as BooleanAlgebraVisitor } from './BooleanAlgebra';
 import { default as VariableVisitor } from './Variable';
