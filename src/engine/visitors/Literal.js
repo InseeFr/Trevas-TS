@@ -19,7 +19,7 @@ class LiteralVisitor extends VtlVisitor {
 				value = parseFloat(ctx.getText());
 				break;
 			case VtlParser.BOOLEAN_CONSTANT:
-				value = Boolean(ctx.getText());
+				value = JSON.parse(ctx.getText());
 				break;
 			default:
 				throw new Error('Bad type');
