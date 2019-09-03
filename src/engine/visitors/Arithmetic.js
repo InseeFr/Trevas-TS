@@ -14,7 +14,7 @@ class ArithmeticVisitor extends VtlVisitor {
 		const { left, right, op } = ctx;
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
-		console.log(rightOperand.type);
+
 		if (
 			![VtlParser.INTEGER_CONSTANT, VtlParser.FLOAT_CONSTANT].includes(
 				leftOperand.type
