@@ -44,7 +44,7 @@ class BooleanAlgebra extends VtlVisitor {
 				operatorFunction = (left, right) => left || right;
 				break;
 			case VtlParser.XOR:
-				operatorFunction = (left, right) => left ^ right;
+				operatorFunction = (left, right) => left !== right;
 				break;
 			default:
 				throw new Error('Bad type');

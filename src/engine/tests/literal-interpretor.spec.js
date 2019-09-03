@@ -20,7 +20,7 @@ describe('interpretor', () => {
 		});
 		it('should preserve boolean literals', () => {
 			expect(interpret('true', {})).toEqual(true);
-			expect(interpret('false', {})).toEqual(true);
+			expect(interpret('false', {})).toEqual(false);
 		});
 		it('should preserve string literal', () => {
 			// String between double quotes otherwise interpreted as variable
