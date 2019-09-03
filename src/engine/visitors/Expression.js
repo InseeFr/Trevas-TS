@@ -11,6 +11,11 @@ import ComparisonVisitor from './Comparison';
 import FunctionVisitor from './Function';
 
 class ExpressionVisitor extends VtlVisitor {
+	constructor(bindings) {
+		super();
+		this.bindings = bindings;
+	}
+
 	visitComparisonExpr = ctx => new ComparisonVisitor(this).visit(ctx);
 
 	visitArithmeticExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
@@ -29,7 +34,7 @@ class ExpressionVisitor extends VtlVisitor {
 	visitStringFunctions = ctx => this.visit(ctx.children[0]);
 	visitFunctionsExpression = ctx => this.visit(ctx.children[0]);
 
-	visitVarIdExpr = ctx => new VariableVisitor().visit(ctx);
+	visitVarIdExpr = ctx => new VariableVisitor(this.bindings).visit(ctx);
 
 	visitConstantExpr = ctx => new LiteralVisitor().visit(ctx);
 

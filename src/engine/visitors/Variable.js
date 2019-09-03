@@ -2,15 +2,23 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import { getTokenType } from '../utils/context';
+
+const types = {
+	string: VtlParser.STRING_CONSTANT,
+	number: VtlParser.FLOAT_CONSTANT,
+	boolean: VtlParser.BOOLEAN_CONSTANT,
+};
 
 class VariableVisitor extends VtlVisitor {
+	constructor(bindings) {
+		super();
+		this.bindings = bindings;
+	}
 	visitVarIdExpr = ctx => {
 		const variable = ctx.getText();
-
 		return {
 			resolve: bindings => bindings[variable],
-			type: getTokenType(ctx),
+			type: types[typeof this.bindings[variable]],
 		};
 	};
 }

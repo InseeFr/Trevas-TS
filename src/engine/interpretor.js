@@ -13,7 +13,7 @@ const getParser = text => {
 
 const interpret = (expr, bindings) => {
 	const parser = getParser(expr);
-	const visitor = new ExpressionVisitor();
+	const visitor = new ExpressionVisitor(bindings);
 	return visitor.visit(parser.expr()).resolve(bindings);
 };
 
