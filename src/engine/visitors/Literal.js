@@ -21,6 +21,9 @@ class LiteralVisitor extends VtlVisitor {
 			case VtlParser.BOOLEAN_CONSTANT:
 				value = JSON.parse(ctx.getText());
 				break;
+			case VtlParser.NULL_CONSTANT:
+				value = null;
+				break;
 			default:
 				throw new Error('Bad type');
 		}
