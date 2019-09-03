@@ -14,8 +14,7 @@ const getParser = text => {
 const interpret = (expr, bindings) => {
 	const parser = getParser(expr);
 	const visitor = new ArithmeticVisitor();
-	console.log(visitor.visit(parser.expr()).resolve(bindings));
-	return true;
+	return visitor.visit(parser.expr()).resolve(bindings);
 };
 
 export default interpret;
