@@ -1,3 +1,4 @@
+import antlr4 from 'antlr4';
 import {
 	VtlParser,
 	VtlVisitor,
@@ -9,6 +10,20 @@ class BooleanAlgebra extends VtlVisitor {
 		super();
 		this.exprVisitor = exprVisitor;
 	}
+
+	visitNotExpr = ctx => {
+		const { right } = ctx;
+		const rightOperand = this.exprVisitor.visit(right);
+
+		if (rightOperand.type !== VtlParser.BOOLEAN_CONSTANT)
+			throw new Error('Operand should be a boolean constant');
+
+		return {
+			resolve: bindings => !rightOperand.resolve(bindings),
+			type: getTokenType(ctx),
+		};
+	};
+
 	visitBooleanExpr = ctx => {
 		const { left, right, op } = ctx;
 		const leftOperand = this.exprVisitor.visit(left);
