@@ -29,6 +29,11 @@ class BooleanAlgebra extends VtlVisitor {
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
 
+		if (leftOperand.type !== VtlParser.BOOLEAN_CONSTANT)
+			throw new Error('Left operand should be a boolean constant');
+		if (rightOperand.type !== VtlParser.BOOLEAN_CONSTANT)
+			throw new Error('Right operand should be a boolean constant');
+
 		let operatorFunction;
 
 		switch (op.type) {
