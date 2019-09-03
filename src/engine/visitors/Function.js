@@ -30,7 +30,6 @@ class FunctionVisitor extends VtlVisitor {
 		}
 		return {
 			resolve: bindings => {
-				console.log(operand.resolve(bindings));
 				return operand
 					.resolve(bindings)
 					.substr(startIndex.resolve(bindings), length.resolve(bindings));
