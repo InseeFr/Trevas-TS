@@ -14,6 +14,9 @@ class LiteralVisitor extends VtlVisitor {
 			case VtlParser.FLOAT_CONSTANT:
 				value = parseFloat(ctx.getText());
 				break;
+			case VtlParser.BOOLEAN_CONSTANT:
+				value = Boolean(ctx.getText());
+				break;
 			default:
 				throw new Error('Bad type');
 		}
