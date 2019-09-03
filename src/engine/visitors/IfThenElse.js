@@ -21,8 +21,6 @@ class IfThenElseVisitor extends VtlVisitor {
 			);
 		}
 
-		let operatorFunction;
-
 		return {
 			resolve: bindings =>
 				conditionalOperand.resolve(bindings)

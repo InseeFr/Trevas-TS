@@ -5,7 +5,7 @@ import { buildExecObject } from '../../utils';
 import interpret from '../../../../engine/interpretor';
 
 const EnginePanel = () => {
-	const [value, setValue] = useState('2 + a ');
+	const [value, setValue] = useState('if 10>2 then "positive" else "negative"');
 	const [variables, setVariables] = useState([
 		{ key: 'a', value: '2' },
 		{ key: 'b', value: '18' },
@@ -27,6 +27,7 @@ const EnginePanel = () => {
 				name="input"
 				value={value}
 				onChange={e => handleChange(e.target.value)}
+				style={{ width: '26em' }}
 			/>
 			<h3>Key / Values</h3>
 			<Input variables={variables} save={setVariables} />
