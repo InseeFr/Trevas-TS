@@ -4,7 +4,7 @@ import { buildExecObject } from '../../utils';
 import interpret from '../../../../engine/interpretor';
 
 const EnginePanel = () => {
-	const [value, setValue] = useState('1 - 2 + 10 + 30 - 99');
+	const [value, setValue] = useState('substr("abc", 1, 2)');
 	const [variables, setVariables] = useState([
 		{ key: 'a', value: '2' },
 		{ key: 'b', value: '18' },

@@ -1,6 +1,6 @@
 import antlr4 from 'antlr4';
 import { VtlLexer, VtlParser } from '../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import { default as ExpressionVisitor } from './visitors/Expression';
+import ExpressionVisitor from './visitors/Expression';
 
 const getParser = text => {
 	const chars = new antlr4.InputStream(text);
