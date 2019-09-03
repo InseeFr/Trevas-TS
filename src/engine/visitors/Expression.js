@@ -9,6 +9,8 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitBooleanExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
 
+	visitParenthesisExpr = ctx => this.visit(ctx.children[1]);
+
 	visitVarIdExpr = ctx => new VariableVisitor(this).visit(ctx);
 
 	visitConstantExpr = ctx => new LiteralVisitor(this).visit(ctx);
