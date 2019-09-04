@@ -144,12 +144,15 @@ const reducer = (state, action) => {
 			case KEY.END:
 				return {
 					...state,
-					index: getRowLength(state),
+					index: getRowLength(state) - 1,
 					selection: undefined,
 					prefix: undefined,
 				};
 			case actions.CHECK_INDEX:
-				return { ...state, index: Math.min(state.index, getRowLength(state)) };
+				return {
+					...state,
+					index: Math.min(state.index, getRowLength(state) - 1),
+				};
 			case KEY.TAB:
 				return appendCharAtCursor(state)(KEY._TABULATION);
 			case actions.INSERT_CHARACTER:
@@ -323,7 +326,7 @@ const reduceKeyLeft = state => {
 		state.index - 1 < 0
 			? state.focusedRow === 0
 				? state.focusedRow
-				: getRowLength({ ...state, focusedRow })
+				: getRowLength({ ...state, focusedRow }) - 1
 			: state.index - 1;
 	const start = focusedRow >= sr.start ? sr.start : focusedRow;
 	return {
@@ -342,7 +345,7 @@ const reduceKeyLeft = state => {
 /* ARROW_RIGHT */
 const reduceKeyRight = state => {
 	const { scrollRange: sr } = state;
-	const currentLength = getRowLength(state);
+	const currentLength = getRowLength(state) - 1;
 	const focusedRow =
 		state.index + 1 > currentLength
 			? Math.min(state.lines.length - 1, state.focusedRow + 1)
@@ -350,7 +353,7 @@ const reduceKeyRight = state => {
 	const index =
 		state.index + 1 > currentLength
 			? state.focusedRow === state.lines.length - 1
-				? getRowLength({ ...state, focusedRow })
+				? getRowLength({ ...state, focusedRow }) - 1
 				: 0
 			: state.index + 1;
 	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
@@ -434,7 +437,7 @@ const reduceKeyBackspace = ({ lines, index, focusedRow, ...rest }) => {
 		index === 0
 			? focusedRow === 0
 				? 0
-				: getRowLength({ lines, focusedRow: newFocusedRow })
+				: getRowLength({ lines, focusedRow: newFocusedRow }) - 1
 			: index - 1;
 	const newLines =
 		index === 0
