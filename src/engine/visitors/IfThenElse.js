@@ -26,7 +26,7 @@ class IfThenElseVisitor extends VtlVisitor {
 				conditionalOperand.resolve(bindings)
 					? thenOperand.resolve(bindings)
 					: elseOperand.resolve(bindings),
-			type: VtlParser.BOOLEAN_CONSTANT,
+			type: VtlParser.STRING_CONSTANT,
 		};
 	};
 }
