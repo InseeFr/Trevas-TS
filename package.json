@@ -27,6 +27,7 @@
 		"start-storybook": "cross-env NODE_PATH=src/ start-storybook -p 9999",
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
+		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
 		"build": "rollup -c rollup.config.js",
 		"prepublish": "npm test && npm run build"
 	},
@@ -52,7 +53,10 @@
 		"eslint": "^6.2.2",
 		"eslint-config-airbnb": "^18.0.1",
 		"eslint-config-prettier": "^6.1.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-jsx-a11y": "^6.2.3",
 		"eslint-plugin-prettier": "^3.1.0",
+		"eslint-plugin-react": "^7.14.3",
 		"jest": "^24.9.0",
 		"node-sass": "^4.12.0",
 		"postcss-scss": "^2.0.0",
