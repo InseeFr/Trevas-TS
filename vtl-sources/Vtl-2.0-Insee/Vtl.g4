@@ -20,10 +20,8 @@ expr:
     | functions                                                                                             # functionsExpression
     | op=(PLUS|MINUS) right=expr                                                                            # unaryExpr
     | op=NOT right=expr                                                                                     # notExpr
-    | left=expr op=MUL right=expr                                                                           # arithmeticExpr
-    | left=expr op=DIV right=expr                                                                           # arithmeticExpr
-    | left=expr op=PLUS right=expr                                                                          # arithmeticExpr
-    | left=expr op=MINUS right=expr                                                                         # arithmeticExpr
+    | left=expr op=(MUL|DIV) right=expr                                                                     # arithmeticExpr
+    | left=expr op=(MINUS|PLUS) right=expr                                                                  # arithmeticExpr
     | left=expr CONCAT right=expr                                                                           # concatExpr
     | left=expr op=comparisonOperand  right=expr                                                            # comparisonExpr
     | left=expr op=(IN|NOT_IN)(lists|valueDomainID)                                                         # inNotInExpr
