@@ -121,9 +121,7 @@ const reducer = (state, action) => {
 			case 'change-editor-content':
 				return {
 					...state,
-					lines: action.lines.map((row, i) =>
-						getNewRow(row.endsWith('\n') ? row : `${row}\n`, i)
-					),
+					lines: action.lines.map((row, i) => getNewRow(row, i)),
 				};
 			case KEY.ARROW_LEFT:
 				return reduceKeyLeft(state);
@@ -144,14 +142,14 @@ const reducer = (state, action) => {
 			case KEY.END:
 				return {
 					...state,
-					index: getRowLength(state) - 1,
+					index: getRowLength(state),
 					selection: undefined,
 					prefix: undefined,
 				};
 			case actions.CHECK_INDEX:
 				return {
 					...state,
-					index: Math.min(state.index, getRowLength(state) - 1),
+					index: Math.min(state.index, getRowLength(state)),
 				};
 			case KEY.TAB:
 				return appendCharAtCursor(state)(KEY._TABULATION);
@@ -162,42 +160,48 @@ const reducer = (state, action) => {
 				return state;
 		}
 	})();
-	// console.debug('%cDebug', 'color: purple;', { action, state, newState });
+	console.debug('%cDebug', 'color: purple;', { action, state, newState });
 	return newState;
 };
 
 /* TOKENIZE_ALL */
 const reduceTokenizeAll = state => {
 	const { lines } = state;
-	const tokens = getTokens_(lines.reduce((a, { value }) => `${a}${value}`, ''));
+	const tokens = getTokens_(
+		lines.reduce((a, { value }) => `${a}${value}\n`, '')
+	);
 
 	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
 		pos: 0,
 		lines: [],
 		tokens,
 	});
+	console.log(nl);
 	return { ...state, lines: nl.lines };
 };
 
 const fillLine = (line, { pos, lines, tokens }) => {
 	const [first, ...rest] = tokens;
-	const rowLimit = pos + line.value.length - 1;
-
+	const rowLimit = pos + line.value.length;
+	// console.log(line, first);
 	return first.start < pos || first.stop > rowLimit
 		? fillMulti(line, { pos, lines, tokens })
 		: first.stop < rowLimit
 		? fillLine(
 				{
 					...line,
-					tokens: [...line.tokens, first],
+					tokens: [...line.tokens, moveToken(first, pos)],
 				},
 				{ pos, lines, tokens: rest }
 		  )
 		: first.stop === rowLimit
 		? {
-				lines: [...lines, { ...line, tokens: [...line.tokens, first] }],
+				lines: [
+					...lines,
+					{ ...line, tokens: [...line.tokens, moveToken(first, pos)] },
+				],
 				tokens: rest,
-				pos: pos + line.value.length,
+				pos: pos + line.value.length + 1,
 		  }
 		: null;
 };
@@ -205,6 +209,7 @@ const fillLine = (line, { pos, lines, tokens }) => {
 const fillMulti = (line, { lines, tokens, pos }) => {
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length - 1;
+	// console.log(line, first, { pos, rowLimit });
 	return pos <= first.start
 		? {
 				lines: [
@@ -214,14 +219,14 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 						tokens: [
 							...line.tokens,
 							{
-								...first,
-								value: first.value.substring(0, rowLimit - first.start),
+								...moveToken(first, pos),
+								value: first.value.substring(0, rowLimit - first.start + 1),
 							},
 						],
 					},
 				],
 				tokens,
-				pos: pos + line.value.length,
+				pos: pos + line.value.length + 1,
 		  }
 		: first.stop >= rowLimit
 		? {
@@ -232,48 +237,35 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 						tokens: [
 							...line.tokens,
 							{
-								...first,
+								...moveToken(first, pos),
 								value: line.value,
 							},
 						],
 					},
 				],
 				tokens: first.stop === rowLimit ? rest : tokens,
-				pos: pos + line.value.length,
+				pos: pos + line.value.length + 1,
 		  }
 		: fillLine(
 				{
 					...line,
 					tokens: [
 						...line.tokens,
-						{ ...first, value: first.value.substring(pos - first.start) },
+						{
+							...moveToken(first, pos),
+							value: first.value.substring(pos - first.start),
+						},
 					],
 				},
 				{ lines, tokens: rest, pos }
 		  );
 };
 
-const checkMulti = (line, { pos, lines, tokens }) => {
-	const [first, ...rest] = tokens;
-	console.log(line.value, first.stop, pos + line.value.length - 1);
-	return first.stop === pos + line.value.length - 1
-		? {
-				pos: pos + line.value.length,
-				lines: [
-					...lines,
-					{ ...line, tokens: [{ ...first, value: line.value }], multi: true },
-				],
-				tokens: rest,
-		  }
-		: {
-				pos: pos + line.value.length,
-				lines: [
-					...lines,
-					{ ...line, tokens: [{ ...first, value: line.value }], multi: true },
-				],
-				tokens,
-		  };
-};
+const moveToken = (token, pos) => ({
+	...token,
+	start: token.start - pos,
+	stop: token.stop - pos,
+});
 
 /* SUGGEST_TOKEN */
 const replaceToken = (state, suggestion) => {
@@ -326,7 +318,7 @@ const reduceKeyLeft = state => {
 		state.index - 1 < 0
 			? state.focusedRow === 0
 				? state.focusedRow
-				: getRowLength({ ...state, focusedRow }) - 1
+				: getRowLength({ ...state, focusedRow })
 			: state.index - 1;
 	const start = focusedRow >= sr.start ? sr.start : focusedRow;
 	return {
@@ -345,7 +337,7 @@ const reduceKeyLeft = state => {
 /* ARROW_RIGHT */
 const reduceKeyRight = state => {
 	const { scrollRange: sr } = state;
-	const currentLength = getRowLength(state) - 1;
+	const currentLength = getRowLength(state);
 	const focusedRow =
 		state.index + 1 > currentLength
 			? Math.min(state.lines.length - 1, state.focusedRow + 1)
@@ -353,7 +345,7 @@ const reduceKeyRight = state => {
 	const index =
 		state.index + 1 > currentLength
 			? state.focusedRow === state.lines.length - 1
-				? getRowLength({ ...state, focusedRow }) - 1
+				? getRowLength({ ...state, focusedRow })
 				: 0
 			: state.index + 1;
 	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
@@ -437,7 +429,7 @@ const reduceKeyBackspace = ({ lines, index, focusedRow, ...rest }) => {
 		index === 0
 			? focusedRow === 0
 				? 0
-				: getRowLength({ lines, focusedRow: newFocusedRow }) - 1
+				: getRowLength({ lines, focusedRow: newFocusedRow })
 			: index - 1;
 	const newLines =
 		index === 0

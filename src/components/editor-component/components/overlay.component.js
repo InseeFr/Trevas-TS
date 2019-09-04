@@ -153,7 +153,7 @@ const getCursorPosition = (e, parentEl, chasse) => ({
 		const newIndex = Math.trunc((clientX - left) / chasse);
 		return {
 			newFocusedRow,
-			newIndex: Math.min(lines[newFocusedRow].value.length - 1, newIndex),
+			newIndex: Math.min(lines[newFocusedRow].value.length, newIndex),
 		};
 	}
 	return {};

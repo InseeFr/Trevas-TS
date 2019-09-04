@@ -20,7 +20,7 @@ const content = [
 	'// toto := "toto";',
 	'if toto /* un commentaire',
 	'\t sur plusieurs ',
-	'\t lignes. */ then else',
+	'\t lignes. */ then else ',
 	'if toto = "toto"',
 	'\tthen true',
 	'\t else false;',

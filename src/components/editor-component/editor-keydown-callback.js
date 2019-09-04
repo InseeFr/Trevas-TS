@@ -18,6 +18,7 @@ const keyDownsuggesterProxy = (dispatch, state, shortcutPattern) => e => {
 			case KEY.ARROW_UP:
 				stopAndPrevent(e);
 				dispatch(actions.previousSuggestion());
+				dispatch(actions.tokenizeAll());
 				return true;
 			case KEY.ARROW_DOWN:
 				stopAndPrevent(e);
@@ -52,10 +53,10 @@ const keyDownCallback = (dispatch, state, shortcutPattern) => e => {
 			return true;
 		case KEY.DELETE:
 		case KEY.ENTER:
-			dispatch(actions.insertCharacter('\n'));
 		case KEY.BACK_SPACE:
 			stopAndPrevent(e);
 			dispatch({ type: e.key });
+			dispatch(actions.tokenizeAll());
 			dispatch(actions.checkPrefix());
 			return true;
 		case KEY.PAGE_UP:
@@ -74,8 +75,8 @@ const keyDownCallback = (dispatch, state, shortcutPattern) => e => {
 			if (isCharCode(e.key)) {
 				stopAndPrevent(e);
 				dispatch(actions.insertCharacter(e.key));
-				dispatch(actions.checkPrefix());
 				dispatch(actions.tokenizeAll());
+				dispatch(actions.checkPrefix());
 				return true;
 			}
 			return false;
