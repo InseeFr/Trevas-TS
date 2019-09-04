@@ -17,10 +17,10 @@ const dictionnary = {
 };
 
 const content = [
-	'toto := "toto";',
-	'/* un commentaire',
+	'// toto := "toto";',
+	'if toto /* un commentaire',
 	'\t sur plusieurs ',
-	'\t lignes. */',
+	'\t lignes. */ then else',
 	'if toto = "toto"',
 	'\tthen true',
 	'\t else false;',

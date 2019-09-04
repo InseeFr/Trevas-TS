@@ -6,18 +6,18 @@ let getTokens_ = undefined;
 const initialState = {
 	rowHeight: 22,
 	scrollRange: { start: 0, stop: 20, offset: 21 },
-	lines: [ { value: '', tokens: [] } ],
+	lines: [{ value: '', tokens: [] }],
 	index: 0,
 	focusedRow: undefined,
 	prefix: undefined,
 	suggesterState: { open: false, index: -1, value: undefined, size: 0 },
 	selection: undefined,
 	cursorRect: undefined,
-	errors: []
+	errors: [],
 };
 
 /* */
-export const initializer = (getTokens) => {
+export const initializer = getTokens => {
 	getTokens_ = getTokens;
 	return initialState;
 };
@@ -39,7 +39,7 @@ const reducer = (state, action) => {
 			case actions.SET_SCROLLRANGE:
 				return {
 					...state,
-					scrollRange: action.payload.scrollRange
+					scrollRange: action.payload.scrollRange,
 				};
 			/* SELECTION */
 			case actions.SET_SELECTION:
@@ -55,7 +55,7 @@ const reducer = (state, action) => {
 			case actions.RESET_SUGGESTER_INDEX:
 				return {
 					...state,
-					suggesterState: { ...state.suggesterState, index: -1 }
+					suggesterState: { ...state.suggesterState, index: -1 },
 				};
 			case actions.NEXT_SUGGESTION: {
 				const { index, size } = state.suggesterState;
@@ -63,8 +63,8 @@ const reducer = (state, action) => {
 					...state,
 					suggesterState: {
 						...state.suggesterState,
-						index: Math.min(size - 1, index + 1)
-					}
+						index: Math.min(size - 1, index + 1),
+					},
 				};
 			}
 			case actions.PREVIOUS_SUGGESTION: {
@@ -73,20 +73,20 @@ const reducer = (state, action) => {
 					...state,
 					suggesterState: {
 						...state.suggesterState,
-						index: Math.max(0, index - 1)
-					}
+						index: Math.max(0, index - 1),
+					},
 				};
 			}
 			case actions.SET_SUGGESTER_STATE: {
 				return {
 					...state,
-					suggesterState: { ...state.suggesterState, ...action.payload }
+					suggesterState: { ...state.suggesterState, ...action.payload },
 				};
 			}
 			case actions.SUGGEST_TOKEN:
 				return {
 					...replaceToken(state, action.payload.suggestion),
-					prefix: undefined
+					prefix: undefined,
 				};
 
 			/* */
@@ -96,7 +96,7 @@ const reducer = (state, action) => {
 					focusedRow: undefined,
 					prefix: undefined,
 					cursorRect: undefined,
-					index: undefined
+					index: undefined,
 				};
 
 			case actions.RESET_PREFIX:
@@ -110,18 +110,20 @@ const reducer = (state, action) => {
 					...state,
 					prefix: undefined,
 					index: action.payload.index,
-					focusedRow: action.payload.numberRow
+					focusedRow: action.payload.numberRow,
 				};
 			case actions.SET_CURSOR_RECT:
 				return {
 					...state,
-					cursorRect: action.payload.rect
+					cursorRect: action.payload.rect,
 				};
 			/* */
 			case 'change-editor-content':
 				return {
 					...state,
-					lines: action.lines.map((row, i) => getNewRow(row, i))
+					lines: action.lines.map((row, i) =>
+						getNewRow(row.endsWith('\n') ? row : `${row}\n`, i)
+					),
 				};
 			case KEY.ARROW_LEFT:
 				return reduceKeyLeft(state);
@@ -144,7 +146,7 @@ const reducer = (state, action) => {
 					...state,
 					index: getRowLength(state),
 					selection: undefined,
-					prefix: undefined
+					prefix: undefined,
 				};
 			case actions.CHECK_INDEX:
 				return { ...state, index: Math.min(state.index, getRowLength(state)) };
@@ -157,73 +159,117 @@ const reducer = (state, action) => {
 				return state;
 		}
 	})();
-	// console.debug("%cDebug", "color: purple;", { action, state, newState });
+	// console.debug('%cDebug', 'color: purple;', { action, state, newState });
 	return newState;
 };
 
 /* TOKENIZE_ALL */
-const reduceTokenizeAll = (state) => {
+const reduceTokenizeAll = state => {
 	const { lines } = state;
 	const tokens = getTokens_(lines.reduce((a, { value }) => `${a}${value}`, ''));
 
-	const nl = lines.reduce(
-		(a, line) => {
-			const [ first, ...rest ] = a.tokens;
-			return first.stop - first.start + 1 < line.value.length
-				? checkSingle({ ...line, tokens: [] }, a)
-				: checkMulti({ ...line, tokens: [] }, a);
-		},
-		{ pos: 0, lines: [], tokens }
-	);
-	// console.log(tokens);
+	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
+		pos: 0,
+		lines: [],
+		tokens,
+	});
 	return { ...state, lines: nl.lines };
 };
 
-const checkSingle = (line, { pos, lines, tokens }) => {
-	const { line: nl, rest } = fillSingle(line, tokens, pos);
+const fillLine = (line, { pos, lines, tokens }) => {
+	const [first, ...rest] = tokens;
+	const rowLimit = pos + line.value.length - 1;
 
-	return {
-		pos: pos + line.value.length,
-		lines: [ ...lines, nl ],
-		tokens: rest
-	};
+	return first.start < pos || first.stop > rowLimit
+		? fillMulti(line, { pos, lines, tokens })
+		: first.stop < rowLimit
+		? fillLine(
+				{
+					...line,
+					tokens: [...line.tokens, first],
+				},
+				{ pos, lines, tokens: rest }
+		  )
+		: first.stop === rowLimit
+		? {
+				lines: [...lines, { ...line, tokens: [...line.tokens, first] }],
+				tokens: rest,
+				pos: pos + line.value.length,
+		  }
+		: null;
 };
 
-const fillSingle = (line, tokens, pos) => {
-	const [ first, ...rest ] = tokens;
-	return first && first.stop - pos < line.value.length
-		? fillSingle(
+const fillMulti = (line, { lines, tokens, pos }) => {
+	const [first, ...rest] = tokens;
+	const rowLimit = pos + line.value.length - 1;
+	return pos <= first.start
+		? {
+				lines: [
+					...lines,
+					{
+						...line,
+						tokens: [
+							...line.tokens,
+							{
+								...first,
+								value: first.value.substring(0, rowLimit - first.start),
+							},
+						],
+					},
+				],
+				tokens,
+				pos: pos + line.value.length,
+		  }
+		: first.stop >= rowLimit
+		? {
+				lines: [
+					...lines,
+					{
+						...line,
+						tokens: [
+							...line.tokens,
+							{
+								...first,
+								value: line.value,
+							},
+						],
+					},
+				],
+				tokens: first.stop === rowLimit ? rest : tokens,
+				pos: pos + line.value.length,
+		  }
+		: fillLine(
 				{
 					...line,
 					tokens: [
 						...line.tokens,
-						{
-							...first,
-							start: first.start - pos,
-							stop: first.stop - pos,
-							multi: false
-						}
-					]
+						{ ...first, value: first.value.substring(pos - first.start) },
+					],
 				},
-				rest,
-				pos
-			)
-		: { line, rest: tokens };
+				{ lines, tokens: rest, pos }
+		  );
 };
 
 const checkMulti = (line, { pos, lines, tokens }) => {
-	const [ first, ...rest ] = tokens;
+	const [first, ...rest] = tokens;
+	console.log(line.value, first.stop, pos + line.value.length - 1);
 	return first.stop === pos + line.value.length - 1
 		? {
 				pos: pos + line.value.length,
-				lines: [ ...lines, { ...line, tokens: [ { ...first, value: line.value } ], multi: true } ],
-				tokens: rest
-			}
+				lines: [
+					...lines,
+					{ ...line, tokens: [{ ...first, value: line.value }], multi: true },
+				],
+				tokens: rest,
+		  }
 		: {
 				pos: pos + line.value.length,
-				lines: [ ...lines, { ...line, tokens: [ { ...first, value: line.value } ], multi: true } ],
-				tokens
-			};
+				lines: [
+					...lines,
+					{ ...line, tokens: [{ ...first, value: line.value }], multi: true },
+				],
+				tokens,
+		  };
 };
 
 /* SUGGEST_TOKEN */
@@ -236,13 +282,13 @@ const replaceToken = (state, suggestion) => {
 				? [
 						...a,
 						getNewRow(
-							`${line.value.substr(0, index)}${suggestion.substr(prefix.length)}${line.value.substr(
-								index
-							)}`,
+							`${line.value.substr(0, index)}${suggestion.substr(
+								prefix.length
+							)}${line.value.substr(index)}`,
 							i
-						)
-					]
-				: [ ...a, line ],
+						),
+				  ]
+				: [...a, line],
 		[]
 	);
 	const nextIndex = newLines[focusedRow].tokens.reduce(
@@ -258,20 +304,26 @@ const checkPrefix = ({ lines, focusedRow, index }) => {
 	return token ? token.value.trim().substr(0, index - token.start) : undefined;
 };
 
-const getFocusedToken = (lines) => (focusedRow, index) =>
+const getFocusedToken = lines => (focusedRow, index) =>
 	focusedRow >= 0
 		? lines[focusedRow].value.length === index
 			? lines[focusedRow].tokens[lines[focusedRow].tokens.length - 1]
-			: lines[focusedRow].tokens.reduce((a, t) => (index - 1 >= t.start && index - 1 <= t.stop ? t : a), undefined)
+			: lines[focusedRow].tokens.reduce(
+					(a, t) => (index - 1 >= t.start && index - 1 <= t.stop ? t : a),
+					undefined
+			  )
 		: undefined;
 
 /* ARROW_LEFT */
-const reduceKeyLeft = (state) => {
+const reduceKeyLeft = state => {
 	const { scrollRange: sr, lines } = state;
-	const focusedRow = state.index - 1 < 0 ? Math.max(0, state.focusedRow - 1) : state.focusedRow;
+	const focusedRow =
+		state.index - 1 < 0 ? Math.max(0, state.focusedRow - 1) : state.focusedRow;
 	const index =
 		state.index - 1 < 0
-			? state.focusedRow === 0 ? state.focusedRow : getRowLength({ ...state, focusedRow })
+			? state.focusedRow === 0
+				? state.focusedRow
+				: getRowLength({ ...state, focusedRow })
 			: state.index - 1;
 	const start = focusedRow >= sr.start ? sr.start : focusedRow;
 	return {
@@ -282,20 +334,24 @@ const reduceKeyLeft = (state) => {
 		scrollRange: {
 			...sr,
 			start,
-			stop: Math.min(start + sr.offset - 1, lines.length - 1)
-		}
+			stop: Math.min(start + sr.offset - 1, lines.length - 1),
+		},
 	};
 };
 
 /* ARROW_RIGHT */
-const reduceKeyRight = (state) => {
+const reduceKeyRight = state => {
 	const { scrollRange: sr } = state;
 	const currentLength = getRowLength(state);
 	const focusedRow =
-		state.index + 1 > currentLength ? Math.min(state.lines.length - 1, state.focusedRow + 1) : state.focusedRow;
+		state.index + 1 > currentLength
+			? Math.min(state.lines.length - 1, state.focusedRow + 1)
+			: state.focusedRow;
 	const index =
 		state.index + 1 > currentLength
-			? state.focusedRow === state.lines.length - 1 ? getRowLength({ ...state, focusedRow }) : 0
+			? state.focusedRow === state.lines.length - 1
+				? getRowLength({ ...state, focusedRow })
+				: 0
 			: state.index + 1;
 	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
 	return {
@@ -303,12 +359,12 @@ const reduceKeyRight = (state) => {
 		selection: undefined,
 		index,
 		focusedRow,
-		scrollRange: { ...sr, start: Math.max(stop - sr.offset + 1, 0), stop }
+		scrollRange: { ...sr, start: Math.max(stop - sr.offset + 1, 0), stop },
 	};
 };
 
 /* ARROW_UP */
-const reduceKeyUp = (state) => {
+const reduceKeyUp = state => {
 	const { scrollRange: sr, lines } = state;
 	const focusedRow = Math.max(0, state.focusedRow - 1);
 	const start = focusedRow >= sr.start ? sr.start : focusedRow;
@@ -319,13 +375,13 @@ const reduceKeyUp = (state) => {
 		scrollRange: {
 			...sr,
 			start,
-			stop: Math.min(start + sr.offset - 1, lines.length - 1)
-		}
+			stop: Math.min(start + sr.offset - 1, lines.length - 1),
+		},
 	};
 };
 
 /* ARROW_DOWN */
-const reduceKeyDown = (state) => {
+const reduceKeyDown = state => {
 	const { scrollRange: sr, lines } = state;
 	const focusedRow = Math.min(lines.length - 1, state.focusedRow + 1);
 	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
@@ -336,25 +392,34 @@ const reduceKeyDown = (state) => {
 		scrollRange: {
 			...sr,
 			start: Math.max(stop - sr.offset + 1, 0),
-			stop
-		}
+			stop,
+		},
 	};
 };
 
 /* DELETE */
 const reduceKeyDelete = ({ lines, index, focusedRow, ...rest }) => {
 	const rowSize = getRowLength({ lines, focusedRow });
-	const isMerging = (rowSize - 1 < 0 || index === rowSize) && focusedRow !== lines.length - 1;
+	const isMerging =
+		(rowSize - 1 < 0 || index === rowSize) && focusedRow !== lines.length - 1;
 	const nextLines = lines.reduce(
 		(a, line, i) =>
 			i === focusedRow
 				? isMerging
 					? mergeRow({
-							lines: [ ...a, line, { ...lines[focusedRow + 1] } ],
-							focusedRow: focusedRow + 1
-						})
-					: [ ...a, getNewRow(`${line.value.substr(0, index)}${line.value.substr(index + 1)}`, a.length) ]
-				: i === focusedRow + 1 && isMerging ? a : [ ...a, line ],
+							lines: [...a, line, { ...lines[focusedRow + 1] }],
+							focusedRow: focusedRow + 1,
+					  })
+					: [
+							...a,
+							getNewRow(
+								`${line.value.substr(0, index)}${line.value.substr(index + 1)}`,
+								a.length
+							),
+					  ]
+				: i === focusedRow + 1 && isMerging
+				? a
+				: [...a, line],
 		[]
 	);
 
@@ -363,12 +428,19 @@ const reduceKeyDelete = ({ lines, index, focusedRow, ...rest }) => {
 
 /* BACK_SPACE */
 const reduceKeyBackspace = ({ lines, index, focusedRow, ...rest }) => {
-	const newFocusedRow = index === 0 ? (focusedRow === 0 ? 0 : focusedRow - 1) : focusedRow;
+	const newFocusedRow =
+		index === 0 ? (focusedRow === 0 ? 0 : focusedRow - 1) : focusedRow;
 	const newIndex =
-		index === 0 ? (focusedRow === 0 ? 0 : getRowLength({ lines, focusedRow: newFocusedRow })) : index - 1;
+		index === 0
+			? focusedRow === 0
+				? 0
+				: getRowLength({ lines, focusedRow: newFocusedRow })
+			: index - 1;
 	const newLines =
 		index === 0
-			? focusedRow === 0 ? lines : mergeRow({ lines, index, focusedRow })
+			? focusedRow === 0
+				? lines
+				: mergeRow({ lines, index, focusedRow })
 			: removeCharFromRow({ lines, index, focusedRow });
 
 	return {
@@ -376,7 +448,7 @@ const reduceKeyBackspace = ({ lines, index, focusedRow, ...rest }) => {
 		lines: newLines,
 		selection: undefined,
 		focusedRow: newFocusedRow,
-		index: newIndex
+		index: newIndex,
 	};
 };
 
@@ -384,8 +456,13 @@ const mergeRow = ({ lines, focusedRow }) =>
 	lines.reduce(
 		(a, line, i) =>
 			i === focusedRow - 1
-				? [ ...a, getNewRow(line.value.concat(lines[focusedRow].value), a.length) ]
-				: i === focusedRow ? a : [ ...a, line ],
+				? [
+						...a,
+						getNewRow(line.value.concat(lines[focusedRow].value), a.length),
+				  ]
+				: i === focusedRow
+				? a
+				: [...a, line],
 		[]
 	);
 
@@ -393,8 +470,14 @@ const removeCharFromRow = ({ lines, focusedRow, index }) =>
 	lines.reduce(
 		(a, line, i) =>
 			i === focusedRow
-				? [ ...a, getNewRow(`${line.value.substr(0, index - 1)}${line.value.substr(index)}`, a.length) ]
-				: [ ...a, line ],
+				? [
+						...a,
+						getNewRow(
+							`${line.value.substr(0, index - 1)}${line.value.substr(index)}`,
+							a.length
+						),
+				  ]
+				: [...a, line],
 		[]
 	);
 
@@ -404,8 +487,12 @@ const reduceKeyEnter = ({ focusedRow, index, lines, ...rest }) => {
 	const nextLines = lines.reduce(
 		(a, line, i) =>
 			i === focusedRow
-				? [ ...a, getNewRow(line.value.substr(0, index), i), getNewRow(line.value.substr(index), i + 1) ]
-				: [ ...a, line ],
+				? [
+						...a,
+						getNewRow(line.value.substr(0, index), i),
+						getNewRow(line.value.substr(index), i + 1),
+				  ]
+				: [...a, line],
 		[]
 	);
 	return {
@@ -414,55 +501,65 @@ const reduceKeyEnter = ({ focusedRow, index, lines, ...rest }) => {
 		index: 0,
 		lines: nextLines,
 		// scrollRange,
-		...rest
+		...rest,
 	};
 };
 
 /* UTILS */
 const getRow = ({ lines, focusedRow }) => lines[focusedRow];
 
-const getRowLength = (state) => getRow(state).value.length;
+const getRowLength = state => getRow(state).value.length;
 
-const appendCharAtCursor = (state) => (char) =>
+const appendCharAtCursor = state => char =>
 	state.lines.reduce(
 		({ lines, index, focusedRow, ...rest }, line, i) =>
 			i === focusedRow
 				? {
 						lines: [
 							...lines,
-							getNewRow(`${line.value.substr(0, index)}${char}${line.value.substr(index)}`, i)
+							getNewRow(
+								`${line.value.substr(0, index)}${char}${line.value.substr(
+									index
+								)}`,
+								i
+							),
 						],
 						index: index + char.length,
 						focusedRow,
-						...rest
-					}
-				: { lines: [ ...lines, line ], index, focusedRow, ...rest },
+						...rest,
+				  }
+				: { lines: [...lines, line], index, focusedRow, ...rest },
 		{ ...state, lines: [] }
 	);
 
 /* */
 const getNewRow = (string, old = {}, index = -1) => ({
 	value: string,
-	tokens: getTokens_(string, index),
-	...old
+	tokens: [
+		{ value: string, start: 0, stop: string.length - 1, className: 'unmapped' },
+	], //getTokens_(string, index),
+	...old,
 });
 
 /* DELETE_SELECTION */
-const deleteSelection = (state) => {
+const deleteSelection = state => {
 	const { selection, scrollRange: sr } = state;
 	const lines = state.lines
 		.reduce(
 			(a, line, i) =>
 				i >= selection.start.row && i <= selection.stop.row
-					? [ ...a, deleteOnRow(selection)(line, i) ]
-					: [ ...a, line ],
+					? [...a, deleteOnRow(selection)(line, i)]
+					: [...a, line],
 			[]
 		)
-		.filter(({ value }, i) => value.length > 0 || i < selection.start.row || i > selection.stop.row);
+		.filter(
+			({ value }, i) =>
+				value.length > 0 || i < selection.start.row || i > selection.stop.row
+		);
 	const focusedRow = selection.start.row;
 	return {
 		...state,
-		lines: lines.length > 0 ? lines : [ { value: '', tokens: [] } ],
+		lines: lines.length > 0 ? lines : [{ value: '', tokens: [] }],
 		focusedRow,
 		index: selection.start.index,
 		selection: undefined,
@@ -472,16 +569,20 @@ const deleteSelection = (state) => {
 				: {
 						...sr,
 						start: focusedRow,
-						stop: Math.min(focusedRow + sr.offset - 1, lines.length - 1)
-					}
+						stop: Math.min(focusedRow + sr.offset - 1, lines.length - 1),
+				  },
 	};
 };
 
 const deleteOnRow = ({ start, stop }) => ({ value }, row) => {
 	const next =
 		row === start.row
-			? `${value.substr(0, start.index)}${row === stop.row ? value.substr(stop.index) : ''}`
-			: row === stop.row ? value.substr(stop.index) : '';
+			? `${value.substr(0, start.index)}${
+					row === stop.row ? value.substr(stop.index) : ''
+			  }`
+			: row === stop.row
+			? value.substr(stop.index)
+			: '';
 	return getNewRow(next);
 };
 
@@ -492,11 +593,15 @@ const insertText = (state, text) => {
 		const newRows = text.split(/\n/);
 		// if (newRows[newRows.length - 1].length === 0) newRows.pop();
 		const lines = state.lines.reduce(
-			(a, line, row) => (row === focusedRow ? [ ...a, ...insertInLine(index)(line, newRows) ] : [ ...a, line ]),
+			(a, line, row) =>
+				row === focusedRow
+					? [...a, ...insertInLine(index)(line, newRows)]
+					: [...a, line],
 			[]
 		);
 		const newFocusedRow = focusedRow + newRows.length - 1;
-		const newIndex = newRows[newRows.length - 1].length + (newRows.length > 1 ? 0 : index);
+		const newIndex =
+			newRows[newRows.length - 1].length + (newRows.length > 1 ? 0 : index);
 		return {
 			...state,
 			lines,
@@ -509,28 +614,36 @@ const insertText = (state, text) => {
 					: {
 							...sr,
 							start: Math.max(newFocusedRow - sr.offset + 1, 0),
-							stop: newFocusedRow
-						}
+							stop: newFocusedRow,
+					  },
 		};
 	}
 
 	return { ...state };
 };
 
-const insertInLine = (index) => (line, rows) => {
-	const getRow = (line) => (rows, i) =>
+const insertInLine = index => (line, rows) => {
+	const getRow = line => (rows, i) =>
 		i === 0
-			? getNewRow(`${line.value.substr(0, index)}${rows[i]}${line.value.substr(index)}`)
-			: i === rows.length - 1 ? getNewRow(`${rows[i]}${line.value.substr(index)}`) : getNewRow(rows[i]);
-	const newRows = rows.length === 0 ? [ rows ] : rows.map((row, i) => getRow(line)(rows, i));
+			? getNewRow(
+					`${line.value.substr(0, index)}${rows[i]}${line.value.substr(index)}`
+			  )
+			: i === rows.length - 1
+			? getNewRow(`${rows[i]}${line.value.substr(index)}`)
+			: getNewRow(rows[i]);
+	const newRows =
+		rows.length === 0 ? [rows] : rows.map((row, i) => getRow(line)(rows, i));
 	return newRows;
 };
 
 const setSelection = (state, selection) => ({ ...state, selection });
 
 /* SCROLL */
-const reduceScrollDown = (state) => {
-	const { scrollRange: { start, stop, offset }, lines } = state;
+const reduceScrollDown = state => {
+	const {
+		scrollRange: { start, stop, offset },
+		lines,
+	} = state;
 
 	return lines.length < offset
 		? state
@@ -539,21 +652,23 @@ const reduceScrollDown = (state) => {
 				scrollRange: {
 					offset,
 					start: Math.min(start + 2, lines.length - offset),
-					stop: Math.min(stop + 2, lines.length - 1)
-				}
-			};
+					stop: Math.min(stop + 2, lines.length - 1),
+				},
+		  };
 };
 
-const reduceScrollUp = (state) => {
-	const { scrollRange: { start, stop, offset } } = state;
+const reduceScrollUp = state => {
+	const {
+		scrollRange: { start, stop, offset },
+	} = state;
 
 	return {
 		...state,
 		scrollRange: {
 			offset,
 			start: Math.max(start - 2, 0),
-			stop: Math.max(stop - 2, offset - 1)
-		}
+			stop: Math.max(stop - 2, offset - 1),
+		},
 	};
 };
 
