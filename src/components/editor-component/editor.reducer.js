@@ -185,10 +185,21 @@ const fillLine = (line, { pos, lines, tokens }) => {
 		return { lines: [...lines, line], pos: pos + 1, tokens };
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length;
-	// console.log(line, first);
 	return first.start < pos || first.stop > rowLimit
 		? fillMulti(line, { pos, lines, tokens })
-		: first.stop < rowLimit
+		: fillSingle(line, { pos, lines, tokens });
+};
+
+const fillSingle = (line, { lines, pos, tokens }) => {
+	const [first, ...rest] = tokens;
+	if (first.value === '\n')
+		return {
+			pos: pos + line.value.length + 1,
+			lines: [...lines, line],
+			tokens: rest,
+		};
+	const rowLimit = pos + line.value.length;
+	return first.stop < rowLimit
 		? fillLine(
 				{
 					...line,
@@ -211,7 +222,6 @@ const fillLine = (line, { pos, lines, tokens }) => {
 const fillMulti = (line, { lines, tokens, pos }) => {
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length - 1;
-	console.log(line, first);
 	return pos <= first.start
 		? {
 				lines: [
@@ -304,6 +314,7 @@ const replaceToken = (state, suggestion) => {
 /* CHECK_PREFIX */
 const checkPrefix = ({ lines, focusedRow, index }) => {
 	const token = getFocusedToken(lines)(focusedRow, index);
+	// console.log(token, lines);
 	return token ? token.value.trim().substr(0, index - token.start) : undefined;
 };
 
