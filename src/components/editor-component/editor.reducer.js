@@ -181,6 +181,8 @@ const reduceTokenizeAll = state => {
 };
 
 const fillLine = (line, { pos, lines, tokens }) => {
+	if (line.value.length === 0)
+		return { lines: [...lines, line], pos: pos + 1, tokens };
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length;
 	// console.log(line, first);
@@ -209,7 +211,7 @@ const fillLine = (line, { pos, lines, tokens }) => {
 const fillMulti = (line, { lines, tokens, pos }) => {
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length - 1;
-	// console.log(line, first, { pos, rowLimit });
+	console.log(line, first);
 	return pos <= first.start
 		? {
 				lines: [
@@ -219,7 +221,9 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 						tokens: [
 							...line.tokens,
 							{
-								...moveToken(first, pos),
+								...first,
+								start: first.start - pos,
+								stop: line.value.length - 1,
 								value: first.value.substring(0, rowLimit - first.start + 1),
 							},
 						],
@@ -237,7 +241,9 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 						tokens: [
 							...line.tokens,
 							{
-								...moveToken(first, pos),
+								...first,
+								start: 0,
+								stop: line.value.length - 1,
 								value: line.value,
 							},
 						],
@@ -252,7 +258,9 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 					tokens: [
 						...line.tokens,
 						{
-							...moveToken(first, pos),
+							...first,
+							start: 0,
+							stop: first.stop - pos,
 							value: first.value.substring(pos - first.start),
 						},
 					],

@@ -28,6 +28,7 @@ const keyDownsuggesterProxy = (dispatch, state, shortcutPattern) => e => {
 				if (index > -1) {
 					stopAndPrevent(e);
 					dispatch(actions.suggestToken(state.suggesterState.value));
+					dispatch(actions.tokenizeAll());
 					return true;
 				}
 				return false;
