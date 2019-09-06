@@ -220,4 +220,33 @@ const appendCharAtCursor = state => char =>
 		{ ...state, lines: [] }
 	);
 
+/* DELETE */
+const reduceKeyDelete = ({ lines, index, focusedRow, ...rest }) => {
+	const rowSize = getRowLength({ lines, focusedRow });
+	const isMerging =
+		(rowSize - 1 < 0 || index === rowSize) && focusedRow !== lines.length - 1;
+	const nextLines = lines.reduce(
+		(a, line, i) =>
+			i === focusedRow
+				? isMerging
+					? mergeRow({
+							lines: [...a, line, { ...lines[focusedRow + 1] }],
+							focusedRow: focusedRow + 1,
+					  })
+					: [
+							...a,
+							getNewRow(
+								`${line.value.substr(0, index)}${line.value.substr(index + 1)}`,
+								a.length
+							),
+					  ]
+				: i === focusedRow + 1 && isMerging
+				? a
+				: [...a, line],
+		[]
+	);
+
+	return { lines: nextLines, selection: undefined, index, focusedRow, ...rest };
+};
+
 export default reducer;
