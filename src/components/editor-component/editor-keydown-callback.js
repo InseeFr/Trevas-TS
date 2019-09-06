@@ -6,11 +6,24 @@ const compose = (...opts) => (...callbacks) =>
 		(a, call) => e => {
 			if (!call(...opts)(e)) a(e);
 		},
-		e => false
+		() => false
 	);
 
 /* */
-const keyDownsuggesterProxy = (dispatch, state, shortcutPattern) => e => {
+const stopAndPrevent = e => {
+	e.stopPropagation();
+	e.preventDefault();
+};
+
+/* */
+const isCharCode = c =>
+	/^[\w-+*=/?,!;.:{}/\\$*%()"#@µ<>'~|& [\]éôêûîèäëïüöùààç]{1}$/gim.test(c); // il en manquera !
+
+/* */
+const isSelection = selection => selection && selection.stop;
+
+/* */
+const keyDownsuggesterProxy = (dispatch, state) => e => {
 	// console.debug("%ckeyDownsuggesterProxy", "color: gold;");
 	const { open, index } = state.suggesterState;
 	if (open) {
@@ -41,7 +54,7 @@ const keyDownsuggesterProxy = (dispatch, state, shortcutPattern) => e => {
 };
 
 /* */
-const keyDownCallback = (dispatch, state, shortcutPattern) => e => {
+const keyDownCallback = dispatch => e => {
 	// console.debug("%ckeyDownCallback", "color: gold;");
 	if (KEY.isUnbindedKey(e.key)) return false;
 	switch (e.key) {
@@ -85,7 +98,7 @@ const keyDownCallback = (dispatch, state, shortcutPattern) => e => {
 };
 
 /* */
-const keyDownWithSelection = (dispatch, state, shortcutPatterns) => e => {
+const keyDownWithSelection = (dispatch, state) => e => {
 	// console.debug("%ckeyDownWithSelection", "color: gold;");
 	if (isSelection(state.selection)) {
 		switch (e.key) {
@@ -124,19 +137,6 @@ const keydowShorcutCallback = (dispatch, state, shortcutPatterns) => e => {
 	}
 	return false;
 };
-
-/* */
-const stopAndPrevent = e => {
-	e.stopPropagation();
-	e.preventDefault();
-};
-
-/* */
-const isCharCode = c =>
-	/^[\w-+*=/?,!;.:{}/\\$*%()"#@µ<>'~|& [\]éôêûîèäëïüöùààç]{1}$/gim.test(c); // il en manquera !
-
-/* */
-const isSelection = selection => selection && selection.stop;
 
 /* */
 export default (dispatch, state, shortcutPatterns) =>
