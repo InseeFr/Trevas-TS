@@ -1,30 +1,22 @@
 import * as actions from '../editor.actions';
-import initialState from './initial-state';
-import { getNewRow } from './commons-tools';
 
-let getTokens_ = undefined;
+const LF = '\n';
 
-/* */
-export const initializer = getTokens => {
-	getTokens_ = getTokens;
-	return initialState;
-};
-
-const reducer = (state, action) => {
+const reducer = getTokens => (state, action) => {
 	switch (action.type) {
 		/* TOKENIZE_ALL */
 		case actions.TOKENIZE_ALL:
-			return reduceTokenizeAll(state);
+			return reduceTokenizeAll(getTokens)(state);
 		default:
 			return state;
 	}
 };
 
 /* TOKENIZE_ALL */
-const reduceTokenizeAll = state => {
+const reduceTokenizeAll = getTokens => state => {
 	const { lines } = state;
-	const tokens = getTokens_(
-		lines.reduce((a, { value }) => `${a}${value}\n`, '')
+	const tokens = getTokens(
+		lines.reduce((a, { value }) => `${a}${value}${LF}`, '')
 	);
 
 	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
@@ -37,7 +29,7 @@ const reduceTokenizeAll = state => {
 
 const fillLine = (line, { pos, lines, tokens }) => {
 	if (line.value.length === 0)
-		return { lines: [...lines, line], pos: pos + 1, tokens };
+		return { lines: [...lines, { ...line, tokens: [] }], pos: pos + 1, tokens };
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length;
 	return first.start < pos || first.stop > rowLimit
@@ -47,9 +39,9 @@ const fillLine = (line, { pos, lines, tokens }) => {
 
 const fillSingle = (line, { lines, pos, tokens }) => {
 	const [first, ...rest] = tokens;
-	if (first.value === '\n')
+	if (first.value === LF || first.value.length === 0)
 		return {
-			pos: pos + line.value.length + 1,
+			pos: pos + line.value.length + LF.length,
 			lines: [...lines, line],
 			tokens: rest,
 		};
@@ -69,7 +61,7 @@ const fillSingle = (line, { lines, pos, tokens }) => {
 					{ ...line, tokens: [...line.tokens, moveToken(first, pos)] },
 				],
 				tokens: rest,
-				pos: pos + line.value.length + 1,
+				pos: pos + line.value.length + LF.length,
 		  }
 		: null;
 };
@@ -95,7 +87,7 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 					},
 				],
 				tokens,
-				pos: pos + line.value.length + 1,
+				pos: pos + line.value.length + LF.length,
 		  }
 		: first.stop >= rowLimit
 		? {
@@ -115,7 +107,7 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 					},
 				],
 				tokens: first.stop === rowLimit ? rest : tokens,
-				pos: pos + line.value.length + 1,
+				pos: pos + line.value.length + LF.length,
 		  }
 		: fillLine(
 				{

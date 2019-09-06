@@ -1,6 +1,6 @@
 import React, { useMemo, createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import editorReducer, { initializer } from '../editor-reducer';
+import createReducer, { initialState } from '../editor-reducer';
 import Suggestions from './sugestions.component';
 import Editor from './editor.component';
 import createSuggester from '../suggestions-manager';
@@ -29,11 +29,9 @@ const EditorPanel = ({
 	shortcuts,
 }) => {
 	const getFullTokens = createFulTokenizer(getTokens);
-	const [state, dispatch] = useReducer(
-		editorReducer,
-		getFullTokens,
-		initializer
-	);
+	const editorReducer = createReducer(getFullTokens);
+	const [state, dispatch] = useReducer(editorReducer, initialState);
+
 	useEffect(() => {
 		dispatch({
 			type: 'change-editor-content',
@@ -46,7 +44,7 @@ const EditorPanel = ({
 		// task.addEventListener('message', e => {
 		// 	console.log('yop !', e.data);
 		// });
-	}, [content]);
+	}, [content, getTokens]);
 
 	const suggester = useMemo(() => createSuggester(dictionnary), [dictionnary]);
 	return (

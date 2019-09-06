@@ -64,7 +64,7 @@ const deleteOnRow = ({ start, stop }) => ({ value }, row) => {
 const insertText = (state, text) => {
 	const { focusedRow, index, scrollRange: sr } = state;
 	if (focusedRow !== undefined && index !== undefined) {
-		const newRows = text.split(/\n/);
+		const newRows = text.split(/\r\n/);
 		// if (newRows[newRows.length - 1].length === 0) newRows.pop();
 		const lines = state.lines.reduce(
 			(a, line, row) =>

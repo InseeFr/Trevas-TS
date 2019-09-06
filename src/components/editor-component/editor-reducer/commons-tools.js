@@ -1,9 +1,9 @@
 const TOOLS = {};
 
 /* UTILS */
-const getRow = ({ lines, focusedRow }) => lines[focusedRow];
+export const getRow = ({ lines, focusedRow }) => lines[focusedRow];
 
-const getRowLength = state => getRow(state).value.length;
+export const getRowLength = state => getRow(state).value.length;
 
 /* */
 export const getNewRow = (string, old = {}, index = -1) => ({
@@ -14,6 +14,8 @@ export const getNewRow = (string, old = {}, index = -1) => ({
 	...old,
 });
 
+TOOLS.getRow = getRow;
+TOOLS.getRowLength = getRowLength;
 TOOLS.getNewRow = getNewRow;
 
 export default TOOLS;
