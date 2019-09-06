@@ -76,6 +76,7 @@
 	"dependencies": {
 		"antlr4": "^4.7.2",
 		"classnames": "^2.2.6",
+		"prop-types": "^15.7.2",
 		"react-sortable-tree": "^2.6.2"
 	},
 	"prettier": {

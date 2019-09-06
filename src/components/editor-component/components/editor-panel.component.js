@@ -1,10 +1,4 @@
-import React, {
-	useMemo,
-	createContext,
-	useEffect,
-	useReducer,
-	useState,
-} from 'react';
+import React, { useMemo, useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import createReducer, { initialState } from '../editor-reducer';
 import Suggestions from './sugestions.component';
@@ -12,18 +6,10 @@ import Editor from './editor.component';
 import createSuggester from '../suggestions-manager';
 import createFulTokenizer from '../create-full-tokenizer';
 import RowNumbers from './row-numbers.component';
-import defaultPatterns from './../shortcut-patterns';
-import * as actions from './../editor.actions';
-import worker from './worker.js';
+import defaultPatterns from '../shortcut-patterns';
+import * as actions from '../editor.actions';
+import EditorContext from './editor-context';
 import './editor.scss';
-
-class WebWorker {
-	constructor(worker) {
-		const code = worker.toString();
-		const blob = new Blob([`(${code})()`]); //'(' + code + ')()']);
-		return new Worker(URL.createObjectURL(blob));
-	}
-}
 
 const EditorPanel = ({
 	content = [],
@@ -45,12 +31,6 @@ const EditorPanel = ({
 			lines: content,
 		});
 		dispatch(actions.tokenizeAll());
-
-		// const task = new WebWorker(worker, getFullTokens);
-		// task.postMessage('post lines to tokenize');
-		// task.addEventListener('message', e => {
-		// 	console.log('yop !', e.data);
-		// });
 	}, [content, getTokens]);
 
 	const suggester = useMemo(() => createSuggester(dictionnary), [dictionnary]);
@@ -74,7 +54,9 @@ const EditorPanel = ({
 };
 
 /* */
-Editor.proTypes = {
+EditorPanel.propTypes = {
+	edit: PropTypes.bool,
+	parse: PropTypes.func.isRequired,
 	getTokens: PropTypes.func.isRequired,
 	shortcuts: PropTypes.shape({ get: PropTypes.func.isRequired }),
 	handleChange: PropTypes.func,
@@ -84,6 +66,13 @@ Editor.proTypes = {
 	}),
 };
 
-export const TokenContext = createContext({});
-export const EditorContext = createContext({});
+/* */
+EditorPanel.defaultProps = {
+	edit: true,
+	shortcuts: {},
+	handleChange: () => null,
+	content: [],
+	dictionnary: {},
+};
+
 export default EditorPanel;

@@ -8,7 +8,7 @@ import React, {
 import createKeydownCallback from './../editor-keydown-callback';
 import * as actions from './../editor.actions';
 import Cursor from './cursor.component';
-import { EditorContext } from './editor-panel.component';
+import EditorContext from './editor-context';
 
 const Overlay = ({ chasse }) => {
 	const state = useContext(EditorContext);
