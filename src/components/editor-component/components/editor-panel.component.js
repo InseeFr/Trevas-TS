@@ -1,6 +1,6 @@
 import React, { useMemo, createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import editorReducer, { initializer } from '../editor.reducer';
+import editorReducer, { initializer } from '../editor-reducer';
 import Suggestions from './sugestions.component';
 import Editor from './editor.component';
 import createSuggester from '../suggestions-manager';

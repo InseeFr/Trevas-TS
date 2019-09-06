@@ -94,11 +94,13 @@ const keyDownWithSelection = (dispatch, state, shortcutPatterns) => e => {
 			case KEY.BACK_SPACE:
 				stopAndPrevent(e);
 				dispatch(actions.deleteSelection());
+				dispatch(actions.tokenizeAll());
 				return true;
 			default: {
 				if (isCharCode(e.key)) {
 					stopAndPrevent(e);
 					dispatch(actions.deleteSelection());
+					dispatch(actions.tokenizeAll());
 				}
 				return false;
 			}
