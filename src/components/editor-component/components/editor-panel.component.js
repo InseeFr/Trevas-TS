@@ -1,4 +1,10 @@
-import React, { useMemo, createContext, useEffect, useReducer } from 'react';
+import React, {
+	useMemo,
+	createContext,
+	useEffect,
+	useReducer,
+	useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import createReducer, { initialState } from '../editor-reducer';
 import Suggestions from './sugestions.component';
@@ -28,8 +34,9 @@ const EditorPanel = ({
 	handleChange = () => null,
 	shortcuts,
 }) => {
-	const getFullTokens = createFulTokenizer(getTokens);
-	const editorReducer = createReducer(getFullTokens);
+	const [editorReducer] = useState(() =>
+		createReducer(createFulTokenizer(getTokens))
+	);
 	const [state, dispatch] = useReducer(editorReducer, initialState);
 
 	useEffect(() => {
@@ -59,7 +66,7 @@ const EditorPanel = ({
 		>
 			<div className="panel-editor noselect">
 				<RowNumbers />
-				<Editor getTokens={getFullTokens} parse={parse} />
+				<Editor parse={parse} />
 				<Suggestions suggest={suggester} />
 			</div>
 		</EditorContext.Provider>

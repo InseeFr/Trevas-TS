@@ -18,7 +18,7 @@ const compose = (...callbacks) =>
 		state => state
 	);
 
-export default getTokens => (state, action) => {
+export default getTokens => {
 	const composed = compose(
 		reducer,
 		scrollReducer,
@@ -28,8 +28,9 @@ export default getTokens => (state, action) => {
 		keyReducer,
 		cursorReducer
 	);
-
-	const newState = composed(state, action);
-	console.debug('%cDebug', 'color: purple;', { action, state, newState });
-	return newState;
+	return (state, action) => {
+		const newState = composed(state, action);
+		console.debug('%cDebug', 'color: purple;', { action, state, newState });
+		return newState;
+	};
 };
