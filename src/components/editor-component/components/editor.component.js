@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import ScrollUpDown from './scrollbar-up.component';
+import ScrollHor from './scrollbar-hor.component';
 import Line from './line.component';
 import Overlay from './overlay.component';
 import * as actions from '../editor.actions';
@@ -47,11 +48,13 @@ const Editor = ({ parse }) => {
 			dispatch(
 				actions.setScrollrange(computeScrollRange(editorEl.current, rowHeight))
 			);
-			dispatch(
-				actions.setHorizontalRange(
-					computeHorizontalRange(editorEl.current, chasse)
-				)
-			);
+			if (chasse) {
+				dispatch(
+					actions.setHorizontalRange(
+						computeHorizontalRange(editorEl.current, chasse)
+					)
+				);
+			}
 		}
 	}, [editorEl, rowHeight, chasse, dispatch]);
 
@@ -63,6 +66,7 @@ const Editor = ({ parse }) => {
 				))}
 			</div>
 			<ScrollUpDown parentEl={editorEl.current} />
+			<ScrollHor parentEl={editorEl.current} />
 			<Overlay lines={lines} el={editorEl} />
 		</div>
 	);

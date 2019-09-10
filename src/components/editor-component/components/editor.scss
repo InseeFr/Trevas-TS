@@ -55,6 +55,7 @@ $rowHeight: 22px;
 		.row-numbers-container {
 			border-right: 1px solid $bgLighterColor;
 			width: 33px;
+
 			.row {
 				height: $rowHeight;
 				.num {
@@ -76,11 +77,35 @@ $rowHeight: 22px;
 	.editor-container {
 		position: relative;
 		width: $panelWidth;
+		height: calc(100% - 12px);
+
+		.scrollbar-hor {
+			z-index: 4;
+			cursor: default;
+			position: absolute;
+			bottom: -12px;
+			left: 0;
+			width: 100%;
+			height: 12px;
+			margin: 0;
+			padding: 0;
+			border-top: solid $bgLighterColor 1px;
+
+			.dragguer {
+				z-index: 4;
+				position: absolute;
+				display: inline-block;
+				background-color: rgba(224, 218, 218, 0.4);
+				height: 12px;
+				&:hover {
+					background-color: rgba(224, 218, 218, 0.6);
+				}
+			}
+		}
 
 		.scroll-up-down {
 			z-index: 4;
 			cursor: default;
-			position: relative;
 			width: $verticalScrollwidth;
 			background-color: transparent;
 			position: absolute;

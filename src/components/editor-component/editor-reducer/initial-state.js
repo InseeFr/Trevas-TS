@@ -1,8 +1,8 @@
 /* */
 const initialState = {
 	rowHeight: 22,
-	scrollRange: { start: 0, stop: 20, offset: 21 },
-	horizontalRange: { start: 0, stop: 20, offset: 21 },
+	scrollRange: { start: 0, stop: 0, offset: 0 },
+	horizontalRange: { start: 0, stop: 0, offset: 0 },
 	lines: [{ value: '', tokens: [] }],
 	index: 0,
 	focusedRow: undefined,

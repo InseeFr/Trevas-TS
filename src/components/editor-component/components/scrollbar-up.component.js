@@ -1,12 +1,14 @@
+/* eslint-disable no-undef */
 import React, { useContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import EditorContext from './editor-context';
-import * as actions from './../editor.actions';
+import * as actions from '../editor.actions';
 
 const ScrollUpDown = ({ parentEl }) => {
 	const state = useContext(EditorContext);
 	const { lines, scrollRange, selection, index, focusedRow, dispatch } = state;
 
-	window.addEventListener('scroll', e => {
+	window.addEventListener('scroll', () => {
 		// TODO something
 	});
 
@@ -102,7 +104,7 @@ const Dragguer = ({ height }) => {
 					}
 				}
 			};
-			const upEvent = e => {
+			const upEvent = () => {
 				setDrag(false);
 				document.removeEventListener('mousemove', dragEvent);
 			};
@@ -113,10 +115,12 @@ const Dragguer = ({ height }) => {
 				document.removeEventListener('mouseup', upEvent);
 			};
 		}
+		return undefined;
 	}, [drag, scrollRange, dgTop, lines.length, height, dispatch, dgHeight]);
 
 	return (
 		<span
+			role="presentation"
 			className="dragger"
 			draggable="false"
 			style={{ height: dgHeight, top: dgTop }}
@@ -159,5 +163,18 @@ const computeScrollrange = ({ scrollRange: sr, lines }) => percent => {
 		stop: Math.min(start + sr.offset + 1, lines.length - 1),
 	};
 };
+
+ScrollUpDown.propTypes = {
+	parentEl: PropTypes.shape({
+		getBoundingClientRect: PropTypes.func.isRequired,
+	}),
+};
+ScrollUpDown.defaultProps = { parentEl: undefined };
+Cursor.propTypes = {
+	focusedRow: PropTypes.number.isRequired,
+	parentHeight: PropTypes.number.isRequired,
+	nbLines: PropTypes.number.isRequired,
+};
+Selection.propTypes = {};
 
 export default ScrollUpDown;
