@@ -134,3 +134,10 @@ export const TOKENIZE_ALL = 'editor/tokenize-all';
 export const tokenizeAll = () => ({
 	type: TOKENIZE_ALL,
 });
+
+/* INIT CHAR SIZE */
+export const INIT_CHAR_SIZE = 'editor/init-char-size';
+export const initCharSize = (chasse, rowHeight = 22) => ({
+	type: INIT_CHAR_SIZE,
+	payload: { chasse, rowHeight },
+});

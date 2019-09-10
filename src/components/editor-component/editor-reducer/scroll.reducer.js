@@ -1,24 +1,6 @@
 import * as actions from '../editor.actions';
 
-const reducer = (state, action) => {
-	switch (action.type) {
-		/* SCROLL */
-		case actions.SCROLL_DOWN:
-			return reduceScrollDown(state);
-		case actions.SCROLL_UP:
-			return reduceScrollUp(state);
-		case actions.SET_SCROLLRANGE:
-			return {
-				...state,
-				scrollRange: action.payload.scrollRange,
-			};
-
-		default:
-			return state;
-	}
-};
-
-/* SCROLL */
+/* */
 const reduceScrollDown = state => {
 	const {
 		scrollRange: { start, stop, offset },
@@ -37,6 +19,7 @@ const reduceScrollDown = state => {
 		  };
 };
 
+/* */
 const reduceScrollUp = state => {
 	const {
 		scrollRange: { start, stop, offset },
@@ -50,6 +33,37 @@ const reduceScrollUp = state => {
 			stop: Math.max(stop - 2, offset - 1),
 		},
 	};
+};
+
+/* */
+const reduceInitCharSize = (state, { payload: { chasse, rowHeight } }) => ({
+	...state,
+	chasse,
+	rowHeight,
+});
+
+/* */
+const reduceSetScrollRange = (state, { payload: { scrollRange } }) => ({
+	...state,
+	scrollRange,
+});
+
+/* */
+const reducer = (state, action) => {
+	switch (action.type) {
+		/* SCROLL */
+		case actions.SCROLL_DOWN:
+			return reduceScrollDown(state);
+		case actions.SCROLL_UP:
+			return reduceScrollUp(state);
+		case actions.INIT_CHAR_SIZE:
+			return reduceInitCharSize(state, action);
+		case actions.SET_SCROLLRANGE:
+			return reduceSetScrollRange(state, action);
+
+		default:
+			return state;
+	}
 };
 
 export default reducer;
