@@ -51,7 +51,7 @@ const reduceSetScrollRange = (state, { payload: { scrollRange } }) => ({
 /* */
 const reduceSetHorizontalRange = (state, { payload: { horizontalRange } }) => ({
 	...state,
-	horizontalRange,
+	horizontalRange, //: { start: 0, stop: 19, offset: 20 },
 });
 
 /* */
