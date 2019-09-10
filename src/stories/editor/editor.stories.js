@@ -17,7 +17,7 @@ const dictionnary = {
 };
 
 const content = [
-	'// toto := "toto";',
+	'// toto := "toto est un sacré lascar, il passe ça vit à raconter des blagues toutes naze à ses petits camarades de classe. Il n\'en rame pas une en classe et obtiend toujours des notes complètemet pourries ! Si ça continue";',
 	'if toto /* un commentaire',
 	'\t sur plusieurs ',
 	'\t lignes. */ then else ',

@@ -1,9 +1,19 @@
 import React, { useContext, useEffect, useRef } from 'react';
+
+import PropTypes from 'prop-types';
 import ScrollUpDown from './scrollbar-up.component';
 import Line from './line.component';
 import Overlay from './overlay.component';
-import * as actions from './../editor.actions';
+import * as actions from '../editor.actions';
 import EditorContext from './editor-context';
+
+const getKey = (value, i) => `${i}-${value}`;
+
+const computeScrollRange = (parentEl, rowHeight) => {
+	const { height } = parentEl.getBoundingClientRect();
+	const offset = Math.trunc(height / rowHeight);
+	return { start: 0, stop: offset - 1, offset };
+};
 
 const Editor = ({ parse }) => {
 	const editorEl = useRef();
@@ -38,7 +48,7 @@ const Editor = ({ parse }) => {
 		<div className="editor-container">
 			<div ref={editorEl} className="editor">
 				{visiblesLines.map(({ tokens, value }, i) => (
-					<Line key={`${i}-${value}`} tokens={tokens} row={i} />
+					<Line key={getKey(value, i)} tokens={tokens} row={i} />
 				))}
 			</div>
 			<ScrollUpDown parentEl={editorEl.current} />
@@ -47,10 +57,8 @@ const Editor = ({ parse }) => {
 	);
 };
 
-const computeScrollRange = (parentEl, rowHeight) => {
-	const { height } = parentEl.getBoundingClientRect();
-	const offset = Math.trunc(height / rowHeight);
-	return { start: 0, stop: offset - 1, offset };
+Editor.propTypes = {
+	parse: PropTypes.func.isRequired,
 };
 
 export default Editor;
