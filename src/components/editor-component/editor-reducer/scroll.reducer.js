@@ -49,6 +49,12 @@ const reduceSetScrollRange = (state, { payload: { scrollRange } }) => ({
 });
 
 /* */
+const reduceSetHorizontalRange = (state, { payload: { horizontalRange } }) => ({
+	...state,
+	horizontalRange,
+});
+
+/* */
 const reducer = (state, action) => {
 	switch (action.type) {
 		/* SCROLL */
@@ -60,6 +66,8 @@ const reducer = (state, action) => {
 			return reduceInitCharSize(state, action);
 		case actions.SET_SCROLLRANGE:
 			return reduceSetScrollRange(state, action);
+		case actions.SET_HORIZONTAL_RANGE:
+			return reduceSetHorizontalRange(state, action);
 
 		default:
 			return state;

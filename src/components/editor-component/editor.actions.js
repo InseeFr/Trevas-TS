@@ -141,3 +141,10 @@ export const initCharSize = (chasse, rowHeight = 22) => ({
 	type: INIT_CHAR_SIZE,
 	payload: { chasse, rowHeight },
 });
+
+/* SET_HORIZONTAL_RANGE */
+export const SET_HORIZONTAL_RANGE = 'editor/set-horizontal-range';
+export const setHorizontalRange = horizontalRange => ({
+	type: SET_HORIZONTAL_RANGE,
+	payload: { horizontalRange },
+});

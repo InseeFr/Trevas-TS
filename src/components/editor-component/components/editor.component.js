@@ -15,10 +15,16 @@ const computeScrollRange = (parentEl, rowHeight) => {
 	return { start: 0, stop: offset - 1, offset };
 };
 
+const computeHorizontalRange = (parentEl, chasse) => {
+	const { width } = parentEl.getBoundingClientRect();
+	const offset = Math.trunc(width / chasse);
+	return { start: 0, stop: offset - 1, offset };
+};
+
 const Editor = ({ parse }) => {
 	const editorEl = useRef();
 	const state = useContext(EditorContext);
-	const { lines, dispatch, scrollRange, rowHeight } = state;
+	const { lines, dispatch, scrollRange, rowHeight, chasse } = state;
 
 	useEffect(() => {
 		const code = lines.reduce(
@@ -41,8 +47,13 @@ const Editor = ({ parse }) => {
 			dispatch(
 				actions.setScrollrange(computeScrollRange(editorEl.current, rowHeight))
 			);
+			dispatch(
+				actions.setHorizontalRange(
+					computeHorizontalRange(editorEl.current, chasse)
+				)
+			);
 		}
-	}, [editorEl, rowHeight, dispatch]);
+	}, [editorEl, rowHeight, chasse, dispatch]);
 
 	return (
 		<div className="editor-container">
