@@ -29,6 +29,10 @@ const Overlay = ({ chasse }) => {
 	const [selectionStart, setSelectionStart] = useState(false);
 
 	useEffect(() => {
+		dispatch(actions.initCharSize(chasse));
+	}, [chasse]);
+
+	useEffect(() => {
 		const screenRow = focusedRow - scrollRange.start;
 		const top = rowHeight * screenRow;
 		const left = getCursorLeft(chasse)(index);
@@ -60,6 +64,7 @@ const Overlay = ({ chasse }) => {
 	return (
 		<div
 			ref={divEl}
+			aria-hidden="true"
 			tabIndex="0"
 			className="front-editor"
 			onKeyDown={callbackKeyDown}
@@ -74,7 +79,7 @@ const Overlay = ({ chasse }) => {
 				dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
 				dispatch(actions.setSelection(undefined));
 			}}
-			onMouseLeave={e => setSelectionStart(false)}
+			onMouseLeave={() => setSelectionStart(false)}
 			onMouseUp={e => {
 				e.stopPropagation();
 				setSelectionStart(false);
@@ -164,10 +169,6 @@ const getCursorLeft = chasse => index => chasse * index;
 /*
  * SELECTION
  */
-const getSelectionBlocs = chasse => state =>
-	state.selection.start.row === state.selection.stop.row
-		? singleRowSelection(chasse)(state)
-		: multiRowSelection(chasse)(state);
 
 const singleRowSelection = chasse => ({
 	selection,
@@ -225,7 +226,12 @@ const multiRowSelection = chasse => ({
 	return blocs;
 };
 
-const hoc = overlay => props => {
+const getSelectionBlocs = chasse => state =>
+	state.selection.start.row === state.selection.stop.row
+		? singleRowSelection(chasse)(state)
+		: multiRowSelection(chasse)(state);
+
+const hoc = Component => props => {
 	const [chasse, setChasse] = useState(undefined);
 	const divEl = createRef(null);
 	useEffect(() => {
@@ -244,7 +250,7 @@ const hoc = overlay => props => {
 			</div>
 		</div>
 	) : (
-		<Overlay {...props} chasse={chasse} />
+		<Component {...props} chasse={chasse} />
 	);
 };
 
