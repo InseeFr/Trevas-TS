@@ -5,7 +5,7 @@ import * as actions from '../editor.actions';
 import EditorContext from './editor-context';
 
 const computeMax = lines =>
-	lines.reduce((a, { value }) => (value.length > a ? value.length : a), 0);
+	lines.reduce((a, { value }) => (value.length > a ? value.length : a), 1);
 
 const Scrollbar = ({ parentEl }) => {
 	if (!parentEl) return null;
@@ -33,6 +33,7 @@ const Scrollbar = ({ parentEl }) => {
 		const next = Math.max(Math.min(dragPos + delta, width - dragWidth), 0);
 		setDragPos(next);
 		const ns = Math.round((next / width) * maxChar);
+
 		dispatch(
 			actions.setHorizontalRange({ start: ns, stop: ns + offset - 1, offset })
 		);
