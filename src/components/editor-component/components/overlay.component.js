@@ -22,6 +22,7 @@ const Overlay = ({ chasse }) => {
 		focusedRow,
 		rowHeight,
 		scrollRange,
+		horizontalRange,
 		shortcutPatterns,
 		dispatch,
 	} = state;
@@ -38,9 +39,16 @@ const Overlay = ({ chasse }) => {
 	useEffect(() => {
 		const screenRow = focusedRow - scrollRange.start;
 		const top = rowHeight * screenRow;
-		const left = getCursorLeft(chasse)(index);
+		const left = getCursorLeft(chasse)(index - horizontalRange.start);
 		setCursorPosition({ top, left });
-	}, [index, chasse, focusedRow, scrollRange.start, rowHeight]);
+	}, [
+		index,
+		chasse,
+		focusedRow,
+		scrollRange.start,
+		rowHeight,
+		horizontalRange.start,
+	]);
 
 	const callbackKeyDown = createKeydownCallback(
 		dispatch,
@@ -67,16 +75,14 @@ const Overlay = ({ chasse }) => {
 	return (
 		<div
 			ref={divEl}
-			aria-hidden="true"
 			tabIndex="0"
+			role="presentation"
 			className="front-editor"
 			onKeyDown={callbackKeyDown}
 			onMouseDown={e => {
 				e.stopPropagation();
 				setSelectionStart(true);
-				const { newFocusedRow, newIndex } = getCursorPosition(e, divEl, chasse)(
-					state
-				);
+				const { newFocusedRow, newIndex } = getCursorPosition(e, divEl)(state);
 				setAnchor({ row: newFocusedRow, index: newIndex });
 				setExtent(undefined);
 				dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
@@ -97,11 +103,9 @@ const Overlay = ({ chasse }) => {
 			}}
 			onMouseMove={e => {
 				if (selectionStart) {
-					const { newFocusedRow, newIndex } = getCursorPosition(
-						e,
-						divEl,
-						chasse
-					)(state);
+					const { newFocusedRow, newIndex } = getCursorPosition(e, divEl)(
+						state
+					);
 					if (anchor.row === undefined) {
 						const row =
 							scrollRange.start +

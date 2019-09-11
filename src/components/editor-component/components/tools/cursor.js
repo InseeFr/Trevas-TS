@@ -6,10 +6,12 @@ export const getCursorLeft = chasse => index => chasse * index;
 /*
  * CURSOR
  */
-export const getCursorPosition = (e, parentEl, chasse) => ({
+export const getCursorPosition = (e, parentEl) => ({
 	lines,
 	scrollRange,
+	horizontalRange,
 	rowHeight,
+	chasse,
 }) => {
 	const { clientX, clientY } = e;
 	const { top, left } = parentEl.current.getBoundingClientRect();
@@ -23,7 +25,10 @@ export const getCursorPosition = (e, parentEl, chasse) => ({
 		const newIndex = Math.trunc((clientX - left) / chasse);
 		return {
 			newFocusedRow,
-			newIndex: Math.min(lines[newFocusedRow].value.length, newIndex),
+			newIndex: Math.min(
+				lines[newFocusedRow].value.length,
+				newIndex + horizontalRange.start
+			),
 		};
 	}
 	return {};
