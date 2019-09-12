@@ -79,6 +79,9 @@ const Overlay = ({ chasse }) => {
 			role="presentation"
 			className="front-editor"
 			onKeyDown={callbackKeyDown}
+			onMouseEnter={e => {
+				e.target.focus();
+			}}
 			onMouseDown={e => {
 				e.stopPropagation();
 				setSelectionStart(true);
@@ -133,7 +136,7 @@ const Overlay = ({ chasse }) => {
 				<Cursor left={cursorPosition.left} top={cursorPosition.top} />
 			) : null}
 			{selection
-				? getSelectionBlocs(chasse)(state).map(({ top, left, width }, i) => (
+				? getSelectionBlocs()(state).map(({ top, left, width }, i) => (
 						<span
 							key={i}
 							className="bloc-selection"
