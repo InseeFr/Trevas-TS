@@ -12,7 +12,7 @@ const getKey = (value, i) => `${i}-${value}`;
 
 const computeScrollRange = (parentEl, rowHeight) => {
 	const { height } = parentEl.getBoundingClientRect();
-	const offset = Math.trunc(height / rowHeight);
+	const offset = Math.round(height / rowHeight);
 	return { start: 0, stop: offset - 1, offset };
 };
 
