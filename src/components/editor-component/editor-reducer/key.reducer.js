@@ -87,6 +87,7 @@ const reduceKeyRight = state => {
 
 /* ARROW_UP */
 const reduceKeyUp = state => {
+	if (!state.focusedRow) return state;
 	const { scrollRange: sr, lines } = state;
 	const focusedRow = Math.max(0, state.focusedRow - 1);
 	const start = focusedRow >= sr.start ? sr.start : focusedRow;
@@ -104,6 +105,7 @@ const reduceKeyUp = state => {
 
 /* ARROW_DOWN */
 const reduceKeyDown = state => {
+	if (!state.focusedRow) return state;
 	const { scrollRange: sr, lines } = state;
 	const focusedRow = Math.min(lines.length - 1, state.focusedRow + 1);
 	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
