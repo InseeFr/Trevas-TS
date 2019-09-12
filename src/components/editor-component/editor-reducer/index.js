@@ -6,7 +6,6 @@ import selectionReducer from './selection.reducer';
 import keyReducer from './key.reducer';
 import cursorReducer from './cursor.reducer';
 
-export { initializer } from './tokenize.reducer';
 export { default as initialState } from './initial-state';
 
 /* */
