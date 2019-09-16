@@ -10,6 +10,7 @@ const computeMax = lines =>
 const Scrollbar = ({ parentEl }) => {
 	if (!parentEl) return null;
 	const state = useContext(EditorContext);
+	const [visible, setVisible] = useState(false);
 	const {
 		lines,
 
@@ -20,6 +21,7 @@ const Scrollbar = ({ parentEl }) => {
 	const [maxChar, setMaxChar] = useState(() => computeMax(lines));
 	const [delta, setDelta] = useState(0);
 	const [dragPos, setDragPos] = useState(0);
+	const [isDrag, setIsDrag] = useState(false);
 
 	const dragWidth = Math.trunc((width * offset) / maxChar);
 
@@ -40,9 +42,19 @@ const Scrollbar = ({ parentEl }) => {
 	}, [delta, width, dragWidth]);
 
 	return (
-		<span className="scrollbar-hor">
-			{maxChar > offset ? (
-				<Dragguer width={dragWidth} left={dragPos} onDrag={setDelta} />
+		<span
+			className="scrollbar-hor"
+			role="presentation"
+			onMouseEnter={() => setVisible(true)}
+			onMouseLeave={() => setVisible(false)}
+		>
+			{maxChar > offset && (visible || isDrag) ? (
+				<Dragguer
+					width={dragWidth}
+					left={dragPos}
+					onDrag={setDelta}
+					setIsDrag={setIsDrag}
+				/>
 			) : null}
 		</span>
 	);
@@ -69,8 +81,12 @@ const createUpEvent = (dragEvent, setDrag) => () => {
 };
 
 /* */
-const Dragguer = ({ width, left, onDrag }) => {
-	const [drag, setDrag] = useState(false);
+const Dragguer = ({ width, left, onDrag, setIsDrag }) => {
+	const [drag, setDrag_] = useState(false);
+	const setDrag = w => {
+		setIsDrag(w);
+		setDrag_(w);
+	};
 
 	useEffect(() => {
 		if (drag) {
@@ -94,16 +110,19 @@ const Dragguer = ({ width, left, onDrag }) => {
 			onMouseDown={e => {
 				e.stopPropagation();
 				setDrag(true);
+				setIsDrag(true);
 			}}
 			onMouseUp={e => {
 				e.stopPropagation();
 				setDrag(false);
+				setIsDrag(false);
 			}}
 		/>
 	);
 };
 
 Dragguer.propTypes = {
+	setIsDrag: PropTypes.func.isRequired,
 	width: PropTypes.number.isRequired,
 	left: PropTypes.number.isRequired,
 	onDrag: PropTypes.func.isRequired,
