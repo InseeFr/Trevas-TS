@@ -1,5 +1,47 @@
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import { getNewRow } from './commons-tools';
+
+/* SUGGEST_TOKEN */
+const replaceToken = (state, suggestion) => {
+	const { lines, focusedRow, index, prefix } = state;
+
+	const newLines = lines.reduce(
+		(a, line, i) =>
+			i === focusedRow
+				? [
+						...a,
+						getNewRow(
+							`${line.value.substr(0, index)}${suggestion.substr(
+								prefix.length
+							)}${line.value.substr(index)}`,
+							i
+						),
+				  ]
+				: [...a, line],
+		[]
+	);
+	const nextIndex = newLines[focusedRow].tokens.reduce(
+		(a, { start, stop }) => (index >= start && index <= stop ? stop : a),
+		index
+	);
+	return { ...state, lines: newLines, index: nextIndex + 1 };
+};
+
+/* CHECK_PREFIX */
+const checkPrefix = ({ lines, focusedRow, index }) => {
+	const token = getFocusedToken(lines)(focusedRow, index);
+	return token ? token.value.trim().substr(0, index - token.start) : undefined;
+};
+
+const getFocusedToken = lines => (focusedRow, index) =>
+	focusedRow >= 0
+		? lines[focusedRow].value.length === index
+			? lines[focusedRow].tokens[lines[focusedRow].tokens.length - 1]
+			: lines[focusedRow].tokens.reduce(
+					(a, t) => (index - 1 >= t.start && index - 1 <= t.stop ? t : a),
+					undefined
+			  )
+		: undefined;
 
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -49,47 +91,5 @@ const reducer = (state, action) => {
 			return state;
 	}
 };
-
-/* SUGGEST_TOKEN */
-const replaceToken = (state, suggestion) => {
-	const { lines, focusedRow, index, prefix } = state;
-
-	const newLines = lines.reduce(
-		(a, line, i) =>
-			i === focusedRow
-				? [
-						...a,
-						getNewRow(
-							`${line.value.substr(0, index)}${suggestion.substr(
-								prefix.length
-							)}${line.value.substr(index)}`,
-							i
-						),
-				  ]
-				: [...a, line],
-		[]
-	);
-	const nextIndex = newLines[focusedRow].tokens.reduce(
-		(a, { start, stop }) => (index >= start && index <= stop ? stop : a),
-		index
-	);
-	return { ...state, lines: newLines, index: nextIndex + 1 };
-};
-
-/* CHECK_PREFIX */
-const checkPrefix = ({ lines, focusedRow, index }) => {
-	const token = getFocusedToken(lines)(focusedRow, index);
-	return token ? token.value.trim().substr(0, index - token.start) : undefined;
-};
-
-const getFocusedToken = lines => (focusedRow, index) =>
-	focusedRow >= 0
-		? lines[focusedRow].value.length === index
-			? lines[focusedRow].tokens[lines[focusedRow].tokens.length - 1]
-			: lines[focusedRow].tokens.reduce(
-					(a, t) => (index - 1 >= t.start && index - 1 <= t.stop ? t : a),
-					undefined
-			  )
-		: undefined;
 
 export default reducer;

@@ -1,41 +1,6 @@
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 
 const LF = '\n';
-
-const reducer = getTokens => (state, action) => {
-	switch (action.type) {
-		/* TOKENIZE_ALL */
-		case actions.TOKENIZE_ALL:
-			return reduceTokenizeAll(getTokens)(state);
-		default:
-			return state;
-	}
-};
-
-/* TOKENIZE_ALL */
-const reduceTokenizeAll = getTokens => state => {
-	const { lines } = state;
-	const tokens = getTokens(
-		lines.reduce((a, { value }) => `${a}${value}${LF}`, '')
-	);
-
-	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
-		pos: 0,
-		lines: [],
-		tokens,
-	});
-	return { ...state, lines: nl.lines };
-};
-
-const fillLine = (line, { pos, lines, tokens }) => {
-	if (line.value.length === 0)
-		return { lines: [...lines, { ...line, tokens: [] }], pos: pos + 1, tokens };
-	const [first, ...rest] = tokens;
-	const rowLimit = pos + line.value.length;
-	return first.start < pos || first.stop > rowLimit
-		? fillMulti(line, { pos, lines, tokens })
-		: fillSingle(line, { pos, lines, tokens });
-};
 
 const fillSingle = (line, { lines, pos, tokens }) => {
 	const [first, ...rest] = tokens;
@@ -126,10 +91,45 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 		  );
 };
 
+const fillLine = (line, { pos, lines, tokens }) => {
+	if (line.value.length === 0)
+		return { lines: [...lines, { ...line, tokens: [] }], pos: pos + 1, tokens };
+	const [first] = tokens;
+	const rowLimit = pos + line.value.length;
+	return first.start < pos || first.stop > rowLimit
+		? fillMulti(line, { pos, lines, tokens })
+		: fillSingle(line, { pos, lines, tokens });
+};
+
+/* TOKENIZE_ALL */
+const reduceTokenizeAll = getTokens => state => {
+	const { lines } = state;
+	const tokens = getTokens(
+		lines.reduce((a, { value }) => `${a}${value}${LF}`, '')
+	);
+
+	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
+		pos: 0,
+		lines: [],
+		tokens,
+	});
+	return { ...state, lines: nl.lines };
+};
+
 const moveToken = (token, pos) => ({
 	...token,
 	start: token.start - pos,
 	stop: token.stop - pos,
 });
+
+const reducer = getTokens => (state, action) => {
+	switch (action.type) {
+		/* TOKENIZE_ALL */
+		case actions.TOKENIZE_ALL:
+			return reduceTokenizeAll(getTokens)(state);
+		default:
+			return state;
+	}
+};
 
 export default reducer;

@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import EditorContext from './editor-context';
-import { setCursorRect } from '../editor.actions';
+import { setCursorRect } from '../editor-actions';
 
 /* */
 const Cursor = ({ top, left }) => {

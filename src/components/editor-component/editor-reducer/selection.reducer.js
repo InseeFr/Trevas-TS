@@ -1,18 +1,16 @@
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import { getNewRow } from './commons-tools';
 
-const reducer = (state, action) => {
-	switch (action.type) {
-		/* SELECTION */
-		case actions.SET_SELECTION:
-			return setSelection(state, action.payload.selection);
-		case actions.DELETE_SELECTION:
-			return deleteSelection(state);
-		case actions.INSERT_TEXT:
-			return insertText(state, action.payload.text);
-		default:
-			return state;
-	}
+const deleteOnRow = ({ start, stop }) => ({ value }, row) => {
+	const next =
+		row === start.row
+			? `${value.substr(0, start.index)}${
+					row === stop.row ? value.substr(stop.index) : ''
+			  }`
+			: row === stop.row
+			? value.substr(stop.index)
+			: '';
+	return getNewRow(next);
 };
 
 /* DELETE_SELECTION */
@@ -46,18 +44,6 @@ const deleteSelection = state => {
 						stop: Math.min(focusedRow + sr.offset - 1, lines.length - 1),
 				  },
 	};
-};
-
-const deleteOnRow = ({ start, stop }) => ({ value }, row) => {
-	const next =
-		row === start.row
-			? `${value.substr(0, start.index)}${
-					row === stop.row ? value.substr(stop.index) : ''
-			  }`
-			: row === stop.row
-			? value.substr(stop.index)
-			: '';
-	return getNewRow(next);
 };
 
 /* INSERT_TEXT */
@@ -111,5 +97,19 @@ const insertInLine = index => (line, rows) => {
 };
 
 const setSelection = (state, selection) => ({ ...state, selection });
+
+const reducer = (state, action) => {
+	switch (action.type) {
+		/* SELECTION */
+		case actions.SET_SELECTION:
+			return setSelection(state, action.payload.selection);
+		case actions.DELETE_SELECTION:
+			return deleteSelection(state);
+		case actions.INSERT_TEXT:
+			return insertText(state, action.payload.text);
+		default:
+			return state;
+	}
+};
 
 export default reducer;

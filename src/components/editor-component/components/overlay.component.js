@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import createKeydownCallback from '../editor-keydown-callback';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import Cursor from './cursor.component';
 import { getSelectionBlocs, getCursorLeft, getCursorPosition } from './tools';
 import EditorContext from './editor-context';

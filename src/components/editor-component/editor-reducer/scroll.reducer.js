@@ -1,4 +1,4 @@
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 
 /* */
 const reduceScrollDown = state => {

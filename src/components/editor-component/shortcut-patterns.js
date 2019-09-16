@@ -1,4 +1,4 @@
-import * as actions from './editor.actions';
+import * as actions from './editor-actions';
 import { getSelection } from './selection-tools';
 import clipboard from './clipboard';
 

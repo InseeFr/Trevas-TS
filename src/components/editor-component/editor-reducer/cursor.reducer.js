@@ -1,5 +1,4 @@
-import * as actions from '../editor.actions';
-import { getNewRow } from './commons-tools';
+import * as actions from '../editor-actions';
 
 const reducer = (state, action) => {
 	switch (action.type) {

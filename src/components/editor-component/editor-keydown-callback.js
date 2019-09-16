@@ -1,5 +1,5 @@
 import KEY from './key-bind';
-import * as actions from './editor.actions';
+import * as actions from './editor-actions';
 /* */
 const compose = (...opts) => (...callbacks) =>
 	callbacks.reverse().reduce(

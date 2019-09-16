@@ -10,7 +10,7 @@ export const getNewRow = (string, old = {}, index = -1) => ({
 	value: string,
 	tokens: [
 		{ value: string, start: 0, stop: string.length - 1, className: 'unmapped' },
-	], //getTokens_(string, index),
+	],
 	...old,
 });
 

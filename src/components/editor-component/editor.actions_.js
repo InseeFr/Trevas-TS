@@ -21,13 +21,13 @@ export const setCursorPosition = (numberRow, index) => ({
 
 /* CHECK_PREFIX */
 export const CHECK_PREFIX = 'editor/check-prefix';
-export const checkPrefix = char => ({
+export const checkPrefix = () => ({
 	type: CHECK_PREFIX,
 });
 
 /* RESET_PREFIX */
 export const RESET_PREFIX = 'editor/reset-prefix';
-export const resetPrefix = char => ({
+export const resetPrefix = () => ({
 	type: RESET_PREFIX,
 });
 
@@ -147,4 +147,11 @@ export const SET_HORIZONTAL_RANGE = 'editor/set-horizontal-range';
 export const setHorizontalRange = horizontalRange => ({
 	type: SET_HORIZONTAL_RANGE,
 	payload: { horizontalRange },
+});
+
+/* */
+export const CHANGE_EDITOR_CONTENT = 'editor/change-editor-content';
+export const changeEditorContent = content => ({
+	type: CHANGE_EDITOR_CONTENT,
+	payload: { content },
 });

@@ -1,6 +1,11 @@
-import KEY from '../key-bind';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import { getNewRow, getRowLength } from './commons-tools';
+
+/* */
+const reduceCheckIndex = state => ({
+	...state,
+	index: Math.min(state.index, getRowLength(state)),
+});
 
 /* */
 const reducer = (state, action) => {
@@ -20,17 +25,14 @@ const reducer = (state, action) => {
 			};
 
 		/* */
-		case 'change-editor-content':
+		case actions.CHANGE_EDITOR_CONTENT:
 			return {
 				...state,
-				lines: action.lines.map((row, i) => getNewRow(row, i)),
+				lines: action.payload.content.map((row, i) => getNewRow(row, i)),
 			};
 
 		case actions.CHECK_INDEX:
-			return {
-				...state,
-				index: Math.min(state.index, getRowLength(state)),
-			};
+			return reduceCheckIndex(state);
 
 		default:
 			return state;

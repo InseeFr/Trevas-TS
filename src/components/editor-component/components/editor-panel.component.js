@@ -7,7 +7,7 @@ import createSuggester from '../suggestions-manager';
 import createFulTokenizer from '../create-full-tokenizer';
 import RowNumbers from './row-numbers.component';
 import defaultPatterns from '../shortcut-patterns';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import EditorContext from './editor-context';
 import './editor.scss';
 
@@ -26,10 +26,11 @@ const EditorPanel = ({
 	const [state, dispatch] = useReducer(editorReducer, initialState);
 
 	useEffect(() => {
-		dispatch({
-			type: 'change-editor-content',
-			lines: content,
-		});
+		// dispatch({
+		// 	type: 'change-editor-content',
+		// 	lines: content,
+		// });
+		dispatch(actions.changeEditorContent(content));
 		dispatch(actions.tokenizeAll());
 	}, [content, getTokens]);
 

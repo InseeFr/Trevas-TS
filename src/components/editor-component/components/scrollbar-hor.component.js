@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import EditorContext from './editor-context';
 
 const computeMax = lines =>

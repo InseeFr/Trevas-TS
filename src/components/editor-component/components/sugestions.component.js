@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useContext } from 'react';
 import classnames from 'classnames';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import EditorContext from './editor-context';
 
 const Suggestions = ({ suggest }) => {

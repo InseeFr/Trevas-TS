@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import EditorContext from './editor-context';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 
 const ScrollUpDown = ({ parentEl }) => {
 	const state = useContext(EditorContext);

@@ -5,7 +5,7 @@ import ScrollUpDown from './scrollbar-up.component';
 import ScrollHor from './scrollbar-hor.component';
 import Line from './line.component';
 import Overlay from './overlay.component';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import EditorContext from './editor-context';
 
 const getKey = (value, i) => `${i}-${value}`;

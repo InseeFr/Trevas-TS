@@ -1,40 +1,6 @@
 import KEY from '../key-bind';
-import * as actions from '../editor.actions';
+import * as actions from '../editor-actions';
 import { getNewRow, getRowLength } from './commons-tools';
-
-const reducer = (state, action) => {
-	switch (action.type) {
-		case KEY.ARROW_LEFT:
-			return reduceKeyLeft(state);
-		case KEY.ARROW_RIGHT:
-			return reduceKeyRight(state);
-		case KEY.ARROW_UP:
-			return reduceKeyUp(state);
-		case KEY.ARROW_DOWN:
-			return reduceKeyDown(state);
-		case KEY.BACK_SPACE:
-			return reduceKeyBackspace(state);
-		case KEY.DELETE:
-			return reduceKeyDelete(state);
-		case KEY.ENTER:
-			return reduceKeyEnter(state);
-		case KEY.HOME:
-			return { ...state, index: 0, selection: undefined, prefix: undefined };
-		case KEY.END:
-			return {
-				...state,
-				index: getRowLength(state),
-				selection: undefined,
-				prefix: undefined,
-			};
-		case KEY.TAB:
-			return appendCharAtCursor(state)(KEY._TABULATION);
-		case actions.INSERT_CHARACTER:
-			return appendCharAtCursor(state)(action.payload.char || '');
-		default:
-			return state;
-	}
-};
 
 /* ARROW_LEFT */
 const reduceKeyLeft = state => {
@@ -249,6 +215,40 @@ const reduceKeyDelete = ({ lines, index, focusedRow, ...rest }) => {
 	);
 
 	return { lines: nextLines, selection: undefined, index, focusedRow, ...rest };
+};
+
+const reducer = (state, action) => {
+	switch (action.type) {
+		case KEY.ARROW_LEFT:
+			return reduceKeyLeft(state);
+		case KEY.ARROW_RIGHT:
+			return reduceKeyRight(state);
+		case KEY.ARROW_UP:
+			return reduceKeyUp(state);
+		case KEY.ARROW_DOWN:
+			return reduceKeyDown(state);
+		case KEY.BACK_SPACE:
+			return reduceKeyBackspace(state);
+		case KEY.DELETE:
+			return reduceKeyDelete(state);
+		case KEY.ENTER:
+			return reduceKeyEnter(state);
+		case KEY.HOME:
+			return { ...state, index: 0, selection: undefined, prefix: undefined };
+		case KEY.END:
+			return {
+				...state,
+				index: getRowLength(state),
+				selection: undefined,
+				prefix: undefined,
+			};
+		case KEY.TAB:
+			return appendCharAtCursor(state)(KEY._TABULATION);
+		case actions.INSERT_CHARACTER:
+			return appendCharAtCursor(state)(action.payload.char || '');
+		default:
+			return state;
+	}
 };
 
 export default reducer;
