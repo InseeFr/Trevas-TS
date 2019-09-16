@@ -26,10 +26,6 @@ const EditorPanel = ({
 	const [state, dispatch] = useReducer(editorReducer, initialState);
 
 	useEffect(() => {
-		// dispatch({
-		// 	type: 'change-editor-content',
-		// 	lines: content,
-		// });
 		dispatch(actions.changeEditorContent(content));
 		dispatch(actions.tokenizeAll());
 	}, [content, getTokens]);

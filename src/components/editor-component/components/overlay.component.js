@@ -77,7 +77,7 @@ const Overlay = ({ chasse }) => {
 			ref={divEl}
 			tabIndex="0"
 			role="presentation"
-			className="front-editor"
+			className="overlay"
 			onKeyDown={callbackKeyDown}
 			onMouseEnter={e => {
 				e.target.focus();

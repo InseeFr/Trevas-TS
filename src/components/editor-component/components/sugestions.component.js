@@ -3,6 +3,39 @@ import classnames from 'classnames';
 import * as actions from '../editor-actions';
 import EditorContext from './editor-context';
 
+/* */
+const getSuggestionsLength = (suggestions = {}) =>
+	Object.values(suggestions).reduce(
+		(a, t) => (t && Array.isArray(t) && t.length > 0 ? a + t.length : a),
+		0
+	);
+
+const getSuggestionsValue = (suggestions, index) =>
+	Object.values(suggestions).reduce((a, t) => [...a, ...t], [])[index];
+
+/* */
+const createItem = dispatch => ({ value, type, prefix, active }) => {
+	return (
+		<div
+			className={classnames('suggestion', { active })}
+			role="presentation"
+			onMouseDown={e => {
+				e.stopPropagation();
+				e.preventDefault();
+				dispatch(actions.suggestToken(value));
+				dispatch(actions.tokenizeAll());
+				document.querySelector('.overlay').focus();
+			}}
+		>
+			<span className="type">{type}</span>
+			<span className="valeur">
+				<span className="prefix">{prefix}</span>
+				{value.substr(prefix.length)}
+			</span>
+		</div>
+	);
+};
+
 const Suggestions = ({ suggest }) => {
 	const {
 		prefix,
@@ -46,7 +79,7 @@ const Suggestions = ({ suggest }) => {
 	);
 
 	return open ? (
-		<React.Fragment>
+		<>
 			<div
 				className="editor-suggestions"
 				style={{
@@ -56,51 +89,12 @@ const Suggestions = ({ suggest }) => {
 				onMouseOver={() => {
 					if (index !== -1) dispatch(actions.resetSuggesterIndex());
 				}}
+				onFocus={() => null}
 			>
 				{sections}
 			</div>
-		</React.Fragment>
+		</>
 	) : null;
-};
-
-// {suggestions.variables.map((value, i) => (
-//   <Item
-//     key={value}
-//     active={index === i}
-//     value={value}
-//     type="var"
-//     prefix={prefix}
-//   />
-// ))
-
-/* */
-const getSuggestionsLength = (suggestions = {}) =>
-	Object.values(suggestions).reduce(
-		(a, t) => (t && Array.isArray(t) && t.length > 0 ? a + t.length : a),
-		0
-	);
-
-const getSuggestionsValue = (suggestions, index) =>
-	Object.values(suggestions).reduce((a, t) => [...a, ...t], [])[index];
-
-/* */
-const createItem = dispatch => ({ value, type, prefix, active }) => {
-	return (
-		<div
-			className={classnames('suggestion', { active })}
-			onMouseDown={e => {
-				e.stopPropagation();
-				dispatch(actions.suggestToken(value));
-				dispatch(actions.tokenizeAll());
-			}}
-		>
-			<span className="type">{type}</span>
-			<span className="valeur">
-				<span className="prefix">{prefix}</span>
-				{value.substr(prefix.length)}
-			</span>
-		</div>
-	);
 };
 
 export default Suggestions;

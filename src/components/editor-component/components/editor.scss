@@ -150,7 +150,7 @@ $rowHeight: 22px;
 		}
 
 		/* */
-		.front-editor {
+		.overlay {
 			cursor: text;
 			@include layer(2);
 			&:focus {
