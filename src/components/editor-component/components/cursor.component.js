@@ -1,9 +1,11 @@
 import React, { createRef, useEffect, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import EditorContext from './editor-context';
 import { setCursorRect } from '../editor.actions';
 
 /* */
 const Cursor = ({ top, left }) => {
+	if (left < 0) return null;
 	const spanEl = createRef();
 	const { dispatch } = useContext(EditorContext);
 	const [rect, setRect] = useState({ x: undefined, y: undefined });
@@ -21,6 +23,7 @@ const Cursor = ({ top, left }) => {
 		<span
 			ref={spanEl}
 			className="cursor"
+			role="presentation"
 			onClick={e => e.stopPropagation()}
 			onDoubleClick={e => e.stopPropagation()}
 			style={{
@@ -29,6 +32,11 @@ const Cursor = ({ top, left }) => {
 			}}
 		/>
 	);
+};
+
+Cursor.propTypes = {
+	left: PropTypes.number.isRequired,
+	top: PropTypes.number.isRequired,
 };
 
 export default Cursor;
