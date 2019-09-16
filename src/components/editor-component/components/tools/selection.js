@@ -25,10 +25,16 @@ const singleRowSelection = () => ({
 };
 
 /* */
-const lastRow = row => ({ scrollRange, chasse, rowHeight, selection }) => {
+const lastRow = row => ({
+	scrollRange,
+	chasse,
+	rowHeight,
+	selection,
+	horizontalRange: hr,
+}) => {
 	const top = (row - scrollRange.start) * rowHeight;
 	const left = 0;
-	const width = selection.stop.index * chasse;
+	const width = (selection.stop.index - hr.start) * chasse;
 	return {
 		top,
 		left,
@@ -42,11 +48,15 @@ const firstRow = row => ({
 	chasse,
 	rowHeight,
 	selection,
+	horizontalRange: hr,
 	lines,
 }) => {
 	const top = (row - scrollRange.start) * rowHeight;
-	const left = selection.start.index * chasse;
-	const width = (lines[row].value.length - selection.start.index) * chasse;
+	const left = Math.max((selection.start.index - hr.start) * chasse, 0);
+	const width =
+		(lines[row].value.length - Math.max(hr.start, selection.start.index)) *
+		chasse;
+
 	return {
 		top,
 		left,
@@ -55,10 +65,16 @@ const firstRow = row => ({
 };
 
 /* */
-const middleRow = row => ({ scrollRange, rowHeight, lines, chasse }) => {
+const middleRow = row => ({
+	scrollRange,
+	rowHeight,
+	lines,
+	chasse,
+	horizontalRange: hr,
+}) => {
 	const top = (row - scrollRange.start) * rowHeight;
 	const left = 0;
-	const width = lines[row].value.length * chasse;
+	const width = (lines[row].value.length - hr.start) * chasse;
 	return {
 		top,
 		left,
@@ -79,16 +95,48 @@ const getRow = row => state => {
 };
 
 /* */
+const isInScrollrange = index => ({ selection, scrollRange }) => {
+	const scrStart = selection.start.row - scrollRange.start;
+	const scrRow = scrStart + index;
+	return scrRow >= 0 && scrRow <= scrollRange.offset - 1;
+};
+
+/* */
+const isInHorizontalRange = row => ({
+	horizontalRange: hr,
+	selection: s,
+	lines,
+}) => {
+	const { length } = lines[row].value;
+	if (row === s.start.row && (s.start.index <= hr.stop && length > hr.start)) {
+		return true;
+	}
+	if (
+		row === s.stop.row &&
+		Math.max(s.stop.index, hr.start + hr.offset) < hr.offset + s.stop.index
+	) {
+		return true;
+	}
+	if (
+		row !== s.stop.row &&
+		row !== s.start.row &&
+		Math.max(length, hr.stop) < hr.offset + length
+	) {
+		return true;
+	}
+
+	return false;
+};
+
+/* */
 const multiRowSelection = () => state => {
-	const { selection, scrollRange } = state;
+	const { selection } = state;
 	const blocs = new Array(selection.stop.row - selection.start.row + 1)
 		.fill({})
 		.reduce((a, b, i) => {
-			const scrStart = selection.start.row - scrollRange.start;
-			const scrRow = scrStart + i;
 			const row = selection.start.row + i;
 
-			return scrRow >= 0 && scrRow <= scrollRange.offset - 1
+			return isInScrollrange(i)(state) && isInHorizontalRange(row)(state)
 				? [...a, getRow(row)(state)]
 				: a;
 		}, []);
