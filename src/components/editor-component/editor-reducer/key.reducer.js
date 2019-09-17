@@ -118,8 +118,8 @@ const reduceKeyEnter = ({ focusedRow, index, lines, ...rest }) => {
 			i === focusedRow
 				? [
 						...a,
-						tools.getNewRow(line.value.substr(0, index), i),
-						tools.getNewRow(line.value.substr(index), i + 1),
+						tools.getNewRow(line.value.substr(0, index)),
+						tools.getNewRow(line.value.substr(index)),
 				  ]
 				: [...a, line],
 		[]
@@ -193,11 +193,11 @@ const reducer = (state, action) => {
 		case KEY.ARROW_DOWN:
 			return reduceKeyDown(state);
 		case KEY.BACK_SPACE:
-			return reduceKeyBackspace(state);
+			return tools.validateRange(reduceKeyBackspace(state));
 		case KEY.DELETE:
-			return reduceKeyDelete(state);
+			return tools.validateRange(reduceKeyDelete(state));
 		case KEY.ENTER:
-			return reduceKeyEnter(state);
+			return tools.validateRange(reduceKeyEnter(state));
 		case KEY.HOME:
 			return { ...state, index: 0, selection: undefined, prefix: undefined };
 		case KEY.END:

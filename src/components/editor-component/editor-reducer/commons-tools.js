@@ -108,6 +108,51 @@ export const mergeRow = (lines, index) => {
 	);
 };
 
+/* */
+const validateHorRange = state => {
+	const { index, horizontalRange: hr } = state;
+	if (index > hr.stop) {
+		return {
+			...state,
+			horizontalRange: { ...hr, start: index - hr.offset + 1, stop: index },
+		};
+	}
+	if (index < hr.start) {
+		return {
+			...state,
+			horizontalRange: { ...hr, start: index, stop: index + hr.offset - 1 },
+		};
+	}
+
+	return state;
+};
+
+/* */
+const validateVertRange = state => {
+	const { focusedRow, scrollRange: sr } = state;
+	if (focusedRow > sr.stop) {
+		return {
+			...state,
+			scrollRange: {
+				...sr,
+				start: focusedRow - sr.offset + 1,
+				stop: focusedRow,
+			},
+		};
+	}
+	return state;
+};
+
+/* */
+export const validateRange = state => {
+	const { focusedRow, index } = state;
+	if (focusedRow === undefined || index === undefined) {
+		return state;
+	}
+
+	return validateVertRange(validateHorRange(state));
+};
+
 TOOLS.removeChar = removeChar;
 TOOLS.mergeRow = mergeRow;
 TOOLS.getRow = getRow;

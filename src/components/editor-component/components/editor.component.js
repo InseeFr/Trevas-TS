@@ -50,7 +50,6 @@ const Editor = ({ parse }) => {
 			i >= scrollRange.start && i <= scrollRange.stop ? [...a, line] : a,
 		[]
 	);
-
 	useEffect(() => {
 		if (tokenize) {
 			// fetch and dispatch(actions.tokenizeAll());
