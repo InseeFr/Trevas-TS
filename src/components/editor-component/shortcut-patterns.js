@@ -10,6 +10,15 @@ const unmappedPattern = pattern => () => {
 	return false;
 };
 
+/* copy to clipboard */
+const copy = (dispatch, state) => {
+	if (state.selection) {
+		const content = getSelection(state);
+		clipboard.copy(content);
+	}
+	return true;
+};
+
 /* cut to clipboard */
 const cut = (dispatch, state) => {
 	if (state.selection) {
@@ -47,15 +56,6 @@ const selectAll = (dispatch, state) => {
 			},
 		})
 	);
-	return true;
-};
-
-/* copy to clipboard */
-const copy = (dispatch, state) => {
-	if (state.selection) {
-		const content = getSelection(state);
-		clipboard.copy(content);
-	}
 	return true;
 };
 

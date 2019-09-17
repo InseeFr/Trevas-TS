@@ -1,8 +1,6 @@
-/* add custom tokens to fill unmapped parts of row */
+import { mergeLines } from './tokenizer-tools';
 
-export default (getTokens) => (line) => {
-	return fillUnmappedToken(getTokens(line), line);
-};
+/* add custom tokens to fill unmapped parts of row */
 
 /* */
 const fillUnmappedToken = (tokensOriginal, ligne) => {
@@ -17,12 +15,12 @@ const fillUnmappedToken = (tokensOriginal, ligne) => {
 								start: index,
 								stop: token.start - 1,
 								className: 'unmapped',
-								value: ligne.substr(index, token.start - index)
+								value: ligne.substr(index, token.start - index),
 							},
-							token
-						]
-					}
-				: { index: token.stop + 1, tokens: [ ...tokens, token ] },
+							token,
+						],
+				  }
+				: { index: token.stop + 1, tokens: [...tokens, token] },
 		{ index: 0, tokens: [] }
 	);
 
@@ -34,10 +32,16 @@ const fillUnmappedToken = (tokensOriginal, ligne) => {
 				stop: ligne.length - 1,
 				className: 'unmapped',
 				typeName: 'unknow',
-				value: ligne.substr(result.index, ligne.length - result.index)
-			}
+				value: ligne.substr(result.index, ligne.length - result.index),
+			},
 		];
 	}
 
 	return result.tokens;
+};
+
+/* */
+export default getTokens => lines => {
+	const content = mergeLines(lines);
+	return getTokens(content).then(tokens => fillUnmappedToken(tokens, content));
 };

@@ -54,7 +54,7 @@ const keyDownsuggesterProxy = (dispatch, state) => e => {
 };
 
 /* */
-const keyDownCallback = dispatch => e => {
+const keyDownCallback = (dispatch, state) => e => {
 	// console.debug("%ckeyDownCallback", "color: gold;");
 	if (KEY.isUnbindedKey(e.key)) return false;
 	switch (e.key) {
@@ -90,7 +90,7 @@ const keyDownCallback = dispatch => e => {
 				stopAndPrevent(e);
 				dispatch(actions.insertCharacter(e.key));
 				dispatch(actions.tokenizeAll());
-				dispatch(actions.checkPrefix());
+				// dispatch(actions.checkPrefix());
 				return true;
 			}
 			return false;

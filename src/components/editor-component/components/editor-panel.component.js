@@ -4,7 +4,7 @@ import createReducer, { initialState } from '../editor-reducer';
 import Suggestions from './sugestions.component';
 import Editor from './editor.component';
 import createSuggester from '../suggestions-manager';
-import createFulTokenizer from '../create-full-tokenizer';
+import { createFulTokenizer } from '../tokenizer';
 import RowNumbers from './row-numbers.component';
 import defaultPatterns from '../shortcut-patterns';
 import * as actions from '../editor-actions';
@@ -20,15 +20,12 @@ const EditorPanel = ({
 	handleChange = () => null,
 	shortcuts,
 }) => {
-	const [editorReducer] = useState(() =>
-		createReducer(createFulTokenizer(getTokens))
-	);
-	const [state, dispatch] = useReducer(editorReducer, initialState);
-
+	const [state, dispatch] = useReducer(createReducer(), initialState);
 	useEffect(() => {
 		dispatch(actions.changeEditorContent(content));
+		dispatch(actions.setGetTokens(createFulTokenizer(getTokens)));
 		dispatch(actions.tokenizeAll());
-	}, [content, getTokens]);
+	}, [getTokens, content]);
 
 	const suggester = useMemo(() => createSuggester(dictionnary), [dictionnary]);
 	return (

@@ -1,6 +1,6 @@
 import KEY from '../key-bind';
 import * as actions from '../editor-actions';
-import { getNewRow, getRowLength } from './commons-tools';
+import { getNewRow, getRowLength, insertChar } from './commons-tools';
 
 /* ARROW_LEFT */
 const reduceKeyLeft = state => {
@@ -161,7 +161,6 @@ const reduceKeyEnter = ({ focusedRow, index, lines, ...rest }) => {
 		selection: undefined,
 		index: 0,
 		lines: nextLines,
-		// scrollRange,
 		...rest,
 	};
 };
@@ -172,13 +171,8 @@ const appendCharAtCursor = state => char =>
 			i === focusedRow
 				? {
 						lines: [
-							...lines,
-							getNewRow(
-								`${line.value.substr(0, index)}${char}${line.value.substr(
-									index
-								)}`,
-								i
-							),
+							...lines, //
+							insertChar(index, char, line),
 						],
 						index: index + char.length,
 						focusedRow,

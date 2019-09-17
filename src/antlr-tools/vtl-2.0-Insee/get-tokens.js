@@ -93,7 +93,7 @@ const getTokens = ligne => {
 	// console.log(tokens, ligne);
 	// console.log(fillUnmappedToken(tokens, ligne));
 
-	return tokens;
+	return Promise.resolve(tokens);
 };
 
 export default getTokens;

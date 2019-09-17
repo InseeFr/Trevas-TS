@@ -25,7 +25,15 @@ const computeHorizontalRange = (parentEl, chasse) => {
 const Editor = ({ parse }) => {
 	const editorEl = useRef();
 	const state = useContext(EditorContext);
-	const { lines, dispatch, scrollRange, rowHeight, chasse } = state;
+	const {
+		lines,
+		dispatch,
+		scrollRange,
+		rowHeight,
+		chasse,
+		tokenize,
+		getTokens,
+	} = state;
 
 	useEffect(() => {
 		const code = lines.reduce(
@@ -42,6 +50,16 @@ const Editor = ({ parse }) => {
 			i >= scrollRange.start && i <= scrollRange.stop ? [...a, line] : a,
 		[]
 	);
+
+	useEffect(() => {
+		if (tokenize) {
+			// fetch and dispatch(actions.tokenizeAll());
+			getTokens(lines).then(tokens => {
+				dispatch(actions.launchTokenization(tokens));
+				dispatch(actions.checkPrefix());
+			});
+		}
+	}, [tokenize, lines]);
 
 	useEffect(() => {
 		if (editorEl.current) {

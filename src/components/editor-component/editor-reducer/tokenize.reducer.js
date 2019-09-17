@@ -2,6 +2,7 @@ import * as actions from '../editor-actions';
 
 const LF = '\n';
 
+/* */
 const fillSingle = (line, { lines, pos, tokens }) => {
 	const [first, ...rest] = tokens;
 	if (first.value === LF || first.value.length === 0)
@@ -31,6 +32,7 @@ const fillSingle = (line, { lines, pos, tokens }) => {
 		: null;
 };
 
+/* */
 const fillMulti = (line, { lines, tokens, pos }) => {
 	const [first, ...rest] = tokens;
 	const rowLimit = pos + line.value.length - 1;
@@ -91,6 +93,7 @@ const fillMulti = (line, { lines, tokens, pos }) => {
 		  );
 };
 
+/* */
 const fillLine = (line, { pos, lines, tokens }) => {
 	if (line.value.length === 0)
 		return { lines: [...lines, { ...line, tokens: [] }], pos: pos + 1, tokens };
@@ -101,32 +104,44 @@ const fillLine = (line, { pos, lines, tokens }) => {
 		: fillSingle(line, { pos, lines, tokens });
 };
 
-/* TOKENIZE_ALL */
-const reduceTokenizeAll = getTokens => state => {
-	const { lines } = state;
-	const tokens = getTokens(
-		lines.reduce((a, { value }) => `${a}${value}${LF}`, '')
-	);
+/* */
+export const mergeLines = lines =>
+	lines.reduce((a, { value }) => `${a}${value}${LF}`, '');
 
+/* TOKENIZE_ALL */
+const reduceLaunchTokenization = tokens => state => {
+	const { lines } = state;
+	// const tokens = getTokens(merge(lines));
 	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
 		pos: 0,
 		lines: [],
 		tokens,
 	});
-	return { ...state, lines: nl.lines };
+	return { ...state, lines: nl.lines, tokenize: false };
 };
 
+/* */
 const moveToken = (token, pos) => ({
 	...token,
 	start: token.start - pos,
 	stop: token.stop - pos,
 });
 
-const reducer = getTokens => (state, action) => {
+/* */
+const reduceTokenizeAll = state => ({ ...state, tokenize: true });
+
+/* */
+const reducer = (state, action) => {
 	switch (action.type) {
+		/* SET_GET_TOKENS */
+		case actions.SET_GET_TOKENS:
+			return { ...state, getTokens: action.payload.getTokens };
 		/* TOKENIZE_ALL */
 		case actions.TOKENIZE_ALL:
-			return reduceTokenizeAll(getTokens)(state);
+			return reduceTokenizeAll(state);
+		/* LAUNCH_TOKENIZATION */
+		case actions.LAUNCH_TOKENIZATION:
+			return reduceLaunchTokenization(action.payload.tokens)(state);
 		default:
 			return state;
 	}

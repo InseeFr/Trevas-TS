@@ -27,7 +27,7 @@ export const updateErrors = (errors = []) => ({
 	payload: { errors },
 });
 
-/* */
+/* CHANGE_EDITOR_CONTENT */
 export const CHANGE_EDITOR_CONTENT = 'editor/change-editor-content';
 export const changeEditorContent = content => ({
 	type: CHANGE_EDITOR_CONTENT,
