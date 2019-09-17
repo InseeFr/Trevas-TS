@@ -6,7 +6,7 @@ export const getRow = ({ lines, focusedRow }) => lines[focusedRow];
 export const getRowLength = state => getRow(state).value.length;
 
 /* */
-export const getNewRow = (string, old = {}, index = -1) => ({
+export const getNewRow = (string, old = {}) => ({
 	value: string,
 	tokens: [
 		{ value: string, start: 0, stop: string.length - 1, className: 'unmapped' },
@@ -137,6 +137,16 @@ const validateVertRange = state => {
 				...sr,
 				start: focusedRow - sr.offset + 1,
 				stop: focusedRow,
+			},
+		};
+	}
+	if (focusedRow < sr.start) {
+		return {
+			...state,
+			scrollRange: {
+				...sr,
+				start: focusedRow,
+				stop: focusedRow + sr.offset - 1,
 			},
 		};
 	}

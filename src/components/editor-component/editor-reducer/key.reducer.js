@@ -149,37 +149,24 @@ const appendCharAtCursor = state => char =>
 	);
 
 /* DELETE */
-// const reduceKeyDelete = ({ lines, index, focusedRow, ...rest }) => {
-// 	const rowSize = getRowLength({ lines, focusedRow });
-// 	const isMerging =
-// 		(rowSize - 1 < 0 || index === rowSize) && focusedRow !== lines.length - 1;
-// 	const nextLines = lines.reduce(
-// 		(a, line, i) =>
-// 			i === focusedRow
-// 				? isMerging
-// 					? mergeRow({
-// 							lines: [...a, line, { ...lines[focusedRow + 1] }],
-// 							focusedRow: focusedRow + 1,
-// 					  })
-// 					: [
-// 							...a,
-// 							getNewRow(
-// 								`${line.value.substr(0, index)}${line.value.substr(index + 1)}`,
-// 								a.length
-// 							),
-// 					  ]
-// 				: i === focusedRow + 1 && isMerging
-// 				? a
-// 				: [...a, line],
-// 		[]
-// 	);
-
-// 	return { lines: nextLines, selection: undefined, index, focusedRow, ...rest };
-// };
 const reduceKeyDelete = state => {
 	const { lines, index, focusedRow } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	if (
+		index === lines[focusedRow].value.length ||
+		lines[focusedRow].value.length === 0
+	) {
+		return focusedRow === lines.length - 1
+			? state
+			: { ...state, lines: tools.mergeRow(lines, focusedRow) };
+	}
+	return {
+		...state,
 
-	return state;
+		lines: lines.map((line, i) =>
+			i === focusedRow ? tools.removeChar(line, index + 1) : line
+		),
+	};
 };
 
 const reducer = (state, action) => {
