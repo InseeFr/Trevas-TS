@@ -108,6 +108,8 @@ export const mergeRow = (lines, index) => {
 	);
 };
 
+TOOLS.removeChar = removeChar;
+TOOLS.mergeRow = mergeRow;
 TOOLS.getRow = getRow;
 TOOLS.getRowLength = getRowLength;
 TOOLS.getNewRow = getNewRow;

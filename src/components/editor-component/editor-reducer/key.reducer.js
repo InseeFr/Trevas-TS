@@ -203,7 +203,7 @@ const reducer = (state, action) => {
 		case KEY.END:
 			return {
 				...state,
-				index: getRowLength(state),
+				index: tools.getRowLength(state),
 				selection: undefined,
 				prefix: undefined,
 			};
