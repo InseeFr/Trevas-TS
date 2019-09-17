@@ -59,7 +59,54 @@ export const insertChar = (index, char, line) => {
 	return getNewRow(value);
 };
 
-export const removeChar = (index, char, line) => {};
+export const removeChar = (line, index) => {
+	const { value } = line;
+	const nv = `${value.substr(0, index - 1)}${value.substr(index)}`;
+	const r = line.tokens.reduce(
+		({ tokens, find }, t) => {
+			if (index >= t.start && index <= t.stop) {
+				return {
+					tokens: [
+						...tokens,
+						{
+							...t,
+							value: `${t.value.substr(0, index - t.start - 1)}${t.value.substr(
+								index - t.start
+							)}`,
+						},
+					],
+					find: true,
+				};
+			}
+			return {
+				tokens: [
+					...tokens,
+					find ? { ...t, start: t.start - 1, stop: t.stop - 1 } : t,
+				],
+				find,
+			};
+		},
+		{ find: false, tokens: [] }
+	);
+	return { ...line, value: nv, tokens: r.tokens };
+};
+
+/* */
+const merge2Lines = (a, b) => {
+	return { value: `${a.value}${b.value}`, tokens: [...a.tokens, ...b.tokens] };
+};
+
+const addOrIgnore = (a, l, index, i) => (i === index + 1 ? a : [...a, l]);
+
+export const mergeRow = (lines, index) => {
+	return lines.reduce(
+		(a, l, i) =>
+			i === index && i < lines.length - 1
+				? [...a, merge2Lines(l, lines[i + 1])]
+				: addOrIgnore(a, l, index, i),
+		[]
+	);
+};
 
 TOOLS.getRow = getRow;
 TOOLS.getRowLength = getRowLength;
