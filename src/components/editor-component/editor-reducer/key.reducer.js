@@ -29,26 +29,17 @@ const reduceKeyLeft = state => {
 
 /* ARROW_RIGHT */
 const reduceKeyRight = state => {
-	const { scrollRange: sr } = state;
-	const currentLength = tools.getRowLength(state);
-	const focusedRow =
-		state.index + 1 > currentLength
-			? Math.min(state.lines.length - 1, state.focusedRow + 1)
-			: state.focusedRow;
-	const index =
-		state.index + 1 > currentLength
-			? state.focusedRow === state.lines.length - 1
-				? tools.getRowLength({ ...state, focusedRow })
-				: 0
-			: state.index + 1;
-	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
-	return {
-		...state,
-		selection: undefined,
-		index,
-		focusedRow,
-		scrollRange: { ...sr, start: Math.max(stop - sr.offset + 1, 0), stop },
-	};
+	const { lines, index, focusedRow } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	if (
+		lines[focusedRow].value.length === index ||
+		lines[focusedRow].value.length === 0
+	) {
+		return focusedRow === lines.length - 1
+			? state
+			: { ...state, index: 0, focusedRow: focusedRow + 1 };
+	}
+	return { ...state, index: index + 1 };
 };
 
 /* ARROW_UP */
@@ -174,7 +165,7 @@ const reducer = (state, action) => {
 		case KEY.ARROW_LEFT:
 			return reduceKeyLeft(state);
 		case KEY.ARROW_RIGHT:
-			return reduceKeyRight(state);
+			return tools.validateRange(reduceKeyRight(state));
 		case KEY.ARROW_UP:
 			return reduceKeyUp(state);
 		case KEY.ARROW_DOWN:
