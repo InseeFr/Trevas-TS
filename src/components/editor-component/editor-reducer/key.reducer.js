@@ -4,27 +4,18 @@ import * as tools from './commons-tools';
 
 /* ARROW_LEFT */
 const reduceKeyLeft = state => {
-	const { scrollRange: sr, lines } = state;
-	const focusedRow =
-		state.index - 1 < 0 ? Math.max(0, state.focusedRow - 1) : state.focusedRow;
-	const index =
-		state.index - 1 < 0
-			? state.focusedRow === 0
-				? state.focusedRow
-				: tools.getRowLength({ ...state, focusedRow })
-			: state.index - 1;
-	const start = focusedRow >= sr.start ? sr.start : focusedRow;
-	return {
-		...state,
-		selection: undefined,
-		index,
-		focusedRow,
-		scrollRange: {
-			...sr,
-			start,
-			stop: Math.min(start + sr.offset - 1, lines.length - 1),
-		},
-	};
+	const { lines, index, focusedRow } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	if (index === 0 || lines[focusedRow].value.length === 0) {
+		return focusedRow === 0
+			? state
+			: {
+					...state,
+					focusedRow: focusedRow - 1,
+					index: lines[focusedRow - 1].value.length,
+			  };
+	}
+	return { ...state, index: index - 1 };
 };
 
 /* ARROW_RIGHT */
@@ -44,37 +35,29 @@ const reduceKeyRight = state => {
 
 /* ARROW_UP */
 const reduceKeyUp = state => {
-	if (!state.focusedRow) return state;
-	const { scrollRange: sr, lines } = state;
-	const focusedRow = Math.max(0, state.focusedRow - 1);
-	const start = focusedRow >= sr.start ? sr.start : focusedRow;
+	const { lines, index, focusedRow } = state;
+	if (focusedRow === undefined || index === undefined || focusedRow === 0)
+		return state;
 	return {
 		...state,
-		selection: undefined,
-		focusedRow,
-		scrollRange: {
-			...sr,
-			start,
-			stop: Math.min(start + sr.offset - 1, lines.length - 1),
-		},
+		focusedRow: focusedRow - 1,
+		index: Math.min(lines[focusedRow - 1].value.length, index),
 	};
 };
 
 /* ARROW_DOWN */
 const reduceKeyDown = state => {
-	if (!state.focusedRow) return state;
-	const { scrollRange: sr, lines } = state;
-	const focusedRow = Math.min(lines.length - 1, state.focusedRow + 1);
-	const stop = focusedRow <= sr.stop ? sr.stop : focusedRow;
+	const { lines, index, focusedRow } = state;
+	if (
+		focusedRow === undefined ||
+		index === undefined ||
+		focusedRow === lines.length - 1
+	)
+		return state;
 	return {
 		...state,
-		selection: undefined,
-		focusedRow,
-		scrollRange: {
-			...sr,
-			start: Math.max(stop - sr.offset + 1, 0),
-			stop,
-		},
+		focusedRow: focusedRow + 1,
+		index: Math.min(lines[focusedRow + 1].value.length, index),
 	};
 };
 
@@ -163,13 +146,13 @@ const reduceKeyDelete = state => {
 const reducer = (state, action) => {
 	switch (action.type) {
 		case KEY.ARROW_LEFT:
-			return reduceKeyLeft(state);
+			return tools.validateRange(reduceKeyLeft(state));
 		case KEY.ARROW_RIGHT:
 			return tools.validateRange(reduceKeyRight(state));
 		case KEY.ARROW_UP:
-			return reduceKeyUp(state);
+			return tools.validateRange(reduceKeyUp(state));
 		case KEY.ARROW_DOWN:
-			return reduceKeyDown(state);
+			return tools.validateRange(reduceKeyDown(state));
 		case KEY.BACK_SPACE:
 			return tools.validateRange(reduceKeyBackspace(state));
 		case KEY.DELETE:

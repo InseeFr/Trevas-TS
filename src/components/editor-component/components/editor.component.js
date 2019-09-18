@@ -18,7 +18,7 @@ const computeScrollRange = (parentEl, rowHeight) => {
 
 const computeHorizontalRange = (parentEl, chasse) => {
 	const { width } = parentEl.getBoundingClientRect();
-	const offset = Math.trunc(width / chasse);
+	const offset = Math.round(width / chasse);
 	return { start: 0, stop: offset - 1, offset };
 };
 
