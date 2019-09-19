@@ -104,6 +104,11 @@ const keyDownWithSelection = (dispatch, state) => e => {
 		switch (e.key) {
 			case KEY.DELETE:
 			case KEY.ENTER:
+				stopAndPrevent(e);
+				dispatch(actions.deleteSelection());
+				dispatch({ type: KEY.ENTER });
+				dispatch(actions.tokenizeAll());
+				return true;
 			case KEY.BACK_SPACE:
 				stopAndPrevent(e);
 				dispatch(actions.deleteSelection());

@@ -1,50 +1,5 @@
 import * as actions from '../editor-actions';
-import { getNewRow } from './commons-tools';
-
-const deleteOnRow = ({ start, stop }) => ({ value }, row) => {
-	const next =
-		row === start.row
-			? `${value.substr(0, start.index)}${
-					row === stop.row ? value.substr(stop.index) : ''
-			  }`
-			: row === stop.row
-			? value.substr(stop.index)
-			: '';
-	return getNewRow(next);
-};
-
-/* DELETE_SELECTION */
-const deleteSelection = state => {
-	const { selection, scrollRange: sr } = state;
-	const lines = state.lines
-		.reduce(
-			(a, line, i) =>
-				i >= selection.start.row && i <= selection.stop.row
-					? [...a, deleteOnRow(selection)(line, i)]
-					: [...a, line],
-			[]
-		)
-		.filter(
-			({ value }, i) =>
-				value.length > 0 || i < selection.start.row || i > selection.stop.row
-		);
-	const focusedRow = selection.start.row;
-	return {
-		...state,
-		lines: lines.length > 0 ? lines : [{ value: '', tokens: [] }],
-		focusedRow,
-		index: selection.start.index,
-		selection: undefined,
-		scrollRange:
-			focusedRow >= sr.start && focusedRow <= sr.stop
-				? sr
-				: {
-						...sr,
-						start: focusedRow,
-						stop: Math.min(focusedRow + sr.offset - 1, lines.length - 1),
-				  },
-	};
-};
+import { getNewRow, mergeRow } from './commons-tools';
 
 /* INSERT_TEXT */
 const insertText = (state, text) => {
@@ -99,9 +54,64 @@ const insertInLine = index => (line, rows) => {
 
 const setSelection = (state, selection) => ({ ...state, selection });
 
+/* DELETE SELECTION */
+const finalizeDelete = state => {
+	const { selection: s } = state;
+	if (!s) return state;
+
+	return {
+		...state,
+		selection: undefined,
+		focusedRow: s.start.row,
+		index: s.start.index,
+	};
+};
+
+const deleteSingleRowSelection = state => {
+	const { selection: s, lines } = state;
+	const nl = lines.map((l, i) =>
+		i === s.start.row
+			? {
+					...l,
+					value: `${l.value.substr(0, s.start.index)}${l.value.substr(
+						s.stop.index
+					)}`,
+			  }
+			: l
+	);
+	return { ...state, lines: nl };
+};
+
+const deleteMultiRowSelection = state => {
+	const { selection: s, lines } = state;
+	const nl = lines.reduce((a, l, i) => {
+		if (i === s.start.row) {
+			return [...a, { ...l, value: l.value.substr(0, s.start.index) }];
+		}
+		if (i === s.stop.row) {
+			return [...a, { ...l, value: l.value.substr(s.stop.index) }];
+		}
+		if (i > s.start.row && i < s.stop.row) {
+			return a;
+		}
+		return [...a, l];
+	}, []);
+
+	return { ...state, lines: mergeRow(nl, s.start.row) };
+};
+
+const deleteSelection = state => {
+	const { selection: s } = state;
+	if (!s) return state;
+	if (s.start.row === s.stop.row) {
+		return finalizeDelete(deleteSingleRowSelection(state));
+	}
+	return finalizeDelete(deleteMultiRowSelection(state));
+};
+
+/* REDUCER */
 const reducer = (state, action) => {
 	switch (action.type) {
-		/* SELECTION */
 		case actions.SET_SELECTION:
 			return setSelection(state, action.payload.selection);
 		case actions.DELETE_SELECTION:
