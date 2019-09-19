@@ -82,6 +82,7 @@ const insertText = (state, text) => {
 	return { ...state };
 };
 
+/* */
 const insertInLine = index => (line, rows) => {
 	const getRow = line => (rows, i) =>
 		i === 0

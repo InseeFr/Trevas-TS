@@ -1,6 +1,7 @@
 import KEY from '../key-bind';
 import * as actions from '../editor-actions';
 import * as tools from './commons-tools';
+import { validateRangeResetSelection } from './common-state-validator';
 
 /* ARROW_LEFT */
 const reduceKeyLeft = state => {
@@ -143,35 +144,40 @@ const reduceKeyDelete = state => {
 	};
 };
 
+/* */
+const reduceKeyHome = state => ({ ...state, index: 0 });
+
+/* */
+const reduceKeyEnd = state => ({ ...state, index: tools.getRowLength(state) });
+
 const reducer = (state, action) => {
 	switch (action.type) {
 		case KEY.ARROW_LEFT:
-			return tools.validateRange(reduceKeyLeft(state));
+			return validateRangeResetSelection(reduceKeyLeft(state));
 		case KEY.ARROW_RIGHT:
-			return tools.validateRange(reduceKeyRight(state));
+			return validateRangeResetSelection(reduceKeyRight(state));
 		case KEY.ARROW_UP:
-			return tools.validateRange(reduceKeyUp(state));
+			return validateRangeResetSelection(reduceKeyUp(state));
 		case KEY.ARROW_DOWN:
-			return tools.validateRange(reduceKeyDown(state));
+			return validateRangeResetSelection(reduceKeyDown(state));
 		case KEY.BACK_SPACE:
-			return tools.validateRange(reduceKeyBackspace(state));
+			return validateRangeResetSelection(reduceKeyBackspace(state));
 		case KEY.DELETE:
-			return tools.validateRange(reduceKeyDelete(state));
+			return validateRangeResetSelection(reduceKeyDelete(state));
 		case KEY.ENTER:
-			return tools.validateRange(reduceKeyEnter(state));
+			return validateRangeResetSelection(reduceKeyEnter(state));
 		case KEY.HOME:
-			return { ...state, index: 0, selection: undefined, prefix: undefined };
+			return validateRangeResetSelection(reduceKeyHome(state));
 		case KEY.END:
-			return {
-				...state,
-				index: tools.getRowLength(state),
-				selection: undefined,
-				prefix: undefined,
-			};
+			return validateRangeResetSelection(reduceKeyEnd(state));
 		case KEY.TAB:
-			return appendCharAtCursor(state)(KEY._TABULATION);
+			return validateRangeResetSelection(
+				appendCharAtCursor(state)(KEY.TABULATION)
+			);
 		case actions.INSERT_CHARACTER:
-			return appendCharAtCursor(state)(action.payload.char || '');
+			return validateRangeResetSelection(
+				appendCharAtCursor(state)(action.payload.char || '')
+			);
 		default:
 			return state;
 	}

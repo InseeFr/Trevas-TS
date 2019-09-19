@@ -18,7 +18,7 @@ KEY.TAB = 'Tab';
 KEY.PAGE_UP = 'PageUp';
 KEY.PAGE_DOWN = 'PageDown';
 KEY.CONTEXT_MENU = 'ContextMenu';
-KEY._TABULATION = String.fromCharCode(9);
+KEY.TABULATION = String.fromCharCode(9);
 
 /* */
 const UNBINDED_KEY = [
@@ -47,10 +47,10 @@ const UNBINDED_KEY = [
 	'AudioVolumeMute',
 	'AudioVolumeDown',
 	'AudioVolumeUp',
-	'NumLock'
+	'NumLock',
 ];
 
 /* */
-KEY.isUnbindedKey = (key) => UNBINDED_KEY.indexOf(key) !== -1;
+KEY.isUnbindedKey = key => UNBINDED_KEY.indexOf(key) !== -1;
 
 export default KEY;
