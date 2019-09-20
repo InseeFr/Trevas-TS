@@ -66,9 +66,9 @@ SHORT_CUTS.set('ctrl|v', paste);
 SHORT_CUTS.set('ctrl|a', selectAll);
 
 const getPattern = ({ altKey, shiftKey, ctrlKey, key }) =>
-	`${altKey ? 'alt|' : ''}${shiftKey ? 'shift|' : ''}${ctrlKey ? 'ctrl|' : ''}${
-		key ? key : ''
-	}`;
+	`${altKey ? 'alt|' : ''}${shiftKey ? 'shift|' : ''}${
+		ctrlKey ? 'ctrl|' : ''
+	}${key || ''}`;
 
 const createShortcutsProvider = shortcutsMap => ({
 	get: (model = {}) => {

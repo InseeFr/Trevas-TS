@@ -1,57 +1,7 @@
 import * as actions from '../editor-actions';
-import { getNewRow, mergeRow } from './commons-tools';
+import { mergeRow } from './commons-tools';
 
-/* INSERT_TEXT */
-const insertText = (state, text) => {
-	const { focusedRow, index, scrollRange: sr } = state;
-	if (focusedRow !== undefined && index !== undefined) {
-		const newRows = text.split(/\r\n/);
-		// if (newRows[newRows.length - 1].length === 0) newRows.pop();
-		const lines = state.lines.reduce(
-			(a, line, row) =>
-				row === focusedRow
-					? [...a, ...insertInLine(index)(line, newRows)]
-					: [...a, line],
-			[]
-		);
-		const newFocusedRow = focusedRow + newRows.length - 1;
-		const newIndex =
-			newRows[newRows.length - 1].length + (newRows.length > 1 ? 0 : index);
-		return {
-			...state,
-			lines,
-			selection: undefined,
-			focusedRow: newFocusedRow,
-			index: newIndex,
-			scrollRange:
-				newFocusedRow >= sr.start && newFocusedRow <= sr.stop
-					? sr
-					: {
-							...sr,
-							start: Math.max(newFocusedRow - sr.offset + 1, 0),
-							stop: newFocusedRow,
-					  },
-		};
-	}
-
-	return { ...state };
-};
-
-/* */
-const insertInLine = index => (line, rows) => {
-	const getRow = line => (rows, i) =>
-		i === 0
-			? getNewRow(
-					`${line.value.substr(0, index)}${rows[i]}${line.value.substr(index)}`
-			  )
-			: i === rows.length - 1
-			? getNewRow(`${rows[i]}${line.value.substr(index)}`)
-			: getNewRow(rows[i]);
-	const newRows =
-		rows.length === 0 ? [rows] : rows.map((row, i) => getRow(line)(rows, i));
-	return newRows;
-};
-
+/* SET SELECTION */
 const setSelection = (state, selection) => ({ ...state, selection });
 
 /* DELETE SELECTION */
@@ -116,8 +66,6 @@ const reducer = (state, action) => {
 			return setSelection(state, action.payload.selection);
 		case actions.DELETE_SELECTION:
 			return deleteSelection(state);
-		case actions.INSERT_TEXT:
-			return insertText(state, action.payload.text);
 		default:
 			return state;
 	}

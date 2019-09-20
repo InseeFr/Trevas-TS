@@ -5,6 +5,7 @@ import tokenizeReducer from './tokenize.reducer';
 import selectionReducer from './selection.reducer';
 import keyReducer from './key.reducer';
 import cursorReducer from './cursor.reducer';
+import pasteReducer from './paste.reducer';
 
 export { default as initialState } from './initial-state';
 export { mergeLines } from './tokenize.reducer';
@@ -26,7 +27,8 @@ export default () => {
 		tokenizeReducer,
 		selectionReducer,
 		keyReducer,
-		cursorReducer
+		cursorReducer,
+		pasteReducer
 	);
 	return (state, action) => {
 		const newState = composed(state, action);
