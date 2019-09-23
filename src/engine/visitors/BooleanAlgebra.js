@@ -4,6 +4,7 @@ import {
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { getTokenType } from '../utils/context';
+import TypeMismatchError from "../errors/TypeMismatchError";
 
 class BooleanAlgebra extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -25,18 +26,18 @@ class BooleanAlgebra extends VtlVisitor {
 	};
 
 	visitBooleanExpr = ctx => {
-		const { left, right, op } = ctx;
-		const leftOperand = this.exprVisitor.visit(left);
-		const rightOperand = this.exprVisitor.visit(right);
+		const { leftCtx, rightCtx, opCtx } = ctx;
+		const leftExpr = this.exprVisitor.visit(leftCtx);
+		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		if (leftOperand.type !== VtlParser.BOOLEAN_CONSTANT)
-			throw new Error('Left operand should be a boolean constant');
-		if (rightOperand.type !== VtlParser.BOOLEAN_CONSTANT)
-			throw new Error('Right operand should be a boolean constant');
+		if (leftExpr.type !== VtlParser.BOOLEAN_CONSTANT)
+			throw new TypeMismatchError(leftCtx, VtlParser.BOOLEAN_CONSTANT, leftExpr.type);
+		if (rightExpr.type !== VtlParser.BOOLEAN_CONSTANT)
+			throw new TypeMismatchError(rightExpr, VtlParser.BOOLEAN_CONSTANT, rightExpr.type);
 
 		let operatorFunction;
 
-		switch (op.type) {
+		switch (opCtx.type) {
 			case VtlParser.AND:
 				operatorFunction = (left, right) => left && right;
 				break;
@@ -47,14 +48,14 @@ class BooleanAlgebra extends VtlVisitor {
 				operatorFunction = (left, right) => left !== right;
 				break;
 			default:
-				throw new Error('Unsupported operator ' + op.type);
+				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
 
 		return {
 			resolve: bindings =>
 				operatorFunction(
-					leftOperand.resolve(bindings),
-					rightOperand.resolve(bindings)
+					leftExpr.resolve(bindings),
+					rightExpr.resolve(bindings)
 				),
 			type: getTokenType(ctx),
 		};
