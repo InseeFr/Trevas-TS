@@ -2,6 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import TypeMismatchError from "../errors/TypeMismatchError";
 
 class FunctionVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -15,18 +16,23 @@ class FunctionVisitor extends VtlVisitor {
 		if (children.length === 4)
 			throw new Error('Invalid number of operands for function substr');
 
-		const operand = this.exprVisitor.visit(children[2]);
-		const startIndex = this.exprVisitor.visit(children[4].children[0]);
-		const length = this.exprVisitor.visit(children[6].children[0]);
+		// Required because the grammar doesn't do it for us.
+		let operandCtx = children[2];
+		let startIndexCtx = children[4].children[0];
+		let lengthCtx = children[6].children[0];
+
+		const operand = this.exprVisitor.visit(operandCtx);
+		const startIndex = this.exprVisitor.visit(startIndexCtx);
+		const length = this.exprVisitor.visit(lengthCtx);
 
 		if (operand.type !== VtlParser.STRING_CONSTANT) {
-			throw new Error(`cannot substr ${children[2].getText()}`);
+			throw new TypeMismatchError(operandCtx, VtlParser.STRING_CONSTANT, operand.type);
 		}
-		if (
-			startIndex.type !== VtlParser.INTEGER_CONSTANT ||
-			length.type !== VtlParser.INTEGER_CONSTANT
-		) {
-			throw new Error(`cannot substr ${children[2].getText()}`);
+		if (startIndex.type !== VtlParser.INTEGER_CONSTANT) {
+			throw new TypeMismatchError(startIndexCtx, VtlParser.STRING_CONSTANT, startIndex.type);
+		}
+		if (length.type !== VtlParser.INTEGER_CONSTANT) {
+			throw new TypeMismatchError(lengthCtx, VtlParser.STRING_CONSTANT, length.type);
 		}
 		return {
 			resolve: bindings => {
