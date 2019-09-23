@@ -5,3 +5,4 @@ export * from './key.actions';
 export * from './selection.actions';
 export * from './suggestion.actions';
 export * from './tokenize.actions';
+export * from './shortcut.actions';

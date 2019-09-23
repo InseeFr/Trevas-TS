@@ -59,11 +59,25 @@ const selectAll = (dispatch, state) => {
 	return true;
 };
 
+/* ctrl + left */
+const controlLeft = dispatch => {
+	dispatch(actions.controlLeft());
+	return true;
+};
+
+/* ctrl + right */
+const controlRight = dispatch => {
+	dispatch(actions.controlRight());
+	return true;
+};
+
 /* MAPPING */
 SHORT_CUTS.set('ctrl|x', cut);
 SHORT_CUTS.set('ctrl|c', copy);
 SHORT_CUTS.set('ctrl|v', paste);
 SHORT_CUTS.set('ctrl|a', selectAll);
+SHORT_CUTS.set('ctrl|ArrowLeft', controlLeft);
+SHORT_CUTS.set('ctrl|ArrowRight', controlRight);
 
 const getPattern = ({ altKey, shiftKey, ctrlKey, key }) =>
 	`${altKey ? 'alt|' : ''}${shiftKey ? 'shift|' : ''}${

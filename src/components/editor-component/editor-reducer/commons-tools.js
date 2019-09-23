@@ -108,6 +108,17 @@ export const mergeRow = (lines, index) => {
 	);
 };
 
+/* state => ({ token, index }) */
+export const getCurrentToken = state => {
+	const { lines, focusedRow, index } = state;
+	if (focusedRow === undefined || index === undefined) return {};
+	const idx = lines[focusedRow].tokens.reduce(
+		(a, t, i) => (index >= t.start && index <= t.stop ? i : a),
+		-1
+	);
+	return idx !== -1 ? { token: lines[focusedRow].tokens[idx], index: idx } : {};
+};
+
 TOOLS.removeChar = removeChar;
 TOOLS.mergeRow = mergeRow;
 TOOLS.getRow = getRow;
