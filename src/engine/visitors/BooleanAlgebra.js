@@ -26,7 +26,7 @@ class BooleanAlgebra extends VtlVisitor {
 	};
 
 	visitBooleanExpr = ctx => {
-		const { leftCtx, rightCtx, opCtx } = ctx;
+		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 

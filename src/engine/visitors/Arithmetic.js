@@ -11,8 +11,8 @@ class ArithmeticVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitArithmeticExpr(ctx) {
-		const { leftCtx, rightCtx, opCtx } = ctx;
+	visitArithmeticExpr = ctx => {
+		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
