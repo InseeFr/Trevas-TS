@@ -144,6 +144,27 @@ const multiRowSelection = () => state => {
 };
 
 /* */
+
+const computeSelection = (a, e) => {
+	const p = (row, index) => ({ row, index });
+	const multi = () =>
+		a.row > e.row
+			? { start: p(e.row, e.index), stop: p(a.row, a.index) }
+			: { start: p(a.row, a.index), stop: p(e.row, e.index) };
+	const single = () =>
+		a.index > e.index
+			? { start: p(e.row, e.index), stop: p(a.row, a.index) }
+			: { start: p(a.row, a.index), stop: p(e.row, e.index) };
+	return a.row === e.row ? single() : multi();
+};
+export const checkSelection = selection => {
+	const { anchor, extent } = selection;
+	if (!anchor || !extent) return selection;
+	const { start, stop } = computeSelection(anchor, extent);
+	return { start, stop, anchor, extent };
+};
+
+/* */
 export const getSelectionBlocs = () => state =>
 	state.selection.start.row === state.selection.stop.row
 		? singleRowSelection()(state)

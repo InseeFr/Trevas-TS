@@ -9,7 +9,12 @@ import PropTypes from 'prop-types';
 import createKeydownCallback from '../editor-keydown-callback';
 import * as actions from '../editor-actions';
 import Cursor from './cursor.component';
-import { getSelectionBlocs, getCursorLeft, getCursorPosition } from './tools';
+import {
+	getSelectionBlocs,
+	getCursorLeft,
+	getCursorPosition,
+	checkSelection,
+} from './tools';
 import EditorContext from './editor-context';
 
 /* */
@@ -121,11 +126,13 @@ const Overlay = ({ chasse }) => {
 						dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
 						if (anchor.row !== newFocusedRow || anchor.index !== newIndex) {
 							const ne = { row: newFocusedRow, index: newIndex };
+							const test = checkSelection({ anchor, extent });
+							console.log(test);
 							const next =
 								anchor.row > newFocusedRow ||
 								(anchor.row === newFocusedRow && anchor.index > newIndex)
-									? { start: { ...ne }, stop: { ...anchor } }
-									: { start: { ...anchor }, stop: { ...ne } };
+									? { start: { ...ne }, stop: { ...anchor }, anchor, extent }
+									: { start: { ...anchor }, stop: { ...ne }, anchor, extent };
 							dispatch(actions.setSelection(next));
 						}
 					}
