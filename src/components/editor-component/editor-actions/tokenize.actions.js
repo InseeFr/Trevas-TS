@@ -13,7 +13,7 @@ export const setGetTokens = getTokens => ({
 
 /* LAUNCH_TOKENIZATION */
 export const LAUNCH_TOKENIZATION = 'tokenizer/launch-tokenization';
-export const launchTokenization = tokens => ({
+export const launchTokenization = (tokens, hash) => ({
 	type: LAUNCH_TOKENIZATION,
-	payload: { tokens },
+	payload: { tokens, hash },
 });

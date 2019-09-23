@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react';
-
 import PropTypes from 'prop-types';
+import { hashLines } from './tools';
 import ScrollUpDown from './scrollbar-up.component';
 import ScrollHor from './scrollbar-hor.component';
 import Line from './line.component';
@@ -52,10 +52,13 @@ const Editor = ({ parse }) => {
 	);
 	useEffect(() => {
 		if (tokenize) {
-			// fetch and dispatch(actions.tokenizeAll());
-			getTokens(lines).then(tokens => {
-				dispatch(actions.launchTokenization(tokens));
-				dispatch(actions.checkPrefix());
+			/*
+			 calcul d'une signature sur les lignes, à vérifier au moment de la tokenization.
+			*/
+			const hash = hashLines(lines);
+			getTokens(lines, hash).then(({ tokens, hash: hashInitial }) => {
+				dispatch(actions.launchTokenization(tokens, hashInitial));
+				dispatch(actions.checkPrefix()); // TODO un peu trop brutal ici
 			});
 		}
 	}, [tokenize, lines]);

@@ -41,7 +41,10 @@ const fillUnmappedToken = (tokensOriginal, ligne) => {
 };
 
 /* */
-export default getTokens => lines => {
+export default getTokens => (lines, hash) => {
 	const content = mergeLines(lines);
-	return getTokens(content).then(tokens => fillUnmappedToken(tokens, content));
+	return getTokens(content).then(tokens => ({
+		tokens: fillUnmappedToken(tokens, content),
+		hash,
+	}));
 };

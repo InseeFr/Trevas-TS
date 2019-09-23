@@ -1,4 +1,5 @@
 import * as actions from '../editor-actions';
+import { hashLines } from '../components/tools';
 
 const LF = '\n';
 
@@ -98,6 +99,7 @@ const fillLine = (line, { pos, lines, tokens }) => {
 	if (line.value.length === 0)
 		return { lines: [...lines, { ...line, tokens: [] }], pos: pos + 1, tokens };
 	const [first] = tokens;
+	if (!first) return { pos, lines, tokens };
 	const rowLimit = pos + line.value.length;
 	return first.start < pos || first.stop > rowLimit
 		? fillMulti(line, { pos, lines, tokens })
@@ -109,9 +111,10 @@ export const mergeLines = lines =>
 	lines.reduce((a, { value }) => `${a}${value}${LF}`, '');
 
 /* TOKENIZE_ALL */
-const reduceLaunchTokenization = tokens => state => {
+const reduceLaunchTokenization = (tokens, hash) => state => {
 	const { lines } = state;
-	// const tokens = getTokens(merge(lines));
+	const currentHash = hashLines(lines);
+	if (hash !== currentHash) return state;
 	const nl = lines.reduce((a, line) => fillLine({ ...line, tokens: [] }, a), {
 		pos: 0,
 		lines: [],
@@ -141,7 +144,10 @@ const reducer = (state, action) => {
 			return reduceTokenizeAll(state);
 		/* LAUNCH_TOKENIZATION */
 		case actions.LAUNCH_TOKENIZATION:
-			return reduceLaunchTokenization(action.payload.tokens)(state);
+			return reduceLaunchTokenization(
+				action.payload.tokens,
+				action.payload.hash
+			)(state);
 		default:
 			return state;
 	}

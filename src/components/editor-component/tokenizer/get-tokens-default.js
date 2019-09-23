@@ -5,7 +5,7 @@ const getTokensDefault = text => [
 	{ start: 0, stop: text.length, value: text, className: 'unmapped' },
 ];
 
-export default lines => {
+export default (lines, hash) => {
 	const content = mergeLines(lines);
-	return Promise.resolve(getTokensDefault(content));
+	return Promise.resolve({ tokens: getTokensDefault(content), hash });
 };
