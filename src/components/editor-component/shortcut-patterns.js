@@ -71,6 +71,30 @@ const controlRight = dispatch => {
 	return true;
 };
 
+/* shift + right */
+const shiftRight = dispatch => {
+	dispatch(actions.shiftRight());
+	return true;
+};
+
+/* shifth + left */
+const shiftLeft = dispatch => {
+	dispatch(actions.shiftLeft());
+	return true;
+};
+
+/* shifth + left */
+const shiftUp = dispatch => {
+	dispatch(actions.shiftUp());
+	return true;
+};
+
+/* shifth + left */
+const shiftDown = dispatch => {
+	dispatch(actions.shiftDown());
+	return true;
+};
+
 /* MAPPING */
 SHORT_CUTS.set('ctrl|x', cut);
 SHORT_CUTS.set('ctrl|c', copy);
@@ -78,6 +102,10 @@ SHORT_CUTS.set('ctrl|v', paste);
 SHORT_CUTS.set('ctrl|a', selectAll);
 SHORT_CUTS.set('ctrl|ArrowLeft', controlLeft);
 SHORT_CUTS.set('ctrl|ArrowRight', controlRight);
+SHORT_CUTS.set('shift|ArrowLeft', shiftLeft);
+SHORT_CUTS.set('shift|ArrowRight', shiftRight);
+SHORT_CUTS.set('shift|ArrowUp', shiftUp);
+SHORT_CUTS.set('shift|ArrowDown', shiftDown);
 
 const getPattern = ({ altKey, shiftKey, ctrlKey, key }) =>
 	`${altKey ? 'alt|' : ''}${shiftKey ? 'shift|' : ''}${

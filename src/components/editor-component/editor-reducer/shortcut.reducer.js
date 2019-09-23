@@ -1,6 +1,5 @@
 import * as actions from '../editor-actions';
 import * as tools from './commons-tools';
-import { SET_GET_TOKENS } from '../editor-actions';
 
 /* */
 const reduceControlLeft = state => {
@@ -29,12 +28,69 @@ const reduceControlRight = state => {
 	return token ? { ...state, index: token.stop + 1 } : state;
 };
 
+/* */
+const reduceShiftLeft = state => {
+	const { focusedRow, index, selection } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	const newIdx = Math.max(0, index - 1);
+
+	const sel = selection || { start: { row: focusedRow, index } };
+
+	return {
+		...state,
+		index: newIdx,
+		selection: tools.validateSelection({
+			...sel,
+			stop: { row: focusedRow, index: newIdx },
+		}),
+	};
+};
+
+/* */
+const reduceShiftRight = state => {
+	const { lines, focusedRow, index, selection } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	const newIdx = Math.min(lines[focusedRow].value.length, index + 1);
+	const sel = selection || { start: { row: focusedRow, index } };
+
+	return {
+		...state,
+		index: newIdx,
+		selection: tools.validateSelection({
+			...sel,
+			stop: { row: focusedRow, index: newIdx },
+		}),
+	};
+};
+
+/* */
+const reduceShiftUp = state => {
+	const { focusedRow, index, selection } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	return state;
+};
+
+/* */
+const reduceShiftDown = state => {
+	const { focusedRow, index, selection } = state;
+	if (focusedRow === undefined || index === undefined) return state;
+	return state;
+};
+
 const reducer = (state, action) => {
 	switch (action.type) {
 		case actions.CONTROL_LEFT:
 			return reduceControlLeft(state);
 		case actions.CONTROL_RIGHT:
 			return reduceControlRight(state);
+		case actions.SHIFT_LEFT:
+			return reduceShiftLeft(state);
+		case actions.SHIFT_RIGHT:
+			return reduceShiftRight(state);
+		case actions.SHIFT_UP:
+			return reduceShiftUp(state);
+		case actions.SHIFT_DOWN:
+			return reduceShiftDown(state);
 		default:
 			return state;
 	}
