@@ -20,6 +20,7 @@ const insertSingleRow = rows => state => {
 
 	return {
 		...state,
+		index: rows[0].length + index,
 		lines: lines.map((l, i) =>
 			i === focusedRow
 				? {
@@ -52,6 +53,8 @@ const insertMultiRows = rows => state => {
 	if (index === undefined || focusedRow === undefined) return state;
 	return {
 		...state,
+		focusedRow: focusedRow + rows.length - 1,
+		index: rows[rows.length - 1].length,
 		lines: lines.reduce(
 			(a, l, i) =>
 				i === focusedRow ? [...a, ...transformRows(l, index)(rows)] : [...a, l],
