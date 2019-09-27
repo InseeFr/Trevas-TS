@@ -1,5 +1,6 @@
 import * as actions from '../editor-actions';
-import { mergeRow } from './commons-tools';
+import { mergeRow } from './reducers-tools';
+import { checkSelection } from '../common-tools';
 
 /* SET SELECTION */
 const setSelection = (state, selection) => ({ ...state, selection });
@@ -63,7 +64,7 @@ const deleteSelection = state => {
 const reducer = (state, action) => {
 	switch (action.type) {
 		case actions.SET_SELECTION:
-			return setSelection(state, action.payload.selection);
+			return setSelection(state, checkSelection(action.payload.selection));
 		case actions.DELETE_SELECTION:
 			return deleteSelection(state);
 		default:

@@ -119,12 +119,6 @@ export const getCurrentToken = state => {
 	return idx !== -1 ? { token: lines[focusedRow].tokens[idx], index: idx } : {};
 };
 
-/* */
-export const validateSelection = selection => {
-	// TODO
-	return selection;
-};
-
 TOOLS.getCurrentToken = getCurrentToken;
 TOOLS.removeChar = removeChar;
 TOOLS.mergeRow = mergeRow;
