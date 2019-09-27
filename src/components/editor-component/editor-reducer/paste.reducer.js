@@ -42,8 +42,8 @@ const transformRows = (l, index) => ([first, ...rest]) => {
 		},
 		...rest.map((value, i) =>
 			i === rest.length - 1
-				? { value: `${value}${l.value.substr(index)}` }
-				: { value }
+				? { value: `${value}${l.value.substr(index)}`, tokens: [] }
+				: { value, tokens: [] }
 		),
 	];
 };
