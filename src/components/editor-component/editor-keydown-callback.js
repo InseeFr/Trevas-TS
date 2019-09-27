@@ -20,7 +20,8 @@ const isCharCode = c =>
 	/^[\w-+*=/?,!;.:{}/\\$*%()"#@µ<>'~|& [\]éôêûîèäëïüöùààç]{1}$/gim.test(c); // il en manquera !
 
 /* */
-const isSelection = selection => selection && selection.stop;
+const isSelection = selection =>
+	selection && selection.extent && selection.anchor;
 
 /* */
 const keyDownsuggesterProxy = (dispatch, state) => e => {

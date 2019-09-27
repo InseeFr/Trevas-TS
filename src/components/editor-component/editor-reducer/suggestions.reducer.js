@@ -1,5 +1,5 @@
 import * as actions from '../editor-actions';
-import { getNewRow } from './commons-tools';
+import { getNewRow } from './reducers-tools';
 
 /* SUGGEST_TOKEN */
 const replaceToken = (state, suggestion) => {
@@ -27,12 +27,6 @@ const replaceToken = (state, suggestion) => {
 	return { ...state, lines: newLines, index: nextIndex + 1 };
 };
 
-/* CHECK_PREFIX */
-const checkPrefix = ({ lines, focusedRow, index }) => {
-	const token = getFocusedToken(lines)(focusedRow, index);
-	return token ? token.value.trim().substr(0, index - token.start) : undefined;
-};
-
 const getFocusedToken = lines => (focusedRow, index) =>
 	focusedRow >= 0
 		? lines[focusedRow].value.length === index
@@ -42,6 +36,12 @@ const getFocusedToken = lines => (focusedRow, index) =>
 					undefined
 			  )
 		: undefined;
+
+/* CHECK_PREFIX */
+const checkPrefix = ({ lines, focusedRow, index }) => {
+	const token = getFocusedToken(lines)(focusedRow, index);
+	return token ? token.value.trim().substr(0, index - token.start) : undefined;
+};
 
 const reducer = (state, action) => {
 	switch (action.type) {

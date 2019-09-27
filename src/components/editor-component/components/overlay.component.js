@@ -13,8 +13,7 @@ import {
 	getSelectionBlocs,
 	getCursorLeft,
 	getCursorPosition,
-	checkSelection,
-} from './tools';
+} from '../common-tools';
 import EditorContext from './editor-context';
 
 /* */
@@ -125,15 +124,8 @@ const Overlay = ({ chasse }) => {
 						setExtent({ row: newFocusedRow, index: newIndex });
 						dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
 						if (anchor.row !== newFocusedRow || anchor.index !== newIndex) {
-							const ne = { row: newFocusedRow, index: newIndex };
-							const test = checkSelection({ anchor, extent });
-							console.log(test);
-							const next =
-								anchor.row > newFocusedRow ||
-								(anchor.row === newFocusedRow && anchor.index > newIndex)
-									? { start: { ...ne }, stop: { ...anchor }, anchor, extent }
-									: { start: { ...anchor }, stop: { ...ne }, anchor, extent };
-							dispatch(actions.setSelection(next));
+							const ne = anchor && extent ? { anchor, extent } : undefined;
+							dispatch(actions.setSelection(ne));
 						}
 					}
 				}
@@ -143,7 +135,7 @@ const Overlay = ({ chasse }) => {
 				<Cursor left={cursorPosition.left} top={cursorPosition.top} />
 			) : null}
 			{selection
-				? getSelectionBlocs()(state).map(({ top, left, width }, i) => (
+				? getSelectionBlocs(state).map(({ top, left, width }, i) => (
 						<span
 							key={i}
 							className="bloc-selection"

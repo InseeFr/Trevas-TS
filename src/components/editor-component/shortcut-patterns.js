@@ -1,5 +1,5 @@
 import * as actions from './editor-actions';
-import { getSelection } from './selection-tools';
+import { getSelectionText } from './common-tools';
 import clipboard from './clipboard';
 
 const SHORT_CUTS = new Map();
@@ -13,7 +13,7 @@ const unmappedPattern = pattern => () => {
 /* copy to clipboard */
 const copy = (dispatch, state) => {
 	if (state.selection) {
-		const content = getSelection(state);
+		const content = getSelectionText(state);
 		clipboard.copy(content);
 	}
 	return true;

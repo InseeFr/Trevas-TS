@@ -1,5 +1,5 @@
 import * as actions from '../editor-actions';
-import { hashLines } from '../components/tools';
+import { hashLines } from '../common-tools';
 
 const LF = '\n';
 

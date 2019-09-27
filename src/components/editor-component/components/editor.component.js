@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { hashLines } from './tools';
+import { hashLines } from '../common-tools';
 import ScrollUpDown from './scrollbar-up.component';
 import ScrollHor from './scrollbar-hor.component';
 import Line from './line.component';

@@ -1,5 +1,5 @@
 import * as actions from '../editor-actions';
-import * as tools from './commons-tools';
+import * as tools from './reducers-tools';
 
 /* */
 const reduceControlLeft = state => {

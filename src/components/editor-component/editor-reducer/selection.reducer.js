@@ -1,8 +1,12 @@
 import * as actions from '../editor-actions';
-import { mergeRow } from './commons-tools';
+import { mergeRow } from './reducers-tools';
+import { checkSelection } from '../common-tools';
 
 /* SET SELECTION */
-const setSelection = (state, selection) => ({ ...state, selection });
+const setSelection = (state, selection) => ({
+	...state,
+	selection: checkSelection(selection),
+});
 
 /* DELETE SELECTION */
 const finalizeDelete = state => {

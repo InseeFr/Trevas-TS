@@ -1,6 +1,6 @@
 import KEY from '../key-bind';
 import * as actions from '../editor-actions';
-import * as tools from './commons-tools';
+import * as tools from './reducers-tools';
 import { validateRangeResetSelection } from './common-state-validator';
 
 /* ARROW_LEFT */

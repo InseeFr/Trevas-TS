@@ -20,6 +20,17 @@ export const insertChar = (index, char, line) => {
 		index
 	)}`;
 	if (line.tokens) {
+		if (index === line.value.length) {
+			return {
+				...line,
+				value,
+				tokens: line.tokens.map((t, i) =>
+					i === line.tokens.length - 1
+						? { ...t, value: `${t.value}${char}`, stop: t.stop + char.length }
+						: t
+				),
+			};
+		}
 		const result = line.tokens.reduce(
 			({ find, tokens }, t) => {
 				if (index >= t.start && index <= t.stop) {
@@ -54,6 +65,7 @@ export const insertChar = (index, char, line) => {
 			},
 			{ find: false, tokens: [] }
 		);
+
 		if (result.find) return { ...line, value, tokens: result.tokens };
 	}
 	return getNewRow(value);
@@ -117,12 +129,6 @@ export const getCurrentToken = state => {
 		-1
 	);
 	return idx !== -1 ? { token: lines[focusedRow].tokens[idx], index: idx } : {};
-};
-
-/* */
-export const validateSelection = selection => {
-	// TODO
-	return selection;
 };
 
 TOOLS.getCurrentToken = getCurrentToken;

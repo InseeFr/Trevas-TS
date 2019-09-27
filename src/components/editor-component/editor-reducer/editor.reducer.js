@@ -1,5 +1,5 @@
 import * as actions from '../editor-actions';
-import { getNewRow, getRowLength } from './commons-tools';
+import { getNewRow, getRowLength } from './reducers-tools';
 
 /* */
 const reduceCheckIndex = state => ({
