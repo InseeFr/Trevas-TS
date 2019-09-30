@@ -49,8 +49,8 @@ const paste = (dispatch, state) => {
 const selectAll = (dispatch, state) => {
 	dispatch(
 		actions.setSelection({
-			start: { row: 0, index: 0 },
-			stop: {
+			anchor: { row: 0, index: 0 },
+			extent: {
 				row: state.lines.length - 1,
 				index: state.lines[state.lines.length - 1].value.length,
 			},
