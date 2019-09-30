@@ -1,12 +1,21 @@
 import * as actions from '../editor-actions';
 import { mergeRow } from './reducers-tools';
 import { checkSelection } from '../common-tools';
+import { validateRange } from './common-state-validator';
 
 /* SET SELECTION */
-const setSelection = (state, selection) => ({
-	...state,
-	selection: checkSelection(selection),
-});
+const setSelection = (state, selection) => {
+	if (!selection) {
+		return { ...state, selection: checkSelection(selection) };
+	}
+	const { index, row } = selection.extent;
+	return {
+		...state,
+		index,
+		focusedRow: row,
+		selection: checkSelection(selection),
+	};
+};
 
 /* DELETE SELECTION */
 const finalizeDelete = state => {
@@ -67,7 +76,7 @@ const deleteSelection = state => {
 const reducer = (state, action) => {
 	switch (action.type) {
 		case actions.SET_SELECTION:
-			return setSelection(state, action.payload.selection);
+			return validateRange(setSelection(state, action.payload.selection));
 		case actions.DELETE_SELECTION:
 			return deleteSelection(state);
 		default:

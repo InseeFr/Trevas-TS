@@ -16,6 +16,39 @@ import {
 } from '../common-tools';
 import EditorContext from './editor-context';
 
+let cleanListeners;
+
+/* setSelectionStart(false) */
+const listenOnDocument = ({ cursorRect }) => ({
+	goUp,
+	goDown,
+	setSelectionStart,
+}) => {
+	/* */
+	const mouseMoveOnWindow = e => {
+		const { clientY } = e;
+		if (clientY < cursorRect.y) {
+			goUp();
+		} else if (clientY > cursorRect.y) {
+			goDown();
+		}
+	};
+	/* */
+	const mouseUpOnWindow = () => {
+		setSelectionStart(false);
+		document.removeEventListener('mousemove', mouseMoveOnWindow);
+		document.removeEventListener('mouseup', mouseUpOnWindow);
+	};
+
+	document.addEventListener('mousemove', mouseMoveOnWindow);
+	document.addEventListener('mouseup', mouseUpOnWindow);
+
+	return () => {
+		document.removeEventListener('mousemove', mouseMoveOnWindow);
+		document.removeEventListener('mouseup', mouseUpOnWindow);
+	};
+};
+
 /* */
 const Overlay = ({ chasse }) => {
 	const state = useContext(EditorContext);
@@ -35,6 +68,7 @@ const Overlay = ({ chasse }) => {
 	const [extent, setExtent] = useState(undefined);
 	const [cursorPosition, setCursorPosition] = useState(undefined);
 	const [selectionStart, setSelectionStart] = useState(false);
+	const [move, setMove] = useState(0);
 
 	useEffect(() => {
 		dispatch(actions.initCharSize(chasse));
@@ -53,6 +87,18 @@ const Overlay = ({ chasse }) => {
 		rowHeight,
 		horizontalRange.start,
 	]);
+
+	useEffect(() => {
+		if (move !== 0) {
+			const nx = {
+				...extent,
+				row: Math.min(Math.max(0, extent.row + move), lines.length - 1),
+			};
+			setExtent(nx);
+			dispatch(actions.setSelection({ anchor, extent: nx }));
+			setMove(0);
+		}
+	}, [move, extent]);
 
 	const callbackKeyDown = createKeydownCallback(
 		dispatch,
@@ -75,7 +121,6 @@ const Overlay = ({ chasse }) => {
 			{ active: true }
 		);
 	}
-
 	return (
 		<div
 			ref={divEl}
@@ -85,6 +130,12 @@ const Overlay = ({ chasse }) => {
 			onKeyDown={callbackKeyDown}
 			onMouseEnter={e => {
 				e.target.focus();
+				setMove(0);
+
+				if (cleanListeners) {
+					cleanListeners();
+					cleanListeners = undefined;
+				}
 			}}
 			onMouseDown={e => {
 				e.stopPropagation();
@@ -95,7 +146,15 @@ const Overlay = ({ chasse }) => {
 				dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
 				dispatch(actions.setSelection(undefined));
 			}}
-			onMouseLeave={() => setSelectionStart(false)}
+			onMouseLeave={() => {
+				if (selectionStart) {
+					cleanListeners = listenOnDocument(state)({
+						setSelectionStart,
+						goUp: () => setMove(-1),
+						goDown: () => setMove(1),
+					});
+				}
+			}}
 			onMouseUp={e => {
 				e.stopPropagation();
 				setSelectionStart(false);
