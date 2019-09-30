@@ -1,5 +1,6 @@
 import * as actions from '../editor-actions';
 import { getCRFL } from '../env';
+import { validateRange } from './common-state-validator';
 
 /* INSERT TEXT */
 const finalizeInsert = state => {
@@ -77,7 +78,7 @@ const insertText = text => state => {
 const reducer = (state, action) => {
 	switch (action.type) {
 		case actions.INSERT_TEXT:
-			return insertText(action.payload.text)(state);
+			return validateRange(insertText(action.payload.text)(state));
 		default:
 			return state;
 	}
