@@ -24,13 +24,18 @@ const listenOnDocument = ({ cursorRect }) => ({
 	goDown,
 	setSelectionStart,
 }) => {
+	let interval = null;
 	/* */
 	const mouseMoveOnWindow = e => {
-		const { clientY } = e;
-		if (clientY < cursorRect.y) {
-			goUp();
-		} else if (clientY > cursorRect.y) {
-			goDown();
+		if (!interval) {
+			interval = window.setInterval(() => {
+				const { clientY } = e;
+				if (clientY < cursorRect.y) {
+					goUp();
+				} else if (clientY > cursorRect.y) {
+					goDown();
+				}
+			}, 80);
 		}
 	};
 	/* */
@@ -38,6 +43,7 @@ const listenOnDocument = ({ cursorRect }) => ({
 		setSelectionStart(false);
 		document.removeEventListener('mousemove', mouseMoveOnWindow);
 		document.removeEventListener('mouseup', mouseUpOnWindow);
+		window.clearInterval(interval);
 	};
 
 	document.addEventListener('mousemove', mouseMoveOnWindow);
@@ -46,6 +52,7 @@ const listenOnDocument = ({ cursorRect }) => ({
 	return () => {
 		document.removeEventListener('mousemove', mouseMoveOnWindow);
 		document.removeEventListener('mouseup', mouseUpOnWindow);
+		window.clearInterval(interval);
 	};
 };
 

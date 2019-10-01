@@ -31,17 +31,13 @@ const cut = (dispatch, state) => {
 
 /* paste clipboard */
 const paste = (dispatch, state) => {
-	if (navigator && navigator.clipboard) {
-		navigator.clipboard.readText().then(text => {
-			if (text && text.length > 0) {
-				if (state.selection) dispatch(actions.deleteSelection());
-				dispatch(actions.insertText(text));
-				dispatch(actions.tokenizeAll());
-			}
-		});
-	} else {
-		console.warn('I need to find a clipboard polyfill !');
-	}
+	clipboard.getClipboardContent().then(text => {
+		if (text && text.length > 0) {
+			if (state.selection) dispatch(actions.deleteSelection());
+			dispatch(actions.insertText(text));
+			dispatch(actions.tokenizeAll());
+		}
+	});
 	return true;
 };
 
