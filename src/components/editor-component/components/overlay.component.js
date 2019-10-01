@@ -18,8 +18,8 @@ import EditorContext from './editor-context';
 
 let cleanListeners;
 
-/* setSelectionStart(false) */
-const listenOnDocument = ({ cursorRect }) => ({
+/* à améliorer */
+const listenOnDocument = ({ cursorRect, editorEl }) => ({
 	goUp,
 	goDown,
 	setSelectionStart,
@@ -27,15 +27,13 @@ const listenOnDocument = ({ cursorRect }) => ({
 	let interval = null;
 	/* */
 	const mouseMoveOnWindow = e => {
-		if (!interval) {
-			interval = window.setInterval(() => {
-				const { clientY } = e;
-				if (clientY < cursorRect.y) {
-					goUp();
-				} else if (clientY > cursorRect.y) {
-					goDown();
-				}
-			}, 80);
+		const { clientY } = e;
+		const rect = editorEl.getBoundingClientRect();
+
+		if (clientY < rect.top && !interval) {
+			interval = window.setInterval(() => goUp(), 80);
+		} else if (clientY > rect.top + rect.height && !interval) {
+			interval = window.setInterval(() => goDown(), 80);
 		}
 	};
 	/* */
@@ -44,6 +42,7 @@ const listenOnDocument = ({ cursorRect }) => ({
 		document.removeEventListener('mousemove', mouseMoveOnWindow);
 		document.removeEventListener('mouseup', mouseUpOnWindow);
 		window.clearInterval(interval);
+		interval = undefined;
 	};
 
 	document.addEventListener('mousemove', mouseMoveOnWindow);
@@ -53,6 +52,7 @@ const listenOnDocument = ({ cursorRect }) => ({
 		document.removeEventListener('mousemove', mouseMoveOnWindow);
 		document.removeEventListener('mouseup', mouseUpOnWindow);
 		window.clearInterval(interval);
+		interval = undefined;
 	};
 };
 

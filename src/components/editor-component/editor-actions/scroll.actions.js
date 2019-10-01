@@ -31,8 +31,8 @@ export const setHorizontalRange = horizontalRange => ({
 });
 
 /* SET_EDITOR_RECT */
-export const SET_EDITOR_RECT = 'scroll/set-editor-rect';
-export const setEditorRect = rect => ({
-	type: SET_EDITOR_RECT,
-	payload: { rect },
+export const SET_EDITOR_EL = 'scroll/set-editor-el';
+export const setEditorEl = el => ({
+	type: SET_EDITOR_EL,
+	payload: { el },
 });

@@ -55,9 +55,9 @@ const reduceSetHorizontalRange = (state, { payload: { horizontalRange } }) => ({
 });
 
 /* */
-const reduceSetEditorRect = (state, { payload: { rect } }) => ({
+const reduceSetEditorEl = (state, { payload: { el } }) => ({
 	...state,
-	editorRect: rect,
+	editorEl: el,
 });
 
 /* */
@@ -74,8 +74,8 @@ const reducer = (state, action) => {
 			return reduceSetScrollRange(state, action);
 		case actions.SET_HORIZONTAL_RANGE:
 			return reduceSetHorizontalRange(state, action);
-		case actions.SET_EDITOR_RECT:
-			return reduceSetEditorRect(state, action);
+		case actions.SET_EDITOR_EL:
+			return reduceSetEditorEl(state, action);
 
 		default:
 			return state;
