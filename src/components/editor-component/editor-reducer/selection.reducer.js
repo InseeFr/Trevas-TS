@@ -78,7 +78,7 @@ const reducer = (state, action) => {
 		case actions.SET_SELECTION:
 			return validateRange(setSelection(state, action.payload.selection));
 		case actions.DELETE_SELECTION:
-			return deleteSelection(state);
+			return validateRange(deleteSelection(state));
 		default:
 			return state;
 	}
