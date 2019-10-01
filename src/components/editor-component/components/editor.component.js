@@ -68,6 +68,7 @@ const Editor = ({ parse }) => {
 			dispatch(
 				actions.setScrollrange(computeScrollRange(editorEl.current, rowHeight))
 			);
+			dispatch(actions.setEditorRect(editorEl.current.getBoundingClientRect()));
 			if (chasse) {
 				dispatch(
 					actions.setHorizontalRange(

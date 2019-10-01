@@ -29,3 +29,10 @@ export const setHorizontalRange = horizontalRange => ({
 	type: SET_HORIZONTAL_RANGE,
 	payload: { horizontalRange },
 });
+
+/* SET_EDITOR_RECT */
+export const SET_EDITOR_RECT = 'scroll/set-editor-rect';
+export const setEditorRect = rect => ({
+	type: SET_EDITOR_RECT,
+	payload: { rect },
+});

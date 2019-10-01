@@ -12,6 +12,7 @@ const initialState = {
 	suggesterState: { open: false, index: -1, value: undefined, size: 0 },
 	selection: undefined,
 	cursorRect: undefined,
+	editorRect: undefined,
 	errors: [],
 	getTokens: getTokensDefault,
 	tokenize: false,
