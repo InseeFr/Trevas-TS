@@ -2,25 +2,45 @@ import { getCursorLeft } from './cursor';
 
 const SELECTION = {};
 
+/* */
+const computeSelection = (a, e) => {
+	const p = (row, index) => ({ row, index });
+	const multi = () =>
+		a.row > e.row
+			? { start: p(e.row, e.index), stop: p(a.row, a.index) }
+			: { start: p(a.row, a.index), stop: p(e.row, e.index) };
+	const single = () =>
+		a.index > e.index
+			? { start: p(e.row, e.index), stop: p(a.row, a.index) }
+			: { start: p(a.row, a.index), stop: p(e.row, e.index) };
+	return a.row === e.row ? single() : multi();
+};
+
+/* */
+export const checkSelection = selection => {
+	if (!selection) return undefined;
+	const { anchor, extent } = selection;
+	if (!anchor || !extent) return selection;
+	const { start, stop } = computeSelection(anchor, extent);
+	return { start, stop, anchor, extent };
+};
+
 /*
  * SELECTION
  */
-const singleRowSelection = () => ({
+const singleRowSelection = ({
 	selection,
 	scrollRange,
 	rowHeight,
 	horizontalRange: hr,
 	chasse,
 }) => {
-	if (selection.start.index > hr.stop || selection.stop.index < hr.start)
-		return [];
-	const top = rowHeight * (selection.start.row - scrollRange.start);
-	const left = Math.max(
-		0,
-		getCursorLeft(chasse)(selection.start.index - hr.start)
-	);
+	const { start, stop } = selection;
+	if (start.index > hr.stop || stop.index < hr.start) return [];
+	const top = rowHeight * (start.row - scrollRange.start);
+	const left = Math.max(0, getCursorLeft(chasse)(start.index - hr.start));
 	const width =
-		Math.max(getCursorLeft(chasse)(selection.stop.index - hr.start), 0) - left;
+		Math.max(getCursorLeft(chasse)(stop.index - hr.start), 0) - left;
 	return [{ top, width, left }];
 };
 
@@ -85,10 +105,11 @@ const middleRow = row => ({
 /* */
 const getRow = row => state => {
 	const { selection } = state;
-	if (row === selection.start.row) {
+	const { start, stop } = selection;
+	if (row === start.row) {
 		return firstRow(row)(state);
 	}
-	if (row === selection.stop.row) {
+	if (row === stop.row) {
 		return lastRow(row)(state);
 	}
 	return middleRow(row)(state);
@@ -129,12 +150,14 @@ const isInHorizontalRange = row => ({
 };
 
 /* */
-const multiRowSelection = () => state => {
-	const { selection } = state;
-	const blocs = new Array(selection.stop.row - selection.start.row + 1)
+const multiRowSelection = state => {
+	const {
+		selection: { stop, start },
+	} = state;
+	const blocs = new Array(stop.row - start.row + 1)
 		.fill({})
 		.reduce((a, b, i) => {
-			const row = selection.start.row + i;
+			const row = start.row + i;
 
 			return isInScrollrange(i)(state) && isInHorizontalRange(row)(state)
 				? [...a, getRow(row)(state)]
@@ -144,10 +167,14 @@ const multiRowSelection = () => state => {
 };
 
 /* */
-export const getSelectionBlocs = () => state =>
-	state.selection.start.row === state.selection.stop.row
-		? singleRowSelection()(state)
-		: multiRowSelection()(state);
+export const getSelectionBlocs = state => {
+	const { selection } = state;
+	const { start, stop } = selection;
+
+	return start.row === stop.row
+		? singleRowSelection(state)
+		: multiRowSelection(state);
+};
 
 SELECTION.getSelectionBlocs = getSelectionBlocs;
 

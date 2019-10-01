@@ -20,7 +20,8 @@ const isCharCode = c =>
 	/^[\w-+*=/?,!;.:{}/\\$*%()"#@µ<>'~|& [\]éôêûîèäëïüöùààç]{1}$/gim.test(c); // il en manquera !
 
 /* */
-const isSelection = selection => selection && selection.stop;
+const isSelection = selection =>
+	selection && selection.extent && selection.anchor;
 
 /* */
 const keyDownsuggesterProxy = (dispatch, state) => e => {
@@ -54,7 +55,7 @@ const keyDownsuggesterProxy = (dispatch, state) => e => {
 };
 
 /* */
-const keyDownCallback = dispatch => e => {
+const keyDownCallback = (dispatch, state) => e => {
 	// console.debug("%ckeyDownCallback", "color: gold;");
 	if (KEY.isUnbindedKey(e.key)) return false;
 	switch (e.key) {
@@ -90,7 +91,7 @@ const keyDownCallback = dispatch => e => {
 				stopAndPrevent(e);
 				dispatch(actions.insertCharacter(e.key));
 				dispatch(actions.tokenizeAll());
-				dispatch(actions.checkPrefix());
+				// dispatch(actions.checkPrefix());
 				return true;
 			}
 			return false;
@@ -104,6 +105,11 @@ const keyDownWithSelection = (dispatch, state) => e => {
 		switch (e.key) {
 			case KEY.DELETE:
 			case KEY.ENTER:
+				stopAndPrevent(e);
+				dispatch(actions.deleteSelection());
+				dispatch({ type: KEY.ENTER });
+				dispatch(actions.tokenizeAll());
+				return true;
 			case KEY.BACK_SPACE:
 				stopAndPrevent(e);
 				dispatch(actions.deleteSelection());

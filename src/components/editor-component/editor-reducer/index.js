@@ -1,12 +1,15 @@
 import reducer from './editor.reducer';
 import scrollReducer from './scroll.reducer';
 import suggestionsReducer from './suggestions.reducer';
-import createTokenizeReducer from './tokenize.reducer';
+import tokenizeReducer from './tokenize.reducer';
 import selectionReducer from './selection.reducer';
 import keyReducer from './key.reducer';
 import cursorReducer from './cursor.reducer';
+import pasteReducer from './paste.reducer';
+import shortCurReducer from './shortcut.reducer';
 
 export { default as initialState } from './initial-state';
+export { mergeLines } from './tokenize.reducer';
 
 /* */
 const compose = (...callbacks) =>
@@ -17,15 +20,17 @@ const compose = (...callbacks) =>
 		state => state
 	);
 
-export default getTokens => {
+export default () => {
 	const composed = compose(
 		reducer,
 		scrollReducer,
 		suggestionsReducer,
-		createTokenizeReducer(getTokens),
+		tokenizeReducer,
 		selectionReducer,
 		keyReducer,
-		cursorReducer
+		cursorReducer,
+		pasteReducer,
+		shortCurReducer
 	);
 	return (state, action) => {
 		const newState = composed(state, action);

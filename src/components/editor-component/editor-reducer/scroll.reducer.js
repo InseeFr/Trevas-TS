@@ -51,7 +51,13 @@ const reduceSetScrollRange = (state, { payload: { scrollRange } }) => ({
 /* */
 const reduceSetHorizontalRange = (state, { payload: { horizontalRange } }) => ({
 	...state,
-	horizontalRange, //: { start: 5, stop: 19, offset: 14 },
+	horizontalRange,
+});
+
+/* */
+const reduceSetEditorEl = (state, { payload: { el } }) => ({
+	...state,
+	editorEl: el,
 });
 
 /* */
@@ -68,6 +74,8 @@ const reducer = (state, action) => {
 			return reduceSetScrollRange(state, action);
 		case actions.SET_HORIZONTAL_RANGE:
 			return reduceSetHorizontalRange(state, action);
+		case actions.SET_EDITOR_EL:
+			return reduceSetEditorEl(state, action);
 
 		default:
 			return state;

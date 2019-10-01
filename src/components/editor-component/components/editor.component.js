@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react';
-
 import PropTypes from 'prop-types';
+import { hashLines } from '../common-tools';
 import ScrollUpDown from './scrollbar-up.component';
 import ScrollHor from './scrollbar-hor.component';
 import Line from './line.component';
@@ -18,14 +18,22 @@ const computeScrollRange = (parentEl, rowHeight) => {
 
 const computeHorizontalRange = (parentEl, chasse) => {
 	const { width } = parentEl.getBoundingClientRect();
-	const offset = Math.trunc(width / chasse);
+	const offset = Math.round(width / chasse);
 	return { start: 0, stop: offset - 1, offset };
 };
 
 const Editor = ({ parse }) => {
 	const editorEl = useRef();
 	const state = useContext(EditorContext);
-	const { lines, dispatch, scrollRange, rowHeight, chasse } = state;
+	const {
+		lines,
+		dispatch,
+		scrollRange,
+		rowHeight,
+		chasse,
+		tokenize,
+		getTokens,
+	} = state;
 
 	useEffect(() => {
 		const code = lines.reduce(
@@ -42,12 +50,25 @@ const Editor = ({ parse }) => {
 			i >= scrollRange.start && i <= scrollRange.stop ? [...a, line] : a,
 		[]
 	);
+	useEffect(() => {
+		if (tokenize) {
+			/*
+			 calcul d'une signature sur les lignes, à vérifier au moment de la tokenization.
+			*/
+			const hash = hashLines(lines);
+			getTokens(lines, hash).then(({ tokens, hash: hashInitial }) => {
+				dispatch(actions.launchTokenization(tokens, hashInitial));
+				dispatch(actions.checkPrefix()); // TODO un peu trop brutal ici
+			});
+		}
+	}, [tokenize, lines]);
 
 	useEffect(() => {
 		if (editorEl.current) {
 			dispatch(
 				actions.setScrollrange(computeScrollRange(editorEl.current, rowHeight))
 			);
+			dispatch(actions.setEditorEl(editorEl.current));
 			if (chasse) {
 				dispatch(
 					actions.setHorizontalRange(

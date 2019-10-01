@@ -80,20 +80,20 @@ const getKind = type =>
 	type in VTL_TYPES ? VTL_TYPES[type] : VtlClassname.common;
 
 /* */
-const getTokens = ligne => {
-	const chars = new antlr4.InputStream(ligne);
+const getTokens = lines => {
+	const chars = new antlr4.InputStream(lines);
 	const lexer = new VtlLexer(chars);
 
 	lexer.removeErrorListeners();
 	lexer.skip = () => {};
 	const tokens = lexer
 		.getAllTokens()
-		.map(tokenize(lexer.symbolicNames, lexer)(ligne));
+		.map(tokenize(lexer.symbolicNames, lexer)(lines));
 
 	// console.log(tokens, ligne);
 	// console.log(fillUnmappedToken(tokens, ligne));
 
-	return tokens;
+	return Promise.resolve(tokens);
 };
 
 export default getTokens;

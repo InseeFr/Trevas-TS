@@ -14,7 +14,7 @@ const getSuggestionsValue = (suggestions, index) =>
 	Object.values(suggestions).reduce((a, t) => [...a, ...t], [])[index];
 
 /* */
-const createItem = dispatch => ({ value, type, prefix, active }) => {
+const createItem = (dispatch, state) => ({ value, type, prefix, active }) => {
 	return (
 		<div
 			className={classnames('suggestion', { active })}
@@ -37,14 +37,15 @@ const createItem = dispatch => ({ value, type, prefix, active }) => {
 };
 
 const Suggestions = ({ suggest }) => {
+	const state = useContext(EditorContext);
 	const {
 		prefix,
 		dispatch,
 		cursorRect,
 		suggesterState: { index },
-	} = useContext(EditorContext);
+	} = state;
 
-	const Item = createItem(dispatch);
+	const Item = createItem(dispatch, state);
 	const suggestions = useMemo(() => (prefix ? suggest(prefix) : {}), [
 		suggest,
 		prefix,

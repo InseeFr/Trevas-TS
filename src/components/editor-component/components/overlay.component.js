@@ -9,8 +9,52 @@ import PropTypes from 'prop-types';
 import createKeydownCallback from '../editor-keydown-callback';
 import * as actions from '../editor-actions';
 import Cursor from './cursor.component';
-import { getSelectionBlocs, getCursorLeft, getCursorPosition } from './tools';
+import {
+	getSelectionBlocs,
+	getCursorLeft,
+	getCursorPosition,
+} from '../common-tools';
 import EditorContext from './editor-context';
+
+let cleanListeners;
+
+/* à améliorer */
+const listenOnDocument = ({ cursorRect, editorEl }) => ({
+	goUp,
+	goDown,
+	setSelectionStart,
+}) => {
+	let interval = null;
+	/* */
+	const mouseMoveOnWindow = e => {
+		const { clientY } = e;
+		const rect = editorEl.getBoundingClientRect();
+
+		if (clientY < rect.top && !interval) {
+			interval = window.setInterval(() => goUp(), 80);
+		} else if (clientY > rect.top + rect.height && !interval) {
+			interval = window.setInterval(() => goDown(), 80);
+		}
+	};
+	/* */
+	const mouseUpOnWindow = () => {
+		setSelectionStart(false);
+		document.removeEventListener('mousemove', mouseMoveOnWindow);
+		document.removeEventListener('mouseup', mouseUpOnWindow);
+		window.clearInterval(interval);
+		interval = undefined;
+	};
+
+	document.addEventListener('mousemove', mouseMoveOnWindow);
+	document.addEventListener('mouseup', mouseUpOnWindow);
+
+	return () => {
+		document.removeEventListener('mousemove', mouseMoveOnWindow);
+		document.removeEventListener('mouseup', mouseUpOnWindow);
+		window.clearInterval(interval);
+		interval = undefined;
+	};
+};
 
 /* */
 const Overlay = ({ chasse }) => {
@@ -31,6 +75,7 @@ const Overlay = ({ chasse }) => {
 	const [extent, setExtent] = useState(undefined);
 	const [cursorPosition, setCursorPosition] = useState(undefined);
 	const [selectionStart, setSelectionStart] = useState(false);
+	const [move, setMove] = useState(0);
 
 	useEffect(() => {
 		dispatch(actions.initCharSize(chasse));
@@ -49,6 +94,18 @@ const Overlay = ({ chasse }) => {
 		rowHeight,
 		horizontalRange.start,
 	]);
+
+	useEffect(() => {
+		if (move !== 0) {
+			const nx = {
+				...extent,
+				row: Math.min(Math.max(0, extent.row + move), lines.length - 1),
+			};
+			setExtent(nx);
+			dispatch(actions.setSelection({ anchor, extent: nx }));
+			setMove(0);
+		}
+	}, [move, extent]);
 
 	const callbackKeyDown = createKeydownCallback(
 		dispatch,
@@ -71,7 +128,6 @@ const Overlay = ({ chasse }) => {
 			{ active: true }
 		);
 	}
-
 	return (
 		<div
 			ref={divEl}
@@ -81,6 +137,12 @@ const Overlay = ({ chasse }) => {
 			onKeyDown={callbackKeyDown}
 			onMouseEnter={e => {
 				e.target.focus();
+				setMove(0);
+
+				if (cleanListeners) {
+					cleanListeners();
+					cleanListeners = undefined;
+				}
 			}}
 			onMouseDown={e => {
 				e.stopPropagation();
@@ -91,7 +153,15 @@ const Overlay = ({ chasse }) => {
 				dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
 				dispatch(actions.setSelection(undefined));
 			}}
-			onMouseLeave={() => setSelectionStart(false)}
+			onMouseLeave={() => {
+				if (selectionStart) {
+					cleanListeners = listenOnDocument(state)({
+						setSelectionStart,
+						goUp: () => setMove(-1),
+						goDown: () => setMove(1),
+					});
+				}
+			}}
 			onMouseUp={e => {
 				e.stopPropagation();
 				setSelectionStart(false);
@@ -120,13 +190,8 @@ const Overlay = ({ chasse }) => {
 						setExtent({ row: newFocusedRow, index: newIndex });
 						dispatch(actions.setCursorPosition(newFocusedRow, newIndex));
 						if (anchor.row !== newFocusedRow || anchor.index !== newIndex) {
-							const ne = { row: newFocusedRow, index: newIndex };
-							const next =
-								anchor.row > newFocusedRow ||
-								(anchor.row === newFocusedRow && anchor.index > newIndex)
-									? { start: { ...ne }, stop: { ...anchor } }
-									: { start: { ...anchor }, stop: { ...ne } };
-							dispatch(actions.setSelection(next));
+							const ne = anchor && extent ? { anchor, extent } : undefined;
+							dispatch(actions.setSelection(ne));
 						}
 					}
 				}
@@ -136,7 +201,7 @@ const Overlay = ({ chasse }) => {
 				<Cursor left={cursorPosition.left} top={cursorPosition.top} />
 			) : null}
 			{selection
-				? getSelectionBlocs()(state).map(({ top, left, width }, i) => (
+				? getSelectionBlocs(state).map(({ top, left, width }, i) => (
 						<span
 							key={i}
 							className="bloc-selection"

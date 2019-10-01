@@ -4,6 +4,20 @@ import PropTypes from 'prop-types';
 import EditorContext from './editor-context';
 import * as actions from '../editor-actions';
 
+/* */
+const computeScrollrange = ({ scrollRange: sr, lines }) => percent => {
+	const start = Math.min(
+		Math.round(lines.length * percent),
+		lines.length - sr.offset
+	);
+	return {
+		...sr,
+		start,
+		stop: Math.min(start + sr.offset + 1, lines.length - 1),
+	};
+};
+
+/* */
 const ScrollUpDown = ({ parentEl }) => {
 	const state = useContext(EditorContext);
 	const { lines, scrollRange, selection, index, focusedRow, dispatch } = state;
@@ -19,6 +33,7 @@ const ScrollUpDown = ({ parentEl }) => {
 		return (
 			<div
 				className="scroll-up-down"
+				role="presentation"
 				style={{ height }}
 				onMouseDown={e => {
 					e.stopPropagation();
@@ -54,7 +69,7 @@ const ScrollUpDown = ({ parentEl }) => {
 };
 /* */
 const offsetY = { y: 0, pre: undefined };
-const setOffsetY = function(y) {
+const setOffsetY = y => {
 	offsetY.y = y;
 };
 const Dragguer = ({ height }) => {
@@ -149,19 +164,6 @@ const Selection = ({ start, stop, parentHeight, nbLines }) => {
 const Cursor = ({ focusedRow, parentHeight, nbLines }) => {
 	const top = Math.round((focusedRow / nbLines) * parentHeight);
 	return <span className="cursor-selection" style={{ top }} />;
-};
-
-/* */
-const computeScrollrange = ({ scrollRange: sr, lines }) => percent => {
-	const start = Math.min(
-		Math.round(lines.length * percent),
-		lines.length - sr.offset
-	);
-	return {
-		...sr,
-		start,
-		stop: Math.min(start + sr.offset + 1, lines.length - 1),
-	};
 };
 
 ScrollUpDown.propTypes = {

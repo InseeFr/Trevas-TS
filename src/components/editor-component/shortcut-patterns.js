@@ -1,5 +1,5 @@
 import * as actions from './editor-actions';
-import { getSelection } from './selection-tools';
+import { getSelectionText } from './common-tools';
 import clipboard from './clipboard';
 
 const SHORT_CUTS = new Map();
@@ -8,6 +8,15 @@ const SHORT_CUTS = new Map();
 const unmappedPattern = pattern => () => {
 	console.debug(`unmapped pattern: ${pattern}`);
 	return false;
+};
+
+/* copy to clipboard */
+const copy = (dispatch, state) => {
+	if (state.selection) {
+		const content = getSelectionText(state);
+		clipboard.copy(content);
+	}
+	return true;
 };
 
 /* cut to clipboard */
@@ -22,17 +31,13 @@ const cut = (dispatch, state) => {
 
 /* paste clipboard */
 const paste = (dispatch, state) => {
-	if (navigator && navigator.clipboard) {
-		navigator.clipboard.readText().then(text => {
-			if (text && text.length > 0) {
-				if (state.selection) dispatch(actions.deleteSelection());
-				dispatch(actions.insertText(text));
-				dispatch(actions.tokenizeAll());
-			}
-		});
-	} else {
-		console.warn('I need to find a clipboard polyfill !');
-	}
+	clipboard.getClipboardContent().then(text => {
+		if (text && text.length > 0) {
+			if (state.selection) dispatch(actions.deleteSelection());
+			dispatch(actions.insertText(text));
+			dispatch(actions.tokenizeAll());
+		}
+	});
 	return true;
 };
 
@@ -40,8 +45,8 @@ const paste = (dispatch, state) => {
 const selectAll = (dispatch, state) => {
 	dispatch(
 		actions.setSelection({
-			start: { row: 0, index: 0 },
-			stop: {
+			anchor: { row: 0, index: 0 },
+			extent: {
 				row: state.lines.length - 1,
 				index: state.lines[state.lines.length - 1].value.length,
 			},
@@ -50,12 +55,39 @@ const selectAll = (dispatch, state) => {
 	return true;
 };
 
-/* copy to clipboard */
-const copy = (dispatch, state) => {
-	if (state.selection) {
-		const content = getSelection(state);
-		clipboard.copy(content);
-	}
+/* ctrl + left */
+const controlLeft = dispatch => {
+	dispatch(actions.controlLeft());
+	return true;
+};
+
+/* ctrl + right */
+const controlRight = dispatch => {
+	dispatch(actions.controlRight());
+	return true;
+};
+
+/* shift + right */
+const shiftRight = dispatch => {
+	dispatch(actions.shiftRight());
+	return true;
+};
+
+/* shifth + left */
+const shiftLeft = dispatch => {
+	dispatch(actions.shiftLeft());
+	return true;
+};
+
+/* shifth + left */
+const shiftUp = dispatch => {
+	dispatch(actions.shiftUp());
+	return true;
+};
+
+/* shifth + left */
+const shiftDown = dispatch => {
+	dispatch(actions.shiftDown());
 	return true;
 };
 
@@ -64,11 +96,17 @@ SHORT_CUTS.set('ctrl|x', cut);
 SHORT_CUTS.set('ctrl|c', copy);
 SHORT_CUTS.set('ctrl|v', paste);
 SHORT_CUTS.set('ctrl|a', selectAll);
+SHORT_CUTS.set('ctrl|ArrowLeft', controlLeft);
+SHORT_CUTS.set('ctrl|ArrowRight', controlRight);
+SHORT_CUTS.set('shift|ArrowLeft', shiftLeft);
+SHORT_CUTS.set('shift|ArrowRight', shiftRight);
+SHORT_CUTS.set('shift|ArrowUp', shiftUp);
+SHORT_CUTS.set('shift|ArrowDown', shiftDown);
 
 const getPattern = ({ altKey, shiftKey, ctrlKey, key }) =>
-	`${altKey ? 'alt|' : ''}${shiftKey ? 'shift|' : ''}${ctrlKey ? 'ctrl|' : ''}${
-		key ? key : ''
-	}`;
+	`${altKey ? 'alt|' : ''}${shiftKey ? 'shift|' : ''}${
+		ctrlKey ? 'ctrl|' : ''
+	}${key || ''}`;
 
 const createShortcutsProvider = shortcutsMap => ({
 	get: (model = {}) => {

@@ -1,3 +1,5 @@
+import { getTokensDefault } from '../tokenizer';
+
 /* */
 const initialState = {
 	rowHeight: 22,
@@ -10,7 +12,10 @@ const initialState = {
 	suggesterState: { open: false, index: -1, value: undefined, size: 0 },
 	selection: undefined,
 	cursorRect: undefined,
+	editorEl: undefined,
 	errors: [],
+	getTokens: getTokensDefault,
+	tokenize: false,
 };
 
 export default initialState;
