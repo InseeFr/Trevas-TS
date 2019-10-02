@@ -2,38 +2,43 @@ import * as actions from '../editor-actions';
 import { getNewRow, getRowLength } from './reducers-tools';
 
 /* */
+const reduceUpdateErrors = (state, { payload: { errors } }) => ({
+	...state,
+	errors,
+});
+
+/* */
 const reduceCheckIndex = state => ({
 	...state,
 	index: Math.min(state.index, getRowLength(state)),
 });
 
 /* */
+const reduceExitEditor = state => ({
+	...state,
+	focusedRow: undefined,
+	prefix: undefined,
+	cursorRect: undefined,
+	index: undefined,
+});
+
+/* */
+const reduceChangeEditorContent = (state, { payload: { content } }) => ({
+	...state,
+	lines: content.map((row, i) => getNewRow(row, i)),
+});
+
+/* */
 const reducer = (state, action) => {
 	switch (action.type) {
-		/* ERRORS */
 		case actions.UPDATE_ERRORS:
-			return { ...state, errors: action.payload.errors };
-
-		/* */
+			return reduceUpdateErrors(state, action);
 		case actions.EXIT_EDITOR:
-			return {
-				...state,
-				focusedRow: undefined,
-				prefix: undefined,
-				cursorRect: undefined,
-				index: undefined,
-			};
-
-		/* */
+			return reduceExitEditor(state);
 		case actions.CHANGE_EDITOR_CONTENT:
-			return {
-				...state,
-				lines: action.payload.content.map((row, i) => getNewRow(row, i)),
-			};
-
+			return reduceChangeEditorContent(state, action);
 		case actions.CHECK_INDEX:
 			return reduceCheckIndex(state);
-
 		default:
 			return state;
 	}
