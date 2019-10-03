@@ -33,3 +33,7 @@ export const changeEditorContent = content => ({
 	type: CHANGE_EDITOR_CONTENT,
 	payload: { content },
 });
+
+/* SELECT_TOKEN_ON_CURSOR */
+export const SELECT_TOKEN_ON_CURSOR = 'editor/select-token-on-cursor';
+export const selectTokenOnCursor = () => ({ type: SELECT_TOKEN_ON_CURSOR });
