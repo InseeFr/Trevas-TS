@@ -1,5 +1,6 @@
 import * as actions from '../editor-actions';
-import { getNewRow, getRowLength } from './reducers-tools';
+import { getNewRow, getRowLength, getCurrentToken } from './reducers-tools';
+import { checkSelection } from '../common-tools';
 
 /* */
 const reduceUpdateErrors = (state, { payload: { errors } }) => ({
@@ -29,6 +30,20 @@ const reduceChangeEditorContent = (state, { payload: { content } }) => ({
 });
 
 /* */
+const reduceSelectTokenOnCursor = state => {
+	const { token } = getCurrentToken(state);
+	if (token) {
+		const { focusedRow: row } = state;
+		const selection = checkSelection({
+			anchor: { row, index: token.start },
+			extent: { row, index: token.stop + 1 },
+		});
+		return { ...state, selection, index: selection.extent.index };
+	}
+	return state;
+};
+
+/* */
 const reducer = (state, action) => {
 	switch (action.type) {
 		case actions.UPDATE_ERRORS:
@@ -39,6 +54,8 @@ const reducer = (state, action) => {
 			return reduceChangeEditorContent(state, action);
 		case actions.CHECK_INDEX:
 			return reduceCheckIndex(state);
+		case actions.SELECT_TOKEN_ON_CURSOR:
+			return reduceSelectTokenOnCursor(state);
 		default:
 			return state;
 	}
