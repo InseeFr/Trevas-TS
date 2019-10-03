@@ -17,7 +17,7 @@ const EditorPanel = ({
 	getTokens,
 	parse,
 	dictionnary = {},
-	handleChange = () => null,
+	handleChange,
 	shortcuts,
 }) => {
 	const [state, dispatch] = useReducer(createReducer(), initialState);
