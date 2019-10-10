@@ -1,6 +1,6 @@
 import antlr4 from 'antlr4';
-import {ErrorListener} from 'antlr4/error'
-import {VtlLexer, VtlParser} from '../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { ErrorListener } from 'antlr4/error';
+import { VtlLexer, VtlParser } from '../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import ExpressionVisitor from './visitors/Expression';
 
 const getParser = text => {
@@ -13,24 +13,39 @@ const getParser = text => {
 };
 
 class ErrorCollector extends ErrorListener {
-
 	errors = [];
 
 	syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
 		this.errors.push(e);
-	};
+	}
 
-	reportAmbiguity(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
+	reportAmbiguity(
+		recognizer,
+		dfa,
+		startIndex,
+		stopIndex,
+		exact,
+		ambigAlts,
+		configs
+	) {}
 
-	};
+	reportAttemptingFullContext(
+		recognizer,
+		dfa,
+		startIndex,
+		stopIndex,
+		conflictingAlts,
+		configs
+	) {}
 
-	reportAttemptingFullContext(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
-
-	};
-
-	reportContextSensitivity(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
-
-	};
+	reportContextSensitivity(
+		recognizer,
+		dfa,
+		startIndex,
+		stopIndex,
+		prediction,
+		configs
+	) {}
 }
 
 const errorCheck = (stream, collector) => {
@@ -54,7 +69,7 @@ const interpret = (expr, bindings) => {
 	let syntaxErrors = new ErrorCollector();
 	errorCheck(inputStream, syntaxErrors);
 	if (syntaxErrors.length > 0) {
-		throw new Error("Syntax errors:" + syntaxErrors.errors);
+		throw new Error('Syntax errors:' + syntaxErrors.errors);
 	}
 	inputStream.reset();
 
@@ -65,7 +80,7 @@ const interpret = (expr, bindings) => {
 	let expression = visitor.visit(parser.expr());
 
 	if (typeErrors.length > 0) {
-		throw new Error("Type errors" + typeErrors.errors);
+		throw new Error('Type errors' + typeErrors.errors);
 	}
 
 	return expression.resolve(bindings);

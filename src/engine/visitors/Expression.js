@@ -29,10 +29,12 @@ class ExpressionVisitor extends VtlVisitor {
 	visitIfExpr = ctx => new IfThenElse(this).visit(ctx);
 
 	visitSubstrAtom = ctx => new FunctionVisitor(this).visit(ctx);
+	visitCastExpr = ctx => new FunctionVisitor(this).visit(ctx);
 
 	visitOptionalExpr = ctx => this.visit(ctx.children[0]);
 	visitStringFunctions = ctx => this.visit(ctx.children[0]);
 	visitFunctionsExpression = ctx => this.visit(ctx.children[0]);
+	visitGenericFunctions = ctx => this.visit(ctx.children[0]);
 
 	visitVarIdExpr = ctx => new VariableVisitor(this.bindings).visit(ctx);
 

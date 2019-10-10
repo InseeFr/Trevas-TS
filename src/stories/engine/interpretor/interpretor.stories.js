@@ -77,6 +77,9 @@ storiesOf('Interpretor/Boolean algebra').add('Or', () => (
 
 // Functions
 
+storiesOf('Interpretor/Function').add('Cast', () => (
+	<Interpretor value='cast("10", number)' />
+));
 storiesOf('Interpretor/Function').add('Concatenation', () => (
 	<Interpretor value='"Hello" || " " || "World"' />
 ));
