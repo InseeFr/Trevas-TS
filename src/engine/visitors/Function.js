@@ -73,7 +73,7 @@ class FunctionVisitor extends VtlVisitor {
 				break;
 			case VtlParser.INTEGER:
 				operatorFunction = op => parseInt(op, 10);
-				type = VtlParser.INTEGER;
+				type = VtlParser.INTEGER_CONSTANT;
 				break;
 			default:
 				throw new Error('Unsupported scalar ' + op.getText());

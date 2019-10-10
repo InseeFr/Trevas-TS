@@ -15,7 +15,7 @@ stories.add('Default', () => <Interpretor />);
 
 stories.add('Bindings', () => (
 	<Interpretor
-		value='"Welcome " || NAME || ", you are " || (if AGE >= 18 then "major" else "minor") || "."'
+		value='"Welcome " || NAME || ", you are " || (if cast(AGE, integer) >= 18 then "major" else "minor") || "."'
 		variables={[{ key: 'NAME', value: 'Mauro' }, { key: 'AGE', value: 26 }]}
 	/>
 ));
