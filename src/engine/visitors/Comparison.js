@@ -2,6 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import OperatorTypeError from "../errors/OperatorTypeError";
 
 class ComparisonVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -15,12 +16,11 @@ class ComparisonVisitor extends VtlVisitor {
 		const rightOperand = this.exprVisitor.visit(right);
 
 		if (
-			leftOperand.type !== rightOperand.type &&
-			leftOperand.type !== VtlParser.FLOAT_CONSTANT
+			leftOperand.type !== rightOperand.type
+			// TODO: Nico, I think VTL support comparisons on all types.
+			// leftOperand.type !== VtlParser.FLOAT_CONSTANT
 		) {
-			throw new Error(
-				`cannot compare ${leftOperand.type} with ${rightOperand.type}`
-			);
+			throw new OperatorTypeError(ctx, op.getText(), leftOperand.type, rightOperand.type);
 		}
 
 		let operatorFunction;
