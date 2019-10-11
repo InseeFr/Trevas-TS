@@ -12,6 +12,10 @@ VtlClassname.keyword = { className: 'vtl-keyword', typeName: 'keyword' };
 VtlClassname.string = { className: 'vtl-string', typeName: 'string' };
 VtlClassname.float = { className: 'vtl-float', typeName: 'float' };
 VtlClassname.mlComment = { className: 'vtl-ml-comment', typeName: 'comment' };
+VtlClassname.slComment = {
+	className: 'vtl-sl-comment',
+	typeName: 'sl-comment',
+};
 
 const VTL_TYPES = {
 	ASSIGN: VtlClassname.operator,
@@ -26,6 +30,7 @@ const VTL_TYPES = {
 	IDENTIFIER: VtlClassname.identifier,
 	FLOAT_CONSTANT: VtlClassname.float,
 	ML_COMMENT: VtlClassname.mlComment,
+	SL_COMMENT: VtlClassname.slComment,
 	BOOLEAN_CONSTANT: VtlClassname.boolean,
 
 	IF: VtlClassname.keyword,

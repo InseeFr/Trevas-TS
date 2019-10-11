@@ -34,7 +34,7 @@ export default () => {
 	);
 	return (state, action) => {
 		const newState = composed(state, action);
-		console.debug('%cDebug', 'color: purple;', { action, state, newState });
+		// console.debug('%cDebug', 'color: purple;', { action, state, newState });
 		return newState;
 	};
 };

@@ -33,6 +33,7 @@ const Editor = ({ parse }) => {
 		chasse,
 		tokenize,
 		getTokens,
+		handleChange,
 	} = state;
 
 	useEffect(() => {
@@ -41,7 +42,7 @@ const Editor = ({ parse }) => {
 			''
 		);
 		const { errors } = parse(code);
-
+		handleChange(errors);
 		dispatch(actions.updateErrors(errors));
 	}, [lines, parse, dispatch]);
 

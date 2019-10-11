@@ -25,8 +25,8 @@ export default props => {
 			<div className="workbench-display">
 				<Editor
 					shortcuts={shortcuts}
-					handleChange={editor => {
-						setErrors(editor.errors);
+					handleChange={errors => {
+						setErrors(errors);
 					}}
 					parse={parse}
 					getTokens={getTokens}

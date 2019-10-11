@@ -18,8 +18,15 @@ import EditorContext from './editor-context';
 
 let cleanListeners;
 
+const cleanUp = () => {
+	if (cleanListeners) {
+		cleanListeners();
+		cleanListeners = undefined;
+	}
+};
+
 /* à améliorer */
-const listenOnDocument = ({ cursorRect, editorEl }) => ({
+const listenOnDocument = ({ editorEl }) => ({
 	goUp,
 	goDown,
 	setSelectionStart,
@@ -107,6 +114,16 @@ const Overlay = ({ chasse }) => {
 		}
 	}, [move, extent]);
 
+	// useEffect(
+	// 	() => () => {
+	// 		if (cleanListeners) {
+	// 			cleanListeners();
+	// 			cleanListeners = undefined;
+	// 		}
+	// 	},
+	// 	[]
+	// );
+
 	const callbackKeyDown = createKeydownCallback(
 		dispatch,
 		state,
@@ -125,7 +142,7 @@ const Overlay = ({ chasse }) => {
 					dispatch(actions.scrollUp());
 				}
 			},
-			{ active: true }
+			{ active: false }
 		);
 	}
 	return (
@@ -138,11 +155,14 @@ const Overlay = ({ chasse }) => {
 			onMouseEnter={e => {
 				e.target.focus();
 				setMove(0);
-
 				if (cleanListeners) {
 					cleanListeners();
 					cleanListeners = undefined;
 				}
+			}}
+			onDoubleClick={e => {
+				e.stopPropagation();
+				dispatch(actions.selectTokenOnCursor());
 			}}
 			onMouseDown={e => {
 				e.stopPropagation();
