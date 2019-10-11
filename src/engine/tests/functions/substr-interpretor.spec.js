@@ -1,5 +1,5 @@
-import interpret from '../interpretor';
-import TypeMismatchError from '../errors/TypeMismatchError';
+import interpret from 'engine/interpretor';
+import TypeMismatchError from 'engine/errors/TypeMismatchError';
 
 describe('interpretor', () => {
 	describe('substr', () => {

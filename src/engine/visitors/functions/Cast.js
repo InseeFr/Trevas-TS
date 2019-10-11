@@ -3,7 +3,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import TypeMismatchError from '../../errors/TypeMismatchError';
+import CastTypeError from '../../errors/CastTypeError';
 
 class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -19,34 +19,91 @@ class CastVisitor extends VtlVisitor {
 		let maskCtx = children[6];
 
 		const op = this.exprVisitor.visit(opCtx);
-		// mask has to be visited?
 		const mask = maskCtx ? maskCtx.getText() : undefined;
 
-		let operatorFunction, type;
-		switch (scalarTypeCtx.children[0].symbol.type) {
-			case VtlParser.NUMBER:
-				operatorFunction = op => parseFloat(op);
-				type = VtlParser.NUMBER;
-				break;
-			case VtlParser.INTEGER:
-				operatorFunction = op => parseInt(op, 10);
-				type = VtlParser.INTEGER_CONSTANT;
-				break;
-			case VtlParser.STRING:
-				operatorFunction = op => `${op}`;
-				type = VtlParser.STRING_CONSTANT;
-				break;
-			case VtlParser.DATE:
-				operatorFunction = (op, mask) => new Date(moment.parseZone(op, mask));
-				type = VtlParser.DATE;
-				break;
-			default:
-				throw new Error('Unsupported scalar ' + op.getText());
-		}
+		const combinations = [
+			[VtlParser.INTEGER_CONSTANT, VtlParser.INTEGER, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.STRING, op => `${op}`],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.STRING, op => `${op}`],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.INTEGER, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.DURATION, 'ERROR'],
+			[VtlParser.TIME, VtlParser.INTEGER, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.TIME, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.INTEGER, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.INTEGER, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.TIME_PERIOD, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.STRING_CONSTANT, VtlParser.INTEGER, op => parseInt(op, 10)],
+			[VtlParser.STRING_CONSTANT, VtlParser.NUMBER, op => parseFloat(op)],
+			[VtlParser.STRING_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.STRING_CONSTANT, VtlParser.TIME, () => 'TODO'],
+			[
+				VtlParser.STRING_CONSTANT,
+				VtlParser.DATE,
+				(op, mask) => new Date(moment.parseZone(op, mask)),
+			],
+			[VtlParser.STRING_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.STRING_CONSTANT, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.STRING_CONSTANT, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.INTEGER, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.NUMBER, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.BOOLEAN, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.TIME, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.DURATION, () => 'TODO'],
+		];
+
+		const castOutputType = scalarTypeCtx.children[0].symbol.type;
+		const operatorFunction = combinations.filter(
+			([opType, scalarType]) =>
+				opType === op.type && scalarType === castOutputType
+		)[0][2];
+
+		if (typeof operatorFunction !== 'function')
+			throw new CastTypeError(ctx, op.type, castOutputType);
 
 		return {
 			resolve: bindings => operatorFunction(op.resolve(bindings), mask),
-			type,
+			type: castOutputType,
 		};
 	};
 }

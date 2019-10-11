@@ -1,4 +1,4 @@
-import interpret from '../interpretor';
+import interpret from 'engine/interpretor';
 
 describe('interpretor', () => {
 	describe('concatenation', () => {

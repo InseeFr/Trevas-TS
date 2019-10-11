@@ -1,4 +1,5 @@
-import interpret from '../interpretor';
+import interpret from 'engine/interpretor';
+import CastTypeError from '../../errors/CastTypeError';
 
 describe('interpretor', () => {
 	describe('cast', () => {
@@ -22,7 +23,13 @@ describe('interpretor', () => {
 			});
 		});
 		describe('number', () => {});
-		describe('boolean', () => {});
+		describe('boolean', () => {
+			it('should not cast boolean into duration', () => {
+				expect(() => interpret('cast(true, duration)', {})).toThrow(
+					CastTypeError
+				);
+			});
+		});
 		describe('time', () => {});
 		describe('date', () => {});
 		describe('time_period', () => {});
