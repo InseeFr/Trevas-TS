@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Editor } from './editor-component/components';
 import Console from './console';
-import getTools from '../antlr-tools';
+import getTools from '../../antlr-tools';
 import { composeShortcuts } from './editor-component';
 import '../app.scss';
 import '../vtl-tokens.scss';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withReadme } from 'storybook-readme';
-import readme from './README.md';
-import Editor from 'components/editor';
+import Editor from 'editor/components/editor';
 import { select, boolean } from '@storybook/addon-knobs/react';
+import readme from './README.md';
 
 const grammars = {
 	'VTL 2.0 Insee': 'vtl-2.0-Insee',
