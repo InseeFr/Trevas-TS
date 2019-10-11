@@ -69,6 +69,7 @@
 		"rollup-plugin-node-resolve": "^5.2.0",
 		"rollup-plugin-postcss": "^2.0.3",
 		"rollup-plugin-replace": "^2.2.0",
+		"rollup-plugin-web-worker-loader": "^0.6.0",
 		"sass-loader": "^7.3.1",
 		"storybook-readme": "^5.0.8",
 		"style-loader": "^1.0.0"

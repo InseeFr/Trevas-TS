@@ -22,6 +22,7 @@ export default {
 		builtins(),
 		resolve(),
 		postcss(),
+
 		babel({
 			exclude: 'node_modules/**',
 		}),

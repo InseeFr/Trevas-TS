@@ -41,7 +41,7 @@ const initSelectionForMove = state => {
 const reduceShiftLeft = state => {
 	const { lines } = state;
 	const selection = state.selection || initSelectionForMove(state);
-	if (selection && selection.extent) {
+	if (selection.extent.row !== 0 || selection.extent.index !== 0) {
 		const { index, row } =
 			selection.extent.index === 0
 				? {
