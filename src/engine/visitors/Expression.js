@@ -1,14 +1,15 @@
-import {
-	VtlParser,
-	VtlVisitor,
-} from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlVisitor } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import ArithmeticVisitor from './Arithmetic';
 import BooleanAlgebraVisitor from './BooleanAlgebra';
 import IfThenElse from './IfThenElse';
 import VariableVisitor from './Variable';
 import LiteralVisitor from './Literal';
 import ComparisonVisitor from './Comparison';
-import FunctionVisitor from './Function';
+import {
+	CastVisitor,
+	ConcatenationVisitor,
+	SubstrAtomVisitor,
+} from './functions';
 
 class ExpressionVisitor extends VtlVisitor {
 	constructor(bindings) {
@@ -28,9 +29,6 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitIfExpr = ctx => new IfThenElse(this).visit(ctx);
 
-	visitSubstrAtom = ctx => new FunctionVisitor(this).visit(ctx);
-	visitCastExpr = ctx => new FunctionVisitor(this).visit(ctx);
-
 	visitOptionalExpr = ctx => this.visit(ctx.children[0]);
 	visitStringFunctions = ctx => this.visit(ctx.children[0]);
 	visitFunctionsExpression = ctx => this.visit(ctx.children[0]);
@@ -40,23 +38,10 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitConstantExpr = ctx => new LiteralVisitor().visit(ctx);
 
-	visitConcatExpr = ctx => {
-		const leftOperand = this.visit(ctx.left);
-		const rightOperand = this.visit(ctx.right);
-		if (
-			leftOperand.type !== rightOperand.type ||
-			rightOperand.type !== VtlParser.STRING_CONSTANT
-		) {
-			throw new Error(
-				`cannot concat ${ctx.left.getText()} with ${ctx.right.getText()}`
-			);
-		}
-		return {
-			resolve: bindings =>
-				leftOperand.resolve(bindings) + rightOperand.resolve(bindings),
-			type: leftOperand.type, // invariant because of type check above.
-		};
-	};
+	// Functions
+	visitCastExpr = ctx => new CastVisitor(this).visit(ctx);
+	visitConcatExpr = ctx => new ConcatenationVisitor(this).visit(ctx);
+	visitSubstrAtom = ctx => new SubstrAtomVisitor(this).visit(ctx);
 }
 
 export default ExpressionVisitor;
