@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
 	VtlParser,
 	VtlVisitor,
@@ -18,6 +19,8 @@ class CastVisitor extends VtlVisitor {
 		let maskCtx = children[6];
 
 		const op = this.exprVisitor.visit(opCtx);
+		// mask has to be visited?
+		const mask = maskCtx ? maskCtx.getText() : undefined;
 
 		let operatorFunction, type;
 		switch (scalarTypeCtx.children[0].symbol.type) {
@@ -29,12 +32,20 @@ class CastVisitor extends VtlVisitor {
 				operatorFunction = op => parseInt(op, 10);
 				type = VtlParser.INTEGER_CONSTANT;
 				break;
+			case VtlParser.STRING:
+				operatorFunction = op => `${op}`;
+				type = VtlParser.STRING_CONSTANT;
+				break;
+			case VtlParser.DATE:
+				operatorFunction = (op, mask) => new Date(moment.parseZone(op, mask));
+				type = VtlParser.DATE;
+				break;
 			default:
 				throw new Error('Unsupported scalar ' + op.getText());
 		}
 
 		return {
-			resolve: bindings => operatorFunction(op.resolve(bindings)),
+			resolve: bindings => operatorFunction(op.resolve(bindings), mask),
 			type,
 		};
 	};
