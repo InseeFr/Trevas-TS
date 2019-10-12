@@ -31,21 +31,29 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME_PERIOD, 'ERROR'],
 			[VtlParser.INTEGER_CONSTANT, VtlParser.STRING, op => `${op}`],
 			[VtlParser.INTEGER_CONSTANT, VtlParser.DURATION, 'ERROR'],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.DATE, () => 'TODO'],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[
+				VtlParser.FLOAT_CONSTANT,
+				VtlParser.INTEGER,
+				op => {
+					if (!Number.isInteger(op))
+						throw new CastTypeError(ctx, op, VtlParser.FLOAT_CONSTANT);
+					return parseInt(op, 10);
+				},
+			],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, op => op],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.BOOLEAN, op => op !== 0],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.TIME, 'ERROR'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.DATE, 'ERROR'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.TIME_PERIOD, 'ERROR'],
 			[VtlParser.FLOAT_CONSTANT, VtlParser.STRING, op => `${op}`],
-			[VtlParser.FLOAT_CONSTANT, VtlParser.DURATION, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.INTEGER, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.DATE, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[VtlParser.BOOLEAN_CONSTANT, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.FLOAT_CONSTANT, VtlParser.DURATION, 'ERROR'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.INTEGER, op => (op ? 1 : 0)],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.NUMBER, op => (op ? 1 : 0)],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.BOOLEAN, op => op],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.TIME, 'ERROR'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.DATE, 'ERROR'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.TIME_PERIOD, 'ERROR'],
+			[VtlParser.BOOLEAN_CONSTANT, VtlParser.STRING, op => `${op}`],
 			[VtlParser.BOOLEAN_CONSTANT, VtlParser.DURATION, 'ERROR'],
 			[VtlParser.TIME, VtlParser.INTEGER, () => 'TODO'],
 			[VtlParser.TIME, VtlParser.NUMBER, () => 'TODO'],
@@ -71,9 +79,25 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.TIME_PERIOD, VtlParser.TIME_PERIOD, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.STRING, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.DURATION, () => 'TODO'],
-			[VtlParser.STRING_CONSTANT, VtlParser.INTEGER, op => parseInt(op, 10)],
-			[VtlParser.STRING_CONSTANT, VtlParser.NUMBER, op => parseFloat(op)],
-			[VtlParser.STRING_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
+			[
+				VtlParser.STRING_CONSTANT,
+				VtlParser.INTEGER,
+				op => {
+					if (!Number.isInteger(Number(op)))
+						throw new CastTypeError(ctx, op, VtlParser.INTEGER);
+					return parseInt(op, 10);
+				},
+			],
+			[
+				VtlParser.STRING_CONSTANT,
+				VtlParser.NUMBER,
+				op => {
+					if (!Number.isInteger(parseInt(op, 10)))
+						throw new CastTypeError(ctx, op, VtlParser.NUMBER);
+					return parseFloat(op);
+				},
+			],
+			[VtlParser.STRING_CONSTANT, VtlParser.BOOLEAN, 'ERROR'],
 			[VtlParser.STRING_CONSTANT, VtlParser.TIME, () => 'TODO'],
 			[
 				VtlParser.STRING_CONSTANT,
@@ -81,16 +105,16 @@ class CastVisitor extends VtlVisitor {
 				(op, mask) => new Date(moment.parseZone(op, mask)),
 			],
 			[VtlParser.STRING_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[VtlParser.STRING_CONSTANT, VtlParser.STRING, () => 'TODO'],
+			[VtlParser.STRING_CONSTANT, VtlParser.STRING, op => op],
 			[VtlParser.STRING_CONSTANT, VtlParser.DURATION, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.INTEGER, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.NUMBER, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.BOOLEAN, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.DATE, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.STRING, () => 'TODO'],
-			[VtlParser.DURATION, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.DURATION, VtlParser.INTEGER, 'ERROR'],
+			[VtlParser.DURATION, VtlParser.NUMBER, 'ERROR'],
+			[VtlParser.DURATION, VtlParser.BOOLEAN, 'ERROR'],
+			[VtlParser.DURATION, VtlParser.TIME, 'ERROR'],
+			[VtlParser.DURATION, VtlParser.DATE, 'ERROR'],
+			[VtlParser.DURATION, VtlParser.TIME_PERIOD, 'ERROR'],
+			[VtlParser.DURATION, VtlParser.STRING, op => `${op}`],
+			[VtlParser.DURATION, VtlParser.DURATION, op => op],
 		];
 
 		const castOutputType = scalarTypeCtx.children[0].symbol.type;
@@ -98,9 +122,9 @@ class CastVisitor extends VtlVisitor {
 			([opType, scalarType]) =>
 				opType === op.type && scalarType === castOutputType
 		);
-		if (combination.length === 0) console.log(castOutputType);
+
 		if (combination.length !== 1)
-			throw OperatorTypeError(ctx, op.getText(), op.type, castOutputType);
+			throw OperatorTypeError(ctx, op, op.type, castOutputType);
 
 		const operatorFunction = combination[0][2];
 
