@@ -3,6 +3,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import OperatorTypeError from '../../errors/OperatorTypeError';
 import CastTypeError from '../../errors/CastTypeError';
 
 class CastVisitor extends VtlVisitor {
@@ -22,14 +23,14 @@ class CastVisitor extends VtlVisitor {
 		const mask = maskCtx ? maskCtx.getText() : undefined;
 
 		const combinations = [
-			[VtlParser.INTEGER_CONSTANT, VtlParser.INTEGER, () => 'TODO'],
-			[VtlParser.INTEGER_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
-			[VtlParser.INTEGER_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
-			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.INTEGER_CONSTANT, VtlParser.DATE, () => 'TODO'],
-			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME_PERIOD, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.INTEGER, op => op],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.NUMBER, op => op],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.BOOLEAN, op => op !== 0],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME, 'ERROR'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.DATE, 'ERROR'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.TIME_PERIOD, 'ERROR'],
 			[VtlParser.INTEGER_CONSTANT, VtlParser.STRING, op => `${op}`],
-			[VtlParser.INTEGER_CONSTANT, VtlParser.DURATION, () => 'TODO'],
+			[VtlParser.INTEGER_CONSTANT, VtlParser.DURATION, 'ERROR'],
 			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
 			[VtlParser.FLOAT_CONSTANT, VtlParser.NUMBER, () => 'TODO'],
 			[VtlParser.FLOAT_CONSTANT, VtlParser.BOOLEAN, () => 'TODO'],
@@ -93,10 +94,15 @@ class CastVisitor extends VtlVisitor {
 		];
 
 		const castOutputType = scalarTypeCtx.children[0].symbol.type;
-		const operatorFunction = combinations.filter(
+		const combination = combinations.filter(
 			([opType, scalarType]) =>
 				opType === op.type && scalarType === castOutputType
-		)[0][2];
+		);
+		if (combination.length === 0) console.log(castOutputType);
+		if (combination.length !== 1)
+			throw OperatorTypeError(ctx, op.getText(), op.type, castOutputType);
+
+		const operatorFunction = combination[0][2];
 
 		if (typeof operatorFunction !== 'function')
 			throw new CastTypeError(ctx, op.type, castOutputType);
