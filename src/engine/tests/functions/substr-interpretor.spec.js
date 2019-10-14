@@ -76,4 +76,27 @@ describe('interpretor', () => {
 			expect(() => interpret('lower(1234)', {})).toThrow(TypeMismatchError);
 		});
 	});
+	describe('replace', () => {
+		it('should replace string', () => {
+			expect(interpret('replace("Hello world", "Hello", "Hi")', {})).toEqual(
+				'Hi world'
+			);
+		});
+		it('should replace all occurences string', () => {
+			expect(
+				interpret('replace("Hello Hello world", "Hello", "Hi")', {})
+			).toEqual('Hi Hi world');
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('replace(123, "Hello", "Hi")', {})).toThrow(
+				TypeMismatchError
+			);
+			expect(() => interpret('replace("Hello world", 123, "Hi")', {})).toThrow(
+				TypeMismatchError
+			);
+			expect(() =>
+				interpret('replace("Hello world", "Hello", 123)', {})
+			).toThrow(TypeMismatchError);
+		});
+	});
 });

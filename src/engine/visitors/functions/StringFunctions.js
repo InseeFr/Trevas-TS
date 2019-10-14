@@ -68,6 +68,21 @@ class StringFunctionsVisitor extends VtlVisitor {
 		};
 	};
 
+	visitReplaceAtom = ctx => {
+		const [strCtx, oldCtx] = ctx.expr();
+		const operand = this.checkType(strCtx, VtlParser.STRING_CONSTANT);
+		const oldStr = this.checkType(oldCtx, VtlParser.STRING_CONSTANT);
+		const newCtx = ctx.optionalExpr() ? ctx.optionalExpr() : { resolve: () => '', type: VtlParser.STRING_CONSTANT};
+		const newStr = this.checkType(newCtx, VtlParser.STRING_CONSTANT);
+		return {
+			resolve: bindings => {
+				const regexp = new RegExp(oldStr.resolve(bindings),'g');
+				return operand.resolve(bindings).replace(regexp, newStr.resolve());
+			},
+			type: VtlParser.STRING_CONSTANT,
+		};
+	};
+
 	visitSubstrAtom = ctx => {
 		const { children } = ctx;
 
