@@ -15,9 +15,9 @@ class CastVisitor extends VtlVisitor {
 	visitCastExpr = ctx => {
 		const { children } = ctx;
 
-		let opCtx = children[2];
-		let scalarTypeCtx = children[4];
-		let maskCtx = children[6];
+		let opCtx = ctx.expr();
+		let scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
+		let maskCtx = ctx.STRING_CONSTANT();
 
 		const op = this.exprVisitor.visit(opCtx);
 		const mask = maskCtx ? maskCtx.getText() : undefined;
