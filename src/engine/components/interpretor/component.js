@@ -33,7 +33,7 @@ const Interpretor = ({ value, variables }) => {
 					Get Result!
 				</button>
 			</div>
-			{(res || res === false) && (
+			{(res || res === false || res === 0) && (
 				<div className="res">
 					<h2>Result:</h2>
 					<h1 className="res-text">{res.toString()}</h1>
