@@ -17,9 +17,10 @@ class SubstrAtomVisitor extends VtlVisitor {
 			throw new Error('Invalid number of operands for function substr');
 
 		// Required because the grammar doesn't do it for us.
-		let operandCtx = children[2];
-		let startIndexCtx = children[4].children[0];
-		let lengthCtx = children[6].children[0];
+		let operandCtx = ctx.expr();
+
+		// TODO Grammar defines this as an unbounded array of expressions. Should be changed IMO
+		const [startIndexCtx, lengthCtx] = ctx.optionalExpr();
 
 		const operand = this.exprVisitor.visit(operandCtx);
 		const startIndex = this.exprVisitor.visit(startIndexCtx);

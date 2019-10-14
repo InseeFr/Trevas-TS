@@ -25,14 +25,15 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitNotExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
 
-	visitParenthesisExpr = ctx => this.visit(ctx.children[1]);
+	visitParenthesisExpr = ctx => this.visit(ctx.expr());
 
 	visitIfExpr = ctx => new IfThenElse(this).visit(ctx);
 
-	visitOptionalExpr = ctx => this.visit(ctx.children[0]);
-	visitStringFunctions = ctx => this.visit(ctx.children[0]);
-	visitFunctionsExpression = ctx => this.visit(ctx.children[0]);
-	visitGenericFunctions = ctx => this.visit(ctx.children[0]);
+	// TODO: Optional expression should handle missing values.
+	visitOptionalExpr = ctx => this.visit(ctx.expr());
+	visitStringFunctions = ctx => this.visit(ctx.stringOperators());
+	visitFunctionsExpression = ctx => this.visit(ctx.functions());
+	visitGenericFunctions = ctx => this.visit(ctx.genericOperators());
 
 	visitVarIdExpr = ctx => new VariableVisitor(this.bindings).visit(ctx);
 
