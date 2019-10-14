@@ -1793,4 +1793,5 @@ VtlListener.prototype.exitRetainType = function(ctx) {
 };
 
 
-export default VtlListener
+
+exports.VtlListener = VtlListener;

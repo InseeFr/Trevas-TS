@@ -2081,4 +2081,7 @@ VtlLexer.prototype.ruleNames = [ "T__0", "LPAREN", "RPAREN", "GLPAREN",
 
 VtlLexer.prototype.grammarFileName = "Vtl.g4";
 
-export default VtlLexer;
+
+
+exports.VtlLexer = VtlLexer;
+

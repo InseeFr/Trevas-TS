@@ -1199,4 +1199,6 @@ VtlVisitor.prototype.visitRetainType = function(ctx) {
   return this.visitChildren(ctx);
 };
 
-export default VtlVisitor;
+
+
+exports.VtlVisitor = VtlVisitor;

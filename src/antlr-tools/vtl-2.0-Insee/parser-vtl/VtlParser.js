@@ -1,8 +1,8 @@
 // Generated from vtl-sources/Vtl-2.0-Insee/Vtl.g4 by ANTLR 4.7.2
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
-import {default as VtlListener} from './VtlListener' ;
-import {default as VtlVisitor} from './VtlVisitor' ;
+var VtlListener = require('./VtlListener').VtlListener;
+var VtlVisitor = require('./VtlVisitor').VtlVisitor;
 
 var grammarFileName = "Vtl.g4";
 
@@ -20384,4 +20384,4 @@ VtlParser.prototype.expr_sempred = function(localctx, predIndex) {
 };
 
 
-export default VtlParser;
+exports.VtlParser = VtlParser;
