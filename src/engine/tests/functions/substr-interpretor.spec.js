@@ -32,4 +32,28 @@ describe('interpretor', () => {
 			);
 		});
 	});
+	describe('ltrim', () => {
+		it('should trim string', () => {
+			expect(interpret('ltrim(" before")', {})).toEqual('before');
+			expect(interpret('ltrim("after ")', {})).toEqual('after ');
+			expect(interpret('ltrim("none")', {})).toEqual('none');
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('ltrim(1234, 4, 2)', {})).toThrow(
+				TypeMismatchError
+			);
+		});
+	});
+	describe('rtrim', () => {
+		it('should trim string', () => {
+			expect(interpret('rtrim(" before")', {})).toEqual(' before');
+			expect(interpret('rtrim("after ")', {})).toEqual('after');
+			expect(interpret('rtrim("none")', {})).toEqual('none');
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('rtrim(1234, 4, 2)', {})).toThrow(
+				TypeMismatchError
+			);
+		});
+	});
 });

@@ -10,15 +10,39 @@ class StringFunctionsVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitTrimAtom = ctx => {
-		const operandCtx = ctx.expr();
-		const operand = this.exprVisitor.visit(operandCtx);
-		if (operand.type !== VtlParser.STRING_CONSTANT) {
-			throw new TypeMismatchError(operandCtx,VtlParser.STRING_CONSTANT, operand.type);
+	checkType = (exprCtx, expectedType) => {
+		const operand = this.exprVisitor.visit(exprCtx);
+		if (operand.type !== expectedType) {
+			throw new TypeMismatchError(exprCtx,expectedType, operand.type);
 		}
+		return operand;
+	};
+
+	visitTrimAtom = ctx => {
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
 		return {
 			resolve: bindings => {
 				return operand.resolve(bindings).trim();
+			},
+			type: VtlParser.STRING_CONSTANT,
+		};
+	};
+
+	visitLtrimAtom = ctx => {
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
+		return {
+			resolve: bindings => {
+				return operand.resolve(bindings).trimLeft();
+			},
+			type: VtlParser.STRING_CONSTANT,
+		};
+	};
+
+	visitRtrimAtom = ctx => {
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
+		return {
+			resolve: bindings => {
+				return operand.resolve(bindings).trimRight();
 			},
 			type: VtlParser.STRING_CONSTANT,
 		};
@@ -30,37 +54,13 @@ class StringFunctionsVisitor extends VtlVisitor {
 		if (children.length === 4)
 			throw new Error('Invalid number of operands for function substr');
 
-		// Required because the grammar doesn't do it for us.
-		let operandCtx = ctx.expr();
-
 		// TODO Grammar defines this as an unbounded array of expressions. Should be changed IMO
 		const [startIndexCtx, lengthCtx] = ctx.optionalExpr();
 
-		const operand = this.exprVisitor.visit(operandCtx);
-		const startIndex = this.exprVisitor.visit(startIndexCtx);
-		const length = this.exprVisitor.visit(lengthCtx);
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
+		const startIndex = this.checkType(startIndexCtx, VtlParser.INTEGER_CONSTANT);
+		const length = this.checkType(lengthCtx, VtlParser.INTEGER_CONSTANT);
 
-		if (operand.type !== VtlParser.STRING_CONSTANT) {
-			throw new TypeMismatchError(
-				operandCtx,
-				VtlParser.STRING_CONSTANT,
-				operand.type
-			);
-		}
-		if (startIndex.type !== VtlParser.INTEGER_CONSTANT) {
-			throw new TypeMismatchError(
-				startIndexCtx,
-				VtlParser.STRING_CONSTANT,
-				startIndex.type
-			);
-		}
-		if (length.type !== VtlParser.INTEGER_CONSTANT) {
-			throw new TypeMismatchError(
-				lengthCtx,
-				VtlParser.STRING_CONSTANT,
-				length.type
-			);
-		}
 		return {
 			resolve: bindings => {
 				return operand
