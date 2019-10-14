@@ -18,7 +18,10 @@ describe('interpretor', () => {
 			expect(interpret('(1 - 2) + 1', {})).toEqual(0);
 		});
 		it('precedence problem: 1 - 2 + 1 should be 0, but instead returns -2', () => {
-			expect(interpret('1 - 2 + 1', {})).toEqual(-2);
+			expect(interpret('1 - 2 + 1', {})).toEqual(0);
+		});
+		it('precedence: 10 / 2 * 5', () => {
+			expect(interpret('10 / 2 * 5', {})).toEqual(25);
 		});
 		it('dividing by 0 should return infinity', () => {
 			expect(interpret('3/0', {})).toEqual(Infinity);
