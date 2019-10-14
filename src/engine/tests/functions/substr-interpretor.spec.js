@@ -56,4 +56,24 @@ describe('interpretor', () => {
 			);
 		});
 	});
+	describe('upper', () => {
+		it('should upper string', () => {
+			expect(interpret('upper("AaBbCc 123456789 __")', {})).toEqual(
+				'AABBCC 123456789 __'
+			);
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('upper(1234)', {})).toThrow(TypeMismatchError);
+		});
+	});
+	describe('lower', () => {
+		it('should lower string', () => {
+			expect(interpret('lower("AaBbCc 123456789 __")', {})).toEqual(
+				'aabbcc 123456789 __'
+			);
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('lower(1234)', {})).toThrow(TypeMismatchError);
+		});
+	});
 });

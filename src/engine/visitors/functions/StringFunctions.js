@@ -48,6 +48,26 @@ class StringFunctionsVisitor extends VtlVisitor {
 		};
 	};
 
+	visitUcaseAtom = ctx => {
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
+		return {
+			resolve: bindings => {
+				return operand.resolve(bindings).toUpperCase();
+			},
+			type: VtlParser.STRING_CONSTANT,
+		};
+	};
+
+	visitLcaseAtom = ctx => {
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
+		return {
+			resolve: bindings => {
+				return operand.resolve(bindings).toLowerCase();
+			},
+			type: VtlParser.STRING_CONSTANT,
+		};
+	};
+
 	visitSubstrAtom = ctx => {
 		const { children } = ctx;
 
