@@ -4,7 +4,7 @@ import {
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import TypeMismatchError from '../../errors/TypeMismatchError';
 
-class SubstrAtomVisitor extends VtlVisitor {
+class StringFunctionsVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
 		this.exprVisitor = exprVisitor;
@@ -58,4 +58,4 @@ class SubstrAtomVisitor extends VtlVisitor {
 	};
 }
 
-export default SubstrAtomVisitor;
+export default StringFunctionsVisitor;
