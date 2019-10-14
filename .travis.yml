@@ -4,6 +4,7 @@ node_js:
 cache: yarn
 install:
   - yarn
+deploy: true
 script:
   - yarn test
 after_script:
