@@ -8,7 +8,7 @@ import ComparisonVisitor from './Comparison';
 import {
 	CastVisitor,
 	ConcatenationVisitor,
-	SubstrAtomVisitor,
+	StringFunctionsVisitor,
 } from './functions';
 
 class ExpressionVisitor extends VtlVisitor {
@@ -42,7 +42,8 @@ class ExpressionVisitor extends VtlVisitor {
 	// Functions
 	visitCastExpr = ctx => new CastVisitor(this).visit(ctx);
 	visitConcatExpr = ctx => new ConcatenationVisitor(this).visit(ctx);
-	visitSubstrAtom = ctx => new SubstrAtomVisitor(this).visit(ctx);
+	visitStringFunctions = ctx => new StringFunctionsVisitor(this).visit(ctx.stringOperators());
+
 }
 
 export default ExpressionVisitor;

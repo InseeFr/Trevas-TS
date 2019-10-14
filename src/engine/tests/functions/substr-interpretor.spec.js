@@ -20,4 +20,16 @@ describe('interpretor', () => {
 			);
 		});
 	});
+	describe('trim', () => {
+		it('should trim string', () => {
+			expect(interpret('trim(" before")', {})).toEqual('before');
+			expect(interpret('trim("after ")', {})).toEqual('after');
+			expect(interpret('trim("none")', {})).toEqual('none');
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('trim(1234, 4, 2)', {})).toThrow(
+				TypeMismatchError
+			);
+		});
+	});
 });

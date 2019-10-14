@@ -10,6 +10,20 @@ class StringFunctionsVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
+	visitTrimAtom = ctx => {
+		const operandCtx = ctx.expr();
+		const operand = this.exprVisitor.visit(operandCtx);
+		if (operand.type !== VtlParser.STRING_CONSTANT) {
+			throw new TypeMismatchError(operandCtx,VtlParser.STRING_CONSTANT, operand.type);
+		}
+		return {
+			resolve: bindings => {
+				return operand.resolve(bindings).trim();
+			},
+			type: VtlParser.STRING_CONSTANT,
+		};
+	};
+
 	visitSubstrAtom = ctx => {
 		const { children } = ctx;
 
