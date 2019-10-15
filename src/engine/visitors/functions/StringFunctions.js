@@ -83,6 +83,14 @@ class StringFunctionsVisitor extends VtlVisitor {
 		};
 	};
 
+	visitLenAtom = ctx => {
+		const operand = this.checkType(ctx.expr(), VtlParser.STRING_CONSTANT);
+		return {
+			resolve: bindings => operand ? operand.resolve(bindings).length : null,
+			type: VtlParser.INTEGER_CONSTANT
+		}
+	};
+
 	visitInstrAtom = ctx => {
 		const [operandCtx, patternCtx] = ctx.expr();
 		const [ startCtx , occurrenceCtx ] = ctx.optionalExpr();

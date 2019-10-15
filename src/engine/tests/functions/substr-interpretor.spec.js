@@ -131,4 +131,13 @@ describe('interpretor', () => {
 			);
 		});
 	});
+
+	describe('length', () => {
+		it('should find string occurrence', () => {
+			expect(interpret('length("123456789")', {})).toEqual(9);
+		});
+		it('should fail with type validation', () => {
+			expect(() => interpret('length(123)', {})).toThrow(TypeMismatchError);
+		});
+	});
 });
