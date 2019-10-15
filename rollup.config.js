@@ -20,18 +20,23 @@ export default {
 	},
 	plugins: [
 		builtins(),
-		resolve(),
 		postcss(),
-
+		resolve(),
 		babel({
 			exclude: 'node_modules/**',
 		}),
+		commonjs({
+			namedExports: {
+				'./VtlLexer': ['VtlLexer'],
+				'./VtlParser': ['VtlParser'],
+				'./VtlListener': ['VtlListener'],
+				'./VtlVisitor': ['VtlVisitor'],
+			},
+		}),
+
 		replace({
 			exclude: 'node_modules/**',
 			ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-		}),
-		commonjs({
-			exclude: 'src/**',
 		}),
 		autoExternal(),
 	],
