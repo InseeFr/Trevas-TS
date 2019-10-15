@@ -1,7 +1,5 @@
-import { VtlParser } from './parser-vtl';
-import { VtlLexer } from './parser-vtl';
-import { VtlListener } from './parser-vtl';
 import antlr4 from 'antlr4';
+import { VtlParser, VtlLexer, VtlListener } from './parser-vtl';
 
 const parse = code => {
 	try {

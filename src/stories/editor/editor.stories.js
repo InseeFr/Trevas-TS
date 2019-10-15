@@ -8,7 +8,6 @@ import readme from './README.md';
 const grammars = {
 	'VTL 2.0 Insee': 'vtl-2.0-Insee',
 	'VTL 2.0': 'vtl-2.0',
-	JavaScript: 'js',
 };
 
 const dictionnary = {
