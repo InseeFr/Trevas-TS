@@ -24,65 +24,65 @@ stories.add('Parenthesis', () => <Interpretor value="(10 + 2) * 123456" />);
 
 // Arithmetic
 
-storiesOf('Interpretor/Arithmetic').add('Div', () => (
+storiesOf('Interpretor/Arithmetic', module).add('Div', () => (
 	<Interpretor value="3 / 2" />
 ));
-storiesOf('Interpretor/Arithmetic').add('Mul', () => (
+storiesOf('Interpretor/Arithmetic', module).add('Mul', () => (
 	<Interpretor value="11 * 27" />
 ));
-storiesOf('Interpretor/Arithmetic').add('Minus', () => (
+storiesOf('Interpretor/Arithmetic', module).add('Minus', () => (
 	<Interpretor value="1 - 2" />
 ));
-storiesOf('Interpretor/Arithmetic').add('Plus', () => (
+storiesOf('Interpretor/Arithmetic', module).add('Plus', () => (
 	<Interpretor value="10 + 2" />
 ));
 
 // Comparison
-storiesOf('Interpretor/Comparison').add('Equal to', () => (
+storiesOf('Interpretor/Comparison', module).add('Equal to', () => (
 	<Interpretor value="100 = 1" />
 ));
-storiesOf('Interpretor/Comparison').add('Less than', () => (
+storiesOf('Interpretor/Comparison', module).add('Less than', () => (
 	<Interpretor value="100 < 1" />
 ));
-storiesOf('Interpretor/Comparison').add('Less than or equal to', () => (
+storiesOf('Interpretor/Comparison', module).add('Less than or equal to', () => (
 	<Interpretor value="100 <= 100" />
 ));
-storiesOf('Interpretor/Comparison').add('More than', () => (
+storiesOf('Interpretor/Comparison', module).add('More than', () => (
 	<Interpretor value="100 > 1" />
 ));
-storiesOf('Interpretor/Comparison').add('More than or equal to', () => (
+storiesOf('Interpretor/Comparison', module).add('More than or equal to', () => (
 	<Interpretor value="100 >= 100" />
 ));
-storiesOf('Interpretor/Comparison').add('Not equal to', () => (
+storiesOf('Interpretor/Comparison', module).add('Not equal to', () => (
 	<Interpretor value="100 <> 1" />
 ));
 
 // ternary
 
-storiesOf('Interpretor/Ternary').add('IfThenElse', () => (
+storiesOf('Interpretor/Ternary', module).add('IfThenElse', () => (
 	<Interpretor value='if 100 > 0 then "positive" else "negative"' />
 ));
 
 // BooleanAlgebra
 
-storiesOf('Interpretor/Boolean algebra').add('And', () => (
+storiesOf('Interpretor/Boolean algebra', module).add('And', () => (
 	<Interpretor value="false and true" />
 ));
-storiesOf('Interpretor/Boolean algebra').add('Not', () => (
+storiesOf('Interpretor/Boolean algebra', module).add('Not', () => (
 	<Interpretor value="not true" />
 ));
-storiesOf('Interpretor/Boolean algebra').add('Or', () => (
+storiesOf('Interpretor/Boolean algebra', module).add('Or', () => (
 	<Interpretor value="false or true" />
 ));
 
 // Functions
 
-storiesOf('Interpretor/Function').add('Cast', () => (
+storiesOf('Interpretor/Function', module).add('Cast', () => (
 	<Interpretor value='cast("10", number)' />
 ));
-storiesOf('Interpretor/Function').add('Concatenation', () => (
+storiesOf('Interpretor/Function', module).add('Concatenation', () => (
 	<Interpretor value='"Hello" || " " || "World"' />
 ));
-storiesOf('Interpretor/Function').add('Substring', () => (
+storiesOf('Interpretor/Function', module).add('Substring', () => (
 	<Interpretor value='substr("Hello", 1, 2)' />
 ));
