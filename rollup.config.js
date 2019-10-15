@@ -28,12 +28,7 @@ export default {
 			exclude: 'node_modules/**',
 		}),
 		commonjs({
-			namedExports: {
-				'./VtlLexer': ['VtlLexer'],
-				'./VtlParser': ['VtlParser'],
-				'./VtlListener': ['VtlListener'],
-				'./VtlVisitor': ['VtlVisitor'],
-			},
+			ignore: ['antlr4'],
 		}),
 		replace({
 			exclude: 'node_modules/**',

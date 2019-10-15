@@ -1,6 +1,6 @@
 // Generated from vtl-sources/Vtl-2.0-Insee/Vtl.g4 by ANTLR 4.7.2
 // jshint ignore: start
-var antlr4 = require('antlr4/index');
+var antlr4 = require('antlr4');
 
 
 
