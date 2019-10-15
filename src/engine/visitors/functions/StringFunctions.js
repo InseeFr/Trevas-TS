@@ -83,6 +83,53 @@ class StringFunctionsVisitor extends VtlVisitor {
 		};
 	};
 
+	visitInstrAtom = ctx => {
+		const [operandCtx, patternCtx] = ctx.expr();
+		const [ startCtx , occurrenceCtx ] = ctx.optionalExpr();
+
+		const operand = this.checkType(operandCtx, VtlParser.STRING_CONSTANT);
+		const pattern = this.checkType(patternCtx, VtlParser.STRING_CONSTANT);
+
+		// TODO: Change when we handle missing values.
+		const start = startCtx && startCtx.expr()
+			? this.checkType(startCtx, VtlParser.INTEGER_CONSTANT)
+			: { resolve: () => 0, type: VtlParser.INTEGER_CONSTANT};
+		const occurrence = occurrenceCtx && occurrenceCtx.expr()
+			? this.checkType(occurrenceCtx, VtlParser.INTEGER_CONSTANT)
+			: { resolve: () => 1, type: VtlParser.INTEGER_CONSTANT};
+
+		return {
+			resolve: bindings => {
+				const resolvedOperand = operand.resolve(bindings);
+				const resolvedPattern = pattern.resolve(bindings);
+				let resolvedStart = start.resolve(bindings);
+
+				// Not in the spec.
+				if (resolvedStart < 0) {
+					throw new Error("start cannot be negative")
+				}
+				let resolvedOccurrence = occurrence.resolve(bindings);
+
+				// Not in the spec.
+				if (resolvedOccurrence < 0) {
+					throw new Error("occurrence cannot be negative")
+				}
+
+				let result = 0;
+				while (--resolvedOccurrence >= 0) {
+					result = resolvedOperand.indexOf(resolvedPattern, resolvedStart);
+					if (result === -1) {
+						return 0;
+					} else {
+						resolvedStart = result + 1;
+					}
+				}
+				return result;
+			},
+			type: VtlParser.INTEGER_CONSTANT,
+		};
+	};
+
 	visitSubstrAtom = ctx => {
 		const { children } = ctx;
 

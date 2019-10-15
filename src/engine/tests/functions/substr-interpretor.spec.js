@@ -82,7 +82,7 @@ describe('interpretor', () => {
 				'Hi world'
 			);
 		});
-		it('should replace all occurences string', () => {
+		it('should replace all occurrences string', () => {
 			expect(
 				interpret('replace("Hello Hello world", "Hello", "Hi")', {})
 			).toEqual('Hi Hi world');
@@ -97,6 +97,38 @@ describe('interpretor', () => {
 			expect(() =>
 				interpret('replace("Hello world", "Hello", 123)', {})
 			).toThrow(TypeMismatchError);
+		});
+	});
+	describe('instr', () => {
+		it('should find string', () => {
+			expect(interpret('instr("Hello world", "world")', {})).toEqual(6);
+		});
+
+		it('should find string after start', () => {
+			expect(interpret('instr("Hello world world", "world", 11)', {})).toEqual(
+				12
+			);
+		});
+
+		it('should find string occurrence', () => {
+			expect(
+				interpret('instr("Hello world world world", "world", _, 2)', {})
+			).toEqual(12);
+		});
+
+		it('should find string occurrence with start', () => {
+			expect(
+				interpret('instr("Hello world world world", "world", 11, 2)', {})
+			).toEqual(18);
+		});
+
+		it('should fail with type validation', () => {
+			expect(() => interpret('instr(123, "Hello")', {})).toThrow(
+				TypeMismatchError
+			);
+			expect(() => interpret('instr("Hello", 123)', {})).toThrow(
+				TypeMismatchError
+			);
 		});
 	});
 });

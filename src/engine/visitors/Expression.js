@@ -30,7 +30,7 @@ class ExpressionVisitor extends VtlVisitor {
 	visitIfExpr = ctx => new IfThenElse(this).visit(ctx);
 
 	// TODO: Optional expression should handle missing values.
-	visitOptionalExpr = ctx => this.visit(ctx.expr());
+	visitOptionalExpr = ctx => ctx.expr() === null ? null : this.visit(ctx.expr());
 	visitStringFunctions = ctx => this.visit(ctx.stringOperators());
 	visitFunctionsExpression = ctx => this.visit(ctx.functions());
 	visitGenericFunctions = ctx => this.visit(ctx.genericOperators());
