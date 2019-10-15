@@ -4,7 +4,9 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import postcss from 'rollup-plugin-postcss';
-import autoExternal from 'rollup-plugin-auto-external';
+//import autoExternal from 'rollup-plugin-auto-external';
+
+const dependencies = require('./package.json').dependencies;
 
 export default {
 	input: 'src/index.js',
@@ -33,11 +35,10 @@ export default {
 				'./VtlVisitor': ['VtlVisitor'],
 			},
 		}),
-
 		replace({
 			exclude: 'node_modules/**',
 			ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
 		}),
-		autoExternal(),
 	],
+	external: ['react', ...Object.keys(dependencies)],
 };
