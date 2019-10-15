@@ -28,7 +28,8 @@
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
 		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
-		"build": "rollup -c rollup.config.js"
+		"build": "rollup -c rollup.config.js",
+		"prepublishOnly": "npm run test && npm run build"
 	},
 	"peerDependencies": {
 		"react": "^16.8.6"
