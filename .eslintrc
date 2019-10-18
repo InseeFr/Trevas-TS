@@ -1,6 +1,6 @@
 {
 	"extends": ["airbnb", "prettier"],
-	"plugins": ["prettier"],
+	"plugins": ["prettier", "react-hooks"],
 	"rules": {
 		"prettier/prettier": ["error"],
 		"linebreak-style": 0,
@@ -8,7 +8,8 @@
 		"import/prefer-default-export": "off",
 		"react/jsx-indent": "off",
 		"react/jsx-indent-props": "off",
-		"react/jsx-props-no-spreading": "off"
+		"react/jsx-props-no-spreading": "off",
+		"react-hooks/rules-of-hooks": "error"
 	},
 	"env": {
 		"browser": true,
