@@ -7,11 +7,18 @@ const Interpretor = ({ value, variables }) => {
 	const [input, setInput] = useState(value || '');
 	const [vars, setVars] = useState(variables || [{ key: '', value: '' }]);
 	const [res, setRes] = useState('');
+	const [error, setError] = useState('');
 	const handleChange = v => {
 		setInput(v);
 	};
 	const onClick = () => {
-		setRes(interpret(input, buildExecObject(vars)));
+		try {
+			setRes(interpret(input, buildExecObject(vars)));
+			setError('');
+		} catch (e) {
+			setRes('');
+			setError(e.message);
+		}
 	};
 
 	return (
@@ -37,6 +44,12 @@ const Interpretor = ({ value, variables }) => {
 				<div className="res">
 					<h2>Result:</h2>
 					<h1 className="res-text">{res.toString()}</h1>
+				</div>
+			)}
+			{error && (
+				<div className="res">
+					<h2>Error:</h2>
+					<h1 className="res-text">{error}</h1>
 				</div>
 			)}
 		</>

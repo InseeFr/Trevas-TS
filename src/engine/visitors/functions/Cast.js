@@ -13,8 +13,6 @@ class CastVisitor extends VtlVisitor {
 	}
 
 	visitCastExpr = ctx => {
-		const { children } = ctx;
-
 		let opCtx = ctx.expr();
 		let scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
 		let maskCtx = ctx.STRING_CONSTANT();
@@ -124,7 +122,7 @@ class CastVisitor extends VtlVisitor {
 		);
 
 		if (combination.length !== 1)
-			throw OperatorTypeError(ctx, op, op.type, castOutputType);
+			throw new OperatorTypeError(ctx, 'Cast', op.type, castOutputType);
 
 		const operatorFunction = combination[0][2];
 

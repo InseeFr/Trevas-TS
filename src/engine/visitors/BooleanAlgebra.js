@@ -4,7 +4,7 @@ import {
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { getTokenType } from '../utils/context';
-import TypeMismatchError from "../errors/TypeMismatchError";
+import TypeMismatchError from '../errors/TypeMismatchError';
 
 class BooleanAlgebra extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -31,9 +31,17 @@ class BooleanAlgebra extends VtlVisitor {
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
 		if (leftExpr.type !== VtlParser.BOOLEAN_CONSTANT)
-			throw new TypeMismatchError(leftCtx, VtlParser.BOOLEAN_CONSTANT, leftExpr.type);
+			throw new TypeMismatchError(
+				leftCtx,
+				VtlParser.BOOLEAN_CONSTANT,
+				leftExpr.type
+			);
 		if (rightExpr.type !== VtlParser.BOOLEAN_CONSTANT)
-			throw new TypeMismatchError(rightExpr, VtlParser.BOOLEAN_CONSTANT, rightExpr.type);
+			throw new TypeMismatchError(
+				rightCtx,
+				VtlParser.BOOLEAN_CONSTANT,
+				rightExpr.type
+			);
 
 		let operatorFunction;
 
