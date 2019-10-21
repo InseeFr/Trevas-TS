@@ -110,8 +110,32 @@ storiesOf('Interpretor/Function', module).add('Concatenation', () => (
 	<Interpretor value='"Hello" || " " || "World"' />
 ));
 
-// Substring
+// String
 
-storiesOf('Interpretor/Function', module).add('Substring', () => (
+storiesOf('Interpretor/Function/String', module).add('Length', () => (
+	<Interpretor value='length("Hello")' />
+));
+storiesOf('Interpretor/Function/String', module).add('Replace', () => (
+	<Interpretor value='replace("Hello Edi", "Edi", "Mauro")' />
+));
+storiesOf('Interpretor/Function/String', module).add('Upper', () => (
+	<Interpretor value='upper("Hello")' />
+));
+storiesOf('Interpretor/Function/String', module).add('Lower', () => (
+	<Interpretor value='lower("Hello")' />
+));
+storiesOf('Interpretor/Function/String', module).add('Substring', () => (
 	<Interpretor value='substr("Hello", 1, 2)' />
+));
+storiesOf('Interpretor/Function/String', module).add('Trim', () => (
+	<Interpretor value='trim("              before")' />
+));
+storiesOf('Interpretor/Function/String', module).add('L-Trim', () => (
+	<Interpretor value='ltrim("              before")' />
+));
+storiesOf('Interpretor/Function/String', module).add('R-Trim', () => (
+	<Interpretor value='rtrim("              before")' />
+));
+storiesOf('Interpretor/Function/String', module).add('Instr', () => (
+	<Interpretor value='instr("Hello world", "world")' />
 ));
