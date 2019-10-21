@@ -2,7 +2,7 @@ import interpret from 'engine/interpretor';
 import TypeMismatchError from 'engine/errors/TypeMismatchError';
 
 describe('interpretor', () => {
-	describe('substr', () => {
+	describe('string functions', () => {
 		it('should substr string', () => {
 			expect(interpret('substr("123456789", 4, 2)', {})).toEqual('56');
 			expect(interpret('substr("123456789", 0, 2)', {})).toEqual('12');
