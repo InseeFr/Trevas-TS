@@ -75,14 +75,43 @@ storiesOf('Interpretor/Boolean algebra', module).add('Or', () => (
 	<Interpretor value="false or true" />
 ));
 
-// Functions
+/************** Functions  **************/
 
-storiesOf('Interpretor/Function', module).add('Cast', () => (
-	<Interpretor value='cast("10", number)' />
+// Cast
+
+storiesOf('Interpretor/Function/Cast', module).add('Into integer', () => (
+	<Interpretor value='cast("10", integer)' />
 ));
+storiesOf('Interpretor/Function/Cast', module).add('Into number', () => (
+	<Interpretor value='cast("10.99", number)' />
+));
+storiesOf('Interpretor/Function/Cast', module).add('Into boolean', () => (
+	<Interpretor value="cast(1, boolean)" />
+));
+storiesOf('Interpretor/Function/Cast', module).add('Into time', () => (
+	<div>TODO</div>
+));
+storiesOf('Interpretor/Function/Cast', module).add('Into date', () => (
+	<Interpretor value='cast("1998-07-12", date, "YYYY-MM-DD")' />
+));
+storiesOf('Interpretor/Function/Cast', module).add('Into time_period', () => (
+	<div>TODO</div>
+));
+storiesOf('Interpretor/Function/Cast', module).add('Into string', () => (
+	<Interpretor value="cast(true, string)" />
+));
+storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
+	<div>TODO</div>
+));
+
+// Concatenation
+
 storiesOf('Interpretor/Function', module).add('Concatenation', () => (
 	<Interpretor value='"Hello" || " " || "World"' />
 ));
+
+// Substring
+
 storiesOf('Interpretor/Function', module).add('Substring', () => (
 	<Interpretor value='substr("Hello", 1, 2)' />
 ));
