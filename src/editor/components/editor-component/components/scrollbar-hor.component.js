@@ -8,16 +8,16 @@ const computeMax = lines =>
 	lines.reduce((a, { value }) => (value.length > a ? value.length : a), 1);
 
 const Scrollbar = ({ parentEl }) => {
-	if (!parentEl) return null;
 	const state = useContext(EditorContext);
-	const [visible, setVisible] = useState(false);
+
 	const {
 		lines,
-
 		dispatch,
 		horizontalRange: { offset, start },
 	} = state;
-	const { width } = parentEl.getBoundingClientRect();
+	const { width } = parentEl ? parentEl.getBoundingClientRect() : 0;
+
+	const [visible, setVisible] = useState(false);
 	const [maxChar, setMaxChar] = useState(() => computeMax(lines));
 	const [delta, setDelta] = useState(0);
 	const [dragPos, setDragPos] = useState(0);
@@ -40,6 +40,8 @@ const Scrollbar = ({ parentEl }) => {
 			actions.setHorizontalRange({ start: ns, stop: ns + offset - 1, offset })
 		);
 	}, [delta, width, dragWidth]);
+
+	if (!parentEl) return null;
 
 	return (
 		<span

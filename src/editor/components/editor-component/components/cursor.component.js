@@ -5,7 +5,6 @@ import { setCursorRect } from '../editor-actions';
 
 /* */
 const Cursor = ({ top, left }) => {
-	if (left < 0) return null;
 	const spanEl = createRef();
 	const { dispatch } = useContext(EditorContext);
 	const [rect, setRect] = useState({ x: undefined, y: undefined });
@@ -18,6 +17,8 @@ const Cursor = ({ top, left }) => {
 			dispatch(setCursorRect(next));
 		}
 	}, [spanEl, rect, dispatch]);
+
+	if (left < 0) return null;
 
 	return (
 		<span
