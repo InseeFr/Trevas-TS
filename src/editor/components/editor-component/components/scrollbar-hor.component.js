@@ -26,19 +26,23 @@ const Scrollbar = ({ parentEl }) => {
 	const dragWidth = Math.trunc((width * offset) / maxChar);
 
 	useEffect(() => {
-		const max = computeMax(lines);
-		setMaxChar(max);
-		setDragPos(Math.trunc((width * start) / max));
+		if (width) {
+			const max = computeMax(lines);
+			setMaxChar(max);
+			setDragPos(Math.trunc((width * start) / max));
+		}
 	}, [lines, width, start]);
 
 	useEffect(() => {
-		const next = Math.max(Math.min(dragPos + delta, width - dragWidth), 0);
-		setDragPos(next);
-		const ns = Math.round((next / width) * maxChar);
+		if (width) {
+			const next = Math.max(Math.min(dragPos + delta, width - dragWidth), 0);
+			setDragPos(next);
+			const ns = Math.round((next / width) * maxChar);
 
-		dispatch(
-			actions.setHorizontalRange({ start: ns, stop: ns + offset - 1, offset })
-		);
+			dispatch(
+				actions.setHorizontalRange({ start: ns, stop: ns + offset - 1, offset })
+			);
+		}
 	}, [delta, width, dragWidth]);
 
 	if (!parentEl) return null;

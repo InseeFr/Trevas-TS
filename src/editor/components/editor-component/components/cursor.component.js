@@ -10,13 +10,15 @@ const Cursor = ({ top, left }) => {
 	const [rect, setRect] = useState({ x: undefined, y: undefined });
 
 	useEffect(() => {
-		const next = spanEl.current.getBoundingClientRect();
+		if (left >= 0) {
+			const next = spanEl.current.getBoundingClientRect();
 
-		if (next.right !== rect.right || next.bottom !== rect.bottom) {
-			setRect(next);
-			dispatch(setCursorRect(next));
+			if (next.right !== rect.right || next.bottom !== rect.bottom) {
+				setRect(next);
+				dispatch(setCursorRect(next));
+			}
 		}
-	}, [spanEl, rect, dispatch]);
+	}, [spanEl, rect, dispatch, left]);
 
 	if (left < 0) return null;
 
