@@ -2,7 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import OperatorTypeError from '../errors/OperatorTypeError';
+import { OperatorTypeError } from '../errors';
 
 class ComparisonVisitor extends VtlVisitor {
 	constructor(exprVisitor) {

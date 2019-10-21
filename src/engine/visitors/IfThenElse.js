@@ -2,8 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import TypeMismatchError from '../errors/TypeMismatchError';
-import IncompatibleTypeError from '../errors/IncompatibleTypeError';
+import { IncompatibleTypeError, TypeMismatchError } from '../errors';
 import { replaceConstantType } from '../utils';
 
 class IfThenElseVisitor extends VtlVisitor {

@@ -3,7 +3,7 @@ import {
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { getTokenType } from '../utils/context';
-import TypeMismatchError from '../errors/TypeMismatchError';
+import { TypeMismatchError } from '../errors';
 
 class ArithmeticVisitor extends VtlVisitor {
 	constructor(exprVisitor) {

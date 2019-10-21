@@ -3,8 +3,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import OperatorTypeError from '../../errors/OperatorTypeError';
-import CastTypeError from '../../errors/CastTypeError';
+import { CastTypeError, OperatorTypeError } from '../../errors';
 
 class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {

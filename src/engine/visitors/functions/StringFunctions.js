@@ -2,7 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import TypeMismatchError from '../../errors/TypeMismatchError';
+import { TypeMismatchError } from '../../errors';
 
 class StringFunctionsVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
