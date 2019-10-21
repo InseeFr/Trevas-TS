@@ -1,9 +1,9 @@
-import moment from 'moment';
 import {
 	VtlParser,
 	VtlVisitor,
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { CastTypeError, OperatorTypeError } from '../../errors';
+import { getDate } from '../../utils/dates';
 
 class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -96,11 +96,7 @@ class CastVisitor extends VtlVisitor {
 			],
 			[VtlParser.STRING, VtlParser.BOOLEAN, 'ERROR'],
 			[VtlParser.STRING, VtlParser.TIME, () => 'TODO'],
-			[
-				VtlParser.STRING,
-				VtlParser.DATE,
-				(op, mask) => new Date(moment.parseZone(op, mask)),
-			],
+			[VtlParser.STRING, VtlParser.DATE, (op, mask) => getDate(op, mask)],
 			[VtlParser.STRING, VtlParser.TIME_PERIOD, () => 'TODO'],
 			[VtlParser.STRING, VtlParser.STRING, op => op],
 			[VtlParser.STRING, VtlParser.DURATION, () => 'TODO'],
