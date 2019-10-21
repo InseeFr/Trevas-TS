@@ -2,7 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import { getTokenType } from '../utils/context';
+import { getTokenType, replaceConstantType } from '../utils';
 
 class LiteralVisitor extends VtlVisitor {
 	visitConstantExpr = ctx => {
@@ -29,7 +29,10 @@ class LiteralVisitor extends VtlVisitor {
 		}
 
 		// Unused bindings param
-		return { resolve: () => value, type: getTokenType(ctx) };
+		return {
+			resolve: () => value,
+			type: replaceConstantType(getTokenType(ctx)),
+		};
 	};
 }
 

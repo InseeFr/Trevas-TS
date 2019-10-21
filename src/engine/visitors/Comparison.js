@@ -2,7 +2,7 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import OperatorTypeError from "../errors/OperatorTypeError";
+import OperatorTypeError from '../errors/OperatorTypeError';
 
 class ComparisonVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -20,7 +20,12 @@ class ComparisonVisitor extends VtlVisitor {
 			// TODO: Nico, I think VTL support comparisons on all types.
 			// leftOperand.type !== VtlParser.FLOAT_CONSTANT
 		) {
-			throw new OperatorTypeError(ctx, op.getText(), leftOperand.type, rightOperand.type);
+			throw new OperatorTypeError(
+				ctx,
+				op.getText(),
+				leftOperand.type,
+				rightOperand.type
+			);
 		}
 
 		let operatorFunction;
@@ -53,7 +58,7 @@ class ComparisonVisitor extends VtlVisitor {
 					leftOperand.resolve(bindings),
 					rightOperand.resolve(bindings)
 				),
-			type: VtlParser.BOOLEAN_CONSTANT,
+			type: VtlParser.BOOLEAN,
 		};
 	};
 }

@@ -16,7 +16,7 @@ class ConcatenationVisitor extends VtlVisitor {
 
 		if (
 			leftOperand.type !== rightOperand.type ||
-			rightOperand.type !== VtlParser.STRING_CONSTANT
+			rightOperand.type !== VtlParser.STRING
 		) {
 			throw new Error(
 				`cannot concat ${left.getText()} with ${right.getText()}`

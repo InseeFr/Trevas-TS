@@ -16,7 +16,7 @@ class BooleanAlgebra extends VtlVisitor {
 		const { right } = ctx;
 		const rightOperand = this.exprVisitor.visit(right);
 
-		if (rightOperand.type !== VtlParser.BOOLEAN_CONSTANT)
+		if (rightOperand.type !== VtlParser.BOOLEAN)
 			throw new Error('Operand should be a boolean constant');
 
 		return {
@@ -30,18 +30,10 @@ class BooleanAlgebra extends VtlVisitor {
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		if (leftExpr.type !== VtlParser.BOOLEAN_CONSTANT)
-			throw new TypeMismatchError(
-				leftCtx,
-				VtlParser.BOOLEAN_CONSTANT,
-				leftExpr.type
-			);
-		if (rightExpr.type !== VtlParser.BOOLEAN_CONSTANT)
-			throw new TypeMismatchError(
-				rightCtx,
-				VtlParser.BOOLEAN_CONSTANT,
-				rightExpr.type
-			);
+		if (leftExpr.type !== VtlParser.BOOLEAN)
+			throw new TypeMismatchError(leftCtx, VtlParser.BOOLEAN, leftExpr.type);
+		if (rightExpr.type !== VtlParser.BOOLEAN)
+			throw new TypeMismatchError(rightCtx, VtlParser.BOOLEAN, rightExpr.type);
 
 		let operatorFunction;
 

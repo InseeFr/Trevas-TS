@@ -17,7 +17,9 @@ class ArithmeticVisitor extends VtlVisitor {
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
 		const expectedTypes = [
+			VtlParser.INTEGER,
 			VtlParser.INTEGER_CONSTANT,
+			VtlParser.FLOAT,
 			VtlParser.FLOAT_CONSTANT,
 		];
 
@@ -52,9 +54,9 @@ class ArithmeticVisitor extends VtlVisitor {
 					leftExpr.resolve(bindings),
 					rightExpr.resolve(bindings)
 				),
-			type: getTokenType(ctx),
+			type: VtlParser.FLOAT,
 		};
-	}
+	};
 }
 
 export default ArithmeticVisitor;

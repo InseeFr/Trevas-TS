@@ -4,9 +4,9 @@ import {
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 
 const types = {
-	string: VtlParser.STRING_CONSTANT,
-	number: VtlParser.FLOAT_CONSTANT,
-	boolean: VtlParser.BOOLEAN_CONSTANT,
+	string: VtlParser.STRING,
+	number: VtlParser.FLOAT,
+	boolean: VtlParser.BOOLEAN,
 };
 
 class VariableVisitor extends VtlVisitor {

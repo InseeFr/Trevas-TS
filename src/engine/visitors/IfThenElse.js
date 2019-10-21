@@ -2,8 +2,9 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import TypeMismatchError from "../errors/TypeMismatchError";
-import IncompatibleTypeError from "../errors/IncompatibleTypeError";
+import TypeMismatchError from '../errors/TypeMismatchError';
+import IncompatibleTypeError from '../errors/IncompatibleTypeError';
+import { replaceConstantType } from '../utils';
 
 class IfThenElseVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -15,14 +16,22 @@ class IfThenElseVisitor extends VtlVisitor {
 		const { conditionalExpr, thenExpr, elseExpr } = ctx;
 		const conditionalOperand = this.exprVisitor.visit(conditionalExpr);
 
-		if (conditionalOperand.type !== VtlParser.BOOLEAN_CONSTANT) {
-			throw new TypeMismatchError(conditionalExpr, VtlParser.BOOLEAN_CONSTANT, conditionalOperand.type);
+		if (conditionalOperand.type !== VtlParser.BOOLEAN) {
+			throw new TypeMismatchError(
+				conditionalExpr,
+				VtlParser.BOOLEAN,
+				conditionalOperand.type
+			);
 		}
 
 		const thenOperand = this.exprVisitor.visit(thenExpr);
 		const elseOperand = this.exprVisitor.visit(elseExpr);
 		if (thenOperand.type !== elseOperand.type) {
-			throw new IncompatibleTypeError(elseExpr, thenOperand.type, elseOperand.type);
+			throw new IncompatibleTypeError(
+				elseExpr,
+				thenOperand.type,
+				elseOperand.type
+			);
 		}
 
 		return {
@@ -30,7 +39,7 @@ class IfThenElseVisitor extends VtlVisitor {
 				conditionalOperand.resolve(bindings)
 					? thenOperand.resolve(bindings)
 					: elseOperand.resolve(bindings),
-			type: VtlParser.STRING_CONSTANT,
+			type: replaceConstantType(thenOperand.type),
 		};
 	};
 }
