@@ -2,7 +2,6 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import { getTokenType } from '../utils/context';
 import { TypeMismatchError } from '../errors';
 
 class ArithmeticVisitor extends VtlVisitor {
@@ -16,12 +15,7 @@ class ArithmeticVisitor extends VtlVisitor {
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [
-			VtlParser.INTEGER,
-			VtlParser.INTEGER_CONSTANT,
-			VtlParser.FLOAT,
-			VtlParser.FLOAT_CONSTANT,
-		];
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.FLOAT];
 
 		if (!expectedTypes.includes(leftExpr.type))
 			throw new TypeMismatchError(leftCtx, expectedTypes, leftExpr.type);

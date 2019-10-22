@@ -3,7 +3,6 @@ import {
 	VtlParser,
 	VtlVisitor,
 } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
-import { getTokenType } from '../utils/context';
 import { TypeMismatchError } from '../errors';
 
 class BooleanAlgebra extends VtlVisitor {
@@ -21,7 +20,7 @@ class BooleanAlgebra extends VtlVisitor {
 
 		return {
 			resolve: bindings => !rightOperand.resolve(bindings),
-			type: getTokenType(ctx),
+			type: VtlParser.BOOLEAN,
 		};
 	};
 
@@ -57,7 +56,7 @@ class BooleanAlgebra extends VtlVisitor {
 					leftExpr.resolve(bindings),
 					rightExpr.resolve(bindings)
 				),
-			type: getTokenType(ctx),
+			type: VtlParser.BOOLEAN,
 		};
 	};
 }
