@@ -10,6 +10,8 @@ export const replaceConstantType = type => {
 			return VtlParser.FLOAT;
 		case VtlParser.BOOLEAN_CONSTANT:
 			return VtlParser.BOOLEAN;
+		case VtlParser.DATE_FORMAT:
+			return VtlParser.DATE;
 		case VtlParser.NULL_CONSTANT:
 			return VtlParser.NULL_CONSTANT;
 		default:

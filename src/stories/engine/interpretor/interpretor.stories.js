@@ -98,7 +98,7 @@ storiesOf('Interpretor/Function/Cast', module).add('Into time_period', () => (
 	<div>TODO</div>
 ));
 storiesOf('Interpretor/Function/Cast', module).add('Into string', () => (
-	<Interpretor value="cast(true, string)" />
+	<Interpretor value='cast(1998-07-12, string, "YYYY-MM-DD")' />
 ));
 storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
 	<div>TODO</div>

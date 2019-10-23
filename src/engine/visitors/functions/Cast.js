@@ -3,7 +3,7 @@ import {
 	VtlVisitor,
 } from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import { CastTypeError, OperatorTypeError } from '../../errors';
-import { getDate } from '../../utils/dates';
+import { getDate, getStringFromDate } from '../../utils/dates';
 
 class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -17,7 +17,9 @@ class CastVisitor extends VtlVisitor {
 		let maskCtx = ctx.STRING_CONSTANT();
 
 		const op = this.exprVisitor.visit(opCtx);
-		const mask = maskCtx ? maskCtx.getText() : undefined;
+		const mask = maskCtx
+			? maskCtx.getText().substring(1, maskCtx.getText().length - 1)
+			: undefined;
 
 		const combinations = [
 			[VtlParser.INTEGER, VtlParser.INTEGER, op => op],
@@ -66,7 +68,11 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.DATE, VtlParser.TIME, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.DATE, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[VtlParser.DATE, VtlParser.STRING, () => 'TODO'],
+			[
+				VtlParser.DATE,
+				VtlParser.STRING,
+				(op, mask) => getStringFromDate(op, mask),
+			],
 			[VtlParser.DATE, VtlParser.DURATION, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.INTEGER, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.NUMBER, () => 'TODO'],

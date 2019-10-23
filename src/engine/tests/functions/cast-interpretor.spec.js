@@ -121,7 +121,17 @@ describe('interpretor', () => {
 			it('cast date into time', () => {});
 			it('cast date into date', () => {});
 			it('cast date into time_period', () => {});
-			it('cast date into string', () => {});
+			it('cast date into string', () => {
+				expect(interpret('cast(1998-07-12, string, "YYYY-DD-MM")', {})).toEqual(
+					'1998-12-07'
+				);
+			});
+			it('cast date into string', () => {
+				// TO FIX into Literal Visitor
+				// expect(interpret('cast(1998-12-31, string, "YYYY-MM-DD")', {})).toEqual(
+				// 	'1998-12-31'
+				// );
+			});
 			it('cast date into duration', () => {});
 		});
 		describe('time_period', () => {

@@ -26,6 +26,11 @@ describe('interpretor', () => {
 			// String between double quotes otherwise interpreted as variable
 			expect(interpret('"marvin"', {})).toEqual('marvin');
 		});
+		it('should preserve date literal', () => {
+			expect(interpret('1998-07-12', {})).toEqual('1998-07-12');
+			// TO FIX
+			//expect(interpret('1998-12-31', {})).toEqual('1998-12-31');
+		});
 		it('should preserve empty string literal', () => {
 			// String between double quotes otherwise interpreted as variable
 			expect(interpret('""', {})).toEqual('');
