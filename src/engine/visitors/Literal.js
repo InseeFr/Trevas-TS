@@ -7,7 +7,6 @@ import { getTokenType, replaceConstantType } from '../utils';
 class LiteralVisitor extends VtlVisitor {
 	visitConstantExpr = ctx => {
 		let value;
-		if (getTokenType(ctx) === VtlParser.DATE_FORMAT) console.log(ctx.getText());
 		switch (getTokenType(ctx)) {
 			case VtlParser.STRING_CONSTANT:
 				const text = ctx.getText();
