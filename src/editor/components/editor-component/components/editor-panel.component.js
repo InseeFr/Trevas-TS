@@ -54,7 +54,7 @@ EditorPanel.propTypes = {
 	getTokens: PropTypes.func.isRequired,
 	shortcuts: PropTypes.shape({ get: PropTypes.func.isRequired }),
 	handleChange: PropTypes.func,
-	content: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string })),
+	content: PropTypes.arrayOf(PropTypes.string),
 	dictionnary: PropTypes.shape({
 		variables: PropTypes.arrayOf(PropTypes.string),
 	}),
