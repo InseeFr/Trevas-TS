@@ -4,9 +4,9 @@ import BooleanAlgebraVisitor from './BooleanAlgebra';
 import IfThenElse from './IfThenElse';
 import VariableVisitor from './Variable';
 import LiteralVisitor from './Literal';
+import ComparisonVisitor from './Comparison';
 import {
 	CastVisitor,
-	ComparisonVisitor,
 	ConcatenationVisitor,
 	StringFunctionsVisitor,
 } from './functions';
