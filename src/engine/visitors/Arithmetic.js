@@ -10,6 +10,25 @@ class ArithmeticVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
+	visitUnaryExpr = ctx => {
+		const { op, right: rightCtx } = ctx;
+
+		const rightExpr = this.exprVisitor.visit(rightCtx);
+
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.FLOAT];
+
+		if (!expectedTypes.includes(rightExpr.type))
+			throw new TypeMismatchError(rightCtx, expectedTypes, leftExpr.type);
+
+		return {
+			resolve: bindings => {
+				const value = rightExpr.resolve(bindings);
+				return op.type === VtlParser.PLUS ? value : -value;
+			},
+			type: VtlParser.FLOAT,
+		};
+	};
+
 	visitArithmeticExpr = ctx => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);

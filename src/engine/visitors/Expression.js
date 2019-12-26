@@ -21,6 +21,8 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitArithmeticExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
 
+	visitUnaryExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
+
 	visitBooleanExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
 
 	visitNotExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
