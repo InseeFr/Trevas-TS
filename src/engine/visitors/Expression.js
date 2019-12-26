@@ -8,6 +8,7 @@ import ComparisonVisitor from './Comparison';
 import {
 	CastVisitor,
 	ConcatenationVisitor,
+	NumericFunctionsVisitor,
 	StringFunctionsVisitor,
 } from './functions';
 
@@ -34,7 +35,6 @@ class ExpressionVisitor extends VtlVisitor {
 	// TODO: Optional expression should handle missing values.
 	visitOptionalExpr = ctx =>
 		ctx.expr() === null ? null : this.visit(ctx.expr());
-	visitStringFunctions = ctx => this.visit(ctx.stringOperators());
 	visitFunctionsExpression = ctx => this.visit(ctx.functions());
 	visitGenericFunctions = ctx => this.visit(ctx.genericOperators());
 
@@ -47,6 +47,8 @@ class ExpressionVisitor extends VtlVisitor {
 	visitConcatExpr = ctx => new ConcatenationVisitor(this).visit(ctx);
 	visitStringFunctions = ctx =>
 		new StringFunctionsVisitor(this).visit(ctx.stringOperators());
+	visitNumericFunctions = ctx =>
+		new NumericFunctionsVisitor(this).visit(ctx.numericOperators());
 }
 
 export default ExpressionVisitor;

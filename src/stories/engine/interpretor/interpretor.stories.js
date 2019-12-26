@@ -16,7 +16,10 @@ stories.add('Default', () => <Interpretor />);
 stories.add('Bindings', () => (
 	<Interpretor
 		value='"Welcome " || NAME || ", you are " || (if cast(AGE, integer) >= 18 then "major" else "minor") || "."'
-		variables={[{ key: 'NAME', value: 'Mauro' }, { key: 'AGE', value: 26 }]}
+		variables={[
+			{ key: 'NAME', value: 'Mauro' },
+			{ key: 'AGE', value: 26 },
+		]}
 	/>
 ));
 
@@ -138,4 +141,10 @@ storiesOf('Interpretor/Function/String', module).add('R-Trim', () => (
 ));
 storiesOf('Interpretor/Function/String', module).add('Instr', () => (
 	<Interpretor value='instr("Hello world", "world")' />
+));
+
+// Numeric
+
+storiesOf('Interpretor/Function/Numeric', module).add('Abs', () => (
+	<Interpretor value="abs(-10.5)" />
 ));
