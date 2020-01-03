@@ -1,5 +1,5 @@
 import interpret from 'engine/interpretor';
-import CastTypeError from '../../errors/CastTypeError';
+import CastTypeError from '../../../errors/CastTypeError';
 
 describe('interpretor', () => {
 	describe('cast', () => {
