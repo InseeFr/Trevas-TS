@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Bindings from './bindings';
 import { buildExecObject } from '../utils';
-import interpret from '../../interpretor';
+import interpret, { getType } from '../../interpretor';
 
 const Interpretor = ({ value, variables }) => {
 	const [input, setInput] = useState(value || '');
 	const [vars, setVars] = useState(variables || [{ key: '', value: '' }]);
 	const [res, setRes] = useState('');
+	const [type, setType] = useState('');
 	const [error, setError] = useState('');
 	const handleChange = v => {
 		setInput(v);
@@ -14,9 +15,11 @@ const Interpretor = ({ value, variables }) => {
 	const onClick = () => {
 		try {
 			setRes(interpret(input, buildExecObject(vars)));
+			setType(getType(input, buildExecObject(vars)));
 			setError('');
 		} catch (e) {
 			setRes('');
+			setType('');
 			setError(e.message);
 		}
 	};
@@ -50,6 +53,12 @@ const Interpretor = ({ value, variables }) => {
 				<div className="res">
 					<h2>Error:</h2>
 					<h1 className="res-text">{error}</h1>
+				</div>
+			)}
+			{type && (
+				<div className="res">
+					<h2>Returned type</h2>
+					<h1 className="res-text">{type}</h1>
 				</div>
 			)}
 		</>
