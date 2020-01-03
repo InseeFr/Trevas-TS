@@ -2,6 +2,7 @@ import antlr4 from 'antlr4';
 import { ErrorListener } from 'antlr4/error';
 import { VtlLexer, VtlParser } from '../antlr-tools/vtl-2.0-Insee/parser-vtl';
 import ExpressionVisitor from './visitors/Expression';
+import { getTokenName } from '../engine/utils/parser';
 
 const getParser = text => {
 	const chars = new antlr4.InputStream(text);
@@ -84,6 +85,31 @@ const interpret = (expr, bindings) => {
 	}
 
 	return expression.resolve(bindings);
+};
+
+// TODO: refactor
+export const getType = (expr, bindings) => {
+	// TODO: expr could be a file as well.
+	let inputStream = new antlr4.InputStream(expr);
+
+	let syntaxErrors = new ErrorCollector();
+	errorCheck(inputStream, syntaxErrors);
+	if (syntaxErrors.length > 0) {
+		throw new Error('Syntax errors:' + syntaxErrors.errors);
+	}
+	inputStream.reset();
+
+	let typeErrors = new ErrorCollector();
+	let parser = errorCheck(inputStream, typeErrors);
+
+	const visitor = new ExpressionVisitor(bindings);
+	let expression = visitor.visit(parser.expr());
+
+	if (typeErrors.length > 0) {
+		throw new Error('Type errors' + typeErrors.errors);
+	}
+
+	return getTokenName(expression.type);
 };
 
 export default interpret;
