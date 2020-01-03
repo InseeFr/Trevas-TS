@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Editor } from './editor-component/components';
+import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { Editor as EditorComponent } from './editor-component/components';
 import Console from './console';
 import getTools from '../../antlr-tools';
 import { composeShortcuts } from './editor-component';
@@ -17,18 +18,20 @@ const shortcuts = composeShortcuts({
 	},
 });
 
-export default props => {
+const Editor = props => {
 	const [errors, setErrors] = useState([]);
-	const { parse, getTokens } = getTools(props.grammar);
+	const { grammar, startRule } = props;
+	const { parse, getTokens } = getTools(grammar);
+	const cally = useCallback(parse(startRule), [startRule]);
 	return (
 		<>
 			<div className="workbench-display">
-				<Editor
+				<EditorComponent
 					shortcuts={shortcuts}
-					handleChange={errors => {
-						setErrors(errors);
+					handleChange={err => {
+						setErrors(err);
 					}}
-					parse={parse}
+					parse={cally}
 					getTokens={getTokens}
 					{...props}
 				/>
@@ -39,3 +42,15 @@ export default props => {
 		</>
 	);
 };
+
+Editor.defaultProps = {
+	grammar: 'vtl-2.0-Insee',
+	startRule: 'expr',
+};
+
+Editor.propTypes = {
+	grammar: PropTypes.string,
+	startRule: PropTypes.string,
+};
+
+export default Editor;

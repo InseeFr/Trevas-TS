@@ -10,6 +10,11 @@ const grammars = {
 	'VTL 2.0': 'vtl-2.0',
 };
 
+const startRules = {
+	Start: 'start',
+	Expression: 'expr',
+};
+
 const dictionnary = {
 	keywords: ['if', 'then', 'else'],
 	operator: ['=', '>', '<', '+', '-', '*', '/'],
@@ -63,5 +68,6 @@ stories.add('Editor', () => (
 		dictionnary={dictionnary}
 		edit={boolean('Edit', true)}
 		grammar={select('Grammar', grammars, 'vtl-2.0-Insee')}
+		startRule={select('Start rule', startRules, 'expr')}
 	/>
 ));

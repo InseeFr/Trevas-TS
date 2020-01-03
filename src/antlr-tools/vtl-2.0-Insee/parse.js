@@ -1,7 +1,7 @@
 import antlr4 from 'antlr4';
 import { VtlParser, VtlLexer, VtlListener } from './parser-vtl';
 
-const parse = code => {
+const parse = startRule => code => {
 	try {
 		const chars = new antlr4.InputStream(code);
 		const lexer = new VtlLexer(chars);
@@ -12,7 +12,7 @@ const parse = code => {
 		parser.removeErrorListeners();
 		const errorsListener = new VtlErrorsListener();
 		parser.addErrorListener(errorsListener);
-		const tree = parser.start();
+		const tree = parser[startRule]();
 		const inspector = new VtlInspector();
 		antlr4.tree.ParseTreeWalker.DEFAULT.walk(inspector, tree);
 
