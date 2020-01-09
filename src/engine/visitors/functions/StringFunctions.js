@@ -7,62 +7,55 @@ class StringFunctionsVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
+	visitUnaryStringFunction = ctx => {
+		const { op: opCtx } = ctx;
+
+		const expr = this.exprVisitor.visit(ctx.expr());
+
+		if (expr.type !== VtlParser.STRING) {
+			throw new TypeMismatchError(ctx.expr(), VtlParser.STRING, opCtx.type);
+		}
+
+		let operatorFunction;
+		let type = VtlParser.STRING;
+
+		switch (opCtx.type) {
+			case VtlParser.TRIM:
+				operatorFunction = expr => expr.trim();
+				break;
+			case VtlParser.LTRIM:
+				operatorFunction = expr => expr.trimLeft();
+				break;
+			case VtlParser.RTRIM:
+				operatorFunction = expr => expr.trimRight();
+				break;
+			case VtlParser.UCASE:
+				operatorFunction = expr => expr.toUpperCase();
+				break;
+			case VtlParser.LCASE:
+				operatorFunction = expr => expr.toLowerCase();
+				break;
+			case VtlParser.LEN:
+				operatorFunction = expr => expr.length;
+				type = VtlParser.INTEGER;
+				break;
+			default:
+				throw new Error(`unknown operator ${opCtx.getText()}`);
+		}
+		return {
+			resolve: bindings => {
+				return operatorFunction(expr.resolve(bindings));
+			},
+			type,
+		};
+	};
+
 	checkType = (exprCtx, expectedType) => {
 		const operand = this.exprVisitor.visit(exprCtx);
 		if (operand.type !== expectedType) {
 			throw new TypeMismatchError(exprCtx, expectedType, operand.type);
 		}
 		return operand;
-	};
-
-	visitTrimAtom = ctx => {
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		return {
-			resolve: bindings => {
-				return operand.resolve(bindings).trim();
-			},
-			type: VtlParser.STRING,
-		};
-	};
-
-	visitLtrimAtom = ctx => {
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		return {
-			resolve: bindings => {
-				return operand.resolve(bindings).trimLeft();
-			},
-			type: VtlParser.STRING,
-		};
-	};
-
-	visitRtrimAtom = ctx => {
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		return {
-			resolve: bindings => {
-				return operand.resolve(bindings).trimRight();
-			},
-			type: VtlParser.STRING,
-		};
-	};
-
-	visitUcaseAtom = ctx => {
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		return {
-			resolve: bindings => {
-				return operand.resolve(bindings).toUpperCase();
-			},
-			type: VtlParser.STRING,
-		};
-	};
-
-	visitLcaseAtom = ctx => {
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		return {
-			resolve: bindings => {
-				return operand.resolve(bindings).toLowerCase();
-			},
-			type: VtlParser.STRING,
-		};
 	};
 
 	visitReplaceAtom = ctx => {
@@ -79,14 +72,6 @@ class StringFunctionsVisitor extends VtlVisitor {
 				return operand.resolve(bindings).replace(regexp, newStr.resolve());
 			},
 			type: VtlParser.STRING,
-		};
-	};
-
-	visitLenAtom = ctx => {
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		return {
-			resolve: bindings => (operand ? operand.resolve(bindings).length : null),
-			type: VtlParser.INTEGER,
 		};
 	};
 
