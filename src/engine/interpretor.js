@@ -1,6 +1,6 @@
 import antlr4 from 'antlr4';
 import { ErrorListener } from 'antlr4/error';
-import { VtlLexer, VtlParser } from '../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlLexer, VtlParser } from '../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import ExpressionVisitor from './visitors/Expression';
 import { getTokenName } from '../engine/utils/parser';
 

@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# antlr jar
+antlr-4.7.2-complete.jar
+
 # dependencies
 /node_modules
 /.pnp
