@@ -16,11 +16,13 @@ class ExpressionVisitor extends VtlVisitor {
 	constructor(bindings) {
 		super();
 		this.bindings = bindings;
+		this.arithmeticVisitor = new ArithmeticVisitor(this);
 	}
 
 	visitComparisonExpr = ctx => new ComparisonVisitor(this).visit(ctx);
 
-	visitArithmeticExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
+	visitArithmeticExpr = ctx => this.arithmeticVisitor.visit(ctx);
+	visitArithmeticExprOrConcat = ctx => this.arithmeticVisitor.visit(ctx);
 
 	visitUnaryExpr = ctx => {
 		const { op } = ctx;

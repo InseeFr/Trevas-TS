@@ -26,6 +26,14 @@ class ArithmeticVisitor extends VtlVisitor {
 		};
 	};
 
+
+	visitArithmeticExprOrConcat = ctx => {
+		if (ctx.op.type === VtlParser.CONCAT) {
+			throw new Error("Arithmetic visitor got CONCAT context")
+		}
+		return this.visitArithmeticExpr(ctx);
+	}
+
 	visitArithmeticExpr = ctx => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
