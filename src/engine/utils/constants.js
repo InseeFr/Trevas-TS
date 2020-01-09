@@ -1,4 +1,4 @@
-import { VtlParser } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlParser } from '../../antlr-tools';
 
 export const replaceConstantType = type => {
 	switch (type) {

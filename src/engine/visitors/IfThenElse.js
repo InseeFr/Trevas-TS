@@ -1,7 +1,4 @@
-import {
-	VtlParser,
-	VtlVisitor,
-} from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlParser, VtlVisitor } from '../../antlr-tools';
 import { IncompatibleTypeError, TypeMismatchError } from '../errors';
 import { replaceConstantType } from '../utils';
 
