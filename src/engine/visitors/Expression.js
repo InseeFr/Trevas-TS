@@ -30,8 +30,15 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitComparisonExpr = ctx => this.comparisonVisitor.visit(ctx);
 
+	// Since the grammar groups the binary expression we need to "route" to our
+	// own visitor groups.
 	visitArithmeticExpr = ctx => this.arithmeticVisitor.visit(ctx);
-	visitArithmeticExprOrConcat = ctx => this.arithmeticVisitor.visit(ctx);
+	visitArithmeticExprOrConcat = ctx => {
+		const { op } = ctx;
+		if (op.type === VtlParser.CONCAT)
+			return new ConcatenationVisitor(this).visit(ctx);
+		else return this.arithmeticVisitor.visit(ctx);
+	};
 
 	visitUnaryExpr = ctx => {
 		const { op } = ctx;

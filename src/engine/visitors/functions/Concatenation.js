@@ -6,7 +6,10 @@ class ConcatenationVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitConcatExpr = ctx => {
+	visitArithmeticExprOrConcat = ctx => {
+		if (ctx.op.type !== VtlParser.CONCAT) {
+			throw new Error('Concat visitor got arithmetic context');
+		}
 		const { left, right } = ctx;
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
