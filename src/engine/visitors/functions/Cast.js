@@ -28,7 +28,7 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.INTEGER, VtlParser.STRING, op => `${op}`],
 			[VtlParser.INTEGER, VtlParser.DURATION, 'ERROR'],
 			[
-				VtlParser.FLOAT,
+				VtlParser.NUMBER,
 				VtlParser.INTEGER,
 				op => {
 					if (!Number.isInteger(op))
@@ -36,13 +36,13 @@ class CastVisitor extends VtlVisitor {
 					return parseInt(op, 10);
 				},
 			],
-			[VtlParser.FLOAT, VtlParser.NUMBER, op => op],
-			[VtlParser.FLOAT, VtlParser.BOOLEAN, op => op !== 0],
-			[VtlParser.FLOAT, VtlParser.TIME, 'ERROR'],
-			[VtlParser.FLOAT, VtlParser.DATE, 'ERROR'],
-			[VtlParser.FLOAT, VtlParser.TIME_PERIOD, 'ERROR'],
-			[VtlParser.FLOAT, VtlParser.STRING, op => `${op}`],
-			[VtlParser.FLOAT, VtlParser.DURATION, 'ERROR'],
+			[VtlParser.NUMBER, VtlParser.NUMBER, op => op],
+			[VtlParser.NUMBER, VtlParser.BOOLEAN, op => op !== 0],
+			[VtlParser.NUMBER, VtlParser.TIME, 'ERROR'],
+			[VtlParser.NUMBER, VtlParser.DATE, 'ERROR'],
+			[VtlParser.NUMBER, VtlParser.TIME_PERIOD, 'ERROR'],
+			[VtlParser.NUMBER, VtlParser.STRING, op => `${op}`],
+			[VtlParser.NUMBER, VtlParser.DURATION, 'ERROR'],
 			[VtlParser.BOOLEAN, VtlParser.INTEGER, op => (op ? 1 : 0)],
 			[VtlParser.BOOLEAN, VtlParser.NUMBER, op => (op ? 1 : 0)],
 			[VtlParser.BOOLEAN, VtlParser.BOOLEAN, op => op],

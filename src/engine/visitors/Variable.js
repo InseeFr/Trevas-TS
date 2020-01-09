@@ -2,7 +2,7 @@ import { VtlParser, VtlVisitor } from '../../antlr-tools';
 
 const types = {
 	string: VtlParser.STRING,
-	number: VtlParser.FLOAT,
+	number: VtlParser.NUMBER,
 	boolean: VtlParser.BOOLEAN,
 };
 

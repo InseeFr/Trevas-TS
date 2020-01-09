@@ -100,7 +100,9 @@ describe('type', () => {
 			it('cast date into date', () => {});
 			it('cast date into time_period', () => {});
 			it('cast date into string', () => {
-				expect(getType('cast(1998-07-12, string, "YYYY-DD-MM")', {})).toEqual('STRING');
+				expect(getType('cast(1998-07-12, string, "YYYY-DD-MM")', {})).toEqual(
+					'STRING'
+				);
 			});
 			it('cast date into duration', () => {});
 		});
@@ -114,13 +116,6 @@ describe('type', () => {
 			it('cast time_period into time_period', () => {});
 			it('cast time_period into string', () => {});
 			it('cast time_period into duration', () => {});
-		});
-
-		describe('float', () => {
-			// TODO Clarify specificiation for float type and complete tests
-			it('test cast integer to float', () => {
-				expect(getType('cast(1 - 2.5, string)', {})).toEqual('STRING');
-			});
 		});
 	});
 });

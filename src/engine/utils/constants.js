@@ -7,7 +7,7 @@ export const replaceConstantType = type => {
 		case VtlParser.INTEGER_CONSTANT:
 			return VtlParser.INTEGER;
 		case VtlParser.NUMBER_CONSTANT:
-			return VtlParser.FLOAT;
+			return VtlParser.NUMBER;
 		case VtlParser.BOOLEAN_CONSTANT:
 			return VtlParser.BOOLEAN;
 		case VtlParser.DATE_FORMAT:

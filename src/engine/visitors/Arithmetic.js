@@ -9,10 +9,9 @@ class ArithmeticVisitor extends VtlVisitor {
 
 	visitUnaryExpr = ctx => {
 		const { op, right: rightCtx } = ctx;
-
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.FLOAT];
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
 
 		if (!expectedTypes.includes(rightExpr.type))
 			throw new TypeMismatchError(rightCtx, expectedTypes, leftExpr.type);
@@ -26,20 +25,19 @@ class ArithmeticVisitor extends VtlVisitor {
 		};
 	};
 
-
 	visitArithmeticExprOrConcat = ctx => {
 		if (ctx.op.type === VtlParser.CONCAT) {
-			throw new Error("Arithmetic visitor got CONCAT context")
+			throw new Error('Arithmetic visitor got CONCAT context');
 		}
 		return this.visitArithmeticExpr(ctx);
-	}
+	};
 
 	visitArithmeticExpr = ctx => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.FLOAT];
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
 
 		if (!expectedTypes.includes(leftExpr.type))
 			throw new TypeMismatchError(leftCtx, expectedTypes, leftExpr.type);
@@ -48,6 +46,9 @@ class ArithmeticVisitor extends VtlVisitor {
 			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
 		let operatorFunction;
+		let type = [leftExpr.type, rightExpr.type].includes(VtlParser.NUMBER)
+			? VtlParser.NUMBER
+			: VtlParser.INTEGER;
 
 		switch (opCtx.type) {
 			case VtlParser.PLUS:
@@ -61,6 +62,7 @@ class ArithmeticVisitor extends VtlVisitor {
 				break;
 			case VtlParser.DIV:
 				operatorFunction = (left, right) => left / right;
+				type = VtlParser.NUMBER;
 				break;
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
@@ -72,7 +74,7 @@ class ArithmeticVisitor extends VtlVisitor {
 					leftExpr.resolve(bindings),
 					rightExpr.resolve(bindings)
 				),
-			type: VtlParser.FLOAT,
+			type,
 		};
 	};
 }

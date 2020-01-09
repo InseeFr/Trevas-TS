@@ -12,11 +12,7 @@ class ComparisonVisitor extends VtlVisitor {
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
 
-		if (
-			leftOperand.type !== rightOperand.type
-			// TODO: Nico, I think VTL support comparisons on all types.
-			// leftOperand.type !== VtlParser.FLOAT_CONSTANT
-		) {
+		if (leftOperand.type !== rightOperand.type) {
 			throw new OperatorTypeError(
 				ctx,
 				op.getText(),
