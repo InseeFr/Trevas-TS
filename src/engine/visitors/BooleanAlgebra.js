@@ -7,7 +7,7 @@ class BooleanAlgebra extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitNotExpr = ctx => {
+	visitUnaryExpr = ctx => {
 		const { right } = ctx;
 		const rightOperand = this.exprVisitor.visit(right);
 

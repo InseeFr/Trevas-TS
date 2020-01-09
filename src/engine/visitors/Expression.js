@@ -1,4 +1,4 @@
-import { VtlVisitor } from '../../antlr-tools';
+import { VtlVisitor, VtlParser } from '../../antlr-tools';
 import ArithmeticVisitor from './Arithmetic';
 import BooleanAlgebraVisitor from './BooleanAlgebra';
 import IfThenElse from './IfThenElse';
@@ -22,11 +22,14 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitArithmeticExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
 
-	visitUnaryExpr = ctx => new ArithmeticVisitor(this).visit(ctx);
+	visitUnaryExpr = ctx => {
+		const { op } = ctx;
+		if (op.type === VtlParser.NOT)
+			return new BooleanAlgebraVisitor(this).visit(ctx);
+		else return new ArithmeticVisitor(this).visit(ctx);
+	};
 
 	visitBooleanExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
-
-	visitNotExpr = ctx => new BooleanAlgebraVisitor(this).visit(ctx);
 
 	visitParenthesisExpr = ctx => this.visit(ctx.expr());
 
