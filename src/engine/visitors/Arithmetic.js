@@ -22,7 +22,7 @@ class ArithmeticVisitor extends VtlVisitor {
 				const value = rightExpr.resolve(bindings);
 				return op.type === VtlParser.PLUS ? value : -value;
 			},
-			type: VtlParser.FLOAT,
+			type: rightExpr.type,
 		};
 	};
 
