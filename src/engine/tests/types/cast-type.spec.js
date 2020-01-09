@@ -2,6 +2,13 @@ import { getType } from '../../interpretor';
 
 describe('type', () => {
 	describe('cast', () => {
+		describe('cast of cast', () => {
+			it('should be able to cast casted values', () => {
+				expect(getType('cast(cast("123", number), string)', {})).toEqual(
+					'STRING'
+				);
+			});
+		})
 		describe('integer', () => {
 			it('cast integer to integer', () => {
 				expect(getType('cast(10, integer)', {})).toEqual('INTEGER');
