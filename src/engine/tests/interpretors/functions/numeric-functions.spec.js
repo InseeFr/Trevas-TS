@@ -12,5 +12,10 @@ describe('interpretor', () => {
 			expect(interpret('abs(10)', {})).toEqual(10);
 			expect(interpret('abs(-10)', {})).toEqual(10);
 		});
+		it('should return abs on floats', () => {
+			expect(interpret('abs(0)', {})).toEqual(0);
+			expect(interpret('abs(1.1)', {})).toEqual(1.1);
+			expect(interpret('abs(-1.1)', {})).toEqual(1.1);
+		});
 	});
 });
