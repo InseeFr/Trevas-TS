@@ -8,7 +8,7 @@ class CastVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitCastExpr = ctx => {
+	visitCastExprDataset = ctx => {
 		let opCtx = ctx.expr();
 		let scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
 		let maskCtx = ctx.STRING_CONSTANT();

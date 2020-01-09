@@ -48,7 +48,7 @@ class ExpressionVisitor extends VtlVisitor {
 	visitConstantExpr = ctx => new LiteralVisitor().visit(ctx);
 
 	// Functions
-	visitCastExpr = ctx => new CastVisitor(this).visit(ctx);
+	visitCastExprDataset = ctx => new CastVisitor(this).visit(ctx);
 	visitConcatExpr = ctx => new ConcatenationVisitor(this).visit(ctx);
 	visitStringFunctions = ctx =>
 		new StringFunctionsVisitor(this).visit(ctx.stringOperators());
