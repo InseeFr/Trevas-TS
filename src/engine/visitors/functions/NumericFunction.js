@@ -6,17 +6,31 @@ class NumericVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitMinAtom = ctx => {
-		const op = this.exprVisitor.visit(ctx.expr());
+	visitUnaryNumeric = ctx => {
+		const { op: opCtx } = ctx;
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.FLOAT];
+		const expr = this.exprVisitor.visit(ctx.expr());
 
-		if (!expectedTypes.includes(op.type))
-			throw new Error('Operand should be a number');
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+
+		if (!expectedTypes.includes(expr.type))
+			throw new Error('Operand should be a number or an integer');
+
+		let operatorFunction;
+		let type;
+
+		switch (opCtx.type) {
+			case VtlParser.ABS:
+				operatorFunction = expr => Math.abs(expr);
+				type = expr.type;
+				break;
+			default:
+				throw new Error(`unknown operator ${opCtx.getText()}`);
+		}
 
 		return {
-			resolve: bindings => (op ? Math.abs(op.resolve(bindings)) : null),
-			type: VtlParser.FLOAT,
+			resolve: bindings => operatorFunction(expr.resolve(bindings)),
+			type,
 		};
 	};
 }

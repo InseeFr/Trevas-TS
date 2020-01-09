@@ -6,7 +6,7 @@ describe('interpretor', () => {
 			expect(interpret('12345', {})).toEqual(12345);
 			expect(interpret('-12345', {})).toEqual(-12345);
 		});
-		it('should preserve float literals', () => {
+		it('should preserve number literals', () => {
 			expect(interpret('1.', {})).toEqual(1.0);
 			expect(interpret('1.1', {})).toEqual(1.1);
 			expect(interpret('1.5e0', {})).toEqual(1.5);
