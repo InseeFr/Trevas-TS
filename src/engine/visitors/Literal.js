@@ -12,7 +12,7 @@ class LiteralVisitor extends VtlVisitor {
 			case VtlParser.INTEGER_CONSTANT:
 				value = parseInt(ctx.getText());
 				break;
-			case VtlParser.FLOAT_CONSTANT:
+			case VtlParser.NUMBER_CONSTANT:
 				value = parseFloat(ctx.getText());
 				break;
 			case VtlParser.BOOLEAN_CONSTANT:
