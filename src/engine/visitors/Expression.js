@@ -1,4 +1,4 @@
-import { VtlVisitor } from '../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlVisitor } from '../../antlr-tools';
 import ArithmeticVisitor from './Arithmetic';
 import BooleanAlgebraVisitor from './BooleanAlgebra';
 import IfThenElse from './IfThenElse';

@@ -23,17 +23,17 @@ describe('interpretor', () => {
 		});
 		it('not 1 should throw an error', () => {
 			expect(() => {
-				interpret('not 1', {})
+				interpret('not 1', {});
 			}).toThrow();
 		});
 		it('true and 1 should throw an error', () => {
 			expect(() => {
-				interpret('true and 1', {})
+				interpret('true and 1', {});
 			}).toThrow();
 		});
 		it('3 or false should throw an error', () => {
 			expect(() => {
-				interpret('3 or false', {})
+				interpret('3 or false', {});
 			}).toThrow();
 		});
 		it('should preserve null literal', () => {

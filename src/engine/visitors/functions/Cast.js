@@ -1,7 +1,4 @@
-import {
-	VtlParser,
-	VtlVisitor,
-} from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlParser, VtlVisitor } from '../../../antlr-tools';
 import { CastTypeError, OperatorTypeError } from '../../errors';
 import { getDate, getStringFromDate } from '../../utils/dates';
 

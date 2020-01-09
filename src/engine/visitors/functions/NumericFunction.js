@@ -1,7 +1,4 @@
-import {
-	VtlParser,
-	VtlVisitor,
-} from '../../../antlr-tools/vtl-2.0-Insee/parser-vtl';
+import { VtlParser, VtlVisitor } from '../../../antlr-tools';
 
 class NumericVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
