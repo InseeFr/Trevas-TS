@@ -1,5 +1,8 @@
 import moment from 'moment';
 
+export const getCurrentDate = () => moment();
+
+// TODO: check
 export const getDate = (dateStr, mask) =>
 	new Date(moment.parseZone(dateStr, mask));
 

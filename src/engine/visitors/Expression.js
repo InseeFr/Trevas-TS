@@ -11,6 +11,7 @@ import {
 	NumericFunctionsVisitor,
 	StringFunctionsVisitor,
 } from './functions';
+import DateFunctionVisitor from './functions/DateFunction';
 
 class ExpressionVisitor extends VtlVisitor {
 	constructor(bindings) {
@@ -21,6 +22,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.castFunctionVisitor = new CastVisitor(this);
 		this.comparisonVisitor = new ComparisonVisitor(this);
 		this.concatenationVisitor = new ConcatenationVisitor(this);
+		this.dateFunctionVisitor = new DateFunctionVisitor(this);
 		this.ifThenElseVisitor = new IfThenElse(this);
 		this.literalVisitor = new LiteralVisitor();
 		this.numericFunctionVisitor = new NumericFunctionsVisitor(this);
@@ -57,6 +59,7 @@ class ExpressionVisitor extends VtlVisitor {
 		ctx.expr() === null ? null : this.visit(ctx.expr());
 	visitFunctionsExpression = ctx => this.visit(ctx.functions());
 	visitGenericFunctions = ctx => this.visit(ctx.genericOperators());
+	visitTimeFunctions = ctx => this.visit(ctx.timeOperators());
 
 	visitVarIdExpr = ctx => this.variableVisitor.visit(ctx);
 
@@ -64,6 +67,7 @@ class ExpressionVisitor extends VtlVisitor {
 
 	// Functions
 	visitCastExprDataset = ctx => this.castFunctionVisitor.visit(ctx);
+	visitCurrentDateAtom = ctx => this.dateFunctionVisitor.visit(ctx);
 	visitConcatExpr = ctx => this.concatenationVisitor.visit(ctx);
 	visitStringFunctions = ctx =>
 		this.stringFunctionVisitor.visit(ctx.stringOperators());

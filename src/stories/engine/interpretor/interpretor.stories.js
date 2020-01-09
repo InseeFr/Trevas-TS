@@ -113,6 +113,18 @@ storiesOf('Interpretor/Function', module).add('Concatenation', () => (
 	<Interpretor value='"Hello" || " " || "World"' />
 ));
 
+// Date
+
+storiesOf('Interpretor/Function/Date', module).add('Current date', () => (
+	<Interpretor value="current_date()" />
+));
+
+// Numeric
+
+storiesOf('Interpretor/Function/Numeric', module).add('Abs', () => (
+	<Interpretor value="abs(-10.5)" />
+));
+
 // String
 
 storiesOf('Interpretor/Function/String', module).add('Length', () => (
@@ -141,10 +153,4 @@ storiesOf('Interpretor/Function/String', module).add('R-Trim', () => (
 ));
 storiesOf('Interpretor/Function/String', module).add('Instr', () => (
 	<Interpretor value='instr("Hello world", "world")' />
-));
-
-// Numeric
-
-storiesOf('Interpretor/Function/Numeric', module).add('Abs', () => (
-	<Interpretor value="abs(-10.5)" />
 ));
