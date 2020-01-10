@@ -25,7 +25,7 @@ const Cursor = ({ top, left }) => {
 	return (
 		<span
 			ref={spanEl}
-			className="cursor"
+			className="vtl-cursor"
 			role="presentation"
 			onClick={e => e.stopPropagation()}
 			onDoubleClick={e => e.stopPropagation()}

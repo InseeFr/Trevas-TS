@@ -17,7 +17,7 @@ const getSuggestionsValue = (suggestions, index) =>
 const createItem = (dispatch, state) => ({ value, type, prefix, active }) => {
 	return (
 		<div
-			className={classnames('suggestion', { active })}
+			className={classnames('vtl-suggestion', { active })}
 			role="presentation"
 			onMouseDown={e => {
 				e.stopPropagation();
@@ -27,9 +27,9 @@ const createItem = (dispatch, state) => ({ value, type, prefix, active }) => {
 				document.querySelector('.overlay').focus();
 			}}
 		>
-			<span className="type">{type}</span>
-			<span className="valeur">
-				<span className="prefix">{prefix}</span>
+			<span className="vtl-type">{type}</span>
+			<span className="vtl-valeur">
+				<span className="vtl-prefix">{prefix}</span>
 				{value.substr(prefix.length)}
 			</span>
 		</div>
@@ -82,7 +82,7 @@ const Suggestions = ({ suggest }) => {
 	return open ? (
 		<>
 			<div
-				className="editor-suggestions"
+				className="vtl-editor-suggestions"
 				style={{
 					left: `${cursorRect.right}px`,
 					top: `${cursorRect.bottom}px`,
