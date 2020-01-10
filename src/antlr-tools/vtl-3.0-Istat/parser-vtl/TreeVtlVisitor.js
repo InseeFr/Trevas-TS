@@ -9,7 +9,7 @@ function TreeVtlVisitor(getContext) {
 TreeVtlVisitor.prototype = Object.create(VtlVisitor.prototype);
 TreeVtlVisitor.prototype.constructor = TreeVtlVisitor;
 
-TreeVtlVisitor.prototype.visitStart = function(ctx) {
+TreeVtlVisitor.prototype.visitExpr = function(ctx) {
 	this.getContext(ctx);
 };
 

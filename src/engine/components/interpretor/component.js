@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Bindings from './bindings';
+import TreeView from '../tree';
 import { buildExecObject } from '../utils';
 import interpret, { getType } from '../../interpretor';
 
@@ -59,6 +60,12 @@ const Interpretor = ({ value, variables }) => {
 				<div className="res">
 					<h2>Returned type</h2>
 					<h1 className="res-text">{type}</h1>
+				</div>
+			)}
+			{(res || error) && (
+				<div className="res">
+					<h2>Tree</h2>
+					<TreeView value={input} />
 				</div>
 			)}
 		</>
