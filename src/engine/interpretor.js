@@ -1,8 +1,8 @@
 import antlr4 from 'antlr4';
-import {ErrorListener} from 'antlr4/error';
-import {VtlLexer, VtlParser} from '../antlr-tools/vtl-3.0-Istat/parser-vtl';
+import { ErrorListener } from 'antlr4/error';
+import { VtlLexer, VtlParser } from '../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import ExpressionVisitor from './visitors/Expression';
-import {getTokenName} from '../engine/utils/parser';
+import { getTokenName } from '../engine/utils/parser';
 
 class ErrorCollector extends ErrorListener {
 	constructor() {
@@ -94,7 +94,7 @@ export const interpretVar = (expr, bindings) => {
 	const expression = visitor.visit(parser.expr());
 
 	if (typeErrors.errors.length > 0) {
-		throw new Error(`Type errors:\n\t ${typeErrors}`);
+		throw new Error(`Type errors:\n\t ${typeErrors.errors}`);
 	}
 
 	return {
