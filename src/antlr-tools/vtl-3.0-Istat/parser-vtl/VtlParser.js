@@ -1,11 +1,10 @@
-// Generated from vtl-sources/Vtl-3.0-Istat/Vtl.g4 by ANTLR 4.7.2
+// Generated from Vtl.g4 by ANTLR 4.7.1
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var VtlListener = require('./VtlListener').VtlListener;
 var VtlVisitor = require('./VtlVisitor').VtlVisitor;
 
 var grammarFileName = "Vtl.g4";
-
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003\u00fa\u0676\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004",
@@ -1670,7 +1669,6 @@ VtlParser.RULE_constant = 103;
 VtlParser.RULE_basicScalarType = 104;
 VtlParser.RULE_retainType = 105;
 
-
 function StartContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1773,7 +1771,6 @@ VtlParser.prototype.start = function() {
     }
     return localctx;
 };
-
 
 function StatementContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1974,7 +1971,6 @@ VtlParser.prototype.statement = function() {
     }
     return localctx;
 };
-
 
 function ExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -2897,7 +2893,6 @@ VtlParser.prototype.expr = function(_p) {
     return localctx;
 };
 
-
 function ExprComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -3697,7 +3692,6 @@ VtlParser.prototype.exprComponent = function(_p) {
     return localctx;
 };
 
-
 function FunctionsComponentsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4083,7 +4077,6 @@ VtlParser.prototype.functionsComponents = function() {
     }
     return localctx;
 };
-
 
 function FunctionsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -4639,7 +4632,6 @@ VtlParser.prototype.functions = function() {
     return localctx;
 };
 
-
 function DatasetClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4780,7 +4772,6 @@ VtlParser.prototype.datasetClause = function() {
     return localctx;
 };
 
-
 function RenameClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4886,7 +4877,6 @@ VtlParser.prototype.renameClause = function() {
     return localctx;
 };
 
-
 function AggrClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -4985,7 +4975,6 @@ VtlParser.prototype.aggrClause = function() {
     return localctx;
 };
 
-
 function FilterClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5058,7 +5047,6 @@ VtlParser.prototype.filterClause = function() {
     }
     return localctx;
 };
-
 
 function CalcClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -5164,7 +5152,6 @@ VtlParser.prototype.calcClause = function() {
     }
     return localctx;
 };
-
 
 function KeepOrDropClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -5284,7 +5271,6 @@ VtlParser.prototype.keepOrDropClause = function() {
     return localctx;
 };
 
-
 function PivotOrUnpivotClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5388,7 +5374,6 @@ VtlParser.prototype.pivotOrUnpivotClause = function() {
     }
     return localctx;
 };
-
 
 function CustomPivotClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -5520,7 +5505,6 @@ VtlParser.prototype.customPivotClause = function() {
     return localctx;
 };
 
-
 function SubspaceClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -5625,7 +5609,6 @@ VtlParser.prototype.subspaceClause = function() {
     }
     return localctx;
 };
-
 
 function JoinOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -5792,7 +5775,6 @@ VtlParser.prototype.joinOperators = function() {
     }
     return localctx;
 };
-
 
 function DefOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -6248,7 +6230,6 @@ VtlParser.prototype.defOperators = function() {
     }
     return localctx;
 };
-
 
 function GenericOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -6713,7 +6694,6 @@ VtlParser.prototype.genericOperators = function() {
     return localctx;
 };
 
-
 function GenericOperatorsComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -6979,7 +6959,6 @@ VtlParser.prototype.genericOperatorsComponent = function() {
     return localctx;
 };
 
-
 function ParameterComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7077,7 +7056,6 @@ VtlParser.prototype.parameterComponent = function() {
     return localctx;
 };
 
-
 function ParameterContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -7174,7 +7152,6 @@ VtlParser.prototype.parameter = function() {
     }
     return localctx;
 };
-
 
 function StringOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -7626,7 +7603,6 @@ VtlParser.prototype.stringOperators = function() {
     return localctx;
 };
 
-
 function StringOperatorsComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8077,7 +8053,6 @@ VtlParser.prototype.stringOperatorsComponent = function() {
     return localctx;
 };
 
-
 function NumericOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8409,7 +8384,6 @@ VtlParser.prototype.numericOperators = function() {
     return localctx;
 };
 
-
 function NumericOperatorsComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -8740,7 +8714,6 @@ VtlParser.prototype.numericOperatorsComponent = function() {
     }
     return localctx;
 };
-
 
 function ComparisonOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -9116,7 +9089,6 @@ VtlParser.prototype.comparisonOperators = function() {
     return localctx;
 };
 
-
 function ComparisonOperatorsComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -9391,7 +9363,6 @@ VtlParser.prototype.comparisonOperatorsComponent = function() {
     }
     return localctx;
 };
-
 
 function TimeOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -10025,7 +9996,6 @@ VtlParser.prototype.timeOperators = function() {
     return localctx;
 };
 
-
 function TimeOperatorsComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -10645,7 +10615,6 @@ VtlParser.prototype.timeOperatorsComponent = function() {
     return localctx;
 };
 
-
 function SetOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -10970,7 +10939,6 @@ VtlParser.prototype.setOperators = function() {
     return localctx;
 };
 
-
 function HierarchyOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -11137,7 +11105,6 @@ VtlParser.prototype.hierarchyOperators = function() {
     }
     return localctx;
 };
-
 
 function ValidationOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -11583,7 +11550,6 @@ VtlParser.prototype.validationOperators = function() {
     return localctx;
 };
 
-
 function ConditionalOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -11703,7 +11669,6 @@ VtlParser.prototype.conditionalOperators = function() {
     return localctx;
 };
 
-
 function ConditionalOperatorsComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -11822,7 +11787,6 @@ VtlParser.prototype.conditionalOperatorsComponent = function() {
     }
     return localctx;
 };
-
 
 function AggrOperatorsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -12034,7 +11998,6 @@ VtlParser.prototype.aggrOperators = function() {
     return localctx;
 };
 
-
 function AggrOperatorsGroupingContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -12206,7 +12169,6 @@ VtlParser.prototype.aggrOperatorsGrouping = function() {
     }
     return localctx;
 };
-
 
 function AnFunctionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -12694,7 +12656,6 @@ VtlParser.prototype.anFunction = function() {
     }
     return localctx;
 };
-
 
 function AnFunctionComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -13284,7 +13245,6 @@ VtlParser.prototype.anFunctionComponent = function() {
     return localctx;
 };
 
-
 function RenameClauseItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -13368,7 +13328,6 @@ VtlParser.prototype.renameClauseItem = function() {
     }
     return localctx;
 };
-
 
 function AggregateClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -13469,7 +13428,6 @@ VtlParser.prototype.aggregateClause = function() {
     return localctx;
 };
 
-
 function AggrFunctionClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -13561,7 +13519,6 @@ VtlParser.prototype.aggrFunctionClause = function() {
     }
     return localctx;
 };
-
 
 function CalcClauseItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -13655,7 +13612,6 @@ VtlParser.prototype.calcClauseItem = function() {
     return localctx;
 };
 
-
 function SubspaceClauseItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -13734,7 +13690,6 @@ VtlParser.prototype.subspaceClauseItem = function() {
     }
     return localctx;
 };
-
 
 function JoinClauseWithoutUsingContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -13834,7 +13789,6 @@ VtlParser.prototype.joinClauseWithoutUsing = function() {
     }
     return localctx;
 };
-
 
 function JoinClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -13972,7 +13926,6 @@ VtlParser.prototype.joinClause = function() {
     return localctx;
 };
 
-
 function JoinClauseItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -14058,7 +14011,6 @@ VtlParser.prototype.joinClauseItem = function() {
     }
     return localctx;
 };
-
 
 function JoinBodyContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -14193,7 +14145,6 @@ VtlParser.prototype.joinBody = function() {
     return localctx;
 };
 
-
 function JoinApplyClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -14266,7 +14217,6 @@ VtlParser.prototype.joinApplyClause = function() {
     }
     return localctx;
 };
-
 
 function PartitionByClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -14379,7 +14329,6 @@ VtlParser.prototype.partitionByClause = function() {
     return localctx;
 };
 
-
 function OrderByClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -14491,7 +14440,6 @@ VtlParser.prototype.orderByClause = function() {
     return localctx;
 };
 
-
 function OrderByItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -14582,7 +14530,6 @@ VtlParser.prototype.orderByItem = function() {
     }
     return localctx;
 };
-
 
 function WindowingClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -14702,7 +14649,6 @@ VtlParser.prototype.windowingClause = function() {
     return localctx;
 };
 
-
 function SignedIntegerContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -14769,7 +14715,6 @@ VtlParser.prototype.signedInteger = function() {
     }
     return localctx;
 };
-
 
 function LimitClauseItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -14905,7 +14850,6 @@ VtlParser.prototype.limitClauseItem = function() {
     }
     return localctx;
 };
-
 
 function GroupingClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -15110,7 +15054,6 @@ VtlParser.prototype.groupingClause = function() {
     return localctx;
 };
 
-
 function HavingClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -15183,7 +15126,6 @@ VtlParser.prototype.havingClause = function() {
     }
     return localctx;
 };
-
 
 function ParameterItemContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -15276,7 +15218,6 @@ VtlParser.prototype.parameterItem = function() {
     }
     return localctx;
 };
-
 
 function OutputParameterTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -15383,7 +15324,6 @@ VtlParser.prototype.outputParameterType = function() {
     }
     return localctx;
 };
-
 
 function InputParameterTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -15515,7 +15455,6 @@ VtlParser.prototype.inputParameterType = function() {
     return localctx;
 };
 
-
 function RulesetTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -15612,7 +15551,6 @@ VtlParser.prototype.rulesetType = function() {
     }
     return localctx;
 };
-
 
 function ScalarTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -15742,7 +15680,6 @@ VtlParser.prototype.scalarType = function() {
     return localctx;
 };
 
-
 function ComponentTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -15834,7 +15771,6 @@ VtlParser.prototype.componentType = function() {
     }
     return localctx;
 };
-
 
 function DatasetTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -15959,7 +15895,6 @@ VtlParser.prototype.datasetType = function() {
     return localctx;
 };
 
-
 function ScalarSetTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -16051,7 +15986,6 @@ VtlParser.prototype.scalarSetType = function() {
     }
     return localctx;
 };
-
 
 function DpRulesetContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -16337,7 +16271,6 @@ VtlParser.prototype.dpRuleset = function() {
     }
     return localctx;
 };
-
 
 function HrRulesetContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -16670,7 +16603,6 @@ VtlParser.prototype.hrRuleset = function() {
     return localctx;
 };
 
-
 function ValueDomainNameContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -16738,7 +16670,6 @@ VtlParser.prototype.valueDomainName = function() {
     return localctx;
 };
 
-
 function RulesetIDContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -16805,7 +16736,6 @@ VtlParser.prototype.rulesetID = function() {
     }
     return localctx;
 };
-
 
 function RulesetSignatureContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -16923,7 +16853,6 @@ VtlParser.prototype.rulesetSignature = function() {
     return localctx;
 };
 
-
 function SignatureContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -17009,7 +16938,6 @@ VtlParser.prototype.signature = function() {
     }
     return localctx;
 };
-
 
 function RuleClauseDatapointContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -17109,7 +17037,6 @@ VtlParser.prototype.ruleClauseDatapoint = function() {
     }
     return localctx;
 };
-
 
 function RuleItemDatapointContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -17247,7 +17174,6 @@ VtlParser.prototype.ruleItemDatapoint = function() {
     return localctx;
 };
 
-
 function RuleClauseHierarchicalContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -17346,7 +17272,6 @@ VtlParser.prototype.ruleClauseHierarchical = function() {
     }
     return localctx;
 };
-
 
 function RuleItemHierarchicalContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -17454,7 +17379,6 @@ VtlParser.prototype.ruleItemHierarchical = function() {
     }
     return localctx;
 };
-
 
 function HierRuleSignatureContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -17565,7 +17489,6 @@ VtlParser.prototype.hierRuleSignature = function() {
     return localctx;
 };
 
-
 function ValueDomainSignatureContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -17664,7 +17587,6 @@ VtlParser.prototype.valueDomainSignature = function() {
     }
     return localctx;
 };
-
 
 function CodeItemRelationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -17794,7 +17716,6 @@ VtlParser.prototype.codeItemRelation = function() {
     return localctx;
 };
 
-
 function CodeItemRelationClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -17913,7 +17834,6 @@ VtlParser.prototype.codeItemRelationClause = function() {
     }
     return localctx;
 };
-
 
 function ScalarTypeConstraintContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -18104,7 +18024,6 @@ VtlParser.prototype.scalarTypeConstraint = function() {
     return localctx;
 };
 
-
 function CompConstraintContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -18193,7 +18112,6 @@ VtlParser.prototype.compConstraint = function() {
     }
     return localctx;
 };
-
 
 function MultModifierContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -18286,7 +18204,6 @@ VtlParser.prototype.multModifier = function() {
     return localctx;
 };
 
-
 function ValidationOutputContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -18369,7 +18286,6 @@ VtlParser.prototype.validationOutput = function() {
     }
     return localctx;
 };
-
 
 function ValidationModeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -18465,7 +18381,6 @@ VtlParser.prototype.validationMode = function() {
     }
     return localctx;
 };
-
 
 function ConditionClauseContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -18572,7 +18487,6 @@ VtlParser.prototype.conditionClause = function() {
     return localctx;
 };
 
-
 function InputModeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -18652,7 +18566,6 @@ VtlParser.prototype.inputMode = function() {
     return localctx;
 };
 
-
 function ImbalanceExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -18725,7 +18638,6 @@ VtlParser.prototype.imbalanceExpr = function() {
     }
     return localctx;
 };
-
 
 function InputModeHierarchyContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -18810,7 +18722,6 @@ VtlParser.prototype.inputModeHierarchy = function() {
     return localctx;
 };
 
-
 function OutputModeHierarchyContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -18890,7 +18801,6 @@ VtlParser.prototype.outputModeHierarchy = function() {
     return localctx;
 };
 
-
 function AliasContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -18957,7 +18867,6 @@ VtlParser.prototype.alias = function() {
     }
     return localctx;
 };
-
 
 function VarIDContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -19026,7 +18935,6 @@ VtlParser.prototype.varID = function() {
     return localctx;
 };
 
-
 function SimpleComponentIdContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -19093,7 +19001,6 @@ VtlParser.prototype.simpleComponentId = function() {
     }
     return localctx;
 };
-
 
 function ComponentIDContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -19183,7 +19090,6 @@ VtlParser.prototype.componentID = function() {
     }
     return localctx;
 };
-
 
 function ListsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -19296,7 +19202,6 @@ VtlParser.prototype.lists = function() {
     return localctx;
 };
 
-
 function ErCodeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -19370,7 +19275,6 @@ VtlParser.prototype.erCode = function() {
     return localctx;
 };
 
-
 function ErLevelContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -19443,7 +19347,6 @@ VtlParser.prototype.erLevel = function() {
     }
     return localctx;
 };
-
 
 function ComparisonOperandContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -19539,7 +19442,6 @@ VtlParser.prototype.comparisonOperand = function() {
     }
     return localctx;
 };
-
 
 function OptionalExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -19696,7 +19598,6 @@ VtlParser.prototype.optionalExpr = function() {
     return localctx;
 };
 
-
 function OptionalExprComponentContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -19839,7 +19740,6 @@ VtlParser.prototype.optionalExprComponent = function() {
     return localctx;
 };
 
-
 function ComponentRoleContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -19951,7 +19851,6 @@ VtlParser.prototype.componentRole = function() {
     return localctx;
 };
 
-
 function ViralAttributeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -20025,7 +19924,6 @@ VtlParser.prototype.viralAttribute = function() {
     return localctx;
 };
 
-
 function ValueDomainIDContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -20092,7 +19990,6 @@ VtlParser.prototype.valueDomainID = function() {
     }
     return localctx;
 };
-
 
 function OperatorIDContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -20161,7 +20058,6 @@ VtlParser.prototype.operatorID = function() {
     return localctx;
 };
 
-
 function RoutineNameContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -20228,7 +20124,6 @@ VtlParser.prototype.routineName = function() {
     }
     return localctx;
 };
-
 
 function ConstantContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -20320,7 +20215,6 @@ VtlParser.prototype.constant = function() {
     }
     return localctx;
 };
-
 
 function BasicScalarTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -20428,7 +20322,6 @@ VtlParser.prototype.basicScalarType = function() {
     }
     return localctx;
 };
-
 
 function RetainTypeContext(parser, parent, invokingState) {
 	if(parent===undefined) {

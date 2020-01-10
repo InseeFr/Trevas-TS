@@ -1,4 +1,4 @@
-// Generated from vtl-sources/Vtl-3.0-Istat/Vtl.g4 by ANTLR 4.7.2
+// Generated from Vtl.g4 by ANTLR 4.7.1
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 
