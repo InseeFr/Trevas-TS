@@ -38,7 +38,7 @@ const EditorPanel = ({
 				shortcutPatterns: shortcuts || defaultPatterns,
 			}}
 		>
-			<div className="panel-editor noselect">
+			<div className="vtl-panel-editor noselect">
 				<RowNumbers />
 				<Editor parse={parse} />
 				<Suggestions suggest={suggester} />

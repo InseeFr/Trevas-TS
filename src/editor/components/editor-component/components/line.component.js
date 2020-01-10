@@ -6,7 +6,7 @@ const getKey = ({ value }, i) => `${i}-${value || ''}`;
 
 const Line = ({ tokens = [], row }) => {
 	return (
-		<div className="row" onBlur={e => e.stopPropagation()}>
+		<div className="vtl-row" onBlur={e => e.stopPropagation()}>
 			{tokens.map((token, i) => (
 				<Token
 					key={getKey(token, i)}

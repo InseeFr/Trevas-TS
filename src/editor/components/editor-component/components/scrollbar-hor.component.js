@@ -49,7 +49,7 @@ const Scrollbar = ({ parentEl }) => {
 
 	return (
 		<span
-			className="scrollbar-hor"
+			className="vtl-scrollbar-hor"
 			role="presentation"
 			onMouseEnter={() => setVisible(true)}
 			onMouseLeave={() => setVisible(false)}
@@ -110,7 +110,7 @@ const Dragguer = ({ width, left, onDrag, setIsDrag }) => {
 	}, [drag]);
 	return (
 		<span
-			className="dragguer"
+			className="vtl-dragguer"
 			role="presentation"
 			style={{ width: `${width}px`, left: `${left}px` }}
 			onMouseDown={e => {

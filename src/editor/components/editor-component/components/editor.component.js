@@ -81,8 +81,8 @@ const Editor = ({ parse }) => {
 	}, [editorEl, rowHeight, chasse, dispatch]);
 
 	return (
-		<div className="editor-container">
-			<div ref={editorEl} className="editor">
+		<div className="vtl-editor-container">
+			<div ref={editorEl} className="vtl-editor">
 				{visiblesLines.map(({ tokens, value }, i) => (
 					<Line key={getKey(value, i)} tokens={tokens} row={i} />
 				))}

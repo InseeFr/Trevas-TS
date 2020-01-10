@@ -40,7 +40,7 @@ $rowHeight: 22px;
 	z-index: $zindex;
 }
 
-.panel-editor {
+.vtl-panel-editor {
 	display: flex;
 	flex-direction: row;
 	background-color: $defaultBgColor;
@@ -49,16 +49,16 @@ $rowHeight: 22px;
 	overflow-x: hidden;
 	overflow-y: hidden;
 
-	.row-numbers {
+	.vtl-row-numbers {
 		width: $numberWidth;
 
-		.row-numbers-container {
+		.vtl-row-numbers-container {
 			border-right: 1px solid $bgLighterColor;
 			width: 33px;
 
-			.row {
+			.vtl-row {
 				height: $rowHeight;
-				.num {
+				.vtl-num {
 					display: inline-block;
 					color: lightslategray;
 					width: 30px;
@@ -67,19 +67,19 @@ $rowHeight: 22px;
 					text-align: right;
 				}
 
-				.focused {
+				.vtl-focused {
 					color: antiquewhite;
 				}
 			}
 		}
 	}
 
-	.editor-container {
+	.vtl-editor-container {
 		position: relative;
 		width: $panelWidth;
 		height: 100%;
 
-		.scrollbar-hor {
+		.vtl-scrollbar-hor {
 			z-index: 4;
 			cursor: default;
 			position: absolute;
@@ -94,7 +94,7 @@ $rowHeight: 22px;
 				border-top: solid $bgLighterColor 1px;
 			}
 
-			.dragguer {
+			.vtl-dragguer {
 				z-index: 4;
 				position: absolute;
 				display: inline-block;
@@ -106,7 +106,7 @@ $rowHeight: 22px;
 			}
 		}
 
-		.scroll-up-down {
+		.vtl-scroll-up-down {
 			z-index: 4;
 			cursor: default;
 			width: $verticalScrollwidth;
@@ -117,7 +117,7 @@ $rowHeight: 22px;
 			border-left: solid $bgLighterColor 1px;
 			margin: 0;
 
-			.selection {
+			.vtl-selection {
 				z-index: 3;
 				position: absolute;
 				display: inline-block;
@@ -128,7 +128,7 @@ $rowHeight: 22px;
 				right: 0;
 			}
 
-			.cursor-selection {
+			.vtl-cursor-selection {
 				z-index: 3;
 				position: absolute;
 				display: inline-block;
@@ -137,7 +137,7 @@ $rowHeight: 22px;
 				height: 2px;
 			}
 
-			.dragger {
+			.vtl-dragger {
 				z-index: 4;
 				position: absolute;
 				display: inline-block;
@@ -150,18 +150,18 @@ $rowHeight: 22px;
 		}
 
 		/* */
-		.overlay {
+		.vtl-overlay {
 			cursor: text;
 			@include layer(2);
 			&:focus {
 				outline: none;
 			}
 			background-color: transparent;
-			.cursor {
+			.vtl-cursor {
 				@include cursor();
 				position: absolute;
 			}
-			.bloc-selection {
+			.vtl-bloc-selection {
 				position: absolute;
 				height: $rowHeight;
 				background-color: rgba(23, 93, 173, 0.568);
@@ -169,10 +169,10 @@ $rowHeight: 22px;
 		}
 
 		/* */
-		.editor {
+		.vtl-editor {
 			z-index: 0;
 			height: 100%;
-			.row {
+			.vtl-row {
 				white-space: pre;
 				height: $rowHeight;
 				font-size: 15px;
@@ -187,7 +187,7 @@ $rowHeight: 22px;
 }
 
 /* */
-.editor-suggestions {
+.vtl-editor-suggestions {
 	display: block;
 	position: fixed;
 	width: auto;
@@ -197,11 +197,11 @@ $rowHeight: 22px;
 	background-color: #303030;
 	z-index: 4;
 
-	.active {
+	.vtl-active {
 		background-color: #505050;
 	}
 
-	.suggestion {
+	.vtl-suggestion {
 		width: 20em;
 		margin: 1px 0;
 		padding: 1px 1px;
@@ -214,12 +214,12 @@ $rowHeight: 22px;
 			background-color: #505050;
 			cursor: pointer;
 		}
-		.type {
+		.vtl-type {
 			display: inline-block;
 			width: 2em;
 		}
-		.valeur {
-			.prefix {
+		.vtl-valeur {
+			.vtl-prefix {
 				color: turquoise;
 			}
 
@@ -229,7 +229,7 @@ $rowHeight: 22px;
 	}
 }
 
-.row-test {
+.vtl-row-test {
 	white-space: pre;
 	height: $rowHeight;
 	font-size: 15px;
