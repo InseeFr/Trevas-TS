@@ -1,4 +1,4 @@
-import interpret from 'engine/interpretor';
+import interpret, { interpretVar } from 'engine/interpretor';
 import CastTypeError from '../../../errors/CastTypeError';
 
 describe('interpretor', () => {
@@ -122,9 +122,11 @@ describe('interpretor', () => {
 			it('cast date into date', () => {});
 			it('cast date into time_period', () => {});
 			it('cast date into string', () => {
-				expect(interpret('cast(1998-07-12, string, "YYYY-DD-MM")', {})).toEqual(
-					'1998-12-07'
-				);
+				// There's no date literal. We use a first cast to define the date.
+				const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {});
+				expect(
+					interpret('cast(aDate, string, "YYYY-DD-MM")', { aDate })
+				).toEqual('1998-12-07');
 			});
 			it('cast date into string', () => {
 				// TO FIX into Literal Visitor

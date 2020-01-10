@@ -73,55 +73,42 @@ const errorCheck = (stream, collector) => {
 	return parser;
 };
 
-const interpret = (expr, bindings) => {
+/**
+ * Interpret but do not resolve.
+ */
+export const interpretVar = (expr, bindings) => {
 	// TODO: expr could be a file as well.
-	let inputStream = new antlr4.InputStream(expr);
+	const inputStream = new antlr4.InputStream(expr);
 
-	let syntaxErrors = new ErrorCollector();
+	const syntaxErrors = new ErrorCollector();
 	errorCheck(inputStream, syntaxErrors);
 	if (syntaxErrors.errors.length > 0) {
-		throw new Error('Syntax errors:' + syntaxErrors.errors);
+		throw new Error(`Syntax errors: ${syntaxErrors.errors}`);
 	}
 	inputStream.reset();
 
-	let typeErrors = new ErrorCollector();
-	let parser = errorCheck(inputStream, typeErrors);
+	const typeErrors = new ErrorCollector();
+	const parser = errorCheck(inputStream, typeErrors);
 
 	const visitor = new ExpressionVisitor(bindings);
-	let expression = visitor.visit(parser.expr());
+	const expression = visitor.visit(parser.expr());
 
 	if (typeErrors.errors.length > 0) {
-		throw new Error(
-			`Type errors:\n\t ${typeErrors.errors.map(e => e.message).join('\n\t')}`
-		);
+		throw new Error(`Type errors:\n\t ${typeErrors}`);
 	}
 
-	return expression.resolve(bindings);
+	return {
+		type: expression.type,
+		resolve: () => expression.resolve(bindings),
+	};
 };
 
-// TODO: refactor
-export const getType = (expr, bindings) => {
-	// TODO: expr could be a file as well.
-	let inputStream = new antlr4.InputStream(expr);
+/**
+ * Interpret and resolve the value.
+ */
+const interpret = (expr, bindings) => interpretVar(expr, bindings).resolve();
 
-	let syntaxErrors = new ErrorCollector();
-	errorCheck(inputStream, syntaxErrors);
-	if (syntaxErrors.length > 0) {
-		throw new Error('Syntax errors:' + syntaxErrors.errors);
-	}
-	inputStream.reset();
-
-	let typeErrors = new ErrorCollector();
-	let parser = errorCheck(inputStream, typeErrors);
-
-	const visitor = new ExpressionVisitor(bindings);
-	let expression = visitor.visit(parser.expr());
-
-	if (typeErrors.length > 0) {
-		throw new Error('Type errors' + typeErrors.errors);
-	}
-
-	return getTokenName(expression.type);
-};
+export const getType = (expr, bindings) =>
+	getTokenName(interpretVar(expr, bindings).type);
 
 export default interpret;
