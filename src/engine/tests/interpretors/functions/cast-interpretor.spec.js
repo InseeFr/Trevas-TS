@@ -123,7 +123,10 @@ describe('interpretor', () => {
 			it('cast date into time_period', () => {});
 			it('cast date into string', () => {
 				// There's no date literal. We use a first cast to define the date.
-				const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {});
+				const aDate = interpretVar(
+					'cast("1998-07-12", date, "YYYY-MM-DD")',
+					{}
+				);
 				expect(
 					interpret('cast(aDate, string, "YYYY-DD-MM")', { aDate })
 				).toEqual('1998-12-07');
