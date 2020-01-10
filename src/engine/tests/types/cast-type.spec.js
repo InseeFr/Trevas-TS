@@ -1,4 +1,4 @@
-import { getType } from '../../interpretor';
+import { getType, interpretVar } from '../../interpretor';
 
 describe('type', () => {
 	describe('cast', () => {
@@ -107,7 +107,12 @@ describe('type', () => {
 			it('cast date into date', () => {});
 			it('cast date into time_period', () => {});
 			it('cast date into string', () => {
-				expect(getType('cast(1998-07-12, string, "YYYY-DD-MM")', {})).toEqual(
+				// There's no date literal. We use a first cast to define the date.
+				const aDate = interpretVar(
+					'cast("1998-07-12", date, "YYYY-MM-DD")',
+					{}
+				);
+				expect(getType('cast(aDate, string, "YYYY-DD-MM")', {aDate})).toEqual(
 					'STRING'
 				);
 			});

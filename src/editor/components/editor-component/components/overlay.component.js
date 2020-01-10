@@ -150,7 +150,7 @@ const Overlay = ({ chasse }) => {
 			ref={divEl}
 			tabIndex="0"
 			role="presentation"
-			className="overlay"
+			className="vtl-overlay"
 			onKeyDown={callbackKeyDown}
 			onMouseEnter={e => {
 				e.target.focus();
@@ -224,7 +224,7 @@ const Overlay = ({ chasse }) => {
 				? getSelectionBlocs(state).map(({ top, left, width }, i) => (
 						<span
 							key={i}
-							className="bloc-selection"
+							className="vtl-bloc-selection"
 							style={{ top, left, width: width === 0 ? 5 : width }}
 						/>
 				  ))
@@ -244,9 +244,9 @@ const hoc = Component => props => {
 	}, [chasse, divEl]);
 
 	return !chasse ? (
-		<div className="editor" aria-hidden="true">
-			<div className="row">
-				<span ref={divEl} className="token">
+		<div className="vtl-editor" aria-hidden="true">
+			<div className="vtl-row">
+				<span ref={divEl} className="vtl-token">
 					M
 				</span>
 			</div>

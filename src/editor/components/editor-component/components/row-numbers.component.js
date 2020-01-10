@@ -10,12 +10,14 @@ const RowNumbers = () => {
 		.map((s, i) => s + i);
 
 	return (
-		<div className="row-numbers">
-			<div className="row-numbers-container">
+		<div className="vtl-row-numbers">
+			<div className="vtl-row-numbers-container">
 				{numbers.map(o => (
-					<div className="row" key={o}>
+					<div className="vtl-row" key={o}>
 						<span
-							className={classnames('num', { focused: o - 1 === focusedRow })}
+							className={classnames('vtl-num', {
+								focused: o - 1 === focusedRow,
+							})}
 						>
 							{o}
 						</span>

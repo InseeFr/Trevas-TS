@@ -13,10 +13,14 @@ class VariableVisitor extends VtlVisitor {
 	}
 	visitVarIdExpr = ctx => {
 		const variable = ctx.getText();
-		return {
-			resolve: bindings => bindings[variable],
-			type: types[typeof this.bindings[variable]],
-		};
+		if (this.bindings[variable] && this.bindings[variable].type) {
+			return this.bindings[variable];
+		} else {
+			return {
+				resolve: bindings => bindings[variable],
+				type: types[typeof this.bindings[variable]],
+			};
+		}
 	};
 }
 

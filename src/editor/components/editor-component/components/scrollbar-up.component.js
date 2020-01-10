@@ -32,7 +32,7 @@ const ScrollUpDown = ({ parentEl }) => {
 
 		return (
 			<div
-				className="scroll-up-down"
+				className="vtl-scroll-up-down"
 				role="presentation"
 				style={{ height }}
 				onMouseDown={e => {
@@ -136,7 +136,7 @@ const Dragguer = ({ height }) => {
 	return (
 		<span
 			role="presentation"
-			className="dragger"
+			className="vtl-dragger"
 			draggable="false"
 			style={{ height: dgHeight, top: dgTop }}
 			onMouseDown={e => {
@@ -157,13 +157,13 @@ const Dragguer = ({ height }) => {
 const Selection = ({ start, stop, parentHeight, nbLines }) => {
 	const top = Math.round((start.row / nbLines) * parentHeight);
 	const height = Math.round(((stop.row - start.row) / nbLines) * parentHeight);
-	return <span className="selection" style={{ top, height }} />;
+	return <span className="vtl-selection" style={{ top, height }} />;
 };
 
 /* */
 const Cursor = ({ focusedRow, parentHeight, nbLines }) => {
 	const top = Math.round((focusedRow / nbLines) * parentHeight);
-	return <span className="cursor-selection" style={{ top }} />;
+	return <span className="vtl-cursor-selection" style={{ top }} />;
 };
 
 ScrollUpDown.propTypes = {
