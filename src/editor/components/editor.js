@@ -44,7 +44,7 @@ const Editor = props => {
 };
 
 Editor.defaultProps = {
-	grammar: 'vtl-2.0-Insee',
+	grammar: 'vtl-3.0-Istat',
 	startRule: 'expr',
 };
 

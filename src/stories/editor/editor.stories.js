@@ -6,6 +6,7 @@ import { select, boolean } from '@storybook/addon-knobs/react';
 import readme from './README.md';
 
 const grammars = {
+	'VTL 3.0 Istat': 'vtl-3.0-Istat',
 	'VTL 2.0 Insee': 'vtl-2.0-Insee',
 	'VTL 2.0': 'vtl-2.0',
 };
@@ -64,7 +65,7 @@ stories.add('Editor', () => (
 		content={content}
 		dictionnary={dictionnary}
 		edit={boolean('Edit', true)}
-		grammar={select('Grammar', grammars, 'vtl-2.0-Insee')}
+		grammar={select('Grammar', grammars, 'vtl-3.0-Istat')}
 		startRule={select('Start rule', startRules, 'expr')}
 	/>
 ));
