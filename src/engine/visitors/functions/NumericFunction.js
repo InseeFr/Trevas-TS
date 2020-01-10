@@ -21,21 +21,21 @@ class NumericVisitor extends VtlVisitor {
 		let type;
 
 		switch (opCtx.type) {
-			case VtlParser.CEIL:
-				operatorFunction = expr => Math.ceil(expr);
-				type = VtlParser.INTEGER;
-				break;
-			case VtlParser.FLOOR:
-				operatorFunction = expr => Math.floor(expr);
-				type = VtlParser.INTEGER;
-				break;
 			case VtlParser.ABS:
 				operatorFunction = expr => Math.abs(expr);
 				type = expr.type;
 				break;
+			case VtlParser.CEIL:
+				operatorFunction = expr => Math.ceil(expr);
+				type = VtlParser.INTEGER;
+				break;
 			case VtlParser.EXP:
 				operatorFunction = expr => Math.exp(expr);
 				type = VtlParser.NUMBER;
+				break;
+			case VtlParser.FLOOR:
+				operatorFunction = expr => Math.floor(expr);
+				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.LN:
 				operatorFunction = expr => Math.log(expr);
@@ -51,6 +51,48 @@ class NumericVisitor extends VtlVisitor {
 
 		return {
 			resolve: bindings => operatorFunction(expr.resolve(bindings)),
+			type,
+		};
+	};
+
+	visitUnaryWithOptionalNumeric = ctx => {
+		// Binary numeric operators with optional operand are ROUND and TRUNC
+		const { op: opCtx } = ctx;
+
+		const expr = this.exprVisitor.visit(ctx.expr());
+		const optionalExpr =
+			ctx.optionalExpr() && ctx.optionalExpr().expr() // optionalExpr().expr() is null when second operand is _
+				? this.exprVisitor.visit(ctx.optionalExpr().expr())
+				: null;
+
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+		if (!expectedTypes.includes(expr.type))
+			throw new Error('The first operand should be a number or an integer');
+		if (optionalExpr && optionalExpr.type !== VtlParser.INTEGER)
+			throw new Error('The second operand should be an integer');
+
+		let operatorFunction;
+		let type;
+
+		switch (opCtx.type) {
+			case VtlParser.ROUND:
+				operatorFunction = (expr, optionalExpr) => {
+					if (!optionalExpr || optionalExpr == VtlParser.OPTIONAL)
+						return Math.round(expr);
+					return Math.round(expr * 10 ** optionalExpr) / 10 ** optionalExpr;
+				};
+				type = VtlParser.NUMBER;
+				break;
+			default:
+				throw new Error(`unknown operator ${opCtx.getText()}`);
+		}
+
+		return {
+			resolve: bindings =>
+				operatorFunction(
+					expr.resolve(bindings),
+					optionalExpr ? optionalExpr.resolve(bindings) : null
+				),
 			type,
 		};
 	};
