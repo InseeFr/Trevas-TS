@@ -1,6 +1,6 @@
-import { default as VTL2 } from './vtl-2.0';
-import { default as VTL2Insee } from './vtl-2.0-Insee';
-import { default as VTL3Istat } from './vtl-3.0-Istat';
+import VTL2 from './vtl-2.0';
+import VTL2Insee from './vtl-2.0-Insee';
+import VTL3Istat from './vtl-3.0-Istat';
 
 export * from './vtl-3.0-Istat/parser-vtl';
 

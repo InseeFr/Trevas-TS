@@ -1,4 +1,4 @@
-import VtlVisitor from './VtlVisitor';
+import { VtlVisitor } from './VtlVisitor';
 
 function TreeVtlVisitor(getContext) {
 	VtlVisitor.call(this);
