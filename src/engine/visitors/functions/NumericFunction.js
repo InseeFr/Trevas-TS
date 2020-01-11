@@ -83,6 +83,14 @@ class NumericVisitor extends VtlVisitor {
 				};
 				type = VtlParser.NUMBER;
 				break;
+			case VtlParser.TRUNC:
+				operatorFunction = (expr, optionalExpr) => {
+					if (!optionalExpr || optionalExpr == VtlParser.OPTIONAL)
+						return Math.trunc(expr);
+					return Math.trunc(expr * 10 ** optionalExpr) / 10 ** optionalExpr;
+				};
+				type = VtlParser.NUMBER;
+				break;
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
@@ -92,6 +100,64 @@ class NumericVisitor extends VtlVisitor {
 				operatorFunction(
 					expr.resolve(bindings),
 					optionalExpr ? optionalExpr.resolve(bindings) : null
+				),
+			type,
+		};
+	};
+
+	visitBinaryNumeric = ctx => {
+		// Binary numeric operators are MOD, POWER and LOG
+		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
+		const leftExpr = this.exprVisitor.visit(leftCtx);
+		const rightExpr = this.exprVisitor.visit(rightCtx);
+
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+
+		if (
+			!(
+				expectedTypes.includes(leftExpr.type) &&
+				expectedTypes.includes(rightExpr.type)
+			)
+		)
+			throw new Error('Both operands should be numbers or integers');
+
+		let operatorFunction;
+		let type = VtlParser.NUMBER;
+
+		switch (opCtx.type) {
+			case VtlParser.LOG:
+				operatorFunction = (leftExpr, rightExpr) =>
+					Math.log(leftExpr) / Math.log(rightExpr);
+				type = VtlParser.NUMBER;
+				break;
+			case VtlParser.MOD:
+				operatorFunction = (leftExpr, rightExpr) => {
+					if (rightExpr == 0) return leftExpr;
+					return leftExpr % rightExpr;
+				};
+				type =
+					leftExpr.type == VtlParser.INTEGER &&
+					rightExpr.type == VtlParser.INTEGER
+						? VtlParser.INTEGER
+						: VtlParser.NUMBER;
+				break;
+			case VtlParser.POWER:
+				operatorFunction = (leftExpr, rightExpr) => leftExpr ** rightExpr;
+				type =
+					leftExpr.type == VtlParser.INTEGER &&
+					rightExpr.type == VtlParser.INTEGER
+						? VtlParser.INTEGER
+						: VtlParser.NUMBER;
+				break;
+			default:
+				throw new Error(`unknown operator ${opCtx.getText()}`);
+		}
+
+		return {
+			resolve: bindings =>
+				operatorFunction(
+					leftExpr.resolve(bindings),
+					rightExpr.resolve(bindings)
 				),
 			type,
 		};
