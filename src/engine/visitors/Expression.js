@@ -1,7 +1,7 @@
 import { VtlVisitor, VtlParser } from '../../antlr-tools';
 import ArithmeticVisitor from './Arithmetic';
 import BooleanVisitor from './Boolean';
-import IfThenElse from './IfThenElse';
+import IfThenElse from './Conditional';
 import VariableVisitor from './Variable';
 import LiteralVisitor from './Literal';
 import ComparisonVisitor from './Comparison';

@@ -2,7 +2,7 @@ import { VtlParser, VtlVisitor } from '../../antlr-tools';
 import { IncompatibleTypeError, TypeMismatchError } from '../errors';
 import { replaceConstantType } from '../utils';
 
-class IfThenElseVisitor extends VtlVisitor {
+class ConditionalVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
 		this.exprVisitor = exprVisitor;
@@ -40,4 +40,4 @@ class IfThenElseVisitor extends VtlVisitor {
 	};
 }
 
-export default IfThenElseVisitor;
+export default ConditionalVisitor;

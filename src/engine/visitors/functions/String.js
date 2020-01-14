@@ -1,7 +1,7 @@
 import { VtlParser, VtlVisitor } from '../../../antlr-tools';
 import { TypeMismatchError } from '../../errors';
 
-class StringFunctionsVisitor extends VtlVisitor {
+class StringVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
 		this.exprVisitor = exprVisitor;
@@ -148,4 +148,4 @@ class StringFunctionsVisitor extends VtlVisitor {
 	};
 }
 
-export default StringFunctionsVisitor;
+export default StringVisitor;
