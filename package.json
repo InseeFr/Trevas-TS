@@ -28,6 +28,7 @@
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
 		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
+		"coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
 		"build": "rollup -c rollup.config.js",
 		"prepublishOnly": "npm run test && npm run build"
 	},
