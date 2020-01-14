@@ -51,6 +51,7 @@
 		"@storybook/react": "^5.2.8",
 		"antlr4-tool": "^1.0.26",
 		"babel-loader": "8.0.6",
+		"coveralls": "^3.0.9",
 		"cross-env": "^6.0.3",
 		"eslint": "^6.8.0",
 		"eslint-config-airbnb": "^18.0.1",
