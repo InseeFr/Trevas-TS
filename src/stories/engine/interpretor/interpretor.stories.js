@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withReadme } from 'storybook-readme';
-import { Interpretor } from 'engine/components';
+import { Interpretor } from '../components';
 import readme from './README.md';
 
 const stories = storiesOf('Interpretor', module);

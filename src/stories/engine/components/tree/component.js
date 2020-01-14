@@ -5,7 +5,7 @@ import {
 	VtlLexer,
 	VtlParser,
 	TreeVtlVisitor,
-} from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
+} from '../../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 const getTree = text => getContext => {
 	const chars = new antlr4.InputStream(text);

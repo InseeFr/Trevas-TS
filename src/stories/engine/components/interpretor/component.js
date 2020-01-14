@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Bindings from './bindings';
 import TreeView from '../tree';
 import { buildExecObject } from '../utils';
-import interpret, { getType } from '../../interpretor';
+import interpret, { getType } from '../../../../engine/interpretor';
 
 const Interpretor = ({ value, variables }) => {
 	const [input, setInput] = useState(value || '');
