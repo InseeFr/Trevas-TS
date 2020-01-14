@@ -1,7 +1,7 @@
 import { VtlParser, VtlVisitor } from '../../../antlr-tools';
 import { getCurrentDate } from '../../utils/dates';
 
-class DateFunctionVisitor extends VtlVisitor {
+class DateVisitor extends VtlVisitor {
 	constructor() {
 		super();
 	}
@@ -12,4 +12,4 @@ class DateFunctionVisitor extends VtlVisitor {
 	});
 }
 
-export default DateFunctionVisitor;
+export default DateVisitor;

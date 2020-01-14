@@ -11,7 +11,7 @@ import {
 	NumericFunctionsVisitor,
 	StringFunctionsVisitor,
 } from './functions';
-import DateFunctionVisitor from './functions/Date';
+import DateVisitor from './functions/Date';
 
 class ExpressionVisitor extends VtlVisitor {
 	constructor(bindings) {
@@ -22,7 +22,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.castFunctionVisitor = new CastVisitor(this);
 		this.comparisonVisitor = new ComparisonVisitor(this);
 		this.concatenationVisitor = new ConcatenationVisitor(this);
-		this.dateFunctionVisitor = new DateFunctionVisitor(this);
+		this.dateFunctionVisitor = new DateVisitor(this);
 		this.ifThenElseVisitor = new IfThenElse(this);
 		this.literalVisitor = new LiteralVisitor();
 		this.numericFunctionVisitor = new NumericFunctionsVisitor(this);
