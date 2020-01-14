@@ -124,6 +124,12 @@ storiesOf('Interpretor/Function/Date', module).add('Current date', () => (
 storiesOf('Interpretor/Function/Numeric', module).add('Abs', () => (
 	<Interpretor value="abs(-10.5)" />
 ));
+storiesOf('Interpretor/Function/Numeric', module).add('Ceil', () => (
+	<Interpretor value="ceil(3.75)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Exp', () => (
+	<Interpretor value="exp(-1.5)" />
+));
 
 // String
 
