@@ -3,8 +3,9 @@ node_js:
   - 12.8.0
 cache: yarn
 install:
-  - yarn
+  - yarn config set registry https://registry.npmjs.org
+  - yarn install
 script:
-  - yarn test
+  - yarn test --coverage
 after_script:
   - bash scripts/deploy.sh
