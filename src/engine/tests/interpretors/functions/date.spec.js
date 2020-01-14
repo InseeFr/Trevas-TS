@@ -1,11 +1,15 @@
 import interpret from 'engine/interpretor';
 import moment from 'moment';
 
+// Return a fixed timestamp when moment() is called
+const mockMoment = moment();
+jest.mock('moment', () => () => mockMoment);
+
 describe('interpretor', () => {
 	describe('date functions', () => {
-		describe.skip('current date function', () => {
+		describe('current date function', () => {
 			it('should return current date', () => {
-				expect(interpret('current_date()', {})).toEqual(moment.now());
+				expect(interpret('current_date()', {})).toEqual(moment());
 			});
 		});
 	});
