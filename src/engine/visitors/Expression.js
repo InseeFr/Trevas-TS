@@ -1,6 +1,6 @@
 import { VtlVisitor, VtlParser } from '../../antlr-tools';
 import ArithmeticVisitor from './Arithmetic';
-import BooleanAlgebraVisitor from './BooleanAlgebra';
+import BooleanVisitor from './Boolean';
 import IfThenElse from './IfThenElse';
 import VariableVisitor from './Variable';
 import LiteralVisitor from './Literal';
@@ -18,7 +18,7 @@ class ExpressionVisitor extends VtlVisitor {
 		super();
 		this.bindings = bindings;
 		this.arithmeticVisitor = new ArithmeticVisitor(this);
-		this.booleanAlgebraVisitor = new BooleanAlgebraVisitor(this);
+		this.booleanAlgebraVisitor = new BooleanVisitor(this);
 		this.castFunctionVisitor = new CastVisitor(this);
 		this.comparisonVisitor = new ComparisonVisitor(this);
 		this.concatenationVisitor = new ConcatenationVisitor(this);

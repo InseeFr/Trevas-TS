@@ -66,7 +66,7 @@ storiesOf('Interpretor/Ternary', module).add('IfThenElse', () => (
 	<Interpretor value='if 100 > 0 then "positive" else "negative"' />
 ));
 
-// BooleanAlgebra
+// Boolean
 
 storiesOf('Interpretor/Boolean algebra', module).add('And', () => (
 	<Interpretor value="false and true" />

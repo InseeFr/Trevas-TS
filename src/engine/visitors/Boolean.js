@@ -1,7 +1,7 @@
 import { VtlParser, VtlVisitor } from '../../antlr-tools';
 import { TypeMismatchError } from '../errors';
 
-class BooleanAlgebra extends VtlVisitor {
+class BooleanVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
 		this.exprVisitor = exprVisitor;
@@ -57,4 +57,4 @@ class BooleanAlgebra extends VtlVisitor {
 	};
 }
 
-export default BooleanAlgebra;
+export default BooleanVisitor;
