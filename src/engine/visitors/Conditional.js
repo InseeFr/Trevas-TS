@@ -23,11 +23,7 @@ class ConditionalVisitor extends VtlVisitor {
 		const thenOperand = this.exprVisitor.visit(thenExpr);
 		const elseOperand = this.exprVisitor.visit(elseExpr);
 		if (thenOperand.type !== elseOperand.type) {
-			throw new IncompatibleTypeError(
-				elseExpr,
-				thenOperand.type,
-				elseOperand.type
-			);
+			throw new IncompatibleTypeError(ctx, thenOperand.type, elseOperand.type);
 		}
 
 		return {
@@ -36,6 +32,24 @@ class ConditionalVisitor extends VtlVisitor {
 					? thenOperand.resolve(bindings)
 					: elseOperand.resolve(bindings),
 			type: replaceConstantType(thenOperand.type),
+		};
+	};
+
+	visitNvlAtom = ctx => {
+		const { left, right } = ctx;
+
+		const leftOperand = this.exprVisitor.visit(left);
+		const rightOperand = this.exprVisitor.visit(right);
+		if (leftOperand.type !== rightOperand.type) {
+			throw new IncompatibleTypeError(ctx, leftOperand.type, rightOperand.type);
+		}
+
+		return {
+			resolve: bindings =>
+				leftOperand.resolve(bindings)
+					? leftOperand.resolve(bindings)
+					: rightOperand.resolve(bindings),
+			type: replaceConstantType(leftOperand.type),
 		};
 	};
 }

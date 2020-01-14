@@ -53,6 +53,7 @@ class ExpressionVisitor extends VtlVisitor {
 	visitParenthesisExpr = ctx => this.visit(ctx.expr());
 
 	visitIfExpr = ctx => this.ifThenElseVisitor.visit(ctx);
+	visitNvlAtom = ctx => this.ifThenElseVisitor.visit(ctx);
 
 	// TODO: Optional expression should handle missing values.
 	visitOptionalExpr = ctx =>
