@@ -11,7 +11,7 @@ import {
 	NumericFunctionsVisitor,
 	StringFunctionsVisitor,
 } from './functions';
-import DateFunctionVisitor from './functions/DateFunction';
+import DateFunctionVisitor from './functions/Date';
 
 class ExpressionVisitor extends VtlVisitor {
 	constructor(bindings) {
