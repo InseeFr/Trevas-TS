@@ -40,7 +40,7 @@ class ConditionalVisitor extends VtlVisitor {
 
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
-		if (leftOperand.type !== rightOperand.type) {
+		if (leftOperand.type !== VtlParser.NULL_CONSTANT && leftOperand.type !== rightOperand.type) {
 			throw new IncompatibleTypeError(ctx, leftOperand.type, rightOperand.type);
 		}
 
