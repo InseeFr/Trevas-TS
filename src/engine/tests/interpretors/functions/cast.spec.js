@@ -170,10 +170,10 @@ describe('interpretor', () => {
 			it('cast string into time', () => {});
 			it('should cast string into date', () => {
 				expect(interpret('cast("1998-07-12", date, "YYYY-MM-DD")', {})).toEqual(
-					new Date('1998-07-12')
+					'1998-07-12'
 				);
 				expect(interpret('cast("1998-12-07", date, "YYYY-DD-MM")', {})).toEqual(
-					new Date('1998-07-12')
+					'1998-07-12'
 				);
 			});
 			it('cast string into time_period', () => {});
