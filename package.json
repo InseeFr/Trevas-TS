@@ -25,7 +25,8 @@
 	"jest": {
 		"collectCoverageFrom": [
 			"src/**/*.{js,jsx}",
-			"!src/antlr-tools/**/*"
+			"!src/antlr-tools/**/*",
+			"!src/stories/**/*"
 		]
 	},
 	"scripts": {
