@@ -27,6 +27,7 @@ function setup() {
 
 function buildDocumentation() {
   pushd "$DOC_FOLDER"
+  npm install gitbook-plugin-advanced-emoji
   gitbook install
   gitbook build
   popd
