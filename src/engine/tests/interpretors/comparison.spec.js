@@ -1,7 +1,16 @@
 import interpret from '../../interpretor';
+import { OperatorTypeError } from '../../errors';
 
 describe('interpretor', () => {
 	describe('interpret', () => {
+		it('should fail to compare wrong types', () => {
+			expect(() => interpret('"string" < 1')).toThrow(OperatorTypeError);
+			expect(() => interpret('"string" > 1')).toThrow(OperatorTypeError);
+			expect(() => interpret('"string" <= 1')).toThrow(OperatorTypeError);
+			expect(() => interpret('"string" >= 1')).toThrow(OperatorTypeError);
+			expect(() => interpret('"string" = 1')).toThrow(OperatorTypeError);
+			expect(() => interpret('"string" <> 1')).toThrow(OperatorTypeError);
+		});
 		it('should compare integers', () => {
 			expect(interpret('1 < 2', {})).toEqual(true);
 			expect(interpret('1 <= 1', {})).toEqual(true);
