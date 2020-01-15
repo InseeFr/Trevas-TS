@@ -23,11 +23,11 @@ fi
 
 function setup() {
   npm install -g gitbook-cli
+  npm install -g gitbook-plugin-advanced-emoji
 }
 
 function buildDocumentation() {
   pushd "$DOC_FOLDER"
-  npm install gitbook-plugin-advanced-emoji
   gitbook install
   gitbook build
   popd
