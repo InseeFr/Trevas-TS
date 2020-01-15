@@ -27,9 +27,7 @@ class ErrorCollector extends ErrorListener {
 		ambigAlts,
 		configs
 	) {
-		console.debug(
-			`ambiguity ${recognizer}, ${dfa}, ${startIndex}:${stopIndex}, ${exact}, ${ambigAlts}, ${configs}`
-		);
+		console.warn(`ambiguity ${startIndex}:${stopIndex}`);
 	}
 
 	reportAttemptingFullContext(
@@ -40,9 +38,7 @@ class ErrorCollector extends ErrorListener {
 		conflictingAlts,
 		configs
 	) {
-		console.debug(
-			`full context ${recognizer}, ${dfa}, ${startIndex}:${stopIndex}, ${conflictingAlts}, ${configs}`
-		);
+		console.warn(`full context ${startIndex}:${stopIndex}`);
 	}
 
 	reportContextSensitivity(
@@ -53,9 +49,7 @@ class ErrorCollector extends ErrorListener {
 		prediction,
 		configs
 	) {
-		console.debug(
-			`context sensitivity ${recognizer}, ${dfa}, ${startIndex}:${stopIndex}, ${prediction}, ${configs}`
-		);
+		console.debug(`context sensitivity ${startIndex}:${stopIndex}`);
 	}
 }
 
