@@ -14,7 +14,7 @@ class ArithmeticVisitor extends VtlVisitor {
 		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
 
 		if (!expectedTypes.includes(rightExpr.type))
-			throw new TypeMismatchError(rightCtx, expectedTypes, leftExpr.type);
+			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
 		return {
 			resolve: bindings => {
