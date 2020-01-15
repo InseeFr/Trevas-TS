@@ -2,6 +2,20 @@ import interpret from '../../interpretor';
 
 describe('interpretor', () => {
 	describe('interpret', () => {
+		it('supports unary operations', () => {
+			expect(interpret('-(0 - 1)', {})).toEqual(1);
+			expect(interpret('+(0 - 1)', {})).toEqual(-1);
+			expect(interpret('-(0 - 1.5)', {})).toEqual(1.5);
+			expect(interpret('+(0 - 1.5)', {})).toEqual(-1.5);
+
+			expect(interpret('-(0 + 1)', {})).toEqual(-1);
+			expect(interpret('+(0 + 1)', {})).toEqual(+1);
+			expect(interpret('-(0 + 1.5)', {})).toEqual(-1.5);
+			expect(interpret('+(0 + 1.5)', {})).toEqual(+1.5);
+
+			expect(() => interpret('-("not" || "number")')).toThrow();
+			expect(() => interpret('+("not" || "number")')).toThrow();
+		});
 		it('test basic arithmetic operations', () => {
 			expect(interpret('1 + 2', {})).toEqual(3);
 			expect(interpret('1 - 2', {})).toEqual(-1);
