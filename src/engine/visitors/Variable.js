@@ -1,5 +1,6 @@
 import { VtlParser, VtlVisitor } from '../../antlr-tools';
 
+// TODO: Support integers here.
 const types = {
 	string: VtlParser.STRING,
 	number: VtlParser.NUMBER,
