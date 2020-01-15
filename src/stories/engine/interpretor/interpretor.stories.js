@@ -130,6 +130,30 @@ storiesOf('Interpretor/Function/Numeric', module).add('Ceil', () => (
 storiesOf('Interpretor/Function/Numeric', module).add('Exp', () => (
 	<Interpretor value="exp(-1.5)" />
 ));
+storiesOf('Interpretor/Function/Numeric', module).add('Floor', () => (
+	<Interpretor value="floor(-1.5)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Ln', () => (
+	<Interpretor value="exp(-1.5)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Sqrt', () => (
+	<Interpretor value="exp(-1.5)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Round', () => (
+	<Interpretor value="round(2.618, 2)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Trunc', () => (
+	<Interpretor value="trunc(2.618, 2)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Log', () => (
+	<Interpretor value="log(2048, 2)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Mod', () => (
+	<Interpretor value="mod(7, 3)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Power', () => (
+	<Interpretor value="power(3, 2)" />
+));
 
 // String
 
