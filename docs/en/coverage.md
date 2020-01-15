@@ -2,158 +2,158 @@
 
 ## JavaScript interpretor
 
-### Functional converage
+### Functional coverage
 
 #### VTL-ML - General purpose operators
 
-| Name                              | Symbol | Supported |
-| --------------------------------- | :----- | :-------: |
-| Parentheses                       | ( )    |           |
-| Persistent assignment             | <-     |           |
-| Non-persistent assignment         | :=     |           |
-| Membership                        | #      |           |
-| User-defined operator call        |        |           |
-| Evaluation of an external routine | eval   |           |
-| Type conversion                   | cast   |           |
+| Name                              | Symbol |     Supported      |
+| --------------------------------- | :----- | :----------------: |
+| Parentheses                       | ( )    | :heavy_check_mark: |
+| Persistent assignment             | <-     |        :x:         |
+| Non-persistent assignment         | :=     |        :x:         |
+| Membership                        | #      |        :x:         |
+| User-defined operator call        |        |        :x:         |
+| Evaluation of an external routine | eval   |        :x:         |
+| Type conversion                   | cast   | :heavy_check_mark: |
 
 #### VTL-ML - Join operators
 
 | Name | Symbol                                       | Supported |
 | ---- | :------------------------------------------- | :-------: |
-| Join | inner_join, left_join, full_join, cross_join |           |
+| Join | inner_join, left_join, full_join, cross_join |    :x:    |
 
 #### VTL-ML - String operators
 
-| Name                       | Symbol             | Supported |
-| -------------------------- | :----------------- | :-------: |
-| String concatenation       | &#124;&#124;       |           |
-| Whitespace removal         | trim, rtrim, ltrim |           |
-| Character case conversion  | upper/lower        |           |
-| Sub-string extraction      | substr             |           |
-| String pattern replacement | replace            |           |
-| String pattern location    | instr              |           |
-| String length              | length             |           |
+| Name                       | Symbol             |     Supported      |
+| -------------------------- | :----------------- | :----------------: |
+| String concatenation       | &#124;&#124;       | :heavy_check_mark: |
+| Whitespace removal         | trim, rtrim, ltrim | :heavy_check_mark: |
+| Character case conversion  | upper/lower        | :heavy_check_mark: |
+| Sub-string extraction      | substr             | :heavy_check_mark: |
+| String pattern replacement | replace            | :heavy_check_mark: |
+| String pattern location    | instr              | :heavy_check_mark: |
+| String length              | length             | :heavy_check_mark: |
 
 #### VTL-ML - Numeric operators
 
-| Name              | Symbol | Supported |
-| ----------------- | :----- | :-------: |
-| Unary plus        | +      |           |
-| Unary minus       | -      |           |
-| Addition          | +      |           |
-| Subtraction       | -      |           |
-| Multiplication    | \*     |           |
-| Division          | /      |           |
-| Modulo            | mod    |           |
-| Rounding          | round  |           |
-| Truncation        | trunc  |           |
-| Ceiling           | ceil   |           |
-| Floor             | floor  |           |
-| Absolute value    | abs    |           |
-| Exponential       | exp    |           |
-| Natural logarithm | ln     |           |
-| Power             | power  |           |
-| Logarithm         | log    |           |
-| Square root       | sqrt   |           |
+| Name              | Symbol |     Supported      |
+| ----------------- | :----- | :----------------: |
+| Unary plus        | +      | :heavy_check_mark: |
+| Unary minus       | -      | :heavy_check_mark: |
+| Addition          | +      | :heavy_check_mark: |
+| Subtraction       | -      | :heavy_check_mark: |
+| Multiplication    | \*     | :heavy_check_mark: |
+| Division          | /      | :heavy_check_mark: |
+| Modulo            | mod    | :heavy_check_mark: |
+| Rounding          | round  | :heavy_check_mark: |
+| Truncation        | trunc  | :heavy_check_mark: |
+| Ceiling           | ceil   | :heavy_check_mark: |
+| Floor             | floor  | :heavy_check_mark: |
+| Absolute value    | abs    | :heavy_check_mark: |
+| Exponential       | exp    | :heavy_check_mark: |
+| Natural logarithm | ln     | :heavy_check_mark: |
+| Power             | power  | :heavy_check_mark: |
+| Logarithm         | log    | :heavy_check_mark: |
+| Square root       | sqrt   | :heavy_check_mark: |
 
 #### VTL-ML - Comparison operators
 
-| Name             | Symbol           | Supported |
-| ---------------- | :--------------- | :-------: |
-| Equal to         | =                |           |
-| Not equal to     | <>               |           |
-| Greater than     | > >=             |           |
-| Less than        | < <=             |           |
-| Between          | between          |           |
-| Element of       | in / not_in      |           |
-| Match characters | match_characters |           |
-| Is null          | isnull           |           |
-| Exists in        | exists_in        |           |
+| Name             | Symbol           |     Supported      |
+| ---------------- | :--------------- | :----------------: |
+| Equal to         | =                | :heavy_check_mark: |
+| Not equal to     | <>               | :heavy_check_mark: |
+| Greater than     | > >=             | :heavy_check_mark: |
+| Less than        | < <=             | :heavy_check_mark: |
+| Between          | between          |        :x:         |
+| Element of       | in / not_in      |        :x:         |
+| Match characters | match_characters |        :x:         |
+| Is null          | isnull           |        :x:         |
+| Exists in        | exists_in        |        :x:         |
 
 #### VTL-ML - Boolean operators
 
-| Name                  | Symbol | Supported |
-| --------------------- | :----- | :-------: |
-| Logical conjunction   | and    |           |
-| Logical disjunction   | or     |           |
-| Exclusive disjunction | xor    |           |
-| Logical negation      | not    |           |
+| Name                  | Symbol |     Supported      |
+| --------------------- | :----- | :----------------: |
+| Logical conjunction   | and    | :heavy_check_mark: |
+| Logical disjunction   | or     | :heavy_check_mark: |
+| Exclusive disjunction | xor    | :heavy_check_mark: |
+| Logical negation      | not    | :heavy_check_mark: |
 
 #### VTL-ML - Time operators
 
-| Name             | Symbol           | Supported |
-| ---------------- | :--------------- | :-------: |
-| Period indicator | period_indicator |           |
-| Fill time series | fill_time_series |           |
-| Flow to stock    | flow_to_stock    |           |
-| Stock to flow    | stock_to_flow    |           |
-| Time shift       | timeshift        |           |
-| Time aggregation | time_agg         |           |
-| Actual time      | current_date     |           |
+| Name             | Symbol           |     Supported      |
+| ---------------- | :--------------- | :----------------: |
+| Period indicator | period_indicator |        :x:         |
+| Fill time series | fill_time_series |        :x:         |
+| Flow to stock    | flow_to_stock    |        :x:         |
+| Stock to flow    | stock_to_flow    |        :x:         |
+| Time shift       | timeshift        |        :x:         |
+| Time aggregation | time_agg         |        :x:         |
+| Actual time      | current_date     | :heavy_check_mark: |
 
 #### VTL-ML - Set operators
 
 | Name                 | Symbol    | Supported |
 | -------------------- | :-------- | :-------: |
-| Union                | union     |           |
-| Intersection         | intersect |           |
-| Set difference       | setdiff   |           |
-| Symmetric difference | symdiff   |           |
+| Union                | union     |    :x:    |
+| Intersection         | intersect |    :x:    |
+| Set difference       | setdiff   |    :x:    |
+| Symmetric difference | symdiff   |    :x:    |
 
 #### VTL-ML - Hierarchical aggregation
 
 | Name                 | Symbol    | Supported |
 | -------------------- | :-------- | :-------: |
-| Hierarchical roll-up | hierarchy |           |
+| Hierarchical roll-up | hierarchy |    :x:    |
 
 #### VTL-ML - Aggregate and Analytic operators
 
 | Name                               | Symbol          | Supported |
 | ---------------------------------- | :-------------- | :-------: |
-| Aggregate invocation               |                 |           |
-| Analytic invocation                |                 |           |
-| Counting the number of data points | count           |           |
-| Minimum value                      | min             |           |
-| Maximum value                      | max             |           |
-| Median value                       | median          |           |
-| Sum                                | sum             |           |
-| Average value                      | avg             |           |
-| Population standard deviation      | stddev_pop      |           |
-| Sample standard deviation          | stddev_samp     |           |
-| Population variance                | var_pop         |           |
-| Sample variance                    | var_samp        |           |
-| First value                        | first_value     |           |
-| Last value                         | last_value      |           |
-| Lag                                | lag             |           |
-| lead                               | lead            |           |
-| Rank                               | rank            |           |
-| Ratio to report                    | ratio_to_report |           |
+| Aggregate invocation               |                 |    :x:    |
+| Analytic invocation                |                 |    :x:    |
+| Counting the number of data points | count           |    :x:    |
+| Minimum value                      | min             |    :x:    |
+| Maximum value                      | max             |    :x:    |
+| Median value                       | median          |    :x:    |
+| Sum                                | sum             |    :x:    |
+| Average value                      | avg             |    :x:    |
+| Population standard deviation      | stddev_pop      |    :x:    |
+| Sample standard deviation          | stddev_samp     |    :x:    |
+| Population variance                | var_pop         |    :x:    |
+| Sample variance                    | var_samp        |    :x:    |
+| First value                        | first_value     |    :x:    |
+| Last value                         | last_value      |    :x:    |
+| Lag                                | lag             |    :x:    |
+| lead                               | lead            |    :x:    |
+| Rank                               | rank            |    :x:    |
+| Ratio to report                    | ratio_to_report |    :x:    |
 
 #### VTL-ML - Data validation operators
 
 | Name            | Symbol          | Supported |
 | --------------- | :-------------- | :-------: |
-| Check datapoint | check_datapoint |           |
-| Check hierarchy | check_hierarchy |           |
-| Check           | check           |           |
+| Check datapoint | check_datapoint |    :x:    |
+| Check hierarchy | check_hierarchy |    :x:    |
+| Check           | check           |    :x:    |
 
 #### VTL-ML - Conditional operators
 
-| Name         | Symbol       | Supported |
-| ------------ | :----------- | :-------: |
-| If Then Else | if-then-else |           |
-| Nvl          | nvl          |           |
+| Name         | Symbol       |     Supported      |
+| ------------ | :----------- | :----------------: |
+| If Then Else | if-then-else | :heavy_check_mark: |
+| Nvl          | nvl          | :heavy_check_mark: |
 
 #### VTL-ML - Clause operators
 
 | Name                       | Symbol  | Supported |
 | -------------------------- | :------ | :-------: |
-| Filtering Data Points      | filter  |           |
-| Calculation of a Component | calc    |           |
-| Aggregation                | aggr    |           |
-| Maintaining Components     | keep    |           |
-| Removal of Components      | drop    |           |
-| Change of Component name   | rename  |           |
-| Pivoting                   | pivot   |           |
-| Unpivoting                 | unpivot |           |
-| Subspace                   | sub     |           |
+| Filtering Data Points      | filter  |    :x:    |
+| Calculation of a Component | calc    |    :x:    |
+| Aggregation                | aggr    |    :x:    |
+| Maintaining Components     | keep    |    :x:    |
+| Removal of Components      | drop    |    :x:    |
+| Change of Component name   | rename  |    :x:    |
+| Pivoting                   | pivot   |    :x:    |
+| Unpivoting                 | unpivot |    :x:    |
+| Subspace                   | sub     |    :x:    |
