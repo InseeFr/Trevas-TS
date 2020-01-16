@@ -82,31 +82,6 @@ class ArithmeticVisitor extends VtlVisitor {
 		if (!expectedTypes.includes(rightExpr.type))
 			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
-		if (leftExpr.type === VtlParser.DATASET && rightExpr.type === VtlParser.DATASET) {
-			// Left and right operands are of type dataset.
-			// Check if intersection of dimension is not empty.
-			// Check if we have common measures.
-			// Compute the resulting structure.
-
-			const commonIdentifiers = ['Id_1', 'Id_2'];
-			const commonMeasures = ['Me_1', 'Me_2'];
-
-			return {
-				type: VtlParser.DATASET,
-				columns: leftExpr.columns,
-				resolve: bindings => {
-					const leftDataset = leftExpr.resolve(bindings);
-					const rightDataset = rightExpr.resolve(bindings);
-					return leftDataset.join(
-						rightDataset,
-						keyExtractorFor(commonIdentifiers),
-						keyExtractorFor(commonIdentifiers),
-						rowMerger(commonIdentifiers, commonMeasures, (a, b) => a + b)
-					);
-				}
-			}
-		}
-
 		let operatorFunction;
 		let type = [leftExpr.type, rightExpr.type].includes(VtlParser.NUMBER)
 			? VtlParser.NUMBER
@@ -130,14 +105,37 @@ class ArithmeticVisitor extends VtlVisitor {
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
 
-		return {
-			resolve: bindings =>
-				operatorFunction(
-					leftExpr.resolve(bindings),
-					rightExpr.resolve(bindings)
-				),
-			type,
-		};
+		if (leftExpr.type === VtlParser.DATASET && rightExpr.type === VtlParser.DATASET) {
+
+			const commonIdentifiers = ['Id_1', 'Id_2'];
+			const commonMeasures = ['Me_1', 'Me_2'];
+
+			return {
+				type: VtlParser.DATASET,
+				columns: leftExpr.columns,
+				resolve: bindings => {
+					const leftDataset = leftExpr.resolve(bindings);
+					const rightDataset = rightExpr.resolve(bindings);
+					return leftDataset.join(
+						rightDataset,
+						keyExtractorFor(commonIdentifiers),
+						keyExtractorFor(commonIdentifiers),
+						rowMerger(commonIdentifiers, commonMeasures, operatorFunction)
+					);
+				}
+			}
+		} else {
+
+			return {
+				resolve: bindings =>
+					operatorFunction(
+						leftExpr.resolve(bindings),
+						rightExpr.resolve(bindings)
+					),
+				type,
+			};
+		}
+
 	};
 }
 
