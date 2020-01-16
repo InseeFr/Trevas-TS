@@ -291,7 +291,7 @@ const dsCap = {
 };
 
 
-storiesOf('Interpretor/Dataset', module).add('Instr', () => (
+storiesOf('Interpretor/Dataset', module).add('Arithmetic', () => (
 	<Interpretor value='(dsMun + dsCap) / dsSurf' variables={
 		[
 			{ key: 'dsMun', value: dsMun },
