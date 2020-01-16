@@ -37,6 +37,12 @@ function rowMerger(identifiers, measures, op) {
 	}
 }
 
+function intersectColumns(leftColumns, rightColumns) {
+	return Object.fromEntries(Object.entries(leftColumns).filter(
+		l => Object.entries(rightColumns).some(r => l.name === r.name
+			&& l.role === r.role && l.type === r.type)));
+}
+
 
 class ArithmeticVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -107,8 +113,14 @@ class ArithmeticVisitor extends VtlVisitor {
 
 		if (leftExpr.type === VtlParser.DATASET && rightExpr.type === VtlParser.DATASET) {
 
-			const commonIdentifiers = ['Id_1', 'Id_2'];
-			const commonMeasures = ['Me_1', 'Me_2'];
+			const commonColumns = intersectColumns(leftExpr.columns, rightExpr.columns);
+
+			const commonIdentifiers = Object.entries(commonColumns)
+				.filter(([_, {role}]) => role === VtlParser.DIMENSION)
+				.map(([name]) => name);
+			const commonMeasures = Object.entries(commonColumns)
+				.filter(([_, {role}]) => role === VtlParser.MEASURE)
+				.map(([name]) => name);
 
 			return {
 				type: VtlParser.DATASET,
