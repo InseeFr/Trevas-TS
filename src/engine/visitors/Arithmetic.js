@@ -50,6 +50,15 @@ class ArithmeticVisitor extends VtlVisitor {
 			? VtlParser.NUMBER
 			: VtlParser.INTEGER;
 
+		// Dataset
+		const datasetTypeExample = {
+			type: VtlParser.DATASET,
+			columns: [],
+			types: [],
+			roles: [],
+			resolve: bindings => null,
+		};
+
 		switch (opCtx.type) {
 			case VtlParser.PLUS:
 				operatorFunction = (left, right) => left + right;
