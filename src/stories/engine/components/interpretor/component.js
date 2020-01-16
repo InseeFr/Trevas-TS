@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import Griddle from 'griddle-react';
 import Bindings from './bindings';
 import TreeView from '../tree';
 import { buildExecObject } from '../utils';
-import interpret, { getType } from '../../../../engine/interpretor';
+import { interpretVar } from '../../../../engine/interpretor';
+import { VtlParser } from '../../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 const Interpretor = ({ value, variables }) => {
 	const [input, setInput] = useState(value || '');
 	const [vars, setVars] = useState(variables || [{ key: '', value: '' }]);
-	const [res, setRes] = useState('');
+	const [res, setRes] = useState(null);
 	const [type, setType] = useState('');
 	const [error, setError] = useState('');
 	const handleChange = v => {
@@ -15,8 +17,9 @@ const Interpretor = ({ value, variables }) => {
 	};
 	const onClick = () => {
 		try {
-			setRes(interpret(input, buildExecObject(vars)));
-			setType(getType(input, buildExecObject(vars)));
+			const result = interpretVar(input, buildExecObject(vars));
+			setRes(result);
+			setType(result.type);
 			setError('');
 		} catch (e) {
 			setRes('');
@@ -44,10 +47,16 @@ const Interpretor = ({ value, variables }) => {
 					Get Result!
 				</button>
 			</div>
-			{(res || res === false || res === 0) && (
+			{res && res.type === VtlParser.DATASET && (
 				<div className="res">
 					<h2>Result:</h2>
-					<h1 className="res-text">{res.toString()}</h1>
+					<Griddle data={res.resolve().toArray()}></Griddle>
+				</div>
+			)}
+			{res && res.type !== VtlParser.DATASET && (
+				<div className="res">
+					<h2>Result:</h2>
+					<h1 className="res-text">{res.resolve()}</h1>
 				</div>
 			)}
 			{error && (

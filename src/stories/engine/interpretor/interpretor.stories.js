@@ -3,6 +3,8 @@ import { storiesOf } from '@storybook/react';
 import { withReadme } from 'storybook-readme';
 import { Interpretor } from '../components';
 import readme from './README.md';
+import {VtlParser} from "../../../antlr-tools";
+import * as dataForge from "data-forge";
 
 const stories = storiesOf('Interpretor', module);
 
@@ -183,4 +185,33 @@ storiesOf('Interpretor/Function/String', module).add('R-Trim', () => (
 ));
 storiesOf('Interpretor/Function/String', module).add('Instr', () => (
 	<Interpretor value='instr("Hello world", "world")' />
+));
+
+// Dataset
+
+const columns = {
+	Id_1: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
+	Id_2: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
+	Me_1: { type: VtlParser.STRING, role: VtlParser.MEASURE },
+	Me_2: { type: VtlParser.STRING, role: VtlParser.MEASURE },
+};
+
+const pop = {
+	type: VtlParser.DATASET,
+	columns,
+	resolve: () => {
+		return new dataForge.DataFrame({
+			rows: [
+				[10, 'A', 5, 5.0],
+				[10, 'B', 2, 10.5],
+				[11, 'A', 3, 12.2],
+				[11, 'B', 4, 20.3],
+			],
+			columnNames: Object.keys(columns),
+		});
+	},
+};
+
+storiesOf('Interpretor/Dataset', module).add('Instr', () => (
+	<Interpretor value='pop' variables={[{ key: 'pop', value: pop }]} />
 ));

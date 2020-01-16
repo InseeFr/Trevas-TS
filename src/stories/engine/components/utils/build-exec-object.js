@@ -7,7 +7,9 @@ export const buildExecObject = array =>
 		: {};
 
 const cast = value => {
-	if (parseFloat(value)) return parseFloat(value);
-	else if (['true', 'false'].includes(value.trim())) return JSON.parse(value);
+	if (value && !value.type) {
+		if (parseFloat(value)) return parseFloat(value);
+		if (['true', 'false'].includes(value.trim())) return JSON.parse(value);
+	}
 	return value;
 };
