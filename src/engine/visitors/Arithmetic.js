@@ -1,6 +1,43 @@
 import { VtlParser, VtlVisitor } from '../../antlr-tools';
 import { TypeMismatchError } from '../errors';
 
+/**
+ * Util function that creates a key extractor for the columns.
+ * @param columns columns to extract.
+ * @return a key extractor function.
+ */
+function keyExtractorFor(columns) {
+	if (columns.length <= 1) {
+		throw new Error("column list was empty")
+	}
+	return (row) => {
+		return Object.entries(row)
+			.filter(([key]) => columns.includes(key))
+			.map(([_, value]) => value)
+			.reduce((a, v) => a + v, "");
+	};
+}
+
+/**
+ * Creates a merger function that uses op on all measures.
+ * @param identifiers the identifier columns
+ * @param measures the measure columns
+ * @param op the operator
+ */
+function rowMerger(identifiers, measures, op) {
+	return(left, right) => {
+		let result = {};
+		for (const identifier of identifiers) {
+			result[identifier] = left[identifier];
+		}
+		for (const measure of measures) {
+			result[measure] = op(left[measure], right[measure]);
+		}
+		return  result;
+	}
+}
+
+
 class ArithmeticVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
@@ -60,26 +97,12 @@ class ArithmeticVisitor extends VtlVisitor {
 				resolve: bindings => {
 					const leftDataset = leftExpr.resolve(bindings);
 					const rightDataset = rightExpr.resolve(bindings);
-					const result = leftDataset.join(
+					return leftDataset.join(
 						rightDataset,
-						left => Object.entries(left)
-							.filter(([key]) => commonIdentifiers.includes(key))
-							.map(([_, value]) => value)
-							.reduce((a, v) => a + v, ""),
-						right => Object.entries(right)
-							.filter(([key]) => commonIdentifiers.includes(key))
-							.map(([_, value]) => value)
-							.reduce((a, v) => a + v, ""),
-						(left, right) => {
-							return  {
-								Id_1: left.Id_1,
-								Id_2: left.Id_2,
-								Me_1: left.Me_1 + right.Me_1,
-								Me_2: left.Me_2 + right.Me_2,
-							}
-						}
+						keyExtractorFor(commonIdentifiers),
+						keyExtractorFor(commonIdentifiers),
+						rowMerger(commonIdentifiers, commonMeasures, (a, b) => a + b)
 					);
-					return result;
 				}
 			}
 		}
@@ -88,15 +111,6 @@ class ArithmeticVisitor extends VtlVisitor {
 		let type = [leftExpr.type, rightExpr.type].includes(VtlParser.NUMBER)
 			? VtlParser.NUMBER
 			: VtlParser.INTEGER;
-
-		// Dataset
-		const datasetTypeExample = {
-			type: VtlParser.DATASET,
-			columns: [],
-			types: [],
-			roles: [],
-			resolve: bindings => null,
-		};
 
 		switch (opCtx.type) {
 			case VtlParser.PLUS:
