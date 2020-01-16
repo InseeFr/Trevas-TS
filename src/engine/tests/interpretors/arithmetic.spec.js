@@ -128,6 +128,110 @@ describe('arithmetic', () => {
 				},
 			]);
 		});
+		it('paris population by district', () => {
+			const columnsSurf = {
+				Arrondissement: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
+				Surface: { type: VtlParser.NUMBER, role: VtlParser.MEASURE },
+			};
+			const dsSurf = {
+				type: VtlParser.DATASET,
+				columns,
+				resolve: () => {
+					return new dataForge.DataFrame({
+						rows: [
+							[75101, 183],
+							[75102, 99],
+							[75103, 117],
+							[75104, 160],
+							[75105, 254],
+							[75106, 215],
+							[75107, 409],
+							[75108, 388],
+							[75109, 218],
+							[75110, 289],
+							[75111, 367],
+							[75112, 637],
+							[75113, 715],
+							[75114, 564],
+							[75115, 848],
+							[75116, 791],
+							[75117, 567],
+							[75118, 601],
+							[75119, 679],
+							[75120, 598],
+						],
+						columnNames: Object.keys(columnsSurf),
+					});
+				},
+			};
+			const columnsMun = {
+				Arrondissement: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
+				PopMun: { type: VtlParser.NUMBER, role: VtlParser.MEASURE },
+			};
+			const dsMun = {
+				type: VtlParser.DATASET,
+				columns,
+				resolve: () => {
+					return new dataForge.DataFrame({
+						rows: [
+							[75104, 282],
+							[75105, 781],
+							[75106, 876],
+							[75107, 826],
+							[75108, 560],
+							[75109, 516],
+							[75110, 464],
+							[75111, 827],
+							[75112, 991],
+							[75113, 1300],
+							[75114, 977],
+							[75115, 1786],
+							[75116, 2193],
+							[75117, 1449],
+							[75118, 898],
+							[75119, 1051],
+							[75120, 925],
+						],
+						columnNames: Object.keys(columnsMun),
+					});
+				},
+			};
+			const columnsCap = {
+				Arrondissement: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
+				PopCap: { type: VtlParser.NUMBER, role: VtlParser.MEASURE },
+			};
+			const dsCap = {
+				type: VtlParser.DATASET,
+				columns,
+				resolve: () => {
+					return new dataForge.DataFrame({
+						rows: [
+							[75101, 16266],
+							[75102, 20900],
+							[75103, 34115],
+							[75104, 28088],
+							[75105, 58850],
+							[75106, 41100],
+							[75107, 51367],
+							[75108, 36808],
+							[75109, 59555],
+							[75110, 90372],
+							[75111, 146643],
+							[75112, 140296],
+							[75113, 182099],
+							[75114, 135964],
+							[75115, 233392],
+							[75116, 166361],
+							[75117, 167288],
+							[75118, 195233],
+							[75119, 187015],
+							[75120, 195814],
+						],
+						columnNames: Object.keys(columnsCap),
+					});
+				},
+			};
+		});
 	});
 	describe('scalars', () => {
 		it('supports unary operations', () => {
