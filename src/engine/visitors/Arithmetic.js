@@ -7,7 +7,7 @@ import { TypeMismatchError } from '../errors';
  * @return a key extractor function.
  */
 function keyExtractorFor(columns) {
-	if (columns.length <= 1) {
+	if (columns.length < 1) {
 		throw new Error("column list was empty")
 	}
 	return (row) => {
