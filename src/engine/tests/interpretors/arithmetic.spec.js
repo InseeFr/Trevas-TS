@@ -1,7 +1,7 @@
-import { DataFrame } from 'dataframe-js';
+import * as dataForge from 'data-forge';
 import interpret from '../../interpretor';
 import TypeMismatchError from '../../errors/TypeMismatchError';
-import { VtlParser } from '../../../antlr-tools';
+import {VtlParser} from '../../../antlr-tools';
 
 describe('arithmetic', () => {
 	describe('dataset', () => {
@@ -16,33 +16,45 @@ describe('arithmetic', () => {
 				type: VtlParser.DATASET,
 				columns,
 				resolve: () => {
-					return new DataFrame(
-						{
-							Id_1: [10, 10, 11, 11],
-							Id_2: ['A', 'B', 'A', 'B'],
-							Me_1: [5, 2, 3, 4],
-							Me_2: [5.0, 10.5, 12.2, 20.3],
-						},
-						Object.keys(columns)
-					);
+					return new dataForge.DataFrame({
+						rows: [
+							[10, 'A', 5, 5.0],
+							[10, 'B', 2, 10.5],
+							[11, 'A', 3, 12.2],
+							[11, 'B', 4, 20.3],
+						],
+						columnNames: Object.keys(columns),
+					});
 				},
 			};
 			const ds2 = {
 				type: VtlParser.DATASET,
 				columns,
 				resolve: () => {
-					return new DataFrame(
-						{
-							Id_1: [10, 10, 11, 11],
-							Id_2: ['A', 'C', 'B'],
-							Me_1: [10, 11, 6],
-							Me_2: [3.0, 6.2, 7.0],
-						},
-						Object.keys(columns)
-					);
+					return new dataForge.DataFrame({
+						rows: [
+							[10, 'A', 10, 3.0],
+							[10, 'C', 11, 6.2],
+							[11, 'B', 6, 7.0],
+						],
+						columnNames: Object.keys(columns),
+					});
 				},
 			};
-			expect(interpret('result = ds1 + ds2', { ds1, ds2 })).toEqual({});
+			expect(interpret('ds1 + ds2', { ds1, ds2}).toArray()).toEqual([
+				{
+					Id_1: 10,
+					Id_2: 'A',
+					Me_1: 15,
+					Me_2: 8,
+				},
+				{
+					Id_1: 11,
+					Id_2: 'B',
+					Me_1: 10,
+					Me_2: 27.3,
+				},
+			]);
 		});
 	});
 	describe('scalars', () => {

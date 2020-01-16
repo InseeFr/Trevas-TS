@@ -37,13 +37,52 @@ class ArithmeticVisitor extends VtlVisitor {
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.DATASET];
 
 		if (!expectedTypes.includes(leftExpr.type))
 			throw new TypeMismatchError(leftCtx, expectedTypes, leftExpr.type);
 
 		if (!expectedTypes.includes(rightExpr.type))
 			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
+
+		if (leftExpr.type === VtlParser.DATASET && rightExpr.type === VtlParser.DATASET) {
+			// Left and right operands are of type dataset.
+			// Check if intersection of dimension is not empty.
+			// Check if we have common measures.
+			// Compute the resulting structure.
+
+			const commonIdentifiers = ['Id_1', 'Id_2'];
+			const commonMeasures = ['Me_1', 'Me_2'];
+
+			return {
+				type: VtlParser.DATASET,
+				columns: leftExpr.columns,
+				resolve: bindings => {
+					const leftDataset = leftExpr.resolve(bindings);
+					const rightDataset = rightExpr.resolve(bindings);
+					const result = leftDataset.join(
+						rightDataset,
+						left => Object.entries(left)
+							.filter(([key]) => commonIdentifiers.includes(key))
+							.map(([_, value]) => value)
+							.reduce((a, v) => a + v, ""),
+						right => Object.entries(right)
+							.filter(([key]) => commonIdentifiers.includes(key))
+							.map(([_, value]) => value)
+							.reduce((a, v) => a + v, ""),
+						(left, right) => {
+							return  {
+								Id_1: left.Id_1,
+								Id_2: left.Id_2,
+								Me_1: left.Me_1 + right.Me_1,
+								Me_2: left.Me_2 + right.Me_2,
+							}
+						}
+					);
+					return result;
+				}
+			}
+		}
 
 		let operatorFunction;
 		let type = [leftExpr.type, rightExpr.type].includes(VtlParser.NUMBER)
