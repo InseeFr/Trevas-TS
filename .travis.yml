@@ -9,7 +9,7 @@ install:
   - yarn install
 script:
   - yarn test --coverage
-  - sonar-scanner
+#  - sonar-scanner
 after_script: # Upload coverage reports 
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
   - bash scripts/deploy.sh 
