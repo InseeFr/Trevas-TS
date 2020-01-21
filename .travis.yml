@@ -7,9 +7,10 @@ addons:
 install:
   - yarn config set registry https://registry.npmjs.org
   - yarn install
+before_script:
+  - bash scripts/update-sonar-props.sh
 script:
   - yarn test --coverage
-  - yarn sonar-scanner
-after_script: # Upload coverage reports
+after_script:
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
   - bash scripts/deploy.sh
