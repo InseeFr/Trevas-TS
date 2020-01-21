@@ -38,7 +38,7 @@ echo "Sonar file found: ${SONAR_FILE}"
 # Update the version
 REPLACE='^sonar.projectVersion=default-version'
 WITH="sonar.projectVersion=${PACKAGE_VERSION}"
-echo "Replaced: sonar.projectName=${PACKAGE_VERSION}"
+echo "Replaced: sonar.projectVersion=${PACKAGE_VERSION}"
 
 # Update the project name
 REPLACE='^sonar.projectName=default-name'
