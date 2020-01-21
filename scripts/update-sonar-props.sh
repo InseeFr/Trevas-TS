@@ -32,7 +32,7 @@ PACKAGE_NAME=$(cat package.json \
 echo "Extracted project: ${PACKAGE_NAME}"
 
 # Get the Sonar properties file
-SONAR_FILE=$(find . -name sonarcloud.properties -type f)
+SONAR_FILE=$(find . -iname '.sonarcloud.properties' -type f)
 echo "Sonar file found: ${SONAR_FILE}"
 
 # Update the version
