@@ -32,17 +32,17 @@ PACKAGE_NAME=$(cat package.json \
 echo "Extracted project: ${PACKAGE_NAME}"
 
 # Get the Sonar properties file
-SONAR_FILE=$(find ./ -iname sonar*.properties -type f)
+SONAR_FILE=$(find . -name sonarcloud.properties -type f)
 echo "Sonar file found: ${SONAR_FILE}"
 
 # Update the version
-REPLACE='^sonar.projectVersion=.*$'
+REPLACE='^sonar.projectVersion=default-version'
 WITH="sonar.projectVersion=${PACKAGE_VERSION}"
-sed -i.bak "s#${REPLACE}#${WITH}#g" ${SONAR_FILE}
+echo "Replaced: sonar.projectName=${PACKAGE_VERSION}"
 
 # Update the project name
-REPLACE='^sonar.projectName=.*$'
+REPLACE='^sonar.projectName=default-name'
 WITH="sonar.projectName=${PACKAGE_NAME}"
-sed -i.bak "s#${REPLACE}#${WITH}#g" ${SONAR_FILE}
+echo "Replaced: sonar.projectName=${PACKAGE_NAME}"
 
 echo "Done!"
