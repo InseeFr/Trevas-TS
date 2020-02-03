@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Griddle from 'griddle-react';
-import Bindings from './bindings';
+import { Bindings, BindingsDataset } from './bindings';
 import TreeView from '../tree';
 import { buildExecObject } from '../utils';
 import { interpretVar } from '../../../../engine/interpretor';
 import { getTokenName } from '../../../../engine/utils/parser';
 import { VtlParser } from '../../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
-const Interpretor = ({ value, variables }) => {
+const Interpretor = ({ value, variables, dataset }) => {
 	const [input, setInput] = useState(value || '');
 	const [vars, setVars] = useState(variables || [{ key: '', value: '' }]);
 	const [res, setRes] = useState(null);
@@ -41,8 +41,18 @@ const Interpretor = ({ value, variables }) => {
 				onChange={e => handleChange(e.target.value)}
 				style={{ width: '40em' }}
 			/>
-			<h3>Key / Values</h3>
-			<Bindings variables={vars} save={setVars} />
+
+			{dataset ? (
+				<>
+					<h3>Key / Values (dataset)</h3>
+					<BindingsDataset variables={vars} save={setVars} />
+				</>
+			) : (
+				<>
+					<h3>Key / Values</h3>
+					<Bindings variables={vars} save={setVars} />
+				</>
+			)}
 			<div className="btn-res">
 				<button type="button" onClick={onClick}>
 					Get Result!

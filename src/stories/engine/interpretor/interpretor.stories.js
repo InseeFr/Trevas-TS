@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react';
 import { withReadme } from 'storybook-readme';
 import { Interpretor } from '../components';
 import readme from './README.md';
-import {VtlParser} from "../../../antlr-tools";
-import * as dataForge from "data-forge";
+import { VtlParser } from '../../../antlr-tools';
+import * as dataForge from 'data-forge';
 
 const stories = storiesOf('Interpretor', module);
 
@@ -193,7 +193,7 @@ const columnsSurf = {
 };
 const dsSurf = {
 	type: VtlParser.DATASET,
-	columns:columnsSurf,
+	columns: columnsSurf,
 	resolve: () => {
 		return new dataForge.DataFrame({
 			rows: [
@@ -228,7 +228,7 @@ const columnsMun = {
 };
 const dsMun = {
 	type: VtlParser.DATASET,
-	columns:columnsMun,
+	columns: columnsMun,
 	resolve: () => {
 		return new dataForge.DataFrame({
 			rows: [
@@ -260,7 +260,7 @@ const columnsCap = {
 };
 const dsCap = {
 	type: VtlParser.DATASET,
-	columns:columnsCap,
+	columns: columnsCap,
 	resolve: () => {
 		return new dataForge.DataFrame({
 			rows: [
@@ -290,13 +290,14 @@ const dsCap = {
 	},
 };
 
-
 storiesOf('Interpretor/Dataset', module).add('Arithmetic', () => (
-	<Interpretor value='(dsMun + dsCap) / dsSurf' variables={
-		[
+	<Interpretor
+		value="(dsMun + dsCap) / dsSurf"
+		variables={[
 			{ key: 'dsMun', value: dsMun },
 			{ key: 'dsCap', value: dsCap },
-			{ key: 'dsSurf', value: dsSurf }
-		]
-	} />
+			{ key: 'dsSurf', value: dsSurf },
+		]}
+		dataset
+	/>
 ));
