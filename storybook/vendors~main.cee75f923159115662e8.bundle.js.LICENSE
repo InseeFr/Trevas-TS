@@ -4,6 +4,13 @@
   http://jedwatson.github.io/classnames
 */
 
+/*@license
+	Papa Parse
+	v4.4.0
+	https://github.com/mholt/PapaParse
+	License: MIT
+*/
+
 /*
 object-assign
 (c) Sindre Sorhus
@@ -13,6 +20,21 @@ object-assign
 /*! https://mths.be/codepointat v0.2.0 by @mathias */
 
 /*! https://mths.be/fromcodepoint v0.2.1 by @mathias */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
+/*! @preserve
+ * numeral.js
+ * version : 2.0.6
+ * author : Adam Draper
+ * license : MIT
+ * http://adamwdraper.github.com/Numeral-js/
+ */
 
 /*!
  * https://github.com/es-shims/es5-shim
