@@ -3,13 +3,12 @@ node_js:
   - 12.8.0
 cache: yarn
 addons:
-  organization: "inseefr"
+  organization: 'inseefr'
 install:
   - yarn config set registry https://registry.npmjs.org
   - yarn install
 script:
   - yarn test --coverage
-  - sonar-scanner
-after_script: # Upload coverage reports 
+after_script:
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
-  - bash scripts/deploy.sh 
+  - bash scripts/deploy.sh

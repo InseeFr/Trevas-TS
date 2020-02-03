@@ -4,6 +4,7 @@ import Bindings from './bindings';
 import TreeView from '../tree';
 import { buildExecObject } from '../utils';
 import { interpretVar } from '../../../../engine/interpretor';
+import { getTokenName } from '../../../../engine/utils/parser';
 import { VtlParser } from '../../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 const Interpretor = ({ value, variables }) => {
@@ -50,7 +51,7 @@ const Interpretor = ({ value, variables }) => {
 			{res && res.type === VtlParser.DATASET && (
 				<div className="res">
 					<h2>Result:</h2>
-					<Griddle data={res.resolve().toArray()}></Griddle>
+					<Griddle data={res.resolve().toArray()} />
 				</div>
 			)}
 			{res && res.type !== VtlParser.DATASET && (
@@ -68,7 +69,7 @@ const Interpretor = ({ value, variables }) => {
 			{type && (
 				<div className="res">
 					<h2>Returned type</h2>
-					<h1 className="res-text">{type}</h1>
+					<h1 className="res-text">{getTokenName(type)}</h1>
 				</div>
 			)}
 			{(res || error) && (
