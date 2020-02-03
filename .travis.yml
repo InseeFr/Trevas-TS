@@ -7,6 +7,8 @@ addons:
 install:
   - yarn config set registry https://registry.npmjs.org
   - yarn install
+before_script:
+  - bash scripts/update-sonar-props.sh
 script:
   - yarn test --coverage
 after_script:
