@@ -1,5 +1,4 @@
 import antlr4 from 'antlr4';
-import { VtlLexer } from './parser-vtl';
 
 export const VtlClassname = {};
 VtlClassname.common = { className: 'vtl-common', typeName: 'common' };
@@ -12,6 +11,10 @@ VtlClassname.keyword = { className: 'vtl-keyword', typeName: 'keyword' };
 VtlClassname.string = { className: 'vtl-string', typeName: 'string' };
 VtlClassname.float = { className: 'vtl-float', typeName: 'float' };
 VtlClassname.mlComment = { className: 'vtl-ml-comment', typeName: 'comment' };
+VtlClassname.slComment = {
+	className: 'vtl-sl-comment',
+	typeName: 'sl-comment',
+};
 
 const VTL_TYPES = {
 	ASSIGN: VtlClassname.operator,
@@ -26,6 +29,7 @@ const VTL_TYPES = {
 	IDENTIFIER: VtlClassname.identifier,
 	FLOAT_CONSTANT: VtlClassname.float,
 	ML_COMMENT: VtlClassname.mlComment,
+	SL_COMMENT: VtlClassname.slComment,
 	BOOLEAN_CONSTANT: VtlClassname.boolean,
 
 	IF: VtlClassname.keyword,
@@ -62,8 +66,10 @@ const VTL_TYPES = {
 	MOD: VtlClassname.function,
 };
 
-const tokenize = (symbolicNames, lexer) => ligne => ({ type, start, stop }) => {
-	// console.log(symbolicNames[type], ligne.substr(start, stop - start + 1));
+const getKind = type =>
+	type in VTL_TYPES ? VTL_TYPES[type] : VtlClassname.common;
+
+const tokenize = symbolicNames => ligne => ({ type, start, stop }) => {
 	const name = symbolicNames[type];
 	return {
 		lexerType: '',
@@ -71,28 +77,22 @@ const tokenize = (symbolicNames, lexer) => ligne => ({ type, start, stop }) => {
 		value: ligne.substr(start, stop - start + 1),
 		start,
 		stop,
-
 		...getKind(name),
 	};
 };
 
-const getKind = type =>
-	type in VTL_TYPES ? VTL_TYPES[type] : VtlClassname.common;
-
 /* */
-const getTokens = ligne => {
-	const chars = new antlr4.InputStream(ligne);
+const getTokens = antlrTools => lines => {
+	const { VtlLexer } = antlrTools;
+	const chars = new antlr4.InputStream(lines);
 	const lexer = new VtlLexer(chars);
-	lexer.removeErrorListeners();
 
+	lexer.removeErrorListeners();
+	lexer.skip = () => {};
 	const tokens = lexer
 		.getAllTokens()
-		.map(tokenize(lexer.symbolicNames, lexer)(ligne));
-
-	// console.log(tokens, ligne);
-	// console.log(fillUnmappedToken(tokens, ligne));
-
-	return tokens;
+		.map(tokenize(lexer.symbolicNames, lexer)(lines));
+	return Promise.resolve(tokens);
 };
 
 export default getTokens;

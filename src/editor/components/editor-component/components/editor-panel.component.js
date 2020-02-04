@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useReducer, useState } from 'react';
+import React, { useMemo, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import createReducer, { initialState } from '../editor-reducer';
 import Suggestions from './sugestions.component';

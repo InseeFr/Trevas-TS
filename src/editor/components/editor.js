@@ -21,7 +21,7 @@ const shortcuts = composeShortcuts({
 const Editor = props => {
 	const [errors, setErrors] = useState([]);
 	const { grammar, startRule } = props;
-	const { parse, getTokens } = getTools(grammar);
+	const { parse, getTokens } = useCallback(getTools(grammar), [grammar]);
 	const cally = useCallback(parse(startRule), [startRule]);
 	return (
 		<>
