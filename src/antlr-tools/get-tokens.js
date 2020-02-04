@@ -89,9 +89,7 @@ const getTokens = antlrTools => lines => {
 
 	lexer.removeErrorListeners();
 	lexer.skip = () => {};
-	const tokens = lexer
-		.getAllTokens()
-		.map(tokenize(lexer.symbolicNames, lexer)(lines));
+	const tokens = lexer.getAllTokens().map(tokenize(lexer.symbolicNames)(lines));
 	return Promise.resolve(tokens);
 };
 
