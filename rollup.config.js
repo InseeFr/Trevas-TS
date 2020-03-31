@@ -4,6 +4,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
 import 'core-js';
 
 const { dependencies } = require('./package.json');
@@ -34,6 +35,7 @@ export default {
 			exclude: 'node_modules/**',
 			ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
 		}),
+		terser(),
 	],
 	external: ['react', ...Object.keys(dependencies)],
 };
