@@ -11,6 +11,9 @@ antlr-4.7.2-complete.jar
 # testing
 /coverage
 
+# bundle report
+/bundle-report
+
 # production
 /lib
 

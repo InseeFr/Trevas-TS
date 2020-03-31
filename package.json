@@ -37,7 +37,8 @@
 		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
 		"coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
 		"build": "rollup -c rollup.config.js",
-		"prepublishOnly": "npm run test && npm run build"
+		"prepublishOnly": "npm run test && npm run build",
+		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/source-map-explorer.html"
 	},
 	"peerDependencies": {
 		"react": "^16.8.6"
@@ -84,6 +85,7 @@
 		"rollup-plugin-terser": "^5.3.0",
 		"rollup-plugin-web-worker-loader": "^0.9.0",
 		"sass-loader": "^8.0.0",
+		"source-map-explorer": "^2.4.1",
 		"storybook-readme": "^5.0.8",
 		"style-loader": "^1.1.2"
 	},
