@@ -15,10 +15,15 @@ describe('interpretor', () => {
 				aString: 'string!',
 				anInt: 1234,
 				aFloat: 12.34,
+				aDataset: { dataStructure: {}, dataPoints: {} },
 			};
 			expect(interpret('aString', bindings)).toEqual('string!');
 			expect(interpret('anInt', bindings)).toEqual(1234);
 			expect(interpret('aFloat', bindings)).toEqual(12.34);
+			expect(interpret('aDataset', bindings)).toEqual({
+				dataStructure: {},
+				dataPoints: {},
+			});
 		});
 	});
 });

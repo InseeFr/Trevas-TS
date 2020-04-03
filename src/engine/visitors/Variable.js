@@ -7,6 +7,16 @@ const types = {
 	boolean: VtlParser.BOOLEAN,
 };
 
+const typeResolver = (variable, bindings) => {
+	const bindingVar = bindings[variable];
+	const jsType = typeof bindingVar;
+	if(jsType === "object") {
+		return(VtlParser.DATASET)
+	} else {
+		return(types[jsType])
+	}
+}
+
 class VariableVisitor extends VtlVisitor {
 	constructor(bindings) {
 		super();
@@ -19,7 +29,7 @@ class VariableVisitor extends VtlVisitor {
 		} else {
 			return {
 				resolve: bindings => bindings[variable],
-				type: types[typeof this.bindings[variable]],
+				type: typeResolver(variable, this.bindings)
 			};
 		}
 	};
