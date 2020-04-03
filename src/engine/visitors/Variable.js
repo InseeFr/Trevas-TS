@@ -8,14 +8,23 @@ const types = {
 };
 
 const typeResolver = (variable, bindings) => {
-	const bindingVar = bindings[variable];
-	const jsType = typeof bindingVar;
-	if(jsType === "object") {
-		return(VtlParser.DATASET)
+	const boundVar = bindings[variable];
+	const jsType = typeof boundVar;
+
+	if (['string', 'number', 'boolean'].includes(jsType)) {
+		return types[jsType];
+	} else if (jsType === 'object') {
+		const dsKeys = Object.keys(boundVar);
+		console.log(dsKeys)
+		if (dsKeys.includes("dataStructure", "dataPoints")) {
+			return VtlParser.DATASET;
+		} else {
+			throw Error('The dataset shape is not good.');
+		}
 	} else {
-		return(types[jsType])
+		throw Error('Unrecognized variable type.');
 	}
-}
+};
 
 class VariableVisitor extends VtlVisitor {
 	constructor(bindings) {
@@ -29,7 +38,7 @@ class VariableVisitor extends VtlVisitor {
 		} else {
 			return {
 				resolve: bindings => bindings[variable],
-				type: typeResolver(variable, this.bindings)
+				type: typeResolver(variable, this.bindings),
 			};
 		}
 	};
