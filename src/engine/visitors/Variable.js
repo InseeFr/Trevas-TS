@@ -15,14 +15,13 @@ const typeResolver = (variable, bindings) => {
 		return types[jsType];
 	} else if (jsType === 'object') {
 		const dsKeys = Object.keys(boundVar);
-		console.log(dsKeys)
 		if (dsKeys.includes("dataStructure", "dataPoints")) {
 			return VtlParser.DATASET;
 		} else {
-			throw Error('The dataset shape is not good.');
+			throw new Error('The dataset shape is not good.');
 		}
 	} else {
-		throw Error('Unrecognized variable type.');
+		throw new Error('Unrecognized variable type.');
 	}
 };
 
