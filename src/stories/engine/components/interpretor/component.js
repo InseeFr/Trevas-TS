@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Griddle from 'griddle-react';
-import { Bindings, BindingsDataset } from './bindings';
+import Bindings from './bindings';
 import TreeView from '../tree';
-import { buildExecObject } from '../utils';
 import { interpretVar } from '../../../../engine/interpretor';
 import { getTokenName } from '../../../../engine/utils/parser';
 import { VtlParser } from '../../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
-const Interpretor = ({ value, variables, dataset }) => {
-	const [input, setInput] = useState(value || '');
-	const [vars, setVars] = useState(variables || [{ key: '', value: '' }]);
+const Interpretor = ({ expression, bindings: initialBindings }) => {
+	const [input, setInput] = useState(expression || '');
+	const [bindings, setBindings] = useState(initialBindings);
 	const [res, setRes] = useState(null);
 	const [type, setType] = useState('');
 	const [error, setError] = useState('');
@@ -18,7 +18,7 @@ const Interpretor = ({ value, variables, dataset }) => {
 	};
 	const onClick = () => {
 		try {
-			const result = interpretVar(input, buildExecObject(vars));
+			const result = interpretVar(input, bindings);
 			setRes(result);
 			setType(result.type);
 			setError('');
@@ -28,7 +28,6 @@ const Interpretor = ({ value, variables, dataset }) => {
 			setError(e.message);
 		}
 	};
-
 	return (
 		<>
 			<h2 className="centered">VTL Exec</h2>
@@ -41,18 +40,8 @@ const Interpretor = ({ value, variables, dataset }) => {
 				onChange={e => handleChange(e.target.value)}
 				style={{ width: '40em' }}
 			/>
-
-			{dataset ? (
-				<>
-					<h3>Key / Values (dataset)</h3>
-					<BindingsDataset variables={vars} save={setVars} />
-				</>
-			) : (
-				<>
-					<h3>Key / Values</h3>
-					<Bindings variables={vars} save={setVars} />
-				</>
-			)}
+			<h3>Bindings</h3>
+			<Bindings bindings={bindings} onChange={setBindings} />
 			<div className="btn-res">
 				<button type="button" onClick={onClick}>
 					Get Result!
@@ -90,6 +79,16 @@ const Interpretor = ({ value, variables, dataset }) => {
 			)}
 		</>
 	);
+};
+
+Interpretor.propTypes = {
+	expression: PropTypes.string,
+	bindings: PropTypes.shape({}),
+};
+
+Interpretor.defaultProps = {
+	expression: '',
+	bindings: {},
 };
 
 export default Interpretor;
