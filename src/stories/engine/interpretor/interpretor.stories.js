@@ -186,6 +186,22 @@ storiesOf('Interpretor/Function/String', module).add('Instr', () => (
 	<Interpretor expression='instr("Hello world", "world")' />
 ));
 
+/** Functions, dataset */
+storiesOf('Interpretor/Function/Dataset', module).add('Count', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 3],
+		},
+	};
+	return <Interpretor expression="count(ds)" bindings={{ ds }} />;
+});
+
 const columnsSurf = {
 	Arrondissement: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
 	Value: { type: VtlParser.NUMBER, role: VtlParser.MEASURE },
