@@ -10,6 +10,7 @@ import {
 	ConcatenationVisitor,
 	NumericFunctionsVisitor,
 	StringFunctionsVisitor,
+	DatasetFunctionsVisitor,
 } from './functions';
 import DateVisitor from './functions/Date';
 
@@ -28,6 +29,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.numericFunctionVisitor = new NumericFunctionsVisitor(this);
 		this.stringFunctionVisitor = new StringFunctionsVisitor(this);
 		this.variableVisitor = new VariableVisitor(this.bindings);
+		this.datasetFunctionsVisitor = new DatasetFunctionsVisitor(this);
 	}
 
 	visitComparisonExpr = ctx => this.comparisonVisitor.visit(ctx);
@@ -53,7 +55,7 @@ class ExpressionVisitor extends VtlVisitor {
 	visitParenthesisExpr = ctx => this.visit(ctx.expr());
 
 	visitIfExpr = ctx => this.ifThenElseVisitor.visit(ctx);
-	visitConditionalFunctions = ctx => this.visit(ctx.conditionalOperators())
+	visitConditionalFunctions = ctx => this.visit(ctx.conditionalOperators());
 	visitNvlAtom = ctx => this.ifThenElseVisitor.visit(ctx);
 
 	// TODO: Optional expression should handle missing values.
@@ -75,6 +77,9 @@ class ExpressionVisitor extends VtlVisitor {
 		this.stringFunctionVisitor.visit(ctx.stringOperators());
 	visitNumericFunctions = ctx =>
 		this.numericFunctionVisitor.visit(ctx.numericOperators());
+
+	visitAggregateFunctions = ctx =>
+		this.datasetFunctionsVisitor.visit(ctx.aggrOperatorsGrouping());
 }
 
 export default ExpressionVisitor;
