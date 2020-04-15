@@ -19,19 +19,9 @@ class DatasetVisitor extends VtlVisitor {
 		let type;
 
 		switch (opCtx.type) {
-			// FIXME implement not using the "interface" representation but the inner
-			// one using dataforge.DataFrame
 			case VtlParser.COUNT:
 				operatorFunction = expr => {
-					const dpKeys = Object.keys(expr.dataPoints);
-					if (dpKeys.length === 0) {
-						return 0;
-					} else {
-						const firstKey = dpKeys[0];
-						// every column vector of a dataset must have the same length
-						// so testing on the first one is ok ?
-						return expr.dataPoints[firstKey].length;
-					}
+					return expr.count();
 				};
 				type = VtlParser.NUMBER;
 				break;
