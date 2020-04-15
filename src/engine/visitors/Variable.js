@@ -1,4 +1,5 @@
 import { VtlParser, VtlVisitor } from '../../antlr-tools';
+import { fromDatasetToDataframe } from 'engine/utils/dataset';
 
 // TODO: Support integers here.
 const types = {
@@ -10,14 +11,15 @@ const types = {
 /** Variable transformation */
 const varTransformer = (variable, bindings) => {
 	const type = typeResolver(variable, bindings);
-	if ([VtlParser.NUMBER, VtlParser.STRING, VtlParser.BOOLEAN].includes(type) ){
-		return bindings[variable]
+	if ([VtlParser.NUMBER, VtlParser.STRING, VtlParser.BOOLEAN].includes(type)) {
+		return bindings[variable];
 	} else if (type === VtlParser.DATASET) {
 		// TODO transform to the inner Dataset representation
 		// see engine/tests/interpretors/arithmetic.spec.js
-		return bindings[variable]
+		//return bindings[variable]
+		return fromDatasetToDataframe(bindings[variable]);
 	} else {
-		throw new Error(`Cannot transform variable of type ${type}`)
+		throw new Error(`Cannot transform variable of type ${type}`);
 	}
 };
 
