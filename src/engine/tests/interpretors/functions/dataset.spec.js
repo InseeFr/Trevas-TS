@@ -2,10 +2,6 @@ import interpret from 'engine/interpretor';
 
 describe('interpretor', () => {
 	describe('dataset functions', () => {
-		it('test string fun', () => {
-			expect(interpret('substr("abcde", 2, 1)', {})).toEqual('c');
-		});
-
 		it('should count observations in a dataset', () => {
 			// TODO implement !
 			const ds = { dataStructure: {}, dataPoints: {} };
