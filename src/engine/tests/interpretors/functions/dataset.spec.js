@@ -3,7 +3,6 @@ import interpret from 'engine/interpretor';
 describe('interpretor', () => {
 	describe('dataset functions', () => {
 		it('should count observations in a dataset', () => {
-			// TODO implement !
 			const ds = { dataStructure: {}, dataPoints: {} };
 			const ds2 = {
 				dataStructure: { col_1: 'truc' },

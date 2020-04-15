@@ -8,12 +8,14 @@ export const fromDatasetToDataframe = dataset => {
 		const firstKey = dpColumns[0];
 		const l = dataset.dataPoints[firstKey].length;
 		let rows = [];
+		// for every row
 		for (let i = 0; i < l; i++) {
-			let a = [];
+			let row = [];
+			// and every column
 			for (const col of dpColumns) {
-				a.push(dataset.dataPoints[col][i]);
+				row.push(dataset.dataPoints[col][i]);
 			}
-			rows.push(a);
+			rows.push(row);
 		}
 		return new DataFrame({
 			rows: rows,
