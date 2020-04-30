@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/vtl-tools",
-	"version": "0.1.15-rc1",
+	"version": "0.1.15",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/InseeFr/vtl-tools"
