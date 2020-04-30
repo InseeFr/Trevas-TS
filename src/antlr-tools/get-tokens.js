@@ -66,10 +66,10 @@ const VTL_TYPES = {
 	MOD: VtlClassname.function,
 };
 
-const getKind = type =>
+const getKind = (type) =>
 	type in VTL_TYPES ? VTL_TYPES[type] : VtlClassname.common;
 
-const tokenize = symbolicNames => ligne => ({ type, start, stop }) => {
+const tokenize = (symbolicNames) => (ligne) => ({ type, start, stop }) => {
 	const name = symbolicNames[type];
 	return {
 		lexerType: '',
@@ -82,7 +82,7 @@ const tokenize = symbolicNames => ligne => ({ type, start, stop }) => {
 };
 
 /* */
-const getTokens = antlrTools => lines => {
+const getTokens = (antlrTools) => (lines) => {
 	const { VtlLexer } = antlrTools;
 	const chars = new antlr4.InputStream(lines);
 	const lexer = new VtlLexer(chars);

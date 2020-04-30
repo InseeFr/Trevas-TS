@@ -4,7 +4,7 @@ import * as VTL3Istat from './vtl-3.0-Istat';
 import getTokens from './get-tokens';
 import parse from './parse';
 
-const getTools = grammar => {
+const getTools = (grammar) => {
 	switch (grammar) {
 		case 'vtl-3.0':
 			return { getTokens: getTokens(VTL3Istat), parse: parse(VTL3Istat) };
