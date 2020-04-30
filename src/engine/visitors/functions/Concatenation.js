@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 class ConcatenationVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -6,7 +9,7 @@ class ConcatenationVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitArithmeticExprOrConcat = ctx => {
+	visitArithmeticExprOrConcat = (ctx) => {
 		if (ctx.op.type !== VtlParser.CONCAT) {
 			throw new Error('Concat visitor got arithmetic context');
 		}
@@ -23,7 +26,7 @@ class ConcatenationVisitor extends VtlVisitor {
 			);
 		}
 		return {
-			resolve: bindings =>
+			resolve: (bindings) =>
 				leftOperand.resolve(bindings) + rightOperand.resolve(bindings),
 			type: leftOperand.type, // invariant because of type check above.
 		};

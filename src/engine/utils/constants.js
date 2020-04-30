@@ -1,6 +1,6 @@
-import { VtlParser } from '../../antlr-tools';
+import { VtlParser } from '../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
-export const replaceConstantType = type => {
+export const replaceConstantType = (type) => {
 	switch (type) {
 		case VtlParser.STRING_CONSTANT:
 			return VtlParser.STRING;

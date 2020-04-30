@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import { TypeMismatchError } from '../errors';
 
 class BooleanVisitor extends VtlVisitor {
@@ -7,7 +10,7 @@ class BooleanVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryExpr = ctx => {
+	visitUnaryExpr = (ctx) => {
 		const { right } = ctx;
 		const rightOperand = this.exprVisitor.visit(right);
 
@@ -15,12 +18,12 @@ class BooleanVisitor extends VtlVisitor {
 			throw new Error('Operand should be a boolean constant');
 
 		return {
-			resolve: bindings => !rightOperand.resolve(bindings),
+			resolve: (bindings) => !rightOperand.resolve(bindings),
 			type: VtlParser.BOOLEAN,
 		};
 	};
 
-	visitBooleanExpr = ctx => {
+	visitBooleanExpr = (ctx) => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
@@ -47,7 +50,7 @@ class BooleanVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: bindings =>
+			resolve: (bindings) =>
 				operatorFunction(
 					leftExpr.resolve(bindings),
 					rightExpr.resolve(bindings)

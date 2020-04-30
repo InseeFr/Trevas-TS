@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import { OperatorTypeError } from '../errors';
 
 class ComparisonVisitor extends VtlVisitor {
@@ -7,7 +10,7 @@ class ComparisonVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitComparisonExpr = ctx => {
+	visitComparisonExpr = (ctx) => {
 		const { left, right, op } = ctx;
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
@@ -46,7 +49,7 @@ class ComparisonVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: bindings =>
+			resolve: (bindings) =>
 				operatorFunction(
 					leftOperand.resolve(bindings),
 					rightOperand.resolve(bindings)

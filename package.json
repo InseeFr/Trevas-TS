@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/vtl-tools",
-	"version": "0.1.13",
+	"version": "0.1.15-rc1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/InseeFr/vtl-tools"
@@ -108,7 +108,8 @@
 		"semi": true,
 		"singleQuote": true,
 		"trailingComma": "es5",
-		"useTabs": true
+		"useTabs": true,
+		"endOfLine": "auto"
 	},
 	"browserslist": {
 		"production": [

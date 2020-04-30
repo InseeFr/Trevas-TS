@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import { getCurrentDate } from '../../utils/dates';
 
 class DateVisitor extends VtlVisitor {
@@ -6,7 +9,7 @@ class DateVisitor extends VtlVisitor {
 		super();
 	}
 
-	visitCurrentDateAtom = ctx => ({
+	visitCurrentDateAtom = (ctx) => ({
 		resolve: () => getCurrentDate(),
 		type: VtlParser.DATE,
 	});

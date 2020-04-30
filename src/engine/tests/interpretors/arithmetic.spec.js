@@ -1,7 +1,7 @@
 import * as dataForge from 'data-forge';
 import interpret from '../../interpretor';
 import TypeMismatchError from '../../errors/TypeMismatchError';
-import { VtlParser } from '../../../antlr-tools';
+import { VtlParser } from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 describe('arithmetic', () => {
 	describe('dataset', () => {

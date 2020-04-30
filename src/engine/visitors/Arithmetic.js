@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import { TypeMismatchError } from '../errors';
 
 /**
@@ -8,13 +11,13 @@ import { TypeMismatchError } from '../errors';
  */
 function keyExtractorFor(columns) {
 	if (columns.length < 1) {
-		throw new Error("column list was empty")
+		throw new Error('column list was empty');
 	}
 	return (row) => {
 		return Object.entries(row)
 			.filter(([key]) => columns.includes(key))
 			.map(([_, value]) => value)
-			.reduce((a, v) => a + v, "");
+			.reduce((a, v) => a + v, '');
 	};
 }
 
@@ -25,7 +28,7 @@ function keyExtractorFor(columns) {
  * @param op the operator
  */
 function rowMerger(identifiers, measures, op) {
-	return(left, right) => {
+	return (left, right) => {
 		let result = {};
 		for (const identifier of identifiers) {
 			result[identifier] = left[identifier];
@@ -33,16 +36,19 @@ function rowMerger(identifiers, measures, op) {
 		for (const measure of measures) {
 			result[measure] = op(left[measure], right[measure]);
 		}
-		return  result;
-	}
+		return result;
+	};
 }
 
 function intersectColumns(leftColumns, rightColumns) {
-	return Object.fromEntries(Object.entries(leftColumns).filter(
-		l => Object.entries(rightColumns).some(r => l.name === r.name
-			&& l.role === r.role && l.type === r.type)));
+	return Object.fromEntries(
+		Object.entries(leftColumns).filter((l) =>
+			Object.entries(rightColumns).some(
+				(r) => l.name === r.name && l.role === r.role && l.type === r.type
+			)
+		)
+	);
 }
-
 
 class ArithmeticVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -50,7 +56,7 @@ class ArithmeticVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryExpr = ctx => {
+	visitUnaryExpr = (ctx) => {
 		const { op, right: rightCtx } = ctx;
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
@@ -60,7 +66,7 @@ class ArithmeticVisitor extends VtlVisitor {
 			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
 		return {
-			resolve: bindings => {
+			resolve: (bindings) => {
 				const value = rightExpr.resolve(bindings);
 				return op.type === VtlParser.PLUS ? value : -value;
 			},
@@ -68,19 +74,23 @@ class ArithmeticVisitor extends VtlVisitor {
 		};
 	};
 
-	visitArithmeticExprOrConcat = ctx => {
+	visitArithmeticExprOrConcat = (ctx) => {
 		if (ctx.op.type === VtlParser.CONCAT) {
 			throw new Error('Arithmetic visitor got CONCAT context');
 		}
 		return this.visitArithmeticExpr(ctx);
 	};
 
-	visitArithmeticExpr = ctx => {
+	visitArithmeticExpr = (ctx) => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.DATASET];
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.DATASET,
+		];
 
 		if (!expectedTypes.includes(leftExpr.type))
 			throw new TypeMismatchError(leftCtx, expectedTypes, leftExpr.type);
@@ -111,21 +121,26 @@ class ArithmeticVisitor extends VtlVisitor {
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
 
-		if (leftExpr.type === VtlParser.DATASET && rightExpr.type === VtlParser.DATASET) {
-
-			const commonColumns = intersectColumns(leftExpr.columns, rightExpr.columns);
+		if (
+			leftExpr.type === VtlParser.DATASET &&
+			rightExpr.type === VtlParser.DATASET
+		) {
+			const commonColumns = intersectColumns(
+				leftExpr.columns,
+				rightExpr.columns
+			);
 
 			const commonIdentifiers = Object.entries(commonColumns)
-				.filter(([_, {role}]) => role === VtlParser.DIMENSION)
+				.filter(([_, { role }]) => role === VtlParser.DIMENSION)
 				.map(([name]) => name);
 			const commonMeasures = Object.entries(commonColumns)
-				.filter(([_, {role}]) => role === VtlParser.MEASURE)
+				.filter(([_, { role }]) => role === VtlParser.MEASURE)
 				.map(([name]) => name);
 
 			return {
 				type: VtlParser.DATASET,
 				columns: leftExpr.columns,
-				resolve: bindings => {
+				resolve: (bindings) => {
 					const leftDataset = leftExpr.resolve(bindings);
 					const rightDataset = rightExpr.resolve(bindings);
 					return leftDataset.join(
@@ -134,12 +149,11 @@ class ArithmeticVisitor extends VtlVisitor {
 						keyExtractorFor(commonIdentifiers),
 						rowMerger(commonIdentifiers, commonMeasures, operatorFunction)
 					);
-				}
-			}
+				},
+			};
 		} else {
-
 			return {
-				resolve: bindings =>
+				resolve: (bindings) =>
 					operatorFunction(
 						leftExpr.resolve(bindings),
 						rightExpr.resolve(bindings)
@@ -147,7 +161,6 @@ class ArithmeticVisitor extends VtlVisitor {
 				type,
 			};
 		}
-
 	};
 }
 

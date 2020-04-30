@@ -11,7 +11,7 @@ class VtlErrorsListener {
 	}
 }
 
-const parse = antlrTools => startRule => code => {
+const parse = (antlrTools) => (startRule) => (code) => {
 	const { VtlLexer, VtlListener, VtlParser } = antlrTools;
 	try {
 		const chars = new antlr4.InputStream(code);
