@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 class NumericVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -6,7 +9,7 @@ class NumericVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryNumeric = ctx => {
+	visitUnaryNumeric = (ctx) => {
 		// Unary numeric operators are CEIL, FLOOR, ABS, EXP, LN and SQRT
 		const { op: opCtx } = ctx;
 
@@ -22,27 +25,27 @@ class NumericVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.ABS:
-				operatorFunction = expr => Math.abs(expr);
+				operatorFunction = (expr) => Math.abs(expr);
 				type = expr.type;
 				break;
 			case VtlParser.CEIL:
-				operatorFunction = expr => Math.ceil(expr);
+				operatorFunction = (expr) => Math.ceil(expr);
 				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.EXP:
-				operatorFunction = expr => Math.exp(expr);
+				operatorFunction = (expr) => Math.exp(expr);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.FLOOR:
-				operatorFunction = expr => Math.floor(expr);
+				operatorFunction = (expr) => Math.floor(expr);
 				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.LN:
-				operatorFunction = expr => Math.log(expr);
+				operatorFunction = (expr) => Math.log(expr);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.SQRT:
-				operatorFunction = expr => Math.sqrt(expr);
+				operatorFunction = (expr) => Math.sqrt(expr);
 				type = VtlParser.NUMBER;
 				break;
 			default:
@@ -50,12 +53,12 @@ class NumericVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: bindings => operatorFunction(expr.resolve(bindings)),
+			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
 			type,
 		};
 	};
 
-	visitUnaryWithOptionalNumeric = ctx => {
+	visitUnaryWithOptionalNumeric = (ctx) => {
 		// Binary numeric operators with optional operand are ROUND and TRUNC
 		const { op: opCtx } = ctx;
 
@@ -96,7 +99,7 @@ class NumericVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: bindings =>
+			resolve: (bindings) =>
 				operatorFunction(
 					expr.resolve(bindings),
 					optionalExpr ? optionalExpr.resolve(bindings) : null
@@ -105,7 +108,7 @@ class NumericVisitor extends VtlVisitor {
 		};
 	};
 
-	visitBinaryNumeric = ctx => {
+	visitBinaryNumeric = (ctx) => {
 		// Binary numeric operators are MOD, POWER and LOG
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
@@ -154,7 +157,7 @@ class NumericVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: bindings =>
+			resolve: (bindings) =>
 				operatorFunction(
 					leftExpr.resolve(bindings),
 					rightExpr.resolve(bindings)

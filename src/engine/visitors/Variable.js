@@ -1,5 +1,8 @@
-import { VtlParser, VtlVisitor } from '../../antlr-tools';
-import { fromDatasetToDataframe } from 'engine/utils/dataset';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../antlr-tools/vtl-3.0-Istat/parser-vtl';
+import { fromDatasetToDataframe } from '../../engine/utils/dataset';
 
 // TODO: Support integers here.
 const types = {
@@ -44,13 +47,13 @@ class VariableVisitor extends VtlVisitor {
 		super();
 		this.bindings = bindings;
 	}
-	visitVarIdExpr = ctx => {
+	visitVarIdExpr = (ctx) => {
 		const variable = ctx.getText();
 		if (this.bindings[variable] && this.bindings[variable].type) {
 			return this.bindings[variable];
 		} else {
 			return {
-				resolve: bindings => varTransformer(variable, this.bindings),
+				resolve: (bindings) => varTransformer(variable, this.bindings),
 				type: typeResolver(variable, this.bindings),
 			};
 		}

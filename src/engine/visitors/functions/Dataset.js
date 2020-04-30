@@ -1,4 +1,7 @@
-import { VtlParser, VtlVisitor } from '../../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import { TypeMismatchError } from '../../errors';
 
 class DatasetVisitor extends VtlVisitor {
@@ -7,7 +10,7 @@ class DatasetVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitAggrDataset = ctx => {
+	visitAggrDataset = (ctx) => {
 		const { op: opCtx } = ctx;
 		const expr = this.exprVisitor.visit(ctx.expr());
 
@@ -20,7 +23,7 @@ class DatasetVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.COUNT:
-				operatorFunction = expr => {
+				operatorFunction = (expr) => {
 					return expr.count();
 				};
 				type = VtlParser.NUMBER;
@@ -28,7 +31,7 @@ class DatasetVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: bindings => {
+			resolve: (bindings) => {
 				return operatorFunction(expr.resolve(bindings));
 			},
 			type,

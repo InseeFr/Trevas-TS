@@ -1,8 +1,11 @@
-import { VtlParser, VtlVisitor } from '../../antlr-tools';
+import {
+	VtlParser,
+	VtlVisitor,
+} from '../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 import { getTokenType, replaceConstantType } from '../utils';
 
 class LiteralVisitor extends VtlVisitor {
-	visitConstantExpr = ctx => {
+	visitConstantExpr = (ctx) => {
 		let value;
 		switch (getTokenType(ctx)) {
 			case VtlParser.STRING_CONSTANT:

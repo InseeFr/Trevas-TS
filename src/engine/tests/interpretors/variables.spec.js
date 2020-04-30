@@ -1,5 +1,5 @@
 import interpret from '../../interpretor';
-import { VtlParser } from '../../../antlr-tools';
+import { VtlParser } from '../../../antlr-tools/vtl-3.0-Istat/parser-vtl';
 
 describe('interpretor', () => {
 	describe('variable', () => {
