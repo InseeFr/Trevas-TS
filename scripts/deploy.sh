@@ -51,10 +51,10 @@ function publish() {
 
   cp -a "../$DOC_FOLDER/_book/." .
   cp -R "../$STORYBOOK_FOLDER/." .
-  mv "../packages/editor/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
-  mv "../packages/vtl-2.0-antlr-tools/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
-  mv "../packages/vtl-2.1-antlr-tools/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
-  mv "../packages/vtl-2.1-engine/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
+  cp "../packages/editor/$BUNDLE_REPORT_FOLDER/." ./$BUNDLE_REPORT_FOLDER
+  cp "../packages/vtl-2.0-antlr-tools/$BUNDLE_REPORT_FOLDER/." ./$BUNDLE_REPORT_FOLDER
+  cp "../packages/vtl-2.1-antlr-tools/$BUNDLE_REPORT_FOLDER/." ./$BUNDLE_REPORT_FOLDER
+  cp "../packages/vtl-2.1-engine/$BUNDLE_REPORT_FOLDER/." ./$BUNDLE_REPORT_FOLDER
   
   git init
   git remote add upstream "$UPSTREAM"
