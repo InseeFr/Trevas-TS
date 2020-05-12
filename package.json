@@ -1,12 +1,16 @@
 {
-	"name": "@inseefr/vtl-tools",
-	"version": "0.1.15",
+	"name": "vtl-tools",
+	"version": "0.0.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/InseeFr/vtl-tools"
 	},
 	"license": "MIT",
 	"author": "INSEE (http://www.insee.fr)",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
 	"contributor": [
 		{
 			"name": "Renaud Genevois",
@@ -17,28 +21,25 @@
 			"email": "nicolas.laval@insee.fr"
 		}
 	],
-	"main": "lib/index.js",
-	"files": [
-		"lib",
-		"src"
-	],
 	"jest": {
 		"collectCoverageFrom": [
-			"src/**/*.{js,jsx}",
-			"!src/antlr-tools/**/*",
-			"!src/stories/**/*"
-		]
+			"packages/**/*.{js,jsx}",
+			"!packages/vtl-*-antlr-tools/**/*",
+			"!packages/**/*.stories.js"
+		],
+		"transform": {
+			"^.+\\.js$": "babel-jest"
+		}
 	},
 	"scripts": {
-		"antlr": "antlr4-tool -l javascript -o src/antlr-tools/vtl-3.0-Istat/parser-vtl/ vtl-sources/Vtl-3.0-Istat/Vtl.g4",
+		"antlr": "antlr4-tool -l javascript -o test/ vtl-sources/Vtl-2.0/Vtl.g4",
 		"start-storybook": "cross-env NODE_PATH=src/ start-storybook -p 9999",
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
 		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
 		"coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-		"build": "rollup -c rollup.config.js",
-		"prepublishOnly": "npm run test && npm run build",
-		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/source-map-explorer.html"
+		"build": "yarn workspaces run build",
+		"analyze": "yarn workspaces run analyze"
 	},
 	"peerDependencies": {
 		"react": "^16.8.6"
@@ -57,7 +58,7 @@
 		"@storybook/addon-options": "^5.2.8",
 		"@storybook/addons": "^5.2.8",
 		"@storybook/react": "^5.2.8",
-		"antlr4-tool": "^1.0.26",
+		"antlr4-tool": "^1.1.0",
 		"babel-jest": "^25.1.0",
 		"babel-loader": "8.1.0",
 		"coveralls": "^3.0.9",

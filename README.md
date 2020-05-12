@@ -10,3 +10,21 @@ JavaScript tools for the [Validation and Transformation Language](https://sdmx.o
 The documentation can be found in the [docs](https://github.com/InseeFr/VTL-Tools/tree/master/docs) folder and [browsed online](https://inseefr.github.io/VTL-Tools).
 
 [Storybook](https://inseefr.github.io/VTL-Tools/storybook) is also available online.
+
+## Packages
+
+### @inseefr/vtl-tools
+
+This library is not yet maintained.
+Last version is 0.1.15.
+`Editor` component & `interpret` function are now exposed into to separate libs, see below.
+
+### @inseefr/vtl-2.1-interpretor
+
+### @inseefr/antlr-editor
+
+### Antlr tools VTL grammars
+
+#### @insefr/vtl-2.0-antlr-tools
+
+#### @insefr/vtl-2.1-antlr-tools

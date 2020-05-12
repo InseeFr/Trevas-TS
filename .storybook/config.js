@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs/react';
 
 const globalContainer = { margin: '5%' };
 
-addDecorator(story => <div style={globalContainer}>{story()}</div>);
+addDecorator((story) => <div style={globalContainer}>{story()}</div>);
 addDecorator(withKnobs);
 
 addParameters({
@@ -14,8 +14,9 @@ addParameters({
 	},
 });
 
-const requireAll = requireContext => requireContext.keys().map(requireContext);
+const requireAll = (requireContext) =>
+	requireContext.keys().map(requireContext);
 const loadStories = () =>
-	requireAll(require.context('stories', true, /stories\.js?$/));
+	requireAll(require.context('../packages', true, /stories\.js?$/));
 
 configure(loadStories, module);
