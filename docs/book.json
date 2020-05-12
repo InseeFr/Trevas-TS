@@ -1,6 +1,6 @@
 {
 	"gitbook": "3.2.2",
-	"title": "React VTL Editor",
+	"title": "VTL Tools",
 	"plugins": [
 		"edit-link",
 		"prism",
@@ -15,11 +15,11 @@
 	"root": "./",
 	"pluginsConfig": {
 		"edit-link": {
-			"base": "https://github.com/statisticsnorway/react-vtl-editor/tree/master/docs",
+			"base": "https://github.com/InseeFr/VTL-Tools/tree/master/docs",
 			"label": "Edit This Page"
 		},
 		"github": {
-			"url": "https://github.com/statisticsnorway/react-vtl-editor"
+			"url": "https://github.com/InseeFr/VTL-Tools.git"
 		},
 		"theme-default": {
 			"styles": {
