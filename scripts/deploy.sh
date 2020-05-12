@@ -23,8 +23,8 @@ if [ "$TRAVIS_BRANCH" != "$MAIN_BRANCH" ];then
 fi
 
 function setup() {
-  yarn add -g gitbook-cli
-  yarn add -g gitbook-plugin-advanced-emoji
+  yarn global add gitbook-cli
+  yarn global add gitbook-plugin-advanced-emoji
 }
 
 function buildAnalyses() {
