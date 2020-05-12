@@ -10,3 +10,72 @@ JavaScript tools for the [Validation and Transformation Language](https://sdmx.o
 The documentation can be found in the [docs](https://github.com/InseeFr/VTL-Tools/tree/master/docs) folder and [browsed online](https://inseefr.github.io/VTL-Tools).
 
 [Storybook](https://inseefr.github.io/VTL-Tools/storybook) is also available online.
+
+## Packages
+
+VTL Tools is a monorepo.
+You can find below 4 packages giving 4 librairies.
+
+### @inseefr/vtl-tools
+
+This library is not yet maintained.
+Last version is 0.1.15.
+`Editor` component & `interpret` function are now exposed into to separate libs, see below.
+
+### @inseefr/vtl-2.1-engine
+
+`interpret` function is exposed at root (named export)
+
+### @inseefr/editor
+
+`Editor` component is exposed at root (named export)
+
+### Antlr tools VTL grammars
+
+#### @inseefr/vtl-2.1-antlr-tools
+
+`VtlLexer`, `VtlParser`, `VtlListener` and `VtlVisitor` are exposed at root (named export)
+
+#### @inseefr/vtl-2.0-antlr-tools
+
+`VtlLexer`, `VtlParser`, `VtlListener` and `VtlVisitor` are exposed at root (named export)
+
+## Getting started
+
+### Initilization
+
+Clone Github repository:
+
+```
+git clone https://github.com/InseeFr/VTL-Tools.git
+cd VTL-Tools
+```
+
+Install dependencies (yarn is required because of [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/)) and locally build packages:
+
+```
+yarn
+yarn build
+```
+
+### Tests
+
+Run once:
+
+```
+yarn test
+```
+
+Run with hot reloading:
+
+```
+yarn test-watch
+```
+
+### Storybook
+
+Run storybook:
+
+```
+yarn start-storybook
+```

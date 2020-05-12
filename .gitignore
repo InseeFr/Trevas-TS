@@ -1,21 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # antlr jar
-antlr-4.7.2-complete.jar
+antlr-4*-complete.jar
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+**/node_modules
 
 # testing
 /coverage
 
 # bundle report
-/bundle-report
+**/bundle-report
 
 # production
-/lib
+**/lib
 
 # storybook
 /built-storybook

@@ -3,6 +3,7 @@
 set -e
 
 DOC_FOLDER="docs"
+BUNDLE_REPORT_FOLDER="bundle-report"
 STORYBOOK_FOLDER="built-storybook"
 SITE_FOLDER="website"
 
@@ -22,8 +23,12 @@ if [ "$TRAVIS_BRANCH" != "$MAIN_BRANCH" ];then
 fi
 
 function setup() {
-  npm install -g gitbook-cli
-  npm install -g gitbook-plugin-advanced-emoji
+  yarn add -g gitbook-cli
+  yarn add -g gitbook-plugin-advanced-emoji
+}
+
+function buildAnalyses() {
+  yarn analyze
 }
 
 function buildDocumentation() {
@@ -34,7 +39,7 @@ function buildDocumentation() {
 }
 
 function buildStoryBook(){
-  npm run build-storybook
+  yarn build-storybook
 }
 
 function publish() {
@@ -42,10 +47,15 @@ function publish() {
 
   mkdir $SITE_FOLDER
   pushd "$SITE_FOLDER"
+  mkdir $BUNDLE_REPORT_FOLDER
 
   cp -a "../$DOC_FOLDER/_book/." .
   cp -R "../$STORYBOOK_FOLDER/." .
-
+  mv "../packages/editor/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
+  mv "../packages/vtl-2.0-antlr-tools/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
+  mv "../packages/vtl-2.1-antlr-tools/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
+  mv "../packages/vtl-2.1-engine/$BUNDLE_REPORT_FOLDER/*" ./$BUNDLE_REPORT_FOLDER
+  
   git init
   git remote add upstream "$UPSTREAM"
   git fetch --prune upstream
@@ -58,7 +68,7 @@ function publish() {
 }
 
 function main() {
-  setup && buildDocumentation && buildStoryBook && publish
+  setup && buildAnalyses && buildDocumentation && buildStoryBook && publish
 }
 
 main

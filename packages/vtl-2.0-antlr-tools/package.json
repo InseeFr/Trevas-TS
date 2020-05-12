@@ -1,0 +1,20 @@
+{
+	"name": "@inseefr/vtl-2.0-antlr-tools",
+	"version": "0.1.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/InseeFr/VTL-Tools/tree/master/packages/vtl-2.0-antlr-tools"
+	},
+	"license": "MIT",
+	"author": "INSEE (http://www.insee.fr)",
+	"main": "lib/index.js",
+	"files": [
+		"lib",
+		"src"
+	],
+	"scripts": {
+		"build": "rollup -c rollup.config.js",
+		"prepublishOnly": "npm run test && npm run build",
+		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/vtl-2.0-antlr-tools.html"
+	}
+}
