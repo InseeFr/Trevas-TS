@@ -9,6 +9,7 @@
 		"anchorjs",
 		"image-captions",
 		"include-codeblock",
+		"collapsible-chapters",
 		"advanced-emoji"
 	],
 	"root": "./",
@@ -24,6 +25,7 @@
 			"styles": {
 				"website": "gitbook.css"
 			}
-		}
+		},
+		"collapsible-chapters": {}
 	}
 }
