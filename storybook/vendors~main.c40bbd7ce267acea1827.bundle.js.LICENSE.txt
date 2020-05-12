@@ -88,8 +88,8 @@ object-assign
  * Copyright (c) 2011-2020 Jos de Jong, http://jsoneditoronline.org
  *
  * @author  Jos de Jong, <wjosdejong@gmail.com>
- * @version 8.6.6
- * @date    2020-04-22
+ * @version 8.6.7
+ * @date    2020-05-10
  */
 
 /*! @preserve
