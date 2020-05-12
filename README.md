@@ -19,7 +19,9 @@ This library is not yet maintained.
 Last version is 0.1.15.
 `Editor` component & `interpret` function are now exposed into to separate libs, see below.
 
-### @inseefr/vtl-2.1-interpretor
+### @inseefr/vtl-2.1-engine
+
+`interpret` function is exposed at root
 
 ### @inseefr/antlr-editor
 
@@ -28,3 +30,43 @@ Last version is 0.1.15.
 #### @insefr/vtl-2.0-antlr-tools
 
 #### @insefr/vtl-2.1-antlr-tools
+
+## Getting started
+
+### Initilization
+
+Clone Github repository:
+
+```
+git clone https://github.com/InseeFr/VTL-Tools.git
+cd VTL-Tools
+```
+
+Install dependencies (yarn is required because of [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/)) and locally build packages:
+
+```
+yarn
+yarn build
+```
+
+### Tests
+
+Run once:
+
+```
+yarn test
+```
+
+Run with hot reloading:
+
+```
+yarn test-watch
+```
+
+### Storybook
+
+Run storybook:
+
+```
+yarn start-storybook
+```

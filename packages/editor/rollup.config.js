@@ -7,7 +7,6 @@ import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import 'core-js';
 
-const { dependencies } = require('./package.json');
 const { dependencies: rootDependencies } = require('../../package.json');
 
 export default {
@@ -35,5 +34,5 @@ export default {
 		}),
 		terser(),
 	],
-	external: [...Object.keys(rootDependencies), ...Object.keys(dependencies)],
+	external: [...Object.keys(rootDependencies)],
 };
