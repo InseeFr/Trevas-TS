@@ -13,6 +13,9 @@ The documentation can be found in the [docs](https://github.com/InseeFr/VTL-Tool
 
 ## Packages
 
+VTL Tools is a monorepo.
+You can find below 4 packages giving 4 librairies.
+
 ### @inseefr/vtl-tools
 
 This library is not yet maintained.
@@ -21,15 +24,21 @@ Last version is 0.1.15.
 
 ### @inseefr/vtl-2.1-engine
 
-`interpret` function is exposed at root
+`interpret` function is exposed at root (named export)
 
-### @inseefr/antlr-editor
+### @inseefr/editor
+
+`Editor` component is exposed at root (named export)
 
 ### Antlr tools VTL grammars
 
-#### @insefr/vtl-2.0-antlr-tools
+#### @inseefr/vtl-2.1-antlr-tools
 
-#### @insefr/vtl-2.1-antlr-tools
+`VtlLexer`, `VtlParser`, `VtlListener` and `VtlVisitor` are exposed at root (named export)
+
+#### @inseefr/vtl-2.0-antlr-tools
+
+`VtlLexer`, `VtlParser`, `VtlListener` and `VtlVisitor` are exposed at root (named export)
 
 ## Getting started
 
