@@ -2,7 +2,7 @@
 
 ## Usage
 
-Download the library on npm:
+Download the library from npm:
 
 ```
 yarn add @inseefr/vtl-2.1-engine

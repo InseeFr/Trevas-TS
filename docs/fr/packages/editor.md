@@ -2,7 +2,7 @@
 
 ## Utilisation
 
-Télécharger la librairie sur npm:
+Télécharger la librairie sur npm :
 
 ```
 yarn add @inseefr/editor
