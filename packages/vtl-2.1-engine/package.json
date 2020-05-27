@@ -1,6 +1,7 @@
 {
 	"name": "@inseefr/vtl-2.1-engine",
 	"version": "0.1.0",
+	"description": "JavaScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/InseeFr/VTL-Tools/tree/master/packages/vtl-2.1-engine"
