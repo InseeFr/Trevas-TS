@@ -1,12 +1,12 @@
 {
 	"name": "vtl-tools",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/InseeFr/vtl-tools"
+		"url": "https://github.com/InseeFr/VTL-Tools"
 	},
 	"license": "MIT",
-	"author": "INSEE (http://www.insee.fr)",
+	"author": "INSEE (https://www.insee.fr)",
 	"private": true,
 	"workspaces": [
 		"packages/*"

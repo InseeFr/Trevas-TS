@@ -5,7 +5,7 @@
 Download the library on npm:
 
 ```
-yarn add -D @inseefr/editor
+yarn add @inseefr/editor
 ```
 
 Import the `Editor` component:

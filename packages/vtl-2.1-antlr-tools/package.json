@@ -1,12 +1,12 @@
 {
 	"name": "@inseefr/vtl-2.1-antlr-tools",
-	"version": "0.1.0",
+	"version": "1.0.0-rc",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/InseeFr/VTL-Tools/tree/master/packages/vtl-2.1-antlr-tools"
 	},
 	"license": "MIT",
-	"author": "INSEE (http://www.insee.fr)",
+	"author": "INSEE (https://www.insee.fr)",
 	"main": "lib/index.js",
 	"files": [
 		"lib",

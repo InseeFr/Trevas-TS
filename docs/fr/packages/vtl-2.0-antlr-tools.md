@@ -2,10 +2,10 @@
 
 ## Utilisation
 
-Télécharger la libraire sur npm:
+Télécharger la libraire sur npm :
 
 ```
-yarn add -D @inseefr/vtl-2.0-antlr-tools
+yarn add @inseefr/vtl-2.0-antlr-tools
 ```
 
 Importer tous les outils :
@@ -14,7 +14,7 @@ Importer tous les outils :
 import * as VTL20AntlrTools from '@inseefr/vtl-2.0-antlr-tools'
 ```
 
-Ou importer les directement un par un:
+Ou importer les objets nécessaires directement un par un :
 
 ```
 import {

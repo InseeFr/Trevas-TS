@@ -24,6 +24,6 @@
 		}
 	},
 	"dependencies": {
-		"@inseefr/vtl-2.1-antlr-tools": "0.1.0"
+		"@inseefr/vtl-2.1-antlr-tools": "1.0.0-rc"
 	}
 }

@@ -5,7 +5,7 @@
 Download the library on npm:
 
 ```
-yarn add -D @inseefr/vtl-2.1-engine
+yarn add @inseefr/vtl-2.1-engine
 ```
 
 Import the `interpret` function:

@@ -5,7 +5,7 @@
 Download the library on npm:
 
 ```
-yarn add -D @inseefr/vtl-2.0-antlr-tools
+yarn add @inseefr/vtl-2.0-antlr-tools
 ```
 
 Import all the tools:
