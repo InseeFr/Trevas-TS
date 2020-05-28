@@ -24,13 +24,13 @@ export default {
 		postcss(),
 		resolve(),
 		babel({
-			exclude: 'node_modules/**',
+			exclude: '../../node_modules/**',
 		}),
 		commonjs({
 			ignore: ['antlr4', 'antlr4/index'],
 		}),
 		replace({
-			exclude: 'node_modules/**',
+			exclude: '../../node_modules/**',
 			ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
 		}),
 		terser(),
