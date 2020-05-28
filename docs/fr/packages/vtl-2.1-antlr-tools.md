@@ -10,17 +10,17 @@ yarn add @inseefr/vtl-2.1-antlr-tools
 
 Importer tous les outils :
 
-```
-import * as VTL21AntlrTools from '@inseefr/vtl-2.1-antlr-tools'
+```js
+import * as VTL21AntlrTools from '@inseefr/vtl-2.1-antlr-tools';
 ```
 
 Ou importer les objets nécessaires directement un par un :
 
-```
+```js
 import {
-    VtlLexer,
-    VtlParser,
-    VtlListener,
-    VtlVisitor
-} from '@inseefr/vtl-2.1-antlr-tools'
+	VtlLexer,
+	VtlParser,
+	VtlListener,
+	VtlVisitor,
+} from '@inseefr/vtl-2.1-antlr-tools';
 ```

@@ -2,7 +2,7 @@
 
 ## Utilisation
 
-Télécharger la libraire sur npm:
+Télécharger la libraire sur npm :
 
 ```
 yarn add @inseefr/vtl-2.1-engine
@@ -10,15 +10,15 @@ yarn add @inseefr/vtl-2.1-engine
 
 Importer la fonction `interpret` :
 
-```
-import { interpret } from '@inseefr/vtl-2.1-engine'
+```js
+import { interpret } from '@inseefr/vtl-2.1-engine';
 ```
 
-Exécuter l'interpretation VTL sur une expression:
+Exécuter l'interpretation VTL sur une expression :
 
-```
+```js
 const expr = '"Hello " || NAME';
 const bindings = { NAME: 'world' };
-const result = interpret(expr, bindings)
+const result = interpret(expr, bindings);
 // result will be: 'Hello world'
 ```

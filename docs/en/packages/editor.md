@@ -2,7 +2,7 @@
 
 ## Usage
 
-Download the library on npm:
+Download the library from npm:
 
 ```
 yarn add @inseefr/editor
@@ -10,8 +10,8 @@ yarn add @inseefr/editor
 
 Import the `Editor` component:
 
-```
-import { Editor } from '@inseefr/editor'
+```js
+import { Editor } from '@inseefr/editor';
 ```
 
 TODO: detail props to pass

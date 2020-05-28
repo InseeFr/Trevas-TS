@@ -10,8 +10,8 @@ yarn add @inseefr/editor
 
 Importer le composant `Editor` :
 
-```
-import { Editor } from '@inseefr/editor'
+```js
+import { Editor } from '@inseefr/editor';
 ```
 
 TODO: détailler les props à passer au composant

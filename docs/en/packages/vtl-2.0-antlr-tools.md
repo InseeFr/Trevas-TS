@@ -2,7 +2,7 @@
 
 ## Usage
 
-Download the library on npm:
+Download the library from npm:
 
 ```
 yarn add @inseefr/vtl-2.0-antlr-tools
@@ -10,17 +10,17 @@ yarn add @inseefr/vtl-2.0-antlr-tools
 
 Import all the tools:
 
-```
-import * as VTL20AntlrTools from '@inseefr/vtl-2.0-antlr-tools'
+```js
+import * as VTL20AntlrTools from '@inseefr/vtl-2.0-antlr-tools';
 ```
 
-Or import directly one by one:
+Or import the required objects directly one by one:
 
-```
+```js
 import {
-    VtlLexer,
-    VtlParser,
-    VtlListener,
-    VtlVisitor
-} from '@inseefr/vtl-2.0-antlr-tools'
+	VtlLexer,
+	VtlParser,
+	VtlListener,
+	VtlVisitor,
+} from '@inseefr/vtl-2.0-antlr-tools';
 ```
