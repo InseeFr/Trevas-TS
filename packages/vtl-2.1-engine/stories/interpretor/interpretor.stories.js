@@ -202,6 +202,43 @@ storiesOf('Interpretor/Function/Dataset', module).add('Count', () => {
 	return <Interpretor expression="count(ds)" bindings={{ ds }} />;
 });
 
+/** Functions, dataset */
+storiesOf('Interpretor/Function/Dataset', module).add('First value', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'id',
+				role: 'IDENTIFIER',
+			},
+			col_2: {
+				name: 'col_2',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 3],
+			col_2: [10, 20, 30],
+		},
+	};
+	return <Interpretor expression="first_value(ds over())" bindings={{ ds }} />;
+});
+
+/** Functions, dataset */
+storiesOf('Interpretor/Function/Dataset', module).add('Last value', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 3],
+		},
+	};
+	return <Interpretor expression="last_value(ds over())" bindings={{ ds }} />;
+});
+
 const columnsSurf = {
 	Arrondissement: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
 	Value: { type: VtlParser.NUMBER, role: VtlParser.MEASURE },

@@ -5,7 +5,7 @@ import { VtlParser } from '@inseefr/vtl-2.1-antlr-tools';
 import Bindings from './bindings';
 import TreeView from '../tree';
 import { interpretVar } from '../../../src/interpretor';
-import { getTokenName } from '../../../src/utils';
+import { getTokenName, getTokenType } from '../../../src/utils';
 
 const Interpretor = ({ expression, bindings: initialBindings }) => {
 	const [input, setInput] = useState(expression || '');
@@ -28,6 +28,7 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 			setError(e.message);
 		}
 	};
+
 	return (
 		<>
 			<h2 className="centered">VTL Exec</h2>
@@ -50,7 +51,11 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 			{res && res.type === VtlParser.DATASET && (
 				<div className="res">
 					<h2>Result:</h2>
-					<Griddle data={res.resolve().toArray()} />
+					{Array.isArray(res.resolve()) ? (
+						<h1 className="res-text">{`[${res.resolve().join(',')}]`}</h1>
+					) : (
+						<Griddle data={res.resolve().toArray()} />
+					)}
 				</div>
 			)}
 			{res && res.type !== VtlParser.DATASET && (

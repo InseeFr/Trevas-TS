@@ -21,7 +21,6 @@ export const fromDatasetToDataframe = (dataset) => {
 			rows: rows,
 			columnNames: columnNames,
 		});
-	} else {
-		return new DataFrame();
 	}
+	return new DataFrame();
 };

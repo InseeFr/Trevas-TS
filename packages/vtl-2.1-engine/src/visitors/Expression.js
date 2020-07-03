@@ -80,6 +80,8 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitAggregateFunctions = (ctx) =>
 		this.datasetFunctionsVisitor.visit(ctx.aggrOperatorsGrouping());
+	visitAnalyticFunctions = (ctx) =>
+		this.datasetFunctionsVisitor.visit(ctx.anFunction());
 }
 
 export default ExpressionVisitor;
