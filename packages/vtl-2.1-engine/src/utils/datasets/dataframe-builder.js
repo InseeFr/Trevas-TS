@@ -1,25 +1,16 @@
 import { DataFrame } from 'data-forge';
 
 export const fromDatasetToDataframe = (dataset) => {
-	const columnNames = Object.keys(dataset.dataStructure);
-	const dpColumns = Object.keys(dataset.dataPoints);
+	const { dataStructure, dataPoints } = dataset;
+	const columnNames = Object.keys(dataStructure);
+	const dpColumns = Object.keys(dataPoints);
 	// Check dataPoints keys exist, if not return an empty Dataframe
 	if (dpColumns && dpColumns.length) {
-		const firstKey = dpColumns[0];
-		const l = dataset.dataPoints[firstKey].length;
-		let rows = [];
-		// for every row
-		for (let i = 0; i < l; i++) {
-			let row = [];
-			// and every column
-			for (const col of dpColumns) {
-				row.push(dataset.dataPoints[col][i]);
-			}
-			rows.push(row);
-		}
+		const data = Object.values(dataPoints);
+		const rows = data[0].map((_, colIndex) => data.map((row) => row[colIndex]));
 		return new DataFrame({
-			rows: rows,
-			columnNames: columnNames,
+			rows,
+			columnNames,
 		});
 	}
 	return new DataFrame();
