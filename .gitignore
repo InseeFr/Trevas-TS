@@ -8,6 +8,7 @@ antlr-4*-complete.jar
 
 # testing
 /coverage
+/test-report.xml
 
 # bundle report
 **/bundle-report

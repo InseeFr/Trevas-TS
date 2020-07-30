@@ -30,7 +30,13 @@
 		],
 		"transform": {
 			"^.+\\.js$": "babel-jest"
-		}
+		},
+		"collectCoverage": true,
+		"testResultsProcessor": "jest-sonar-reporter",
+		"coveragePathIgnorePatterns": [
+			"/node_modules/",
+			"/test/"
+		]
 	},
 	"scripts": {
 		"antlr": "antlr4-tool -l javascript -o test/ vtl-sources/Vtl-2.0/Vtl.g4",
@@ -69,6 +75,7 @@
 		"eslint-plugin-react": "^7.17.0",
 		"eslint-plugin-react-hooks": "^3.0.0",
 		"jest": "^25.1.0",
+		"jest-sonar-reporter": "^2.0.0",
 		"node-sass": "^4.13.0",
 		"postcss-scss": "^2.0.0",
 		"prettier": "2.0.5",
