@@ -3,7 +3,8 @@ node_js:
   - 12.8.0
 cache: yarn
 addons:
-  organization: 'inseefr'
+  sonarcloud:
+    organization: 'inseefr'
 install:
   - yarn
 before_script:
