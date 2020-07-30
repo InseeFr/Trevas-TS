@@ -44,7 +44,6 @@
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
 		"test-watch": "cross-env NODE_PATH=src/ jest --watch",
-		"coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
 		"build": "yarn workspaces run build",
 		"analyze": "yarn workspaces run analyze"
 	},

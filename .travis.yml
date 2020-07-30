@@ -5,11 +5,11 @@ cache: yarn
 addons:
   organization: 'inseefr'
 install:
-  - yarn config set registry https://registry.npmjs.org
-  - yarn install
+  - yarn
+before_script:
+  - yarn test-coverage
 script:
-  - yarn build
-  - yarn test --coverage
   - sonar-scanner
+  - yarn build
 after_script:
   - bash scripts/deploy.sh
