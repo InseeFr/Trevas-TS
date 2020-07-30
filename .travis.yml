@@ -13,5 +13,4 @@ script:
   - yarn build
   - yarn test --coverage
 after_script:
-  - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
   - bash scripts/deploy.sh

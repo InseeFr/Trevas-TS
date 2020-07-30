@@ -59,7 +59,6 @@
 		"antlr4-tool": "^1.1.0",
 		"babel-jest": "^25.1.0",
 		"babel-loader": "8.1.0",
-		"coveralls": "^3.0.9",
 		"cross-env": "^7.0.2",
 		"eslint": "^6.8.0",
 		"eslint-config-airbnb": "^18.0.1",
