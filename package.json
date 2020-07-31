@@ -31,11 +31,9 @@
 		"transform": {
 			"^.+\\.js$": "babel-jest"
 		},
-		"collectCoverage": true,
 		"testResultsProcessor": "jest-sonar-reporter",
 		"coveragePathIgnorePatterns": [
-			"/node_modules/",
-			"/test/"
+			"/node_modules/"
 		]
 	},
 	"scripts": {
