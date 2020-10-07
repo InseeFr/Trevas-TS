@@ -37,7 +37,7 @@
 		]
 	},
 	"scripts": {
-		"antlr": "antlr4-tool -l javascript -o test/ vtl-sources/Vtl-2.0/Vtl.g4",
+		"antlr": "antlr4-tool -l typescript -o test/ vtl-sources/Vtl-2.0/Vtl.g4",
 		"start-storybook": "cross-env NODE_PATH=src/ start-storybook -p 9999",
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
@@ -59,7 +59,7 @@
 		"@storybook/addon-options": "^5.2.8",
 		"@storybook/addons": "^5.2.8",
 		"@storybook/react": "^5.2.8",
-		"antlr4-tool": "^1.1.0",
+		"antlr4-tool": "^1.1.1",
 		"babel-jest": "^26.2.1",
 		"babel-loader": "8.1.0",
 		"cross-env": "^7.0.2",

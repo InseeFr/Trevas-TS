@@ -3322,10 +3322,10 @@ ansi-to-html@^0.6.11:
   dependencies:
     entities "^1.1.2"
 
-antlr4-tool@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/antlr4-tool/-/antlr4-tool-1.1.0.tgz#647d1dac5dcafb2072422a498ae1ad56a59c38ef"
-  integrity sha512-8w/Y0rJHisQWReWyIgHb+Am52CGSBpBEg5EIECIdwk62wxJy4goCszAyl1gBRpjHqTLiRnJGhk8mVFaxjcLmUA==
+antlr4-tool@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/antlr4-tool/-/antlr4-tool-1.1.1.tgz#f22f8574f9d3ae71f98497bf7bce153f3debf3de"
+  integrity sha512-eACjIXKjVW07SlSmXcjqa2IBIEwUodXbWpnlfywSO3YAa5vr+5nQk/+34dooK/KLpPNeaZVyFcbiGRKgmPmK6Q==
   dependencies:
     "@types/antlr4" "^4.7.0"
     antlr4 "^4.8.0"
