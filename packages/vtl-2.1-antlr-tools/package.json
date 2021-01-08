@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/vtl-2.1-antlr-tools",
-	"version": "1.0.0-rc1",
+	"version": "1.0.0-rc2",
 	"description": "JavaScript tools for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
@@ -15,7 +15,7 @@
 	],
 	"scripts": {
 		"build": "rollup -c rollup.config.js",
-		"prepublishOnly": "npm run test && npm run build",
+		"prepublishOnly": "npm run build",
 		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/vtl-2.1-antlr-tools.html"
 	},
 	"dependencies": {
