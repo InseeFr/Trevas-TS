@@ -19,6 +19,6 @@
 		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/vtl-2.0-antlr-tools.html"
 	},
 	"dependencies": {
-		"antlr4": "^4.8.0"
+		"antlr4": "4.8.0"
 	}
 }
