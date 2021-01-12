@@ -1,5 +1,5 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.1-antlr-tools';
-import { OperatorTypeError } from '../errors';
+import { TypeMismatchError } from '../errors';
 
 class ComparisonVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -12,14 +12,13 @@ class ComparisonVisitor extends VtlVisitor {
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
 
-		if (leftOperand.type !== rightOperand.type) {
-			throw new OperatorTypeError(
-				ctx,
-				op.getText(),
-				leftOperand.type,
-				rightOperand.type
-			);
-		}
+		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+
+		if (!expectedTypes.includes(leftOperand.type))
+			throw new TypeMismatchError(left, expectedTypes, leftOperand.type);
+
+		if (!expectedTypes.includes(rightOperand.type))
+			throw new TypeMismatchError(right, expectedTypes, rightOperand.type);
 
 		let operatorFunction;
 		switch (op.children[0].symbol.type) {
