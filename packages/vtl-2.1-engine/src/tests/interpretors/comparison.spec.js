@@ -1,15 +1,15 @@
 import interpret from '../../interpretor';
-import { OperatorTypeError } from '../../errors';
+import { TypeMismatchError } from '../../errors';
 
 describe('interpretor', () => {
 	describe('interpret', () => {
 		it('should fail to compare wrong types', () => {
-			expect(() => interpret('"string" < 1')).toThrow(OperatorTypeError);
-			expect(() => interpret('"string" > 1')).toThrow(OperatorTypeError);
-			expect(() => interpret('"string" <= 1')).toThrow(OperatorTypeError);
-			expect(() => interpret('"string" >= 1')).toThrow(OperatorTypeError);
-			expect(() => interpret('"string" = 1')).toThrow(OperatorTypeError);
-			expect(() => interpret('"string" <> 1')).toThrow(OperatorTypeError);
+			expect(() => interpret('"string" < 1')).toThrow(TypeMismatchError);
+			expect(() => interpret('"string" > 1')).toThrow(TypeMismatchError);
+			expect(() => interpret('"string" <= 1')).toThrow(TypeMismatchError);
+			expect(() => interpret('"string" >= 1')).toThrow(TypeMismatchError);
+			expect(() => interpret('"string" = 1')).toThrow(TypeMismatchError);
+			expect(() => interpret('"string" <> 1')).toThrow(TypeMismatchError);
 		});
 		it('should compare integers', () => {
 			expect(interpret('1 < 2', {})).toEqual(true);
