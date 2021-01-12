@@ -14,11 +14,13 @@ class ComparisonVisitor extends VtlVisitor {
 
 		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
 
-		if (!expectedTypes.includes(leftOperand.type))
-			throw new TypeMismatchError(left, expectedTypes, leftOperand.type);
+		if (leftOperand.type !== rightOperand.type) {
+			if (!expectedTypes.includes(leftOperand.type))
+				throw new TypeMismatchError(left, expectedTypes, leftOperand.type);
 
-		if (!expectedTypes.includes(rightOperand.type))
-			throw new TypeMismatchError(right, expectedTypes, rightOperand.type);
+			if (!expectedTypes.includes(rightOperand.type))
+				throw new TypeMismatchError(right, expectedTypes, rightOperand.type);
+		}
 
 		let operatorFunction;
 		switch (op.children[0].symbol.type) {
