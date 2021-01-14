@@ -48,7 +48,7 @@ function publish() {
   pushd "$SITE_FOLDER"
   mkdir $BUNDLE_REPORT_FOLDER
 
-  cp -a "../$DOC_FOLDER/_book/." .
+ # cp -a "../$DOC_FOLDER/_book/." .
   cp -R "../$STORYBOOK_FOLDER/." .
   cp -a "../packages/editor/$BUNDLE_REPORT_FOLDER/." "./$BUNDLE_REPORT_FOLDER/"
   cp -a "../packages/vtl-2.0-antlr-tools/$BUNDLE_REPORT_FOLDER/." "./$BUNDLE_REPORT_FOLDER/"
