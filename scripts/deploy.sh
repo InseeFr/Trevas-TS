@@ -23,7 +23,7 @@ if [ "$TRAVIS_BRANCH" != "$MAIN_BRANCH" ];then
 fi
 
 function setup() {
-  yarn global add gitbook-cli
+  npm install -g gitbook-cli
 }
 
 function buildAnalyses() {
