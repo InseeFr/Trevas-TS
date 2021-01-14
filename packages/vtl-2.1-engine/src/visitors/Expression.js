@@ -7,6 +7,7 @@ import LiteralVisitor from './Literal';
 import ComparisonVisitor from './Comparison';
 import {
 	CastVisitor,
+	ComparisonFunctionVisitor,
 	ConcatenationVisitor,
 	NumericFunctionsVisitor,
 	StringFunctionsVisitor,
@@ -26,6 +27,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.dateFunctionVisitor = new DateVisitor(this);
 		this.ifThenElseVisitor = new IfThenElse(this);
 		this.literalVisitor = new LiteralVisitor();
+		this.comparisonFunctionVisitor = new ComparisonFunctionVisitor(this);
 		this.numericFunctionVisitor = new NumericFunctionsVisitor(this);
 		this.stringFunctionVisitor = new StringFunctionsVisitor(this);
 		this.variableVisitor = new VariableVisitor(this.bindings);
@@ -75,6 +77,8 @@ class ExpressionVisitor extends VtlVisitor {
 	visitConcatExpr = (ctx) => this.concatenationVisitor.visit(ctx);
 	visitStringFunctions = (ctx) =>
 		this.stringFunctionVisitor.visit(ctx.stringOperators());
+	visitComparisonFunctions = (ctx) =>
+		this.comparisonFunctionVisitor.visit(ctx.comparisonOperators());
 	visitNumericFunctions = (ctx) =>
 		this.numericFunctionVisitor.visit(ctx.numericOperators());
 

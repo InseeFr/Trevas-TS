@@ -5,7 +5,7 @@ import { VtlParser } from '@inseefr/vtl-2.1-antlr-tools';
 import Bindings from './bindings';
 import TreeView from '../tree';
 import { interpretVar } from '../../../src/interpretor';
-import { getTokenName, getTokenType } from '../../../src/utils';
+import { getTokenName } from '../../../src/utils';
 
 const Interpretor = ({ expression, bindings: initialBindings }) => {
 	const [input, setInput] = useState(expression || '');
@@ -61,7 +61,7 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 			{res && res.type !== VtlParser.DATASET && (
 				<div className="res">
 					<h2>Result:</h2>
-					<h1 className="res-text">{res.resolve()}</h1>
+					<h1 className="res-text">{res.resolve().toString()}</h1>
 				</div>
 			)}
 			{error && (

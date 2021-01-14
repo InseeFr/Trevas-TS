@@ -108,6 +108,12 @@ storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
 	<div>TODO</div>
 ));
 
+// Comparison
+
+storiesOf('Interpretor/Function/Comparison', module).add('Null', () => (
+	<Interpretor expression="isnull(null)" />
+));
+
 // Concatenation
 
 storiesOf('Interpretor/Function', module).add('Concatenation', () => (
