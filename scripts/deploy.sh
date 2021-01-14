@@ -23,6 +23,7 @@ if [ "$TRAVIS_BRANCH" != "$MAIN_BRANCH" ];then
 fi
 
 function setup() {
+  npm install -g graceful-fs
   npm install -g gitbook-cli
 }
 
