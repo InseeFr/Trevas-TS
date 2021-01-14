@@ -24,7 +24,6 @@ fi
 
 function setup() {
   yarn global add gitbook-cli
-  yarn global add gitbook-plugin-advanced-emoji
 }
 
 function buildAnalyses() {
