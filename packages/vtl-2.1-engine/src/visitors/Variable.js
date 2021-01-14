@@ -11,7 +11,14 @@ const types = {
 /** Variable transformation */
 const varTransformer = (variable, bindings) => {
 	const type = typeResolver(variable, bindings);
-	if ([VtlParser.NUMBER, VtlParser.STRING, VtlParser.BOOLEAN].includes(type)) {
+	if (
+		[
+			VtlParser.NUMBER,
+			VtlParser.STRING,
+			VtlParser.BOOLEAN,
+			VtlParser.NULL_CONSTANT,
+		].includes(type)
+	) {
 		return bindings[variable];
 	} else if (type === VtlParser.DATASET) {
 		return fromDatasetToDataframe(bindings[variable]);
@@ -23,6 +30,9 @@ const varTransformer = (variable, bindings) => {
 /** Variable duck typing and type checking */
 const typeResolver = (variable, bindings) => {
 	const boundVar = bindings[variable];
+
+	if (boundVar === null) return VtlParser.NULL_CONSTANT;
+
 	const jsType = typeof boundVar;
 
 	if (['string', 'number', 'boolean'].includes(jsType)) {

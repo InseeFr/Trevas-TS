@@ -111,7 +111,7 @@ storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
 // Comparison
 
 storiesOf('Interpretor/Function/Comparison', module).add('Null', () => (
-	<Interpretor expression="isnull(null)" />
+	<Interpretor expression="isnull(test)" bindings={{ test: null }} />
 ));
 
 // Concatenation

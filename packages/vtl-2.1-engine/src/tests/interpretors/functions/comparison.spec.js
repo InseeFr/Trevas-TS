@@ -4,6 +4,7 @@ describe('interpretor', () => {
 	describe('comparison-functions', () => {
 		it('should check null', () => {
 			expect(interpret('isnull(null)', {})).toBeTruthy();
+			expect(interpret('isnull(test)', { test: null })).toBeTruthy();
 		});
 		it('should check not null', () => {
 			expect(interpret('isnull("ko")', {})).toBeFalsy();
