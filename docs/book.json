@@ -9,7 +9,8 @@
 		"anchorjs",
 		"image-captions",
 		"include-codeblock",
-		"collapsible-chapters"
+		"collapsible-chapters",
+		"advanced-emoji"
 	],
 	"root": "./",
 	"pluginsConfig": {
