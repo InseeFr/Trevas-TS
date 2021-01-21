@@ -18,6 +18,9 @@ class CastVisitor extends VtlVisitor {
 			? maskCtx.getText().substring(1, maskCtx.getText().length - 1)
 			: undefined;
 
+		if (op.type === VtlParser.NULL_CONSTANT)
+			return { resolve: () => null, type: VtlParser.NULL_CONSTANT };
+
 		const combinations = [
 			[VtlParser.INTEGER, VtlParser.INTEGER, (op) => op],
 			[VtlParser.INTEGER, VtlParser.NUMBER, (op) => op],

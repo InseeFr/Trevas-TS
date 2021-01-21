@@ -3,6 +3,29 @@ import CastTypeError from '../../../errors/CastTypeError';
 
 describe('interpretor', () => {
 	describe('cast', () => {
+		describe('null', () => {
+			it('cast null into integer', () => {
+				expect(interpret('cast(null, integer)', {})).toBeNull();
+			});
+			it('cast null into number', () => {
+				expect(interpret('cast(null, number)', {})).toBeNull();
+			});
+			it('cast null into string', () => {
+				expect(interpret('cast(null, string)', {})).toBeNull();
+			});
+			it('cast null into boolean', () => {
+				expect(interpret('cast(null, boolean)', {})).toBeNull();
+			});
+			it('cast null into date', () => {
+				expect(interpret('cast(null, date)', {})).toBeNull();
+			});
+			it('cast null into time_period', () => {
+				expect(interpret('cast(null, time_period)', {})).toBeNull();
+			});
+			it('cast null into duration', () => {
+				expect(interpret('cast(null, duration)', {})).toBeNull();
+			});
+		});
 		describe('integer', () => {
 			it('cast integer into integer', () => {
 				expect(interpret('cast(10, integer)', {})).toEqual(10);
