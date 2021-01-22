@@ -34,8 +34,8 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 		<>
 			<h2 className="centered">VTL Exec</h2>
 			<h3>Expressions</h3>
-			<input
-				type="text"
+			<textarea
+				rows={5}
 				id="input"
 				name="input"
 				value={input}
