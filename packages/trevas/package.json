@@ -1,10 +1,10 @@
 {
-	"name": "@inseefr/vtl-2.0-engine",
+	"name": "@inseefr/trevas",
 	"version": "0.1.0",
 	"description": "JavaScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/InseeFr/VTL-Tools/tree/master/packages/vtl-2.0-engine"
+		"url": "https://github.com/InseeFr/VTL-Tools/tree/master/packages/trevas"
 	},
 	"license": "MIT",
 	"author": "INSEE (http://www.insee.fr)",
@@ -17,7 +17,7 @@
 		"build": "rollup -c rollup.config.js",
 		"test": "cross-env NODE_PATH=src/ jest",
 		"prepublishOnly": "npm run test && npm run build",
-		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/vtl-2.0-engine.html"
+		"analyze": "yarn build && source-map-explorer lib/index.js --html bundle-report/trevas.html"
 	},
 	"jest": {
 		"transform": {
