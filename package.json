@@ -37,7 +37,6 @@
 		]
 	},
 	"scripts": {
-		"antlr": "antlr4-tool -l typescript -o test/ vtl-sources/Vtl-2.0/Vtl.g4",
 		"start-storybook": "cross-env NODE_PATH=src/ start-storybook -p 9999",
 		"build-storybook": "cross-env NODE_PATH=src/ build-storybook -o built-storybook/storybook",
 		"test": "cross-env NODE_PATH=src/ jest",
@@ -59,7 +58,6 @@
 		"@storybook/addon-options": "^5.2.8",
 		"@storybook/addons": "^5.2.8",
 		"@storybook/react": "^5.2.8",
-		"antlr4-tool": "^1.1.1",
 		"babel-jest": "^26.2.1",
 		"babel-loader": "8.2.2",
 		"cross-env": "^7.0.2",
@@ -92,7 +90,8 @@
 		"style-loader": "^2.0.0"
 	},
 	"dependencies": {
-		"antlr4": "4.8.0",
+		"antlr-editor": "^1.0.3",
+		"antlr4ts": "^0.5.0-alpha.4",
 		"classnames": "^2.2.6",
 		"core-js": "^3.8.3",
 		"data-forge": "^1.7.7",
@@ -100,11 +99,14 @@
 		"jsoneditor": "^9.1.8",
 		"jsoneditor-react": "^3.0.0",
 		"moment": "^2.24.0",
+		"monaco-editor": "^0.24.0",
 		"platform": "^1.3.5",
 		"prop-types": "^15.7.2",
 		"react": "^16.8.6",
+		"react-monaco-editor": "^0.43.0",
 		"react-sortable-tree": "^2.7.1",
-		"string-hash": "^1.1.3"
+		"string-hash": "^1.1.3",
+		"vtl-2-0-antlr-tools-ts": "^0.1.6"
 	},
 	"prettier": {
 		"bracketSpacing": true,
