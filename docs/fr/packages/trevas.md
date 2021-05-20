@@ -1,17 +1,17 @@
-# VTL 2.1 Engine
+# Trevas
 
 ## Utilisation
 
 Télécharger la libraire sur npm :
 
 ```
-yarn add @inseefr/vtl-2.1-engine
+yarn add @inseefr/trevas
 ```
 
 Importer la fonction `interpret` :
 
 ```js
-import { interpret } from '@inseefr/vtl-2.1-engine';
+import { interpret } from '@inseefr/trevas';
 ```
 
 Exécuter l'interpretation VTL sur une expression :

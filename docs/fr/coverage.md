@@ -1,10 +1,8 @@
-# VTL tools - Engine coverage
+# Trevas
 
-## JavaScript interpretor
+## Functional coverage
 
-### Functional coverage
-
-#### VTL-ML - General purpose operators
+### VTL-ML - General purpose operators
 
 | Name                              | Symbol |     Supported      |
 | --------------------------------- | :----- | :----------------: |
@@ -16,13 +14,13 @@
 | Evaluation of an external routine | eval   |        :x:         |
 | Type conversion                   | cast   | :heavy_check_mark: |
 
-#### VTL-ML - Join operators
+### VTL-ML - Join operators
 
 | Name | Symbol                                       | Supported |
 | ---- | :------------------------------------------- | :-------: |
 | Join | inner_join, left_join, full_join, cross_join |    :x:    |
 
-#### VTL-ML - String operators
+### VTL-ML - String operators
 
 | Name                       | Symbol             |     Supported      |
 | -------------------------- | :----------------- | :----------------: |
@@ -34,7 +32,7 @@
 | String pattern location    | instr              | :heavy_check_mark: |
 | String length              | length             | :heavy_check_mark: |
 
-#### VTL-ML - Numeric operators
+### VTL-ML - Numeric operators
 
 | Name              | Symbol |     Supported      |
 | ----------------- | :----- | :----------------: |
@@ -56,7 +54,7 @@
 | Logarithm         | log    | :heavy_check_mark: |
 | Square root       | sqrt   | :heavy_check_mark: |
 
-#### VTL-ML - Comparison operators
+### VTL-ML - Comparison operators
 
 | Name             | Symbol           |     Supported      |
 | ---------------- | :--------------- | :----------------: |
@@ -70,7 +68,7 @@
 | Is null          | isnull           | :heavy_check_mark: |
 | Exists in        | exists_in        |        :x:         |
 
-#### VTL-ML - Boolean operators
+### VTL-ML - Boolean operators
 
 | Name                  | Symbol |     Supported      |
 | --------------------- | :----- | :----------------: |
@@ -79,7 +77,7 @@
 | Exclusive disjunction | xor    | :heavy_check_mark: |
 | Logical negation      | not    | :heavy_check_mark: |
 
-#### VTL-ML - Time operators
+### VTL-ML - Time operators
 
 | Name             | Symbol           |     Supported      |
 | ---------------- | :--------------- | :----------------: |
@@ -91,7 +89,7 @@
 | Time aggregation | time_agg         |        :x:         |
 | Actual time      | current_date     | :heavy_check_mark: |
 
-#### VTL-ML - Set operators
+### VTL-ML - Set operators
 
 | Name                 | Symbol    | Supported |
 | -------------------- | :-------- | :-------: |
@@ -100,13 +98,13 @@
 | Set difference       | setdiff   |    :x:    |
 | Symmetric difference | symdiff   |    :x:    |
 
-#### VTL-ML - Hierarchical aggregation
+### VTL-ML - Hierarchical aggregation
 
 | Name                 | Symbol    | Supported |
 | -------------------- | :-------- | :-------: |
 | Hierarchical roll-up | hierarchy |    :x:    |
 
-#### VTL-ML - Aggregate and Analytic operators
+### VTL-ML - Aggregate and Analytic operators
 
 | Name                               | Symbol          | Supported |
 | ---------------------------------- | :-------------- | :-------: |
@@ -129,7 +127,7 @@
 | Rank                               | rank            |    :x:    |
 | Ratio to report                    | ratio_to_report |    :x:    |
 
-#### VTL-ML - Data validation operators
+### VTL-ML - Data validation operators
 
 | Name            | Symbol          | Supported |
 | --------------- | :-------------- | :-------: |
@@ -137,14 +135,14 @@
 | Check hierarchy | check_hierarchy |    :x:    |
 | Check           | check           |    :x:    |
 
-#### VTL-ML - Conditional operators
+### VTL-ML - Conditional operators
 
 | Name         | Symbol       |     Supported      |
 | ------------ | :----------- | :----------------: |
 | If Then Else | if-then-else | :heavy_check_mark: |
 | Nvl          | nvl          | :heavy_check_mark: |
 
-#### VTL-ML - Clause operators
+### VTL-ML - Clause operators
 
 | Name                       | Symbol  | Supported |
 | -------------------------- | :------ | :-------: |
