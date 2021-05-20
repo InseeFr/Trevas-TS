@@ -19,7 +19,7 @@ VTL Tools is a monorepo.
 
 `interpret` function is exposed at root (named export)
 
-#### @inseefr/vtl-2.0-antlr-tools
+### @inseefr/vtl-2.0-antlr-tools
 
 `VtlLexer`, `VtlParser`, `VtlListener` and `VtlVisitor` are exposed at root (named export)
 
