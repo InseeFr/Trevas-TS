@@ -9,6 +9,10 @@ module.exports = {
 				include: path.resolve(__dirname, '../'),
 			},
 			{ test: /\.svg$/, loader: 'file-loader' },
+			{
+				test: /\.ttf$/,
+				use: ['file-loader'],
+			},
 		],
 	},
 
