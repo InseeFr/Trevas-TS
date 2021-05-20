@@ -23,21 +23,6 @@ VTL Tools is a monorepo.
 
 `VtlLexer`, `VtlParser`, `VtlListener` and `VtlVisitor` are exposed at root (named export)
 
-### @inseefr/vtl-tools
-
-This library is not yet maintained.
-Last version is 0.1.15.
-
-### @inseefr/vtl-2.1-engine
-
-This library is not yet maintained.
-Last version is 0.1.9.
-
-### @inseefr/vtl-2.1-antlr-tools
-
-This library is not yet maintained.
-Last version is 1.0.0-rc2.
-
 ## Getting started
 
 ### Initilization
@@ -77,3 +62,20 @@ Run storybook:
 ```
 yarn start-storybook
 ```
+
+## Archived packages
+
+### @inseefr/vtl-tools
+
+This library is not yet maintained.
+Last version is 0.1.15.
+
+### @inseefr/vtl-2.1-engine
+
+This library is not yet maintained.
+Last version is 0.1.9.
+
+### @inseefr/vtl-2.1-antlr-tools
+
+This library is not yet maintained.
+Last version is 1.0.0-rc2.
