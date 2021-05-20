@@ -1,13 +1,14 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../../errors';
 import { getDatasetFirstValue, getDatasetLastValue } from '../../utils';
 
-class DatasetVisitor {
+class DatasetVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitAggrDataset(ctx) {
+	visitAggrDataset = (ctx) => {
 		const { op: opCtx } = ctx;
 		const expr = this.exprVisitor.visit(ctx.expr());
 
@@ -20,7 +21,9 @@ class DatasetVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.COUNT:
-				operatorFunction = (e) => e.count();
+				operatorFunction = (expr) => {
+					return expr.count();
+				};
 				type = VtlParser.NUMBER;
 				break;
 			default:
@@ -28,12 +31,14 @@ class DatasetVisitor {
 		}
 
 		return {
-			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
+			resolve: (bindings) => {
+				return operatorFunction(expr.resolve(bindings));
+			},
 			type,
 		};
-	}
+	};
 
-	visitAnSimpleFunction(ctx) {
+	visitAnSimpleFunction = (ctx) => {
 		// TODO: implement over support
 		const { op: opCtx } = ctx;
 		const expr = this.exprVisitor.visit(ctx.expr());
@@ -47,11 +52,11 @@ class DatasetVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.FIRST_VALUE:
-				operatorFunction = (e) => getDatasetFirstValue(e);
+				operatorFunction = (expr) => getDatasetFirstValue(expr);
 				type = VtlParser.DATASET;
 				break;
 			case VtlParser.LAST_VALUE:
-				operatorFunction = (e) => getDatasetLastValue(e);
+				operatorFunction = (expr) => getDatasetLastValue(expr);
 				type = VtlParser.DATASET;
 				break;
 			default:
@@ -59,10 +64,12 @@ class DatasetVisitor {
 		}
 
 		return {
-			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
+			resolve: (bindings) => {
+				return operatorFunction(expr.resolve(bindings));
+			},
 			type,
 		};
-	}
+	};
 }
 
 export default DatasetVisitor;

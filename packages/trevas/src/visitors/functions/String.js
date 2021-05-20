@@ -1,12 +1,13 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../../errors';
 
-class StringVisitor {
+class StringVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryStringFunction(ctx) {
+	visitUnaryStringFunction = (ctx) => {
 		const { op: opCtx } = ctx;
 
 		const expr = this.exprVisitor.visit(ctx.expr());
@@ -20,42 +21,44 @@ class StringVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.TRIM:
-				operatorFunction = (e) => e.trim();
+				operatorFunction = (expr) => expr.trim();
 				break;
 			case VtlParser.LTRIM:
-				operatorFunction = (e) => e.trimLeft();
+				operatorFunction = (expr) => expr.trimLeft();
 				break;
 			case VtlParser.RTRIM:
-				operatorFunction = (e) => e.trimRight();
+				operatorFunction = (expr) => expr.trimRight();
 				break;
 			case VtlParser.UCASE:
-				operatorFunction = (e) => e.toUpperCase();
+				operatorFunction = (expr) => expr.toUpperCase();
 				break;
 			case VtlParser.LCASE:
-				operatorFunction = (e) => e.toLowerCase();
+				operatorFunction = (expr) => expr.toLowerCase();
 				break;
 			case VtlParser.LEN:
-				operatorFunction = (e) => e.length;
+				operatorFunction = (expr) => expr.length;
 				type = VtlParser.INTEGER;
 				break;
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
 		return {
-			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
+			resolve: (bindings) => {
+				return operatorFunction(expr.resolve(bindings));
+			},
 			type,
 		};
-	}
+	};
 
-	checkType(exprCtx, expectedType) {
+	checkType = (exprCtx, expectedType) => {
 		const operand = this.exprVisitor.visit(exprCtx);
 		if (operand.type !== expectedType) {
 			throw new TypeMismatchError(exprCtx, expectedType, operand.type);
 		}
 		return operand;
-	}
+	};
 
-	visitReplaceAtom(ctx) {
+	visitReplaceAtom = (ctx) => {
 		const [strCtx, oldCtx] = ctx.expr();
 		const operand = this.checkType(strCtx, VtlParser.STRING);
 		const oldStr = this.checkType(oldCtx, VtlParser.STRING);
@@ -70,9 +73,9 @@ class StringVisitor {
 			},
 			type: VtlParser.STRING,
 		};
-	}
+	};
 
-	visitInstrAtom(ctx) {
+	visitInstrAtom = (ctx) => {
 		const [operandCtx, patternCtx] = ctx.expr();
 		const [startCtx, occurrenceCtx] = ctx.optionalExpr();
 
@@ -107,21 +110,21 @@ class StringVisitor {
 				}
 
 				let result = 0;
-				// eslint-disable-next-line no-plusplus
 				while (--resolvedOccurrence >= 0) {
 					result = resolvedOperand.indexOf(resolvedPattern, resolvedStart);
 					if (result === -1) {
 						return 0;
+					} else {
+						resolvedStart = result + 1;
 					}
-					resolvedStart = result + 1;
 				}
 				return result;
 			},
 			type: VtlParser.INTEGER,
 		};
-	}
+	};
 
-	visitSubstrAtom(ctx) {
+	visitSubstrAtom = (ctx) => {
 		const { children } = ctx;
 
 		if (children.length === 4)
@@ -135,13 +138,14 @@ class StringVisitor {
 		const length = this.checkType(lengthCtx, VtlParser.INTEGER);
 
 		return {
-			resolve: (bindings) =>
-				operand
+			resolve: (bindings) => {
+				return operand
 					.resolve(bindings)
-					.substr(startIndex.resolve(bindings), length.resolve(bindings)),
+					.substr(startIndex.resolve(bindings), length.resolve(bindings));
+			},
 			type: VtlParser.STRING,
 		};
-	}
+	};
 }
 
 export default StringVisitor;

@@ -1,11 +1,12 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 
-class ConcatenationVisitor {
+class ConcatenationVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitArithmeticExprOrConcat(ctx) {
+	visitArithmeticExprOrConcat = (ctx) => {
 		if (ctx.op.type !== VtlParser.CONCAT) {
 			throw new Error('Concat visitor got arithmetic context');
 		}
@@ -26,7 +27,7 @@ class ConcatenationVisitor {
 				leftOperand.resolve(bindings) + rightOperand.resolve(bindings),
 			type: leftOperand.type, // invariant because of type check above.
 		};
-	}
+	};
 }
 
 export default ConcatenationVisitor;

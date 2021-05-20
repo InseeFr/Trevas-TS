@@ -72,7 +72,6 @@ const errorCheck = (stream, collector) => {
  */
 export const interpretVar = (expr, bindings) => {
 	// TODO: expr could be a file as well.
-
 	const inputStream = new antlr4.InputStream(expr);
 
 	const syntaxErrors = new ErrorCollector();
@@ -84,9 +83,7 @@ export const interpretVar = (expr, bindings) => {
 
 	const typeErrors = new ErrorCollector();
 	const parser = errorCheck(inputStream, typeErrors);
-	debugger;
-	console.log(parser.expr());
-	debugger;
+
 	const visitor = new ExpressionVisitor(bindings);
 	const expression = visitor.visit(parser.expr());
 

@@ -7,7 +7,7 @@ class BooleanVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryExpr(ctx) {
+	visitUnaryExpr = (ctx) => {
 		const { right } = ctx;
 		const rightOperand = this.exprVisitor.visit(right);
 
@@ -18,9 +18,9 @@ class BooleanVisitor extends VtlVisitor {
 			resolve: (bindings) => !rightOperand.resolve(bindings),
 			type: VtlParser.BOOLEAN,
 		};
-	}
+	};
 
-	visitBooleanExpr(ctx) {
+	visitBooleanExpr = (ctx) => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
@@ -54,7 +54,7 @@ class BooleanVisitor extends VtlVisitor {
 				),
 			type: VtlParser.BOOLEAN,
 		};
-	}
+	};
 }
 
 export default BooleanVisitor;

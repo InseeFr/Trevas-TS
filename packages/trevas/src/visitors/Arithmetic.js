@@ -1,4 +1,4 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../errors';
 
 /**
@@ -10,11 +10,12 @@ function keyExtractorFor(columns) {
 	if (columns.length < 1) {
 		throw new Error('column list was empty');
 	}
-	return (row) =>
-		Object.entries(row)
+	return (row) => {
+		return Object.entries(row)
 			.filter(([key]) => columns.includes(key))
 			.map(([_, value]) => value)
 			.reduce((a, v) => a + v, '');
+	};
 }
 
 /**
@@ -36,21 +37,23 @@ function rowMerger(identifiers, measures, op) {
 	};
 }
 
-const intersectColumns = (leftColumns, rightColumns) =>
-	Object.fromEntries(
+function intersectColumns(leftColumns, rightColumns) {
+	return Object.fromEntries(
 		Object.entries(leftColumns).filter((l) =>
 			Object.entries(rightColumns).some(
 				(r) => l.name === r.name && l.role === r.role && l.type === r.type
 			)
 		)
 	);
+}
 
-class ArithmeticVisitor {
+class ArithmeticVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryExpr(ctx) {
+	visitUnaryExpr = (ctx) => {
 		const { op, right: rightCtx } = ctx;
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
@@ -66,16 +69,16 @@ class ArithmeticVisitor {
 			},
 			type: rightExpr.type,
 		};
-	}
+	};
 
-	visitArithmeticExprOrConcat(ctx) {
+	visitArithmeticExprOrConcat = (ctx) => {
 		if (ctx.op.type === VtlParser.CONCAT) {
 			throw new Error('Arithmetic visitor got CONCAT context');
 		}
 		return this.visitArithmeticExpr(ctx);
-	}
+	};
 
-	visitArithmeticExpr(ctx) {
+	visitArithmeticExpr = (ctx) => {
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
@@ -145,16 +148,17 @@ class ArithmeticVisitor {
 					);
 				},
 			};
+		} else {
+			return {
+				resolve: (bindings) =>
+					operatorFunction(
+						leftExpr.resolve(bindings),
+						rightExpr.resolve(bindings)
+					),
+				type,
+			};
 		}
-		return {
-			resolve: (bindings) =>
-				operatorFunction(
-					leftExpr.resolve(bindings),
-					rightExpr.resolve(bindings)
-				),
-			type,
-		};
-	}
+	};
 }
 
 export default ArithmeticVisitor;

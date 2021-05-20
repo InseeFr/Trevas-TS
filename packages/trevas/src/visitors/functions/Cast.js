@@ -1,16 +1,17 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { CastTypeError, OperatorTypeError } from '../../errors';
 import { getDate, getStringFromDate } from '../../utils';
 
-class CastVisitor {
+class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitCastExprDataset(ctx) {
-		const opCtx = ctx.expr();
-		const scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
-		const maskCtx = ctx.STRING_CONSTANT();
+	visitCastExprDataset = (ctx) => {
+		let opCtx = ctx.expr();
+		let scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
+		let maskCtx = ctx.STRING_CONSTANT();
 
 		const op = this.exprVisitor.visit(opCtx);
 		const mask = maskCtx
@@ -21,37 +22,37 @@ class CastVisitor {
 			return { resolve: () => null, type: VtlParser.NULL_CONSTANT };
 
 		const combinations = [
-			[VtlParser.INTEGER, VtlParser.INTEGER, (o) => o],
-			[VtlParser.INTEGER, VtlParser.NUMBER, (o) => o],
-			[VtlParser.INTEGER, VtlParser.BOOLEAN, (o) => o !== 0],
+			[VtlParser.INTEGER, VtlParser.INTEGER, (op) => op],
+			[VtlParser.INTEGER, VtlParser.NUMBER, (op) => op],
+			[VtlParser.INTEGER, VtlParser.BOOLEAN, (op) => op !== 0],
 			[VtlParser.INTEGER, VtlParser.TIME, 'ERROR'],
 			[VtlParser.INTEGER, VtlParser.DATE, 'ERROR'],
 			[VtlParser.INTEGER, VtlParser.TIME_PERIOD, 'ERROR'],
-			[VtlParser.INTEGER, VtlParser.STRING, (o) => `${o}`],
+			[VtlParser.INTEGER, VtlParser.STRING, (op) => `${op}`],
 			[VtlParser.INTEGER, VtlParser.DURATION, 'ERROR'],
 			[
 				VtlParser.NUMBER,
 				VtlParser.INTEGER,
-				(o) => {
-					if (!Number.isInteger(o))
-						throw new CastTypeError(ctx, o, VtlParser.NUMBER);
-					return parseInt(o, 10);
+				(op) => {
+					if (!Number.isInteger(op))
+						throw new CastTypeError(ctx, op, VtlParser.NUMBER);
+					return parseInt(op, 10);
 				},
 			],
-			[VtlParser.NUMBER, VtlParser.NUMBER, (o) => o],
-			[VtlParser.NUMBER, VtlParser.BOOLEAN, (o) => o !== 0],
+			[VtlParser.NUMBER, VtlParser.NUMBER, (op) => op],
+			[VtlParser.NUMBER, VtlParser.BOOLEAN, (op) => op !== 0],
 			[VtlParser.NUMBER, VtlParser.TIME, 'ERROR'],
 			[VtlParser.NUMBER, VtlParser.DATE, 'ERROR'],
 			[VtlParser.NUMBER, VtlParser.TIME_PERIOD, 'ERROR'],
-			[VtlParser.NUMBER, VtlParser.STRING, (o) => `${o}`],
+			[VtlParser.NUMBER, VtlParser.STRING, (op) => `${op}`],
 			[VtlParser.NUMBER, VtlParser.DURATION, 'ERROR'],
-			[VtlParser.BOOLEAN, VtlParser.INTEGER, (o) => (o ? 1 : 0)],
-			[VtlParser.BOOLEAN, VtlParser.NUMBER, (o) => (o ? 1 : 0)],
-			[VtlParser.BOOLEAN, VtlParser.BOOLEAN, (o) => o],
+			[VtlParser.BOOLEAN, VtlParser.INTEGER, (op) => (op ? 1 : 0)],
+			[VtlParser.BOOLEAN, VtlParser.NUMBER, (op) => (op ? 1 : 0)],
+			[VtlParser.BOOLEAN, VtlParser.BOOLEAN, (op) => op],
 			[VtlParser.BOOLEAN, VtlParser.TIME, 'ERROR'],
 			[VtlParser.BOOLEAN, VtlParser.DATE, 'ERROR'],
 			[VtlParser.BOOLEAN, VtlParser.TIME_PERIOD, 'ERROR'],
-			[VtlParser.BOOLEAN, VtlParser.STRING, (o) => `${o}`],
+			[VtlParser.BOOLEAN, VtlParser.STRING, (op) => `${op}`],
 			[VtlParser.BOOLEAN, VtlParser.DURATION, 'ERROR'],
 			[VtlParser.TIME, VtlParser.INTEGER, () => 'TODO'],
 			[VtlParser.TIME, VtlParser.NUMBER, () => 'TODO'],
@@ -67,7 +68,11 @@ class CastVisitor {
 			[VtlParser.DATE, VtlParser.TIME, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.DATE, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[VtlParser.DATE, VtlParser.STRING, (o, m) => getStringFromDate(o, m)],
+			[
+				VtlParser.DATE,
+				VtlParser.STRING,
+				(op, mask) => getStringFromDate(op, mask),
+			],
 			[VtlParser.DATE, VtlParser.DURATION, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.INTEGER, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.NUMBER, () => 'TODO'],
@@ -80,26 +85,26 @@ class CastVisitor {
 			[
 				VtlParser.STRING,
 				VtlParser.INTEGER,
-				(o) => {
-					if (!Number.isInteger(Number(o)))
-						throw new CastTypeError(ctx, o, VtlParser.INTEGER);
-					return parseInt(o, 10);
+				(op) => {
+					if (!Number.isInteger(Number(op)))
+						throw new CastTypeError(ctx, op, VtlParser.INTEGER);
+					return parseInt(op, 10);
 				},
 			],
 			[
 				VtlParser.STRING,
 				VtlParser.NUMBER,
-				(o) => {
-					if (!Number.isInteger(parseInt(o, 10)))
-						throw new CastTypeError(ctx, o, VtlParser.NUMBER);
-					return parseFloat(o);
+				(op) => {
+					if (!Number.isInteger(parseInt(op, 10)))
+						throw new CastTypeError(ctx, op, VtlParser.NUMBER);
+					return parseFloat(op);
 				},
 			],
 			[VtlParser.STRING, VtlParser.BOOLEAN, 'ERROR'],
 			[VtlParser.STRING, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.STRING, VtlParser.DATE, (o, m) => getDate(o, m)],
+			[VtlParser.STRING, VtlParser.DATE, (op, mask) => getDate(op, mask)],
 			[VtlParser.STRING, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[VtlParser.STRING, VtlParser.STRING, (o) => o],
+			[VtlParser.STRING, VtlParser.STRING, (op) => op],
 			[VtlParser.STRING, VtlParser.DURATION, () => 'TODO'],
 			[VtlParser.DURATION, VtlParser.INTEGER, 'ERROR'],
 			[VtlParser.DURATION, VtlParser.NUMBER, 'ERROR'],
@@ -107,8 +112,8 @@ class CastVisitor {
 			[VtlParser.DURATION, VtlParser.TIME, 'ERROR'],
 			[VtlParser.DURATION, VtlParser.DATE, 'ERROR'],
 			[VtlParser.DURATION, VtlParser.TIME_PERIOD, 'ERROR'],
-			[VtlParser.DURATION, VtlParser.STRING, (o) => `${o}`],
-			[VtlParser.DURATION, VtlParser.DURATION, (o) => o],
+			[VtlParser.DURATION, VtlParser.STRING, (op) => `${op}`],
+			[VtlParser.DURATION, VtlParser.DURATION, (op) => op],
 		];
 
 		const castOutputType = scalarTypeCtx.children[0].symbol.type;
@@ -129,7 +134,7 @@ class CastVisitor {
 			resolve: (bindings) => operatorFunction(op.resolve(bindings), mask),
 			type: castOutputType,
 		};
-	}
+	};
 }
 
 export default CastVisitor;

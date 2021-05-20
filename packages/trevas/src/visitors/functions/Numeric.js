@@ -1,11 +1,12 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 
-class NumericVisitor {
+class NumericVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitUnaryNumeric(ctx) {
+	visitUnaryNumeric = (ctx) => {
 		// Unary numeric operators are CEIL, FLOOR, ABS, EXP, LN and SQRT
 		const { op: opCtx } = ctx;
 
@@ -21,27 +22,27 @@ class NumericVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.ABS:
-				operatorFunction = (e) => Math.abs(e);
+				operatorFunction = (expr) => Math.abs(expr);
 				type = expr.type;
 				break;
 			case VtlParser.CEIL:
-				operatorFunction = (e) => Math.ceil(e);
+				operatorFunction = (expr) => Math.ceil(expr);
 				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.EXP:
-				operatorFunction = (e) => Math.exp(e);
+				operatorFunction = (expr) => Math.exp(expr);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.FLOOR:
-				operatorFunction = (e) => Math.floor(e);
+				operatorFunction = (expr) => Math.floor(expr);
 				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.LN:
-				operatorFunction = (e) => Math.log(e);
+				operatorFunction = (expr) => Math.log(expr);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.SQRT:
-				operatorFunction = (e) => Math.sqrt(e);
+				operatorFunction = (expr) => Math.sqrt(expr);
 				type = VtlParser.NUMBER;
 				break;
 			default:
@@ -52,9 +53,9 @@ class NumericVisitor {
 			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
 			type,
 		};
-	}
+	};
 
-	visitUnaryWithOptionalNumeric(ctx) {
+	visitUnaryWithOptionalNumeric = (ctx) => {
 		// Binary numeric operators with optional operand are ROUND and TRUNC
 		const { op: opCtx } = ctx;
 
@@ -75,16 +76,18 @@ class NumericVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.ROUND:
-				operatorFunction = (e, optE) => {
-					if (!optE || optE === VtlParser.OPTIONAL) return Math.round(e);
-					return Math.round(e * 10 ** optE) / 10 ** optE;
+				operatorFunction = (expr, optionalExpr) => {
+					if (!optionalExpr || optionalExpr == VtlParser.OPTIONAL)
+						return Math.round(expr);
+					return Math.round(expr * 10 ** optionalExpr) / 10 ** optionalExpr;
 				};
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.TRUNC:
-				operatorFunction = (e, optE) => {
-					if (!optE || optE === VtlParser.OPTIONAL) return Math.trunc(e);
-					return Math.trunc(e * 10 ** optE) / 10 ** optE;
+				operatorFunction = (expr, optionalExpr) => {
+					if (!optionalExpr || optionalExpr == VtlParser.OPTIONAL)
+						return Math.trunc(expr);
+					return Math.trunc(expr * 10 ** optionalExpr) / 10 ** optionalExpr;
 				};
 				type = VtlParser.NUMBER;
 				break;
@@ -100,9 +103,9 @@ class NumericVisitor {
 				),
 			type,
 		};
-	}
+	};
 
-	visitBinaryNumeric(ctx) {
+	visitBinaryNumeric = (ctx) => {
 		// Binary numeric operators are MOD, POWER and LOG
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
@@ -123,25 +126,26 @@ class NumericVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.LOG:
-				operatorFunction = (lE, rE) => Math.log(lE) / Math.log(rE);
+				operatorFunction = (leftExpr, rightExpr) =>
+					Math.log(leftExpr) / Math.log(rightExpr);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.MOD:
-				operatorFunction = (lE, rE) => {
-					if (rE === 0) return lE;
-					return lE % rE;
+				operatorFunction = (leftExpr, rightExpr) => {
+					if (rightExpr == 0) return leftExpr;
+					return leftExpr % rightExpr;
 				};
 				type =
-					leftExpr.type === VtlParser.INTEGER &&
-					rightExpr.type === VtlParser.INTEGER
+					leftExpr.type == VtlParser.INTEGER &&
+					rightExpr.type == VtlParser.INTEGER
 						? VtlParser.INTEGER
 						: VtlParser.NUMBER;
 				break;
 			case VtlParser.POWER:
-				operatorFunction = (lE, rE) => lE ** rE;
+				operatorFunction = (leftExpr, rightExpr) => leftExpr ** rightExpr;
 				type =
-					leftExpr.type === VtlParser.INTEGER &&
-					rightExpr.type === VtlParser.INTEGER
+					leftExpr.type == VtlParser.INTEGER &&
+					rightExpr.type == VtlParser.INTEGER
 						? VtlParser.INTEGER
 						: VtlParser.NUMBER;
 				break;
@@ -157,7 +161,7 @@ class NumericVisitor {
 				),
 			type,
 		};
-	}
+	};
 }
 
 export default NumericVisitor;

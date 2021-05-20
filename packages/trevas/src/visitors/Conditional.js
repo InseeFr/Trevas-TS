@@ -1,13 +1,14 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { IncompatibleTypeError, TypeMismatchError } from '../errors';
 import { replaceConstantType } from '../utils';
 
-class ConditionalVisitor {
+class ConditionalVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitIfExpr(ctx) {
+	visitIfExpr = (ctx) => {
 		const { conditionalExpr, thenExpr, elseExpr } = ctx;
 		const conditionalOperand = this.exprVisitor.visit(conditionalExpr);
 
@@ -32,9 +33,9 @@ class ConditionalVisitor {
 					: elseOperand.resolve(bindings),
 			type: replaceConstantType(thenOperand.type),
 		};
-	}
+	};
 
-	visitNvlAtom(ctx) {
+	visitNvlAtom = (ctx) => {
 		const { left, right } = ctx;
 
 		const leftOperand = this.exprVisitor.visit(left);
@@ -53,7 +54,7 @@ class ConditionalVisitor {
 					: rightOperand.resolve(bindings),
 			type: replaceConstantType(leftOperand.type),
 		};
-	}
+	};
 }
 
 export default ConditionalVisitor;

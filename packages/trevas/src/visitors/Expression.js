@@ -1,4 +1,4 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlVisitor, VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import ArithmeticVisitor from './Arithmetic';
 import BooleanVisitor from './Boolean';
 import IfThenElse from './Conditional';
@@ -15,8 +15,9 @@ import {
 	DateVisitor,
 } from './functions';
 
-class ExpressionVisitor {
+class ExpressionVisitor extends VtlVisitor {
 	constructor(bindings) {
+		super();
 		this.bindings = bindings;
 		this.arithmeticVisitor = new ArithmeticVisitor(this);
 		this.booleanAlgebraVisitor = new BooleanVisitor(this);
@@ -33,106 +34,58 @@ class ExpressionVisitor {
 		this.datasetFunctionsVisitor = new DatasetFunctionsVisitor(this);
 	}
 
-	visitComparisonExpr(ctx) {
-		return this.comparisonVisitor.visit(ctx);
-	}
+	visitComparisonExpr = (ctx) => this.comparisonVisitor.visit(ctx);
 
 	// Since the grammar groups the binary expression we need to "route" to our
 	// own visitor groups.
-	visitArithmeticExpr(ctx) {
-		return this.arithmeticVisitor.visit(ctx);
-	}
-
-	visitArithmeticExprOrConcat(ctx) {
+	visitArithmeticExpr = (ctx) => this.arithmeticVisitor.visit(ctx);
+	visitArithmeticExprOrConcat = (ctx) => {
 		const { op } = ctx;
 		if (op.type === VtlParser.CONCAT)
 			return new ConcatenationVisitor(this).visit(ctx);
-		return this.arithmeticVisitor.visit(ctx);
-	}
+		else return this.arithmeticVisitor.visit(ctx);
+	};
 
-	visitUnaryExpr(ctx) {
+	visitUnaryExpr = (ctx) => {
 		const { op } = ctx;
 		if (op.type === VtlParser.NOT) return this.booleanAlgebraVisitor.visit(ctx);
-		return this.arithmeticVisitor.visit(ctx);
-	}
+		else return this.arithmeticVisitor.visit(ctx);
+	};
 
-	visitBooleanExpr(ctx) {
-		return this.booleanAlgebraVisitor.visit(ctx);
-	}
+	visitBooleanExpr = (ctx) => this.booleanAlgebraVisitor.visit(ctx);
 
-	visitParenthesisExpr(ctx) {
-		return this.visit(ctx.expr());
-	}
+	visitParenthesisExpr = (ctx) => this.visit(ctx.expr());
 
-	visitIfExpr(ctx) {
-		return this.ifThenElseVisitor.visit(ctx);
-	}
-
-	visitConditionalFunctions(ctx) {
-		return this.visit(ctx.conditionalOperators());
-	}
-
-	visitNvlAtom(ctx) {
-		return this.ifThenElseVisitor.visit(ctx);
-	}
+	visitIfExpr = (ctx) => this.ifThenElseVisitor.visit(ctx);
+	visitConditionalFunctions = (ctx) => this.visit(ctx.conditionalOperators());
+	visitNvlAtom = (ctx) => this.ifThenElseVisitor.visit(ctx);
 
 	// TODO: Optional expression should handle missing values.
-	visitOptionalExpr(ctx) {
-		return ctx.expr() === null ? null : this.visit(ctx.expr());
-	}
+	visitOptionalExpr = (ctx) =>
+		ctx.expr() === null ? null : this.visit(ctx.expr());
+	visitFunctionsExpression = (ctx) => this.visit(ctx.functions());
+	visitGenericFunctions = (ctx) => this.visit(ctx.genericOperators());
+	visitTimeFunctions = (ctx) => this.visit(ctx.timeOperators());
 
-	visitFunctionsExpression(ctx) {
-		return this.visit(ctx.functions());
-	}
+	visitVarIdExpr = (ctx) => this.variableVisitor.visit(ctx);
 
-	visitGenericFunctions(ctx) {
-		return this.visit(ctx.genericOperators());
-	}
-
-	visitTimeFunctions(ctx) {
-		return this.visit(ctx.timeOperators());
-	}
-
-	visitVarIdExpr(ctx) {
-		return this.variableVisitor.visit(ctx);
-	}
-
-	visitConstantExpr(ctx) {
-		return this.literalVisitor.visit(ctx);
-	}
+	visitConstantExpr = (ctx) => this.literalVisitor.visit(ctx);
 
 	// Functions
-	visitCastExprDataset(ctx) {
-		return this.castFunctionVisitor.visit(ctx);
-	}
+	visitCastExprDataset = (ctx) => this.castFunctionVisitor.visit(ctx);
+	visitCurrentDateAtom = (ctx) => this.dateFunctionVisitor.visit(ctx);
+	visitConcatExpr = (ctx) => this.concatenationVisitor.visit(ctx);
+	visitStringFunctions = (ctx) =>
+		this.stringFunctionVisitor.visit(ctx.stringOperators());
+	visitComparisonFunctions = (ctx) =>
+		this.comparisonFunctionVisitor.visit(ctx.comparisonOperators());
+	visitNumericFunctions = (ctx) =>
+		this.numericFunctionVisitor.visit(ctx.numericOperators());
 
-	visitCurrentDateAtom(ctx) {
-		return this.dateFunctionVisitor.visit(ctx);
-	}
-
-	visitConcatExpr(ctx) {
-		return this.concatenationVisitor.visit(ctx);
-	}
-
-	visitStringFunctions(ctx) {
-		return this.stringFunctionVisitor.visit(ctx.stringOperators());
-	}
-
-	visitComparisonFunctions(ctx) {
-		return this.comparisonFunctionVisitor.visit(ctx.comparisonOperators());
-	}
-
-	visitNumericFunctions(ctx) {
-		return this.numericFunctionVisitor.visit(ctx.numericOperators());
-	}
-
-	visitAggregateFunctions(ctx) {
-		return this.datasetFunctionsVisitor.visit(ctx.aggrOperatorsGrouping());
-	}
-
-	visitAnalyticFunctions(ctx) {
-		return this.datasetFunctionsVisitor.visit(ctx.anFunction());
-	}
+	visitAggregateFunctions = (ctx) =>
+		this.datasetFunctionsVisitor.visit(ctx.aggrOperatorsGrouping());
+	visitAnalyticFunctions = (ctx) =>
+		this.datasetFunctionsVisitor.visit(ctx.anFunction());
 }
 
 export default ExpressionVisitor;

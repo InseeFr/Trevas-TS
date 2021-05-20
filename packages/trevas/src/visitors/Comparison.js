@@ -1,12 +1,13 @@
-import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
+import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../errors';
 
-class ComparisonVisitor {
+class ComparisonVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
+		super();
 		this.exprVisitor = exprVisitor;
 	}
 
-	visitComparisonExpr(ctx) {
+	visitComparisonExpr = (ctx) => {
 		const { left, right, op } = ctx;
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
@@ -24,25 +25,25 @@ class ComparisonVisitor {
 		let operatorFunction;
 		switch (op.children[0].symbol.type) {
 			case VtlParser.MT:
-				operatorFunction = (l, r) => l > r;
+				operatorFunction = (left, right) => left > right;
 				break;
 			case VtlParser.LT:
-				operatorFunction = (l, r) => l < r;
+				operatorFunction = (left, right) => left < right;
 				break;
 			case VtlParser.ME:
-				operatorFunction = (l, r) => l >= r;
+				operatorFunction = (left, right) => left >= right;
 				break;
 			case VtlParser.LE:
-				operatorFunction = (l, r) => l <= r;
+				operatorFunction = (left, right) => left <= right;
 				break;
 			case VtlParser.EQ:
-				operatorFunction = (l, r) => l === r;
+				operatorFunction = (left, right) => left === right;
 				break;
 			case VtlParser.NEQ:
-				operatorFunction = (l, r) => l !== r;
+				operatorFunction = (left, right) => left !== right;
 				break;
 			default:
-				throw new Error(`Unsupported operator ${op.getText()}`);
+				throw new Error('Unsupported operator ' + op.getText());
 		}
 
 		return {
@@ -53,7 +54,7 @@ class ComparisonVisitor {
 				),
 			type: VtlParser.BOOLEAN,
 		};
-	}
+	};
 }
 
 export default ComparisonVisitor;
