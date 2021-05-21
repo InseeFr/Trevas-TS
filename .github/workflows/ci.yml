@@ -31,8 +31,7 @@ jobs:
           working-directory: ./docs
       - run: |
           npm i -g gitbook-cli
-          npm i graceful-fs
-          gitbook build
+          gitbook build --gitbook=2.6.9
       - run: cp ./docs/_book/ ./deploy/
   deploy:
     # if: github.ref == 'refs/heads/main'
