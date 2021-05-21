@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import antlr4 from 'antlr4';
 import Tree from './tree';
-import { VtlLexer, VtlParser } from '@inseefr/vtl-2.1-antlr-tools';
+import { VtlLexer, VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import TreeVtlVisitor from './TreeVtlVisitor';
 
 const getTree = (text) => (getContext) => {

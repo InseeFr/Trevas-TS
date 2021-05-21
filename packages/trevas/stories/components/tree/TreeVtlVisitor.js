@@ -1,4 +1,4 @@
-import { VtlVisitor } from '@inseefr/vtl-2.1-antlr-tools';
+import { VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 
 function TreeVtlVisitor(getContext) {
 	VtlVisitor.call(this);
