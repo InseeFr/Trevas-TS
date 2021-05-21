@@ -1,0 +1,48 @@
+name: Trevas JS CI
+on: [push]
+jobs:
+  test-build:
+    name: Test & build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['15']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '15'
+      - run: yarn
+      - run: yarn test --coverage
+      - run: yarn build
+      - run: build-storybook
+      - run: cp -R ./build-storybook/storybook/. ./deploy/storybook
+      - run: yarn analyze
+      - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
+      - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
+  build-docs:
+    name: Build docs
+    if: github.ref == 'refs/heads/main'
+    needs: test-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '15'
+          working-directory: ./docs
+      - run: |
+          gitbook install
+          gitbook build
+      - run: cp ./docs/_book/ ./deploy/
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: deploy # The folder the action should deploy.
