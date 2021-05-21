@@ -32,7 +32,7 @@ jobs:
           npm i -g gitbook-cli
           gitbook install
           gitbook build
-        working-directory: ./docs
+        working-directory: ./docs/
       - run: cp ./docs/_book/ ./deploy/
   deploy:
     # if: github.ref == 'refs/heads/main'
