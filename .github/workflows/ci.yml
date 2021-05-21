@@ -28,10 +28,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-          working-directory: ./docs
       - run: |
           npm i -g gitbook-cli
-          gitbook build --gitbook=2.6.9
+          gitbook build
+        working-directory: ./docs
       - run: cp ./docs/_book/ ./deploy/
   deploy:
     # if: github.ref == 'refs/heads/main'
