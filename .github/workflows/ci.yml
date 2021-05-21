@@ -19,24 +19,25 @@ jobs:
       - run: mkdir -p deploy/bundle-report
       - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
       - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
-  # build-docs:
-  #   name: Build docs
-  #   # if: github.ref == 'refs/heads/main'
-  #   needs: test-build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12
-  #         working-directory: ./docs
-  #     - run: |
-  #         npm i -g gitbook-cli
-  #         gitbook build
-  #     - run: cp ./docs/_book/ ./deploy/
+  build-docs:
+    name: Build docs
+    # if: github.ref == 'refs/heads/main'
+    needs: test-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          working-directory: ./docs
+      - run: |
+          npm i -g gitbook-cli
+          npm i graceful-fs
+          gitbook build
+      - run: cp ./docs/_book/ ./deploy/
   deploy:
     # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # needs: build-docs
+    needs: build-docs
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
