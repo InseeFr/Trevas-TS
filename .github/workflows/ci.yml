@@ -16,8 +16,10 @@ jobs:
       - run: yarn build
       - run: yarn test --coverage
       - run: yarn build-storybook
+      - run: mkdir -p deploy/storybook
       - run: cp -R ./built-storybook/storybook/. ./deploy/storybook
       - run: yarn analyze
+      - run: mkdir -p deploy/bundle-report
       - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
       - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
   build-docs:
