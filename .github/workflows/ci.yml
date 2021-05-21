@@ -33,7 +33,7 @@ jobs:
           node-version: '12'
           working-directory: ./docs
       - run: |
-          npm install -g gitbook-cli
+          npm i gitbook-cli
           gitbook install
           gitbook build
       - run: cp ./docs/_book/ ./deploy/
