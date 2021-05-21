@@ -16,7 +16,7 @@ jobs:
       - run: yarn build
       - run: yarn test --coverage
       - run: yarn build-storybook
-      - run: cp -R ./build-storybook/storybook/. ./deploy/storybook
+      - run: cp -R ./built-storybook/storybook/. ./deploy/storybook
       - run: yarn analyze
       - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
       - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v1
         with:
-          node-version: '15'
+          node-version: '12'
           working-directory: ./docs
       - run: |
           gitbook install
