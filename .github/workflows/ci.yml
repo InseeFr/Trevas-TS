@@ -19,15 +19,15 @@ jobs:
       - run: mkdir -p deploy/bundle-report
       - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
       - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: |
-          npm i -g gitbook-cli
-          gitbook install
-          gitbook build
-        working-directory: ./docs/
-      - run: cp ./docs/_book/ ./deploy/
+      # - uses: actions/setup-node@v1
+      #   with:
+      #     node-version: 12
+      # - run: |
+      #     npm i -g gitbook-cli
+      #     gitbook install
+      #     gitbook build
+      #   working-directory: ./docs/
+      # - run: cp ./docs/_book/ ./deploy/
   deploy:
     # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
