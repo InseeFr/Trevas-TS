@@ -1,10 +1,10 @@
 {
-	"name": "@inseefr/vtl-tools",
+	"name": "@inseefr/trevas-js",
 	"version": "0.0.1",
 	"description": "JavaScript tools & engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/InseeFr/VTL-Tools"
+		"url": "https://github.com/InseeFr/Trevas-JS"
 	},
 	"license": "MIT",
 	"author": "INSEE (https://www.insee.fr)",

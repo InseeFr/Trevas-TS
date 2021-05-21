@@ -1,15 +1,15 @@
-# VTL Tools
+# Trevas JS
 
 JavaScript tools for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)
 
-[![Build Status](https://travis-ci.org/InseeFr/VTL-Tools.svg?branch=master)](https://travis-ci.org/inseefr/vtl-tools)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_VTL-Tools&metric=coverage)](https://sonarcloud.io/dashboard?id=InseeFr_VTL-Tools)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_VTL-Tools&metric=alert_status)](https://sonarcloud.io/dashboard?id=InseeFr_VTL-Tools)
+[![Build Status](https://travis-ci.org/InseeFr/Trevas-JS.svg?branch=master)](https://travis-ci.org/inseefr/trevas-js)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-JS&metric=coverage)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-JS)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-JS&metric=alert_status)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-JS)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-The documentation can be found in the [docs](https://github.com/InseeFr/VTL-Tools/tree/master/docs) folder and [browsed online](https://inseefr.github.io/VTL-Tools).
+The documentation can be found in the [docs](https://github.com/InseeFr/Trevas-JS/tree/master/docs) folder and [browsed online](https://inseefr.github.io/Trevas-JS).
 
-[Storybook](https://inseefr.github.io/VTL-Tools/storybook) is also available online.
+[Storybook](https://inseefr.github.io/Trevas-JS/storybook) is also available online.
 
 ## Packages
 
@@ -30,8 +30,8 @@ VTL Tools is a monorepo.
 Clone Github repository:
 
 ```
-git clone https://github.com/InseeFr/VTL-Tools.git
-cd VTL-Tools
+git clone https://github.com/InseeFr/Trevas-JS.git
+cd Trevas-JS
 ```
 
 Install dependencies (yarn is required because of [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/)) and locally build packages:
