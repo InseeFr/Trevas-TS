@@ -4,7 +4,7 @@
 	"description": "JavaScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/InseeFr/VTL-Tools/tree/master/packages/trevas"
+		"url": "https://github.com/InseeFr/Trevas-JS/tree/master/packages/trevas"
 	},
 	"license": "MIT",
 	"author": "INSEE (http://www.insee.fr)",

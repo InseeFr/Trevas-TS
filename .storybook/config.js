@@ -9,7 +9,7 @@ addDecorator(withKnobs);
 
 addParameters({
 	options: {
-		name: 'VTL Tools',
+		name: 'Trevas JS',
 		addonPanelInRight: true,
 	},
 });
