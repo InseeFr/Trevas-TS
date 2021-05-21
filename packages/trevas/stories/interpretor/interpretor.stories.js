@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withReadme } from 'storybook-readme';
-import { VtlParser } from '@inseefr/vtl-2.1-antlr-tools';
+import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import * as dataForge from 'data-forge';
 import { Interpretor } from '../components';
 import readme from './README.md';

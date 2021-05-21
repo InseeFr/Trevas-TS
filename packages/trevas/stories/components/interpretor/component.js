@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Griddle from 'griddle-react';
 import { AntlrEditor } from 'antlr-editor';
 import * as tools from 'vtl-2-0-antlr-tools-ts';
-import { VtlParser } from '@inseefr/vtl-2.1-antlr-tools';
+import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import { getSuggestions } from './vtl-suggestions';
 import Bindings from './bindings';
 import TreeView from '../tree';
