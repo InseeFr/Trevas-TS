@@ -1,5 +1,8 @@
 # Trevas
 
+[![npm version](https://badge.fury.io/js/%40inseefr%2Ftrevas.svg)](https://badge.fury.io/js/%40inseefr%2Ftrevas)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 Transformation engine and validator for statistics.
 
 ## Usage
