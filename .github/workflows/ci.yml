@@ -63,8 +63,8 @@ jobs:
         with:
           name: deploy
           path: deploy
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.3
+      - name: Deploy
+        uses: ZanderZhao/gitbook-action@master
         with:
-          branch: gh-pages
-          folder: deploy
+          source_dir: deploy
+          token: ${{ secrets.GITHUB_TOKEN }}
