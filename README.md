@@ -2,7 +2,7 @@
 
 Trevas JS is a JavaScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096). It is part of the Trevas family, together with the [Trevas](https://github.com/InseeFr/Trevas) Java engine.
 
-[![Build Status](https://travis-ci.org/InseeFr/Trevas-JS.svg?branch=master)](https://travis-ci.org/inseefr/trevas-js)
+[![Trevas JS CI](https://github.com/InseeFr/Trevas-JS/actions/workflows/ci.yml/badge.svg)](https://github.com/InseeFr/Trevas-JS/actions/workflows/ci.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-JS&metric=coverage)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-JS)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-JS&metric=alert_status)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-JS)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
