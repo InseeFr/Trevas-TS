@@ -47,9 +47,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: deploy
-      - run: ls
+          paht: deploy
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
           branch: gh-pages
-          folder: .
+          folder: deploy
