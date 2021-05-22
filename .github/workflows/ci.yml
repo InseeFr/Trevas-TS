@@ -28,7 +28,7 @@ jobs:
           gitbook install
           gitbook build
         working-directory: ./docs/
-      - run: cp ./docs/_book/ ./deploy/
+      - run: cp ./docs/_book/. ./deploy/
       - uses: actions/upload-artifact@v2
         with:
           name: deploy
