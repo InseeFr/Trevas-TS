@@ -53,7 +53,7 @@ jobs:
           name: deploy
       - name: Fix code coverage paths
         working-directory: ./deploy/coverage
-        run: sed -i 's/\/home\/runner\/work\/Trevas-JS\/Trevas-JS\//\/github\/workspace\//g' lcov.info
+        run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' lcov.info
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
