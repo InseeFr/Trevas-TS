@@ -51,10 +51,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: deploy
-      # - name: Fix code coverage paths
-      #   working-directory: ./coverage
-      #   run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' lcov.info
-      - run: cp /coverage/clover.xml /github/workspace/test-report.xml
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
