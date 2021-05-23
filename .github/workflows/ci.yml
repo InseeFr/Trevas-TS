@@ -51,6 +51,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: deploy
+      - run: ls
+      - run: cd deploy/coverage
+      - run: ls
+      - run: cd ../..
       - name: Fix code coverage paths
         working-directory: ./deploy/coverage
         run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' lcov.info
