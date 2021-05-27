@@ -1,5 +1,7 @@
 name: Trevas JS CI
+
 on: [push]
+
 jobs:
   test-build:
     name: Test & build
@@ -14,6 +16,40 @@ jobs:
       - run: yarn build
       # Build sonar reports
       - run: yarn test --coverage
+      - name: Upload deploy artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage/
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: test-build
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage
+          path: coverage
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-assets:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: sonarcloud
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15
+      - run: yarn
       # Build Storybook
       - run: yarn build-storybook
       - run: mkdir -p deploy/storybook
@@ -37,33 +73,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: deploy
-          path: deploy/
-      - name: Upload deploy artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage
-          path: coverage/
-  sonarcloud:
-    runs-on: ubuntu-latest
-    needs: test-build
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: coverage
-          path: coverage
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          path: deploy/  
+                
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-    needs: sonarcloud
+    needs: build-assets
     steps:
       - name: Download deploy artifact
         uses: actions/download-artifact@v2
