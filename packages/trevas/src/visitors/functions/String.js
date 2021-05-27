@@ -139,9 +139,9 @@ class StringVisitor extends VtlVisitor {
 
 		return {
 			resolve: (bindings) => {
-				return operand
-					.resolve(bindings)
-					.substr(startIndex.resolve(bindings), length.resolve(bindings));
+				const start = startIndex.resolve(bindings) - 1;
+				const end = start + length.resolve(bindings);
+				return operand.resolve(bindings).substring(start, end);
 			},
 			type: VtlParser.STRING,
 		};

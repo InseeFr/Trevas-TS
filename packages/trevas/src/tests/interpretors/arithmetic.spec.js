@@ -14,8 +14,8 @@ describe('arithmetic', () => {
 		const ds1 = {
 			type: VtlParser.DATASET,
 			columns,
-			resolve: () => {
-				return new dataForge.DataFrame({
+			resolve: () =>
+				new dataForge.DataFrame({
 					rows: [
 						[10, 'A', 5, 5.0],
 						[10, 'B', 2, 10.5],
@@ -23,22 +23,20 @@ describe('arithmetic', () => {
 						[11, 'B', 4, 20.3],
 					],
 					columnNames: Object.keys(columns),
-				});
-			},
+				}),
 		};
 		const ds2 = {
 			type: VtlParser.DATASET,
 			columns,
-			resolve: () => {
-				return new dataForge.DataFrame({
+			resolve: () =>
+				new dataForge.DataFrame({
 					rows: [
 						[10, 'A', 10, 3.0],
 						[10, 'C', 11, 6.2],
 						[11, 'B', 6, 7.0],
 					],
 					columnNames: Object.keys(columns),
-				});
-			},
+				}),
 		};
 		it('addition with datasets', () => {
 			expect(interpret('ds1 + ds2', { ds1, ds2 }).toArray()).toEqual([

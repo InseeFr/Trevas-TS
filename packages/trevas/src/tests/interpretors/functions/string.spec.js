@@ -4,9 +4,15 @@ import TypeMismatchError from '../../../errors/TypeMismatchError';
 describe('interpretor', () => {
 	describe('string functions', () => {
 		it('should substr string', () => {
-			expect(interpret('substr("123456789", 4, 2)', {})).toEqual('56');
-			expect(interpret('substr("123456789", 0, 2)', {})).toEqual('12');
-			expect(interpret('substr("123456789", 0, 25)', {})).toEqual('123456789');
+			expect(
+				interpret('substr("abcdefghijklmnopqrstuvwxyz", 5, 10)', {})
+			).toEqual('efghijklmn');
+			expect(
+				interpret('substr("abcdefghijklmnopqrstuvwxyz", 25 , 10) ', {})
+			).toEqual('yz');
+			expect(
+				interpret('substr("abcdefghijklmnopqrstuvwxyz", 30, 10) ', {})
+			).toEqual('');
 		});
 		it('should fail with type validation', () => {
 			expect(() => interpret('substr(1234, 4, 2)', {})).toThrow(
