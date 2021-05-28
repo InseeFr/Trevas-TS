@@ -127,6 +127,15 @@ describe('arithmetic', () => {
 			]);
 		});
 	});
+	describe('handle null', () => {
+		it('supports unary with null', () => {
+			expect(interpret('- null', {})).toBeNull();
+		});
+		it('supports basic arithmetic with null', () => {
+			expect(interpret('1 - null', {})).toBeNull();
+			expect(interpret('null * 2', {})).toBeNull();
+		});
+	});
 	describe('scalars', () => {
 		it('supports unary operations', () => {
 			expect(interpret('-(0 - 1)', {})).toEqual(1);
