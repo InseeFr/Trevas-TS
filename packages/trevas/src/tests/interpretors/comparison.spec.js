@@ -3,6 +3,20 @@ import { TypeMismatchError } from '../../errors';
 
 describe('interpretor', () => {
 	describe('interpret', () => {
+		it('supports comparisons with null', () => {
+			expect(interpret('null < 2', {})).toBeNull();
+			expect(interpret('2 < null', {})).toBeNull();
+			expect(interpret('null > 2', {})).toBeNull();
+			expect(interpret('2 > null', {})).toBeNull();
+			expect(interpret('null <= 2', {})).toBeNull();
+			expect(interpret('2 <= null', {})).toBeNull();
+			expect(interpret('null >= 2', {})).toBeNull();
+			expect(interpret('2 >= null', {})).toBeNull();
+			expect(interpret('null = 2', {})).toBeNull();
+			expect(interpret('2 = null', {})).toBeNull();
+			expect(interpret('null <> 2', {})).toBeNull();
+			expect(interpret('2 <> null', {})).toBeNull();
+		});
 		it('should fail to compare wrong types', () => {
 			expect(() => interpret('"string" < 1')).toThrow(TypeMismatchError);
 			expect(() => interpret('"string" > 1')).toThrow(TypeMismatchError);
