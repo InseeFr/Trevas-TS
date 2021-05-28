@@ -1,5 +1,14 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../errors';
+import { hasNullArgs } from '../utils';
+
+const getType = (...args) => {
+	const types = args.map((a) => a.type);
+	if (types.includes(VtlParser.NULL_CONSTANT)) return VtlParser.NUMBER;
+	return types.includes(VtlParser.NUMBER)
+		? VtlParser.NUMBER
+		: VtlParser.INTEGER;
+};
 
 /**
  * Util function that creates a key extractor for the columns.
@@ -10,12 +19,11 @@ function keyExtractorFor(columns) {
 	if (columns.length < 1) {
 		throw new Error('column list was empty');
 	}
-	return (row) => {
-		return Object.entries(row)
+	return (row) =>
+		Object.entries(row)
 			.filter(([key]) => columns.includes(key))
 			.map(([_, value]) => value)
 			.reduce((a, v) => a + v, '');
-	};
 }
 
 /**
@@ -57,17 +65,24 @@ class ArithmeticVisitor extends VtlVisitor {
 		const { op, right: rightCtx } = ctx;
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.NULL_CONSTANT,
+		];
 
 		if (!expectedTypes.includes(rightExpr.type))
 			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
+		const type = getType(rightExpr);
+
 		return {
 			resolve: (bindings) => {
 				const value = rightExpr.resolve(bindings);
+				if (value === null) return null;
 				return op.type === VtlParser.PLUS ? value : -value;
 			},
-			type: rightExpr.type,
+			type,
 		};
 	};
 
@@ -87,6 +102,7 @@ class ArithmeticVisitor extends VtlVisitor {
 			VtlParser.INTEGER,
 			VtlParser.NUMBER,
 			VtlParser.DATASET,
+			VtlParser.NULL_CONSTANT,
 		];
 
 		if (!expectedTypes.includes(leftExpr.type))
@@ -96,9 +112,8 @@ class ArithmeticVisitor extends VtlVisitor {
 			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
 		let operatorFunction;
-		let type = [leftExpr.type, rightExpr.type].includes(VtlParser.NUMBER)
-			? VtlParser.NUMBER
-			: VtlParser.INTEGER;
+
+		let type = getType(leftExpr, rightExpr);
 
 		switch (opCtx.type) {
 			case VtlParser.PLUS:
@@ -148,16 +163,16 @@ class ArithmeticVisitor extends VtlVisitor {
 					);
 				},
 			};
-		} else {
-			return {
-				resolve: (bindings) =>
-					operatorFunction(
-						leftExpr.resolve(bindings),
-						rightExpr.resolve(bindings)
-					),
-				type,
-			};
 		}
+		return {
+			resolve: (bindings) => {
+				const leftValue = leftExpr.resolve(bindings);
+				const rightValue = rightExpr.resolve(bindings);
+				if (hasNullArgs(leftValue, rightValue)) return null;
+				return operatorFunction(leftValue, rightValue);
+			},
+			type,
+		};
 	};
 }
 
