@@ -3,6 +3,11 @@ import { IncompatibleTypeError } from '../../errors';
 
 describe('interpretor', () => {
 	describe('conditional operators', () => {
+		it('supports if-then-else with null', () => {
+			expect(interpret('if null then "true" else "false"')).toEqual('false');
+			expect(interpret('if true then null else "false"')).toBeNull();
+			expect(interpret('if false then true else null')).toBeNull();
+		});
 		it('supports if-then-else', () => {
 			expect(interpret('if (true) then "true" else "false"')).toEqual('true');
 			expect(interpret('if (false) then "true" else "false"')).toEqual('false');
