@@ -20,20 +20,17 @@ class DatasetVisitor extends VtlVisitor {
 		let type;
 
 		switch (opCtx.type) {
-			case VtlParser.COUNT:
-				operatorFunction = (expr) => {
-					return expr.count();
-				};
+			case VtlParser.COUNT: {
+				operatorFunction = (e) => e.count();
 				type = VtlParser.NUMBER;
 				break;
+			}
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
 
 		return {
-			resolve: (bindings) => {
-				return operatorFunction(expr.resolve(bindings));
-			},
+			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
 			type,
 		};
 	};
@@ -52,11 +49,11 @@ class DatasetVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.FIRST_VALUE:
-				operatorFunction = (expr) => getDatasetFirstValue(expr);
+				operatorFunction = (e) => getDatasetFirstValue(e);
 				type = VtlParser.DATASET;
 				break;
 			case VtlParser.LAST_VALUE:
-				operatorFunction = (expr) => getDatasetLastValue(expr);
+				operatorFunction = (e) => getDatasetLastValue(e);
 				type = VtlParser.DATASET;
 				break;
 			default:
@@ -64,9 +61,7 @@ class DatasetVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: (bindings) => {
-				return operatorFunction(expr.resolve(bindings));
-			},
+			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
 			type,
 		};
 	};
