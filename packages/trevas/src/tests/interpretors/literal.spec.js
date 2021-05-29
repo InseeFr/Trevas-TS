@@ -2,6 +2,9 @@ import interpret from '../../interpretor';
 
 describe('interpretor', () => {
 	describe('interpret', () => {
+		it('supports literal with null', () => {
+			expect(interpret('null', {})).toBeNull();
+		});
 		it('should preserve integer literal', () => {
 			expect(interpret('12345', {})).toEqual(12345);
 			expect(interpret('-12345', {})).toEqual(-12345);
