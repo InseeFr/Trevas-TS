@@ -24,6 +24,6 @@ describe('variable', () => {
 		expect(interpret('aDataset', bindings).toArray()).toEqual([]);
 		expect(interpret('nullValue', bindings)).toBeNull();
 		// FIXME how to bubble up the error thrown to the `interpret` function ?
-		//expect(interpret('aFlawedDataset', bindings)).toThrow();
+		// expect(interpret('aFlawedDataset', bindings)).toThrow();
 	});
 });
