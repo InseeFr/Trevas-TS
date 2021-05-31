@@ -2,6 +2,48 @@ import interpret from '../../../interpretor';
 import TypeMismatchError from '../../../errors/TypeMismatchError';
 
 describe('string-functions', () => {
+	describe('supports string functions with null', () => {
+		it('supports substr with null', () => {
+			expect(interpret('substr(null, 5, 10)', {})).toBeNull();
+			expect(
+				interpret('substr("abcdefghijklmnopqrstuvwxyz", null, 10)', {})
+			).toBeNull();
+			expect(
+				interpret('substr("abcdefghijklmnopqrstuvwxyz", 5, null)', {})
+			).toBeNull();
+		});
+		it('supports trim with null', () => {
+			expect(interpret('trim(null)', {})).toBeNull();
+		});
+		it('supports rtrim with null', () => {
+			expect(interpret('rtrim(null)', {})).toBeNull();
+		});
+		it('supports ltrim with null', () => {
+			expect(interpret('ltrim(null)', {})).toBeNull();
+		});
+		it('supports upper with null', () => {
+			expect(interpret('upper(null)', {})).toBeNull();
+		});
+		it('supports lower with null', () => {
+			expect(interpret('lower(null)', {})).toBeNull();
+		});
+		it('supports replace with null', () => {
+			expect(interpret('replace(null, "Hello", "Hi")', {})).toBeNull();
+			expect(interpret('replace("Hello world", null, "Hi")', {})).toBeNull();
+			expect(interpret('replace("Hello world", "Hello", null)', {})).toBeNull();
+		});
+		it('supports inst with null', () => {
+			expect(interpret('instr(null, "world")', {})).toBeNull();
+			expect(interpret('instr("Hello world", null)', {})).toBeNull();
+			expect(interpret('instr("Hello world", "world", null)', {})).toBeNull();
+			expect(
+				interpret('instr("Hello world", "world", _, null)', {})
+			).toBeNull();
+		});
+		it('supports length with null', () => {
+			expect(interpret('length(null)', {})).toBeNull();
+		});
+	});
 	it('should substr string', () => {
 		expect(
 			interpret('substr("abcdefghijklmnopqrstuvwxyz", 5, 10)', {})
@@ -36,7 +78,7 @@ describe('trim', () => {
 	});
 });
 describe('ltrim', () => {
-	it('should trim string', () => {
+	it('should ltrim string', () => {
 		expect(interpret('ltrim(" before")', {})).toEqual('before');
 		expect(interpret('ltrim("after ")', {})).toEqual('after ');
 		expect(interpret('ltrim("none")', {})).toEqual('none');
@@ -46,7 +88,7 @@ describe('ltrim', () => {
 	});
 });
 describe('rtrim', () => {
-	it('should trim string', () => {
+	it('should rtrim string', () => {
 		expect(interpret('rtrim(" before")', {})).toEqual(' before');
 		expect(interpret('rtrim("after ")', {})).toEqual('after');
 		expect(interpret('rtrim("none")', {})).toEqual('none');
