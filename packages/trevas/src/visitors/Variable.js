@@ -8,6 +8,27 @@ const types = {
 	boolean: VtlParser.BOOLEAN,
 };
 
+/** Variable duck typing and type checking */
+const typeResolver = (variable, bindings) => {
+	const boundVar = bindings[variable];
+
+	if (boundVar === null) return VtlParser.NULL_CONSTANT;
+
+	const jsType = typeof boundVar;
+
+	if (['string', 'number', 'boolean'].includes(jsType)) {
+		return types[jsType];
+	}
+	if (jsType === 'object') {
+		const dsKeys = Object.keys(boundVar);
+		if (dsKeys.includes('dataStructure', 'dataPoints')) {
+			return VtlParser.DATASET;
+		}
+		throw new Error('The dataset shape is not good.');
+	}
+	throw new Error('Unrecognized variable type.');
+};
+
 /** Variable transformation */
 const varTransformer = (variable, bindings) => {
 	const type = typeResolver(variable, bindings);
@@ -20,33 +41,11 @@ const varTransformer = (variable, bindings) => {
 		].includes(type)
 	) {
 		return bindings[variable];
-	} else if (type === VtlParser.DATASET) {
+	}
+	if (type === VtlParser.DATASET) {
 		return fromDatasetToDataframe(bindings[variable]);
-	} else {
-		throw new Error(`Cannot transform variable of type ${type}`);
 	}
-};
-
-/** Variable duck typing and type checking */
-const typeResolver = (variable, bindings) => {
-	const boundVar = bindings[variable];
-
-	if (boundVar === null) return VtlParser.NULL_CONSTANT;
-
-	const jsType = typeof boundVar;
-
-	if (['string', 'number', 'boolean'].includes(jsType)) {
-		return types[jsType];
-	} else if (jsType === 'object') {
-		const dsKeys = Object.keys(boundVar);
-		if (dsKeys.includes('dataStructure', 'dataPoints')) {
-			return VtlParser.DATASET;
-		} else {
-			throw new Error('The dataset shape is not good.');
-		}
-	} else {
-		throw new Error('Unrecognized variable type.');
-	}
+	throw new Error(`Cannot transform variable of type ${type}`);
 };
 
 class VariableVisitor extends VtlVisitor {
@@ -54,16 +53,16 @@ class VariableVisitor extends VtlVisitor {
 		super();
 		this.bindings = bindings;
 	}
+
 	visitVarIdExpr = (ctx) => {
 		const variable = ctx.getText();
 		if (this.bindings[variable] && this.bindings[variable].type) {
 			return this.bindings[variable];
-		} else {
-			return {
-				resolve: (bindings) => varTransformer(variable, this.bindings),
-				type: typeResolver(variable, this.bindings),
-			};
 		}
+		return {
+			resolve: (bindings) => varTransformer(variable, bindings),
+			type: typeResolver(variable, this.bindings),
+		};
 	};
 }
 

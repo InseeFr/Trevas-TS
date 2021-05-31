@@ -8,7 +8,7 @@ describe('type', () => {
 					'STRING'
 				);
 			});
-		})
+		});
 		describe('integer', () => {
 			it('cast integer to integer', () => {
 				expect(getType('cast(10, integer)', {})).toEqual('INTEGER');
@@ -112,7 +112,7 @@ describe('type', () => {
 					'cast("1998-07-12", date, "YYYY-MM-DD")',
 					{}
 				);
-				expect(getType('cast(aDate, string, "YYYY-DD-MM")', {aDate})).toEqual(
+				expect(getType('cast(aDate, string, "YYYY-DD-MM")', { aDate })).toEqual(
 					'STRING'
 				);
 			});

@@ -11,21 +11,22 @@ class ConcatenationVisitor extends VtlVisitor {
 			throw new Error('Concat visitor got arithmetic context');
 		}
 		const { left, right } = ctx;
+
 		const leftOperand = this.exprVisitor.visit(left);
 		const rightOperand = this.exprVisitor.visit(right);
 
 		if (
-			leftOperand.type !== rightOperand.type ||
-			rightOperand.type !== VtlParser.STRING
-		) {
+			![VtlParser.STRING, VtlParser.NULL_CONSTANT].includes(leftOperand.type) ||
+			![VtlParser.STRING, VtlParser.NULL_CONSTANT].includes(rightOperand.type)
+		)
 			throw new Error(
 				`cannot concat ${left.getText()} with ${right.getText()}`
 			);
-		}
+
 		return {
 			resolve: (bindings) =>
-				leftOperand.resolve(bindings) + rightOperand.resolve(bindings),
-			type: leftOperand.type, // invariant because of type check above.
+				`${leftOperand.resolve(bindings)}${rightOperand.resolve(bindings)}`,
+			type: VtlParser.STRING, // invariant because of type check above.
 		};
 	};
 }

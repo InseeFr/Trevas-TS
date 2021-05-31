@@ -1,5 +1,6 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../../errors';
+import { hasNullArgs } from '../../utils';
 
 class StringVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -12,7 +13,7 @@ class StringVisitor extends VtlVisitor {
 
 		const expr = this.exprVisitor.visit(ctx.expr());
 
-		if (expr.type !== VtlParser.STRING) {
+		if (![VtlParser.STRING, VtlParser.NULL_CONSTANT].includes(expr.type)) {
 			throw new TypeMismatchError(ctx.expr(), VtlParser.STRING, opCtx.type);
 		}
 
@@ -21,22 +22,22 @@ class StringVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.TRIM:
-				operatorFunction = (expr) => expr.trim();
+				operatorFunction = (e) => e.trim();
 				break;
 			case VtlParser.LTRIM:
-				operatorFunction = (expr) => expr.trimLeft();
+				operatorFunction = (e) => e.trimLeft();
 				break;
 			case VtlParser.RTRIM:
-				operatorFunction = (expr) => expr.trimRight();
+				operatorFunction = (e) => e.trimRight();
 				break;
 			case VtlParser.UCASE:
-				operatorFunction = (expr) => expr.toUpperCase();
+				operatorFunction = (e) => e.toUpperCase();
 				break;
 			case VtlParser.LCASE:
-				operatorFunction = (expr) => expr.toLowerCase();
+				operatorFunction = (e) => e.toLowerCase();
 				break;
 			case VtlParser.LEN:
-				operatorFunction = (expr) => expr.length;
+				operatorFunction = (e) => e.length;
 				type = VtlParser.INTEGER;
 				break;
 			default:
@@ -44,32 +45,47 @@ class StringVisitor extends VtlVisitor {
 		}
 		return {
 			resolve: (bindings) => {
-				return operatorFunction(expr.resolve(bindings));
+				const exprValue = expr.resolve(bindings);
+				if (hasNullArgs(exprValue)) return null;
+				return operatorFunction(exprValue);
 			},
 			type,
 		};
 	};
 
-	checkType = (exprCtx, expectedType) => {
+	checkTypes = (exprCtx, expectedTypes) => {
 		const operand = this.exprVisitor.visit(exprCtx);
-		if (operand.type !== expectedType) {
-			throw new TypeMismatchError(exprCtx, expectedType, operand.type);
+		if (!expectedTypes.includes(operand.type)) {
+			throw new TypeMismatchError(exprCtx, expectedTypes, operand.type);
 		}
 		return operand;
 	};
 
 	visitReplaceAtom = (ctx) => {
 		const [strCtx, oldCtx] = ctx.expr();
-		const operand = this.checkType(strCtx, VtlParser.STRING);
-		const oldStr = this.checkType(oldCtx, VtlParser.STRING);
+		const operand = this.checkTypes(strCtx, [
+			VtlParser.STRING,
+			VtlParser.NULL_CONSTANT,
+		]);
+		const oldStr = this.checkTypes(oldCtx, [
+			VtlParser.STRING,
+			VtlParser.NULL_CONSTANT,
+		]);
 		const newCtx = ctx.optionalExpr()
 			? ctx.optionalExpr()
 			: { resolve: () => '', type: VtlParser.STRING };
-		const newStr = this.checkType(newCtx, VtlParser.STRING);
+		const newStr = this.checkTypes(newCtx, [
+			VtlParser.STRING,
+			VtlParser.NULL_CONSTANT,
+		]);
 		return {
 			resolve: (bindings) => {
-				const regexp = new RegExp(oldStr.resolve(bindings), 'g');
-				return operand.resolve(bindings).replace(regexp, newStr.resolve());
+				const operandValue = operand.resolve(bindings);
+				const oldStrValue = oldStr.resolve(bindings);
+				const newStrValue = newStr.resolve();
+				if (hasNullArgs(operandValue, oldStrValue, newStrValue)) return null;
+				const regexp = new RegExp(oldStrValue, 'g');
+				return operandValue.replace(regexp, newStrValue);
 			},
 			type: VtlParser.STRING,
 		};
@@ -79,44 +95,58 @@ class StringVisitor extends VtlVisitor {
 		const [operandCtx, patternCtx] = ctx.expr();
 		const [startCtx, occurrenceCtx] = ctx.optionalExpr();
 
-		const operand = this.checkType(operandCtx, VtlParser.STRING);
-		const pattern = this.checkType(patternCtx, VtlParser.STRING);
+		const operand = this.checkTypes(operandCtx, [
+			VtlParser.STRING,
+			VtlParser.NULL_CONSTANT,
+		]);
+		const pattern = this.checkTypes(patternCtx, [
+			VtlParser.STRING,
+			VtlParser.NULL_CONSTANT,
+		]);
 
-		// TODO: Change when we handle missing values.
 		const start =
 			startCtx && startCtx.expr()
-				? this.checkType(startCtx, VtlParser.INTEGER)
+				? this.checkTypes(startCtx, [
+						VtlParser.INTEGER,
+						VtlParser.NULL_CONSTANT,
+				  ])
 				: { resolve: () => 0, type: VtlParser.INTEGER };
 		const occurrence =
 			occurrenceCtx && occurrenceCtx.expr()
-				? this.checkType(occurrenceCtx, VtlParser.INTEGER)
+				? this.checkTypes(occurrenceCtx, [
+						VtlParser.INTEGER,
+						VtlParser.NULL_CONSTANT,
+				  ])
 				: { resolve: () => 1, type: VtlParser.INTEGER };
 
 		return {
 			resolve: (bindings) => {
-				const resolvedOperand = operand.resolve(bindings);
-				const resolvedPattern = pattern.resolve(bindings);
-				let resolvedStart = start.resolve(bindings);
+				const operandValue = operand.resolve(bindings);
+				const patternValue = pattern.resolve(bindings);
+				let startValue = start.resolve(bindings);
 
 				// Not in the spec.
-				if (resolvedStart < 0) {
+				if (startValue < 0) {
 					throw new Error('start cannot be negative');
 				}
-				let resolvedOccurrence = occurrence.resolve(bindings);
+				let occurenceValue = occurrence.resolve(bindings);
 
 				// Not in the spec.
-				if (resolvedOccurrence < 0) {
+				if (occurenceValue < 0) {
 					throw new Error('occurrence cannot be negative');
 				}
 
+				if (hasNullArgs(operandValue, patternValue, startValue, occurenceValue))
+					return null;
+
 				let result = 0;
-				while (--resolvedOccurrence >= 0) {
-					result = resolvedOperand.indexOf(resolvedPattern, resolvedStart);
+				while (occurenceValue > 0) {
+					occurenceValue -= 1;
+					result = operandValue.indexOf(patternValue, startValue);
 					if (result === -1) {
 						return 0;
-					} else {
-						resolvedStart = result + 1;
 					}
+					startValue = result + 1;
 				}
 				return result;
 			},
@@ -133,15 +163,31 @@ class StringVisitor extends VtlVisitor {
 		// TODO Grammar defines this as an unbounded array of expressions. Should be changed IMO
 		const [startIndexCtx, lengthCtx] = ctx.optionalExpr();
 
-		const operand = this.checkType(ctx.expr(), VtlParser.STRING);
-		const startIndex = this.checkType(startIndexCtx, VtlParser.INTEGER);
-		const length = this.checkType(lengthCtx, VtlParser.INTEGER);
+		const operand = this.checkTypes(ctx.expr(), [
+			VtlParser.STRING,
+			VtlParser.NULL_CONSTANT,
+		]);
+		const startIndex = this.checkTypes(startIndexCtx, [
+			VtlParser.INTEGER,
+			VtlParser.NULL_CONSTANT,
+		]);
+		const length = this.checkTypes(lengthCtx, [
+			VtlParser.INTEGER,
+			VtlParser.NULL_CONSTANT,
+		]);
 
 		return {
 			resolve: (bindings) => {
-				const start = startIndex.resolve(bindings) - 1;
-				const end = start + length.resolve(bindings);
-				return operand.resolve(bindings).substring(start, end);
+				const operandValue = operand.resolve(bindings);
+				const startValue = startIndex.resolve(bindings);
+				const lengthValue = length.resolve(bindings);
+
+				if (hasNullArgs(operandValue, startValue, lengthValue)) return null;
+
+				return operandValue.substring(
+					startValue - 1,
+					startValue - 1 + lengthValue
+				);
 			},
 			type: VtlParser.STRING,
 		};

@@ -1,6 +1,38 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../errors';
 
+const resolve = (operand, leftExpr, rightExpr) => {
+	let operatorFunction;
+	switch (operand.children[0].symbol.type) {
+		case VtlParser.MT:
+			operatorFunction = (l, r) => l > r;
+			break;
+		case VtlParser.LT:
+			operatorFunction = (l, r) => l < r;
+			break;
+		case VtlParser.ME:
+			operatorFunction = (l, r) => l >= r;
+			break;
+		case VtlParser.LE:
+			operatorFunction = (l, r) => l <= r;
+			break;
+		case VtlParser.EQ:
+			operatorFunction = (l, r) => l === r;
+			break;
+		case VtlParser.NEQ:
+			operatorFunction = (l, r) => l !== r;
+			break;
+		default:
+			throw new Error(`Unsupported operator ' + ${operand.getText()}`);
+	}
+	return (bindings) => {
+		const leftValue = leftExpr.resolve(bindings);
+		const rightValue = rightExpr.resolve(bindings);
+		if ([leftValue, rightValue].includes(null)) return null;
+		return operatorFunction(leftValue, rightValue);
+	};
+};
+
 class ComparisonVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
@@ -9,49 +41,23 @@ class ComparisonVisitor extends VtlVisitor {
 
 	visitComparisonExpr = (ctx) => {
 		const { left, right, op } = ctx;
-		const leftOperand = this.exprVisitor.visit(left);
-		const rightOperand = this.exprVisitor.visit(right);
+		const leftExpr = this.exprVisitor.visit(left);
+		const rightExpr = this.exprVisitor.visit(right);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.NULL_CONSTANT,
+		];
 
-		if (leftOperand.type !== rightOperand.type) {
-			if (!expectedTypes.includes(leftOperand.type))
-				throw new TypeMismatchError(left, expectedTypes, leftOperand.type);
+		if (!expectedTypes.includes(leftExpr.type))
+			throw new TypeMismatchError(left, expectedTypes, leftExpr.type);
 
-			if (!expectedTypes.includes(rightOperand.type))
-				throw new TypeMismatchError(right, expectedTypes, rightOperand.type);
-		}
-
-		let operatorFunction;
-		switch (op.children[0].symbol.type) {
-			case VtlParser.MT:
-				operatorFunction = (left, right) => left > right;
-				break;
-			case VtlParser.LT:
-				operatorFunction = (left, right) => left < right;
-				break;
-			case VtlParser.ME:
-				operatorFunction = (left, right) => left >= right;
-				break;
-			case VtlParser.LE:
-				operatorFunction = (left, right) => left <= right;
-				break;
-			case VtlParser.EQ:
-				operatorFunction = (left, right) => left === right;
-				break;
-			case VtlParser.NEQ:
-				operatorFunction = (left, right) => left !== right;
-				break;
-			default:
-				throw new Error('Unsupported operator ' + op.getText());
-		}
+		if (!expectedTypes.includes(rightExpr.type))
+			throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
 
 		return {
-			resolve: (bindings) =>
-				operatorFunction(
-					leftOperand.resolve(bindings),
-					rightOperand.resolve(bindings)
-				),
+			resolve: resolve(op, leftExpr, rightExpr),
 			type: VtlParser.BOOLEAN,
 		};
 	};

@@ -1,6 +1,6 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { CastTypeError, OperatorTypeError } from '../../errors';
-import { getDate, getStringFromDate } from '../../utils';
+import { getDate, getStringFromDate, hasNullArgs } from '../../utils';
 
 class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -9,17 +9,14 @@ class CastVisitor extends VtlVisitor {
 	}
 
 	visitCastExprDataset = (ctx) => {
-		let opCtx = ctx.expr();
-		let scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
-		let maskCtx = ctx.STRING_CONSTANT();
+		const expr = this.exprVisitor.visit(ctx.expr());
 
-		const op = this.exprVisitor.visit(opCtx);
+		const scalarTypeCtx = ctx.basicScalarType() || ctx.valueDomainName();
+		const maskCtx = ctx.STRING_CONSTANT();
+
 		const mask = maskCtx
 			? maskCtx.getText().substring(1, maskCtx.getText().length - 1)
 			: undefined;
-
-		if (op.type === VtlParser.NULL_CONSTANT)
-			return { resolve: () => null, type: VtlParser.NULL_CONSTANT };
 
 		const combinations = [
 			[VtlParser.INTEGER, VtlParser.INTEGER, (op) => op],
@@ -68,11 +65,7 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.DATE, VtlParser.TIME, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.DATE, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.TIME_PERIOD, () => 'TODO'],
-			[
-				VtlParser.DATE,
-				VtlParser.STRING,
-				(op, mask) => getStringFromDate(op, mask),
-			],
+			[VtlParser.DATE, VtlParser.STRING, (op, m) => getStringFromDate(op, m)],
 			[VtlParser.DATE, VtlParser.DURATION, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.INTEGER, () => 'TODO'],
 			[VtlParser.TIME_PERIOD, VtlParser.NUMBER, () => 'TODO'],
@@ -102,7 +95,7 @@ class CastVisitor extends VtlVisitor {
 			],
 			[VtlParser.STRING, VtlParser.BOOLEAN, 'ERROR'],
 			[VtlParser.STRING, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.STRING, VtlParser.DATE, (op, mask) => getDate(op, mask)],
+			[VtlParser.STRING, VtlParser.DATE, (op, m) => getDate(op, m)],
 			[VtlParser.STRING, VtlParser.TIME_PERIOD, () => 'TODO'],
 			[VtlParser.STRING, VtlParser.STRING, (op) => op],
 			[VtlParser.STRING, VtlParser.DURATION, () => 'TODO'],
@@ -117,21 +110,33 @@ class CastVisitor extends VtlVisitor {
 		];
 
 		const castOutputType = scalarTypeCtx.children[0].symbol.type;
+
 		const combination = combinations.filter(
 			([opType, scalarType]) =>
-				opType === op.type && scalarType === castOutputType
+				opType === expr.type && scalarType === castOutputType
 		);
 
-		if (combination.length !== 1)
-			throw new OperatorTypeError(ctx, 'Cast', op.type, castOutputType);
+		let operatorFunction = [];
 
-		const operatorFunction = combination[0][2];
+		if (expr.type !== VtlParser.NULL_CONSTANT) {
+			if (combination.length !== 1)
+				throw new OperatorTypeError(ctx, 'Cast', expr.type, castOutputType);
 
-		if (typeof operatorFunction !== 'function')
-			throw new CastTypeError(ctx, op.type, castOutputType);
+			// eslint-disable-next-line prefer-destructuring
+			operatorFunction = combination[0][2];
+
+			if (typeof operatorFunction !== 'function')
+				throw new CastTypeError(ctx, expr.type, castOutputType);
+		}
 
 		return {
-			resolve: (bindings) => operatorFunction(op.resolve(bindings), mask),
+			resolve: (bindings) => {
+				const opValue = expr.resolve(bindings);
+
+				if (hasNullArgs(opValue)) return null;
+
+				return operatorFunction(opValue, mask);
+			},
 			type: castOutputType,
 		};
 	};
