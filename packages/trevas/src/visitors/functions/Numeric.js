@@ -22,27 +22,27 @@ class NumericVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.ABS:
-				operatorFunction = (expr) => Math.abs(expr);
+				operatorFunction = (e) => Math.abs(e);
 				type = expr.type;
 				break;
 			case VtlParser.CEIL:
-				operatorFunction = (expr) => Math.ceil(expr);
+				operatorFunction = (e) => Math.ceil(e);
 				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.EXP:
-				operatorFunction = (expr) => Math.exp(expr);
+				operatorFunction = (e) => Math.exp(e);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.FLOOR:
-				operatorFunction = (expr) => Math.floor(expr);
+				operatorFunction = (e) => Math.floor(e);
 				type = VtlParser.INTEGER;
 				break;
 			case VtlParser.LN:
-				operatorFunction = (expr) => Math.log(expr);
+				operatorFunction = (e) => Math.log(e);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.SQRT:
-				operatorFunction = (expr) => Math.sqrt(expr);
+				operatorFunction = (e) => Math.sqrt(e);
 				type = VtlParser.NUMBER;
 				break;
 			default:
@@ -76,18 +76,16 @@ class NumericVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.ROUND:
-				operatorFunction = (expr, optionalExpr) => {
-					if (!optionalExpr || optionalExpr == VtlParser.OPTIONAL)
-						return Math.round(expr);
-					return Math.round(expr * 10 ** optionalExpr) / 10 ** optionalExpr;
+				operatorFunction = (e, oE) => {
+					if (!oE || oE === VtlParser.OPTIONAL) return Math.round(e);
+					return Math.round(e * 10 ** oE) / 10 ** oE;
 				};
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.TRUNC:
-				operatorFunction = (expr, optionalExpr) => {
-					if (!optionalExpr || optionalExpr == VtlParser.OPTIONAL)
-						return Math.trunc(expr);
-					return Math.trunc(expr * 10 ** optionalExpr) / 10 ** optionalExpr;
+				operatorFunction = (e, oE) => {
+					if (!oE || oE === VtlParser.OPTIONAL) return Math.trunc(e);
+					return Math.trunc(e * 10 ** oE) / 10 ** oE;
 				};
 				type = VtlParser.NUMBER;
 				break;
@@ -126,26 +124,25 @@ class NumericVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.LOG:
-				operatorFunction = (leftExpr, rightExpr) =>
-					Math.log(leftExpr) / Math.log(rightExpr);
+				operatorFunction = (lE, rE) => Math.log(lE) / Math.log(rE);
 				type = VtlParser.NUMBER;
 				break;
 			case VtlParser.MOD:
-				operatorFunction = (leftExpr, rightExpr) => {
-					if (rightExpr == 0) return leftExpr;
-					return leftExpr % rightExpr;
+				operatorFunction = (lE, rE) => {
+					if (rE === 0) return lE;
+					return lE % rE;
 				};
 				type =
-					leftExpr.type == VtlParser.INTEGER &&
-					rightExpr.type == VtlParser.INTEGER
+					leftExpr.type === VtlParser.INTEGER &&
+					rightExpr.type === VtlParser.INTEGER
 						? VtlParser.INTEGER
 						: VtlParser.NUMBER;
 				break;
 			case VtlParser.POWER:
-				operatorFunction = (leftExpr, rightExpr) => leftExpr ** rightExpr;
+				operatorFunction = (lE, rE) => lE ** rE;
 				type =
-					leftExpr.type == VtlParser.INTEGER &&
-					rightExpr.type == VtlParser.INTEGER
+					leftExpr.type === VtlParser.INTEGER &&
+					rightExpr.type === VtlParser.INTEGER
 						? VtlParser.INTEGER
 						: VtlParser.NUMBER;
 				break;

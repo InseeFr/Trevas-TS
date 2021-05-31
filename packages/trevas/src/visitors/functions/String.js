@@ -21,31 +21,29 @@ class StringVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.TRIM:
-				operatorFunction = (expr) => expr.trim();
+				operatorFunction = (e) => e.trim();
 				break;
 			case VtlParser.LTRIM:
-				operatorFunction = (expr) => expr.trimLeft();
+				operatorFunction = (e) => e.trimLeft();
 				break;
 			case VtlParser.RTRIM:
-				operatorFunction = (expr) => expr.trimRight();
+				operatorFunction = (e) => e.trimRight();
 				break;
 			case VtlParser.UCASE:
-				operatorFunction = (expr) => expr.toUpperCase();
+				operatorFunction = (e) => e.toUpperCase();
 				break;
 			case VtlParser.LCASE:
-				operatorFunction = (expr) => expr.toLowerCase();
+				operatorFunction = (e) => e.toLowerCase();
 				break;
 			case VtlParser.LEN:
-				operatorFunction = (expr) => expr.length;
+				operatorFunction = (e) => e.length;
 				type = VtlParser.INTEGER;
 				break;
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}
 		return {
-			resolve: (bindings) => {
-				return operatorFunction(expr.resolve(bindings));
-			},
+			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
 			type,
 		};
 	};
@@ -110,13 +108,13 @@ class StringVisitor extends VtlVisitor {
 				}
 
 				let result = 0;
-				while (--resolvedOccurrence >= 0) {
+				while (resolvedOccurrence > 0) {
+					resolvedOccurrence -= 1;
 					result = resolvedOperand.indexOf(resolvedPattern, resolvedStart);
 					if (result === -1) {
 						return 0;
-					} else {
-						resolvedStart = result + 1;
 					}
+					resolvedStart = result + 1;
 				}
 				return result;
 			},
