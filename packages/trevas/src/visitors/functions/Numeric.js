@@ -1,4 +1,6 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
+import { TypeMismatchError } from '../../errors';
+import { hasNullArgs } from '../../utils';
 
 class NumericVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -7,15 +9,19 @@ class NumericVisitor extends VtlVisitor {
 	}
 
 	visitUnaryNumeric = (ctx) => {
-		// Unary numeric operators are CEIL, FLOOR, ABS, EXP, LN and SQRT
 		const { op: opCtx } = ctx;
 
 		const expr = this.exprVisitor.visit(ctx.expr());
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.NULL_CONSTANT,
+		];
 
-		if (!expectedTypes.includes(expr.type))
-			throw new Error('Operand should be a number or an integer');
+		if (!expectedTypes.includes(expr.type)) {
+			throw new TypeMismatchError(ctx.expr(), expectedTypes, opCtx.type);
+		}
 
 		let operatorFunction;
 		let type;
@@ -50,24 +56,35 @@ class NumericVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
+			resolve: (bindings) => {
+				const exprValue = expr.resolve(bindings);
+				if (hasNullArgs(exprValue)) return null;
+				return operatorFunction(exprValue);
+			},
 			type,
 		};
 	};
 
 	visitUnaryWithOptionalNumeric = (ctx) => {
-		// Binary numeric operators with optional operand are ROUND and TRUNC
 		const { op: opCtx } = ctx;
 
 		const expr = this.exprVisitor.visit(ctx.expr());
-		const optionalExpr =
-			ctx.optionalExpr() && ctx.optionalExpr().expr() // optionalExpr().expr() is null when second operand is _
-				? this.exprVisitor.visit(ctx.optionalExpr().expr())
-				: null;
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
-		if (!expectedTypes.includes(expr.type))
-			throw new Error('The first operand should be a number or an integer');
+		const optionalExpr =
+			ctx.optionalExpr() && ctx.optionalExpr().expr()
+				? this.exprVisitor.visit(ctx.optionalExpr().expr())
+				: undefined;
+
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.NULL_CONSTANT,
+		];
+
+		if (!expectedTypes.includes(expr.type)) {
+			throw new TypeMismatchError(ctx.expr(), expectedTypes, opCtx.type);
+		}
+
 		if (optionalExpr && optionalExpr.type !== VtlParser.INTEGER)
 			throw new Error('The second operand should be an integer');
 
@@ -94,30 +111,35 @@ class NumericVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: (bindings) =>
-				operatorFunction(
-					expr.resolve(bindings),
-					optionalExpr ? optionalExpr.resolve(bindings) : null
-				),
+			resolve: (bindings) => {
+				const exprValue = expr.resolve(bindings);
+				const optionalValue = optionalExpr
+					? optionalExpr.resolve(bindings)
+					: undefined;
+
+				if (hasNullArgs(exprValue, optionalValue)) return null;
+
+				return operatorFunction(exprValue, optionalValue);
+			},
 			type,
 		};
 	};
 
 	visitBinaryNumeric = (ctx) => {
-		// Binary numeric operators are MOD, POWER and LOG
 		const { left: leftCtx, right: rightCtx, op: opCtx } = ctx;
 		const leftExpr = this.exprVisitor.visit(leftCtx);
 		const rightExpr = this.exprVisitor.visit(rightCtx);
 
-		const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER];
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.NULL_CONSTANT,
+		];
 
-		if (
-			!(
-				expectedTypes.includes(leftExpr.type) &&
-				expectedTypes.includes(rightExpr.type)
-			)
-		)
-			throw new Error('Both operands should be numbers or integers');
+		if (!expectedTypes.includes(leftExpr.type))
+			throw new TypeMismatchError(leftCtx, expectedTypes, leftExpr.type);
+		if (!expectedTypes.includes(rightExpr.type))
+			throw new TypeMismatchError(rightCtx, expectedTypes, rightExpr.type);
 
 		let operatorFunction;
 		let type = VtlParser.NUMBER;
@@ -151,11 +173,14 @@ class NumericVisitor extends VtlVisitor {
 		}
 
 		return {
-			resolve: (bindings) =>
-				operatorFunction(
-					leftExpr.resolve(bindings),
-					rightExpr.resolve(bindings)
-				),
+			resolve: (bindings) => {
+				const leftValue = leftExpr.resolve(bindings);
+				const rightValue = rightExpr.resolve(bindings);
+
+				if (hasNullArgs(leftValue, rightValue)) return null;
+
+				return operatorFunction(leftValue, rightValue);
+			},
 			type,
 		};
 	};

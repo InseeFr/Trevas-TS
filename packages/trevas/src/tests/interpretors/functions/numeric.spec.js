@@ -1,6 +1,45 @@
 import interpret from '../../../interpretor';
 
 describe('numeric-functions', () => {
+	describe('supports numeric functions with null', () => {
+		it('supports abs with null', () => {
+			expect(interpret('abs(null)', {})).toBeNull();
+		});
+		it('supports ceil with null', () => {
+			expect(interpret('ceil(null)', {})).toBeNull();
+		});
+		it('supports exp with null', () => {
+			expect(interpret('exp(null)', {})).toBeNull();
+		});
+		it('supports floor with null', () => {
+			expect(interpret('floor(null)', {})).toBeNull();
+		});
+		it('supports ln with null', () => {
+			expect(interpret('ln(null)', {})).toBeNull();
+		});
+		it('supports sqrt with null', () => {
+			expect(interpret('sqrt(null)', {})).toBeNull();
+		});
+		it('supports round with null', () => {
+			expect(interpret('round(null)', {})).toBeNull();
+		});
+		it('supports trunc with null', () => {
+			expect(interpret('trunc(null)', {})).toBeNull();
+		});
+		it('supports log with null', () => {
+			expect(interpret('log(null, 2)', {})).toBeNull();
+			expect(interpret('log(1024, null)', {})).toBeNull();
+		});
+		it('supports mod with null', () => {
+			expect(interpret('mod(null, 2)', {})).toBeNull();
+			expect(interpret('mod(2, null)', {})).toBeNull();
+		});
+		it('supports power with null', () => {
+			expect(interpret('power(null, 2)', {})).toBeNull();
+			expect(interpret('power(5, null)', {})).toBeNull();
+		});
+	});
+
 	describe('unary operators', () => {
 		// All the examples of the reference manual are included
 		describe('tests on the abs function', () => {
