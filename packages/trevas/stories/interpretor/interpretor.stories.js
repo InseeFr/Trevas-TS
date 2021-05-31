@@ -102,7 +102,7 @@ storiesOf('Interpretor/Function/Cast', module).add('Into time_period', () => (
 	<div>TODO</div>
 ));
 storiesOf('Interpretor/Function/Cast', module).add('Into string', () => (
-	<Interpretor expression='cast(1998-07-12, string, "YYYY-MM-DD")' />
+	<Interpretor expression='cast("1998-07-12", string, "YYYY-MM-DD")' />
 ));
 storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
 	<div>TODO</div>
@@ -141,10 +141,10 @@ storiesOf('Interpretor/Function/Numeric', module).add('Floor', () => (
 	<Interpretor expression="floor(-1.5)" />
 ));
 storiesOf('Interpretor/Function/Numeric', module).add('Ln', () => (
-	<Interpretor expression="exp(-1.5)" />
+	<Interpretor expression="ln(5)" />
 ));
 storiesOf('Interpretor/Function/Numeric', module).add('Sqrt', () => (
-	<Interpretor expression="exp(-1.5)" />
+	<Interpretor expression="sqrt(5)" />
 ));
 storiesOf('Interpretor/Function/Numeric', module).add('Round', () => (
 	<Interpretor expression="round(2.618, 2)" />

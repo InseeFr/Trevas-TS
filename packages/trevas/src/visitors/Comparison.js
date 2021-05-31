@@ -47,6 +47,7 @@ class ComparisonVisitor extends VtlVisitor {
 		const expectedTypes = [
 			VtlParser.INTEGER,
 			VtlParser.NUMBER,
+			VtlParser.STRING,
 			VtlParser.NULL_CONSTANT,
 		];
 
