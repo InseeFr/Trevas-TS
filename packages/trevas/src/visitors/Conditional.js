@@ -1,5 +1,6 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { IncompatibleTypeError, TypeMismatchError } from '../errors';
+import { hasNullArgs } from '../utils';
 
 class ConditionalVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -43,7 +44,7 @@ class ConditionalVisitor extends VtlVisitor {
 				const conditionValue = conditionalOperand.resolve(bindings);
 				const elseValue = elseOperand.resolve(bindings);
 
-				if (conditionValue === null) return elseValue;
+				if (hasNullArgs(conditionValue)) return null;
 
 				const thenValue = thenOperand.resolve(bindings);
 				return conditionValue ? thenValue : elseValue;
