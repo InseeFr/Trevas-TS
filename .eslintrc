@@ -9,7 +9,8 @@
 		"react/jsx-indent": "off",
 		"react/jsx-indent-props": "off",
 		"react/jsx-props-no-spreading": "off",
-		"react-hooks/rules-of-hooks": "error"
+		"react-hooks/rules-of-hooks": "error",
+		"import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
 	},
 	"env": {
 		"browser": true,

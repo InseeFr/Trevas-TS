@@ -79,7 +79,7 @@ storiesOf('Interpretor/Boolean algebra', module).add('Or', () => (
 	<Interpretor expression="false or true" />
 ));
 
-/************** Functions  **************/
+/** ************ Functions  ************* */
 
 // Cast
 
