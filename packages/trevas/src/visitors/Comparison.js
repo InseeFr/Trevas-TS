@@ -48,6 +48,7 @@ class ComparisonVisitor extends VtlVisitor {
 			VtlParser.INTEGER,
 			VtlParser.NUMBER,
 			VtlParser.STRING,
+			VtlParser.BOOLEAN,
 			VtlParser.NULL_CONSTANT,
 		];
 
@@ -57,12 +58,11 @@ class ComparisonVisitor extends VtlVisitor {
 		if (!expectedTypes.includes(rightExpr.type))
 			throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
 
-		if ([leftExpr.type, rightExpr.type].includes(VtlParser.STRING)) {
-			if (rightExpr.type !== VtlParser.STRING)
-				throw new TypeMismatchError(left, expectedTypes, rightExpr.type);
-			if (leftExpr.type !== VtlParser.STRING)
-				throw new TypeMismatchError(left, expectedTypes, rightExpr.type);
-		}
+		if (
+			leftExpr.type !== rightExpr.type &&
+			![leftExpr.type, rightExpr.type].includes(VtlParser.NULL_CONSTANT)
+		)
+			throw new TypeMismatchError(left, expectedTypes, rightExpr.type);
 
 		return {
 			resolve: resolve(op, leftExpr, rightExpr),
