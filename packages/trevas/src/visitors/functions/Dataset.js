@@ -2,6 +2,7 @@ import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../../errors';
 import * as U from '../../utils';
 
+// Handle meta for return, not only dataPoints
 class DatasetVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
