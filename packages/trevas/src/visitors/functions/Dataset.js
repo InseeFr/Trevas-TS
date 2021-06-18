@@ -1,6 +1,6 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { TypeMismatchError } from '../../errors';
-import { getDatasetFirstValue, getDatasetLastValue } from '../../utils';
+import * as U from '../../utils';
 
 class DatasetVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -16,12 +16,29 @@ class DatasetVisitor extends VtlVisitor {
 			throw new TypeMismatchError(ctx.expr(), VtlParser.DATASET, opCtx.type);
 		}
 
+		// TODO: has to check dataPoint content
+
 		let operatorFunction;
 		let type;
 
 		switch (opCtx.type) {
 			case VtlParser.COUNT: {
 				operatorFunction = (e) => e.count();
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.SUM: {
+				operatorFunction = (e) => U.getSum(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.MIN: {
+				operatorFunction = (e) => U.getMin(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.MAX: {
+				operatorFunction = (e) => U.getMax(e);
 				type = VtlParser.NUMBER;
 				break;
 			}
@@ -49,11 +66,11 @@ class DatasetVisitor extends VtlVisitor {
 
 		switch (opCtx.type) {
 			case VtlParser.FIRST_VALUE:
-				operatorFunction = (e) => getDatasetFirstValue(e);
+				operatorFunction = (e) => U.getDatasetFirstValue(e);
 				type = VtlParser.DATASET;
 				break;
 			case VtlParser.LAST_VALUE:
-				operatorFunction = (e) => getDatasetLastValue(e);
+				operatorFunction = (e) => U.getDatasetLastValue(e);
 				type = VtlParser.DATASET;
 				break;
 			default:

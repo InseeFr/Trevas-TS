@@ -110,18 +110,18 @@
 | ---------------------------------- | :-------------- | :-------: |
 | Aggregate invocation               |                 |    :x:    |
 | Analytic invocation                |                 |    :x:    |
-| Counting the number of data points | count           |    :x:    |
-| Minimum value                      | min             |    :x:    |
-| Maximum value                      | max             |    :x:    |
+| Counting the number of data points | count           |    :heavy_check_mark:    |
+| Minimum value                      | min             |    :heavy_check_mark:    |
+| Maximum value                      | max             |    :heavy_check_mark:    |
 | Median value                       | median          |    :x:    |
-| Sum                                | sum             |    :x:    |
+| Sum                                | sum             |    :heavy_check_mark:    |
 | Average value                      | avg             |    :x:    |
 | Population standard deviation      | stddev_pop      |    :x:    |
 | Sample standard deviation          | stddev_samp     |    :x:    |
 | Population variance                | var_pop         |    :x:    |
 | Sample variance                    | var_samp        |    :x:    |
-| First value                        | first_value     |    :x:    |
-| Last value                         | last_value      |    :x:    |
+| First value                        | first_value     |    :heavy_check_mark:    |
+| Last value                         | last_value      |    :heavy_check_mark:    |
 | Lag                                | lag             |    :x:    |
 | lead                               | lead            |    :x:    |
 | Rank                               | rank            |    :x:    |

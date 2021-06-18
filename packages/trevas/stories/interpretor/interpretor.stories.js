@@ -192,7 +192,8 @@ storiesOf('Interpretor/Function/String', module).add('Instr', () => (
 	<Interpretor expression='instr("Hello world", "world")' />
 ));
 
-/** Functions, dataset */
+// Dataset functions
+
 storiesOf('Interpretor/Function/Dataset', module).add('Count', () => {
 	const ds = {
 		dataStructure: {
@@ -243,6 +244,51 @@ storiesOf('Interpretor/Function/Dataset', module).add('Last value', () => {
 		},
 	};
 	return <Interpretor expression="last_value(ds over())" bindings={{ ds }} />;
+});
+
+storiesOf('Interpretor/Function/Dataset', module).add('Max', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 3],
+		},
+	};
+	return <Interpretor expression="max(ds)" bindings={{ ds }} />;
+});
+
+storiesOf('Interpretor/Function/Dataset', module).add('Min', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 3],
+		},
+	};
+	return <Interpretor expression="min(ds)" bindings={{ ds }} />;
+});
+
+storiesOf('Interpretor/Function/Dataset', module).add('Sum', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 3],
+		},
+	};
+	return <Interpretor expression="sum(ds)" bindings={{ ds }} />;
 });
 
 const columnsSurf = {
