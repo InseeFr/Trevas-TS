@@ -106,26 +106,26 @@
 
 ### VTL-ML - Aggregate and Analytic operators
 
-| Name                               | Symbol          | Supported |
-| ---------------------------------- | :-------------- | :-------: |
-| Aggregate invocation               |                 |    :x:    |
-| Analytic invocation                |                 |    :x:    |
-| Counting the number of data points | count           |    :heavy_check_mark:    |
-| Minimum value                      | min             |    :heavy_check_mark:    |
-| Maximum value                      | max             |    :heavy_check_mark:    |
-| Median value                       | median          |    :x:    |
-| Sum                                | sum             |    :heavy_check_mark:    |
-| Average value                      | avg             |    :x:    |
-| Population standard deviation      | stddev_pop      |    :x:    |
-| Sample standard deviation          | stddev_samp     |    :x:    |
-| Population variance                | var_pop         |    :x:    |
-| Sample variance                    | var_samp        |    :x:    |
-| First value                        | first_value     |    :heavy_check_mark:    |
-| Last value                         | last_value      |    :heavy_check_mark:    |
-| Lag                                | lag             |    :x:    |
-| lead                               | lead            |    :x:    |
-| Rank                               | rank            |    :x:    |
-| Ratio to report                    | ratio_to_report |    :x:    |
+| Name                               | Symbol          |     Supported      |
+| ---------------------------------- | :-------------- | :----------------: |
+| Aggregate invocation               |                 |        :x:         |
+| Analytic invocation                |                 |        :x:         |
+| Counting the number of data points | count           | :heavy_check_mark: |
+| Minimum value                      | min             | :heavy_check_mark: |
+| Maximum value                      | max             | :heavy_check_mark: |
+| Median value                       | median          | :heavy_check_mark: |
+| Sum                                | sum             | :heavy_check_mark: |
+| Average value                      | avg             | :heavy_check_mark: |
+| Population standard deviation      | stddev_pop      | :heavy_check_mark: |
+| Sample standard deviation          | stddev_samp     | :heavy_check_mark: |
+| Population variance                | var_pop         | :heavy_check_mark: |
+| Sample variance                    | var_samp        | :heavy_check_mark: |
+| First value                        | first_value     | :heavy_check_mark: |
+| Last value                         | last_value      | :heavy_check_mark: |
+| Lag                                | lag             |        :x:         |
+| lead                               | lead            |        :x:         |
+| Rank                               | rank            |        :x:         |
+| Ratio to report                    | ratio_to_report |        :x:         |
 
 ### VTL-ML - Data validation operators
 

@@ -43,6 +43,36 @@ class DatasetVisitor extends VtlVisitor {
 				type = VtlParser.NUMBER;
 				break;
 			}
+			case VtlParser.MEDIAN: {
+				operatorFunction = (e) => U.getMedian(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.AVG: {
+				operatorFunction = (e) => U.getAvg(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.STDDEV_POP: {
+				operatorFunction = (e) => U.getStdDevPop(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.STDDEV_SAMP: {
+				operatorFunction = (e) => U.getStdDevSamp(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.VAR_POP: {
+				operatorFunction = (e) => U.getVarPop(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
+			case VtlParser.VAR_SAMP: {
+				operatorFunction = (e) => U.getVarSamp(e);
+				type = VtlParser.NUMBER;
+				break;
+			}
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
 		}

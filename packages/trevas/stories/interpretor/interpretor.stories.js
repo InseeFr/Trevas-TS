@@ -230,7 +230,6 @@ storiesOf('Interpretor/Function/Dataset', module).add('First value', () => {
 	return <Interpretor expression="first_value(ds over())" bindings={{ ds }} />;
 });
 
-/** Functions, dataset */
 storiesOf('Interpretor/Function/Dataset', module).add('Last value', () => {
 	const ds = {
 		dataStructure: {
@@ -246,6 +245,57 @@ storiesOf('Interpretor/Function/Dataset', module).add('Last value', () => {
 	return <Interpretor expression="last_value(ds over())" bindings={{ ds }} />;
 });
 
+storiesOf('Interpretor/Function/Dataset', module).add('Average', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, -1],
+		},
+	};
+	return <Interpretor expression="avg(ds)" bindings={{ ds }} />;
+});
+
+storiesOf('Interpretor/Function/Dataset', module).add(
+	'Deviation - Sample',
+	() => {
+		const ds = {
+			dataStructure: {
+				col_1: {
+					name: 'col_1',
+					role: 'MEASURE',
+				},
+			},
+			dataPoints: {
+				col_1: [1, 2, 3],
+			},
+		};
+		return <Interpretor expression="stddev_samp(ds)" bindings={{ ds }} />;
+	}
+);
+
+storiesOf('Interpretor/Function/Dataset', module).add(
+	'Deviation - Standard',
+	() => {
+		const ds = {
+			dataStructure: {
+				col_1: {
+					name: 'col_1',
+					role: 'MEASURE',
+				},
+			},
+			dataPoints: {
+				col_1: [1, 2, 3],
+			},
+		};
+		return <Interpretor expression="stddev_pop(ds)" bindings={{ ds }} />;
+	}
+);
+
 storiesOf('Interpretor/Function/Dataset', module).add('Max', () => {
 	const ds = {
 		dataStructure: {
@@ -259,6 +309,21 @@ storiesOf('Interpretor/Function/Dataset', module).add('Max', () => {
 		},
 	};
 	return <Interpretor expression="max(ds)" bindings={{ ds }} />;
+});
+
+storiesOf('Interpretor/Function/Dataset', module).add('Median', () => {
+	const ds = {
+		dataStructure: {
+			col_1: {
+				name: 'col_1',
+				role: 'MEASURE',
+			},
+		},
+		dataPoints: {
+			col_1: [1, 2, 5, 10000],
+		},
+	};
+	return <Interpretor expression="median(ds)" bindings={{ ds }} />;
 });
 
 storiesOf('Interpretor/Function/Dataset', module).add('Min', () => {
@@ -290,6 +355,42 @@ storiesOf('Interpretor/Function/Dataset', module).add('Sum', () => {
 	};
 	return <Interpretor expression="sum(ds)" bindings={{ ds }} />;
 });
+
+storiesOf('Interpretor/Function/Dataset', module).add(
+	'Variance - Sample',
+	() => {
+		const ds = {
+			dataStructure: {
+				col_1: {
+					name: 'col_1',
+					role: 'MEASURE',
+				},
+			},
+			dataPoints: {
+				col_1: [1, 2, 3],
+			},
+		};
+		return <Interpretor expression="var_samp(ds)" bindings={{ ds }} />;
+	}
+);
+
+storiesOf('Interpretor/Function/Dataset', module).add(
+	'Variance - Standard',
+	() => {
+		const ds = {
+			dataStructure: {
+				col_1: {
+					name: 'col_1',
+					role: 'MEASURE',
+				},
+			},
+			dataPoints: {
+				col_1: [1, 2, 3],
+			},
+		};
+		return <Interpretor expression="var_pop(ds)" bindings={{ ds }} />;
+	}
+);
 
 const columnsSurf = {
 	Arrondissement: { type: VtlParser.STRING, role: VtlParser.DIMENSION },
