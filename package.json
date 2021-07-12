@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/trevas-js",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "JavaScript tools & engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
