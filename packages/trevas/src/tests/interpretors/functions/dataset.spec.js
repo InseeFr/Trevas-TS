@@ -84,9 +84,14 @@ describe('dataset-functions', () => {
 			dataStructure: { col_2: 'troc' },
 			dataPoints: { col_2: [2, 4] },
 		};
+		const ds4 = {
+			dataStructure: { col_2: 'troc' },
+			dataPoints: { col_2: [4] },
+		};
 		expect(interpret('stddev_samp(ds)', { ds })[0]).toBeNull();
 		expect(interpret('stddev_samp(ds2)', { ds2 })).toEqual([2]);
 		expect(interpret('stddev_samp(ds3)', { ds3 })[0]).toBeCloseTo(1.414, 3);
+		expect(interpret('stddev_samp(ds4)', { ds4 })).toEqual([0]);
 	});
 	it('should return simple variance over dataset', () => {
 		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
@@ -112,9 +117,14 @@ describe('dataset-functions', () => {
 			dataStructure: { col_2: 'troc' },
 			dataPoints: { col_2: [2, 4] },
 		};
+		const ds4 = {
+			dataStructure: { col_2: 'troc' },
+			dataPoints: { col_2: [4] },
+		};
 		expect(interpret('var_samp(ds)', { ds })[0]).toBeNull();
 		expect(interpret('var_samp(ds2)', { ds2 })).toEqual([4]);
 		expect(interpret('var_samp(ds3)', { ds3 })[0]).toBeCloseTo(2, 5);
+		expect(interpret('var_samp(ds4)', { ds4 })).toEqual([0]);
 	});
 	it('should return simple min over dataset', () => {
 		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };

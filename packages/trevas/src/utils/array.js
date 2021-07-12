@@ -31,6 +31,7 @@ export const getArrayMedian = (array) => {
 // usePopulation = false: sample deviation
 export const getDeviation = (array, usePopulation = true) => {
 	if (!Array.isArray(array) || array.includes(null)) return null;
+	if (array.length <= 1) return 0;
 	const mean = array.reduce((acc, val) => acc + val, 0) / array.length;
 	return Math.sqrt(
 		array
