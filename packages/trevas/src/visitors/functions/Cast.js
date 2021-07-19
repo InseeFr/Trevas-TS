@@ -150,7 +150,7 @@ class CastVisitor extends VtlVisitor {
 				return operatorFunction(opValue, mask);
 			},
 			type:
-				combination[0][0] === VtlParser.DATASET
+				combination[0] && combination[0][0] === VtlParser.DATASET
 					? VtlParser.DATASET
 					: castOutputType,
 		};
