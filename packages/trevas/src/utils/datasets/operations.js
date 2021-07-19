@@ -14,21 +14,16 @@ const getExprAsDataFrame = (expr) => {
 	return expr;
 };
 
-export const getPairs = (expr) => {
+export const getDFContent = (expr) => {
 	const df = getExprAsDataFrame(expr);
-	const dfElements =
-		df &&
-		df.content &&
-		df.content.pairs &&
-		df.content.pairs.iterables &&
-		df.content.pairs.iterables[1];
+	const dfElements = df && df.content && df.content.values && df.content.values;
 	if (!dfElements) throw new Error('Malformed dataset into bindings');
 	const { columnNames, rows } = dfElements;
 	return { columnNames, data: U.transpose(rows) };
 };
 
 const handleNullForArithmetic = (expr) => (fn) => {
-	const [dataStructure, data] = getPairs(expr);
+	const [dataStructure, data] = getDFContent(expr);
 	if (!data) return null;
 	return { dataStructure, dataPoints: fn(data) };
 };
@@ -50,7 +45,7 @@ const getDatasetCastTransformation = (type) => {
 };
 
 export const getDatasetCast = (outputType) => (expr) => {
-	const { columnNames, data } = getPairs(expr);
+	const { columnNames, data } = getDFContent(expr);
 	const transformer = getDatasetCastTransformation(outputType);
 	return columnNames.reduce(
 		(acc, col, i) => {
