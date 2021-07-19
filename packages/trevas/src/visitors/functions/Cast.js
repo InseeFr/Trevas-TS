@@ -1,6 +1,11 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { CastTypeError, OperatorTypeError } from '../../errors';
-import { getDate, getStringFromDate, hasNullArgs } from '../../utils';
+import {
+	getDate,
+	getStringFromDate,
+	hasNullArgs,
+	getDatasetCast,
+} from '../../utils';
 
 class CastVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
@@ -18,7 +23,15 @@ class CastVisitor extends VtlVisitor {
 			? maskCtx.getText().substring(1, maskCtx.getText().length - 1)
 			: undefined;
 
+		const castOutputType = scalarTypeCtx.children[0].symbol.type;
+
 		const combinations = [
+			// Dataset: temp hack to return casted array
+			[
+				VtlParser.DATASET,
+				[VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.STRING],
+				(op) => getDatasetCast(castOutputType)(op),
+			],
 			[VtlParser.INTEGER, VtlParser.INTEGER, (op) => op],
 			[VtlParser.INTEGER, VtlParser.NUMBER, (op) => op],
 			[VtlParser.INTEGER, VtlParser.BOOLEAN, (op) => op !== 0],
@@ -109,12 +122,11 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.DURATION, VtlParser.DURATION, (op) => op],
 		];
 
-		const castOutputType = scalarTypeCtx.children[0].symbol.type;
-
-		const combination = combinations.filter(
-			([opType, scalarType]) =>
-				opType === expr.type && scalarType === castOutputType
-		);
+		const combination = combinations.filter(([opType, scalarTypes]) => {
+			if (Array.isArray(scalarTypes))
+				return opType === expr.type && scalarTypes.includes(castOutputType);
+			return opType === expr.type && scalarTypes === castOutputType;
+		});
 
 		let operatorFunction = [];
 
@@ -137,7 +149,10 @@ class CastVisitor extends VtlVisitor {
 
 				return operatorFunction(opValue, mask);
 			},
-			type: castOutputType,
+			type:
+				combination[0][0] === VtlParser.DATASET
+					? VtlParser.DATASET
+					: castOutputType,
 		};
 	};
 }

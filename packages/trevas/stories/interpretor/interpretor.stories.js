@@ -107,6 +107,36 @@ storiesOf('Interpretor/Function/Cast', module).add('Into string', () => (
 storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
 	<div>TODO</div>
 ));
+const dsI = {
+	dataStructure: {
+		col_1: {
+			name: 'col_1',
+			role: 'MEASURE',
+		},
+	},
+	dataPoints: {
+		col_1: ['1', null, '3'],
+	},
+};
+storiesOf('Interpretor/Function/Cast/Dataset', module).add(
+	'Into integer',
+	() => <Interpretor expression="cast(dsI, integer)" bindings={{ dsI }} />
+);
+const dsN = {
+	dataStructure: {
+		col_1: {
+			name: 'col_1',
+			role: 'MEASURE',
+		},
+	},
+	dataPoints: {
+		col_1: ['1.1', null, '3'],
+	},
+};
+storiesOf('Interpretor/Function/Cast/Dataset', module).add(
+	'Into number',
+	() => <Interpretor expression="cast(dsN, number)" bindings={{ dsN }} />
+);
 
 // Comparison
 
