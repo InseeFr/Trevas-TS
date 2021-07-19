@@ -108,15 +108,8 @@ storiesOf('Interpretor/Function/Cast', module).add('Into duration', () => (
 	<div>TODO</div>
 ));
 const dsI = {
-	dataStructure: {
-		col_1: {
-			name: 'col_1',
-			role: 'MEASURE',
-		},
-	},
-	dataPoints: {
-		col_1: ['1', null, '3'],
-	},
+	dataStructure: { col_1: {}, col_2: {} },
+	dataPoints: { col_1: ['1', '2', '3'], col_2: ['-1', null] },
 };
 storiesOf('Interpretor/Function/Cast/Dataset', module).add(
 	'Into integer',

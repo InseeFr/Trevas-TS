@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Griddle from 'griddle-react';
 import { AntlrEditor } from 'antlr-editor';
 import * as tools from 'vtl-2-0-antlr-tools-ts';
+import { JsonEditor } from 'jsoneditor-react';
 import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import { getSuggestions } from './vtl-suggestions';
 import Bindings from './bindings';
@@ -59,16 +60,13 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 			{res && res.type === VtlParser.DATASET && (
 				<div className="res">
 					<h2>Result:</h2>
-					{Array.isArray(res.resolve()) ? (
-						<h1 className="res-text">{`[${res
-							.resolve()
-							.map((e) => {
-								if (Array.isArray(e))
-									return e.map((ee) => (ee === null ? 'null' : ee));
-								if (e === null) return 'null';
-								return e;
-							})
-							.join(',')}]`}</h1>
+					{typeof res.resolve() === 'object' && res.resolve().dataPoints ? (
+						<JsonEditor
+							value={res.resolve()}
+							onChange={() => {}}
+							mode="code"
+							allowedModes={['tree']}
+						/>
 					) : (
 						<Griddle data={res.resolve().toArray()} />
 					)}

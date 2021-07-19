@@ -2,17 +2,24 @@ import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import { getTokenName } from '../parser';
 import * as U from '../array';
 
-export const getRowsFromExpr = (expr) =>
-	expr &&
-	expr.content &&
-	expr.content.values &&
-	expr.content.values.rows &&
-	expr.content.values.rows;
+// TODO: handle better dataStructure thanks to roles & types
+
+export const getPairs = (expr) => {
+	const ds =
+		expr &&
+		expr.content &&
+		expr.content.pairs &&
+		expr.content.pairs.iterables &&
+		expr.content.pairs.iterables[1];
+	if (!ds) throw new Error('Malformed dataset into bindings');
+	const { columnNames, rows } = ds;
+	return { columnNames, data: U.transpose(rows) };
+};
 
 const handleNullForArithmetic = (expr) => (fn) => {
-	const rows = getRowsFromExpr(expr);
-	if (!rows) return null;
-	return fn(rows);
+	const [dataStructure, data] = getPairs(expr);
+	if (!data) return null;
+	return { dataStructure, dataPoints: fn(data) };
 };
 
 const handleNullElement = (element) => (fn) => {
@@ -32,9 +39,29 @@ const getDatasetCastTransformation = (type) => {
 };
 
 export const getDatasetCast = (outputType) => (expr) => {
-	const rows = U.transpose(getRowsFromExpr(expr));
+	const { columnNames, data } = getPairs(expr);
 	const transformer = getDatasetCastTransformation(outputType);
-	return rows.map((r) => r.map((e) => handleNullElement(e)(transformer)));
+	return columnNames.reduce(
+		(acc, col, i) => {
+			const values = data[i].map((d) => handleNullElement(d)(transformer));
+			return {
+				dataStructure: { ...acc.dataStructure, [col]: {} },
+				dataPoints: { ...acc.dataPoints, [col]: values },
+			};
+		},
+		{
+			dataStructure: {},
+			dataPoints: {},
+		}
+	);
+
+	// const transformer = getDatasetCastTransformation(outputType);
+	// return {
+	// 	dataStructure: {},
+	// 	dataPoints: rows.map((r) =>
+	// 		r.map((e) => handleNullElement(e)(transformer))
+	// 	),
+	// };
 };
 
 export const getDatasetFirstValue = (expr) =>

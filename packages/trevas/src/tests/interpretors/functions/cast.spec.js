@@ -197,18 +197,26 @@ describe('cast', () => {
 		});
 		it('cast string into duration', () => {});
 		const dsI = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: ['1', '2', '3'] },
+			dataStructure: { col_1: {}, col_2: {} },
+			dataPoints: { col_1: ['1', '2', '3'], col_2: ['-1', null, null] },
+		};
+		const dsResI = {
+			dataStructure: { col_1: {}, col_2: {} },
+			dataPoints: { col_1: [1, 2, 3], col_2: [-1, null, null] },
 		};
 		it('cast string dataset into integer dataset', () => {
-			expect(interpret('cast(dsI, integer)', { dsI })).toEqual([[1, 2, 3]]);
+			expect(interpret('cast(dsI, integer)', { dsI })).toEqual(dsResI);
 		});
 		const dsN = {
-			dataStructure: { col_1: 'truc' },
+			dataStructure: { col_1: {} },
 			dataPoints: { col_1: ['1', null, '3.3'] },
 		};
+		const dsResN = {
+			dataStructure: { col_1: {} },
+			dataPoints: { col_1: [1, null, 3.3] },
+		};
 		it('cast string dataset into number dataset', () => {
-			expect(interpret('cast(dsN, number)', { dsN })).toEqual([[1, null, 3.3]]);
+			expect(interpret('cast(dsN, number)', { dsN })).toEqual(dsResN);
 		});
 	});
 	describe('duration', () => {
