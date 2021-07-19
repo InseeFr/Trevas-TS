@@ -1,18 +1,29 @@
 import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import { getTokenName } from '../parser';
+import { fromDatasetToDataframe } from './dataframe-builder';
 import * as U from '../array';
 
 // TODO: handle better dataStructure thanks to roles & types
 
+/**
+ * Binding datasets are already transformed as DataFrame
+ * Calculated datasets have the following shape: {dataStructure: {...}, dataPoints:{...}}
+ */
+const getExprAsDataFrame = (expr) => {
+	if (expr.dataStructure) return fromDatasetToDataframe(expr);
+	return expr;
+};
+
 export const getPairs = (expr) => {
-	const ds =
-		expr &&
-		expr.content &&
-		expr.content.pairs &&
-		expr.content.pairs.iterables &&
-		expr.content.pairs.iterables[1];
-	if (!ds) throw new Error('Malformed dataset into bindings');
-	const { columnNames, rows } = ds;
+	const df = getExprAsDataFrame(expr);
+	const dfElements =
+		df &&
+		df.content &&
+		df.content.pairs &&
+		df.content.pairs.iterables &&
+		df.content.pairs.iterables[1];
+	if (!dfElements) throw new Error('Malformed dataset into bindings');
+	const { columnNames, rows } = dfElements;
 	return { columnNames, data: U.transpose(rows) };
 };
 
