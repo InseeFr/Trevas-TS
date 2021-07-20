@@ -1,147 +1,170 @@
 import interpret from '../../../interpretor';
 
 describe('dataset-functions', () => {
+	const dsDefault = { dataStructure: {}, dataPoints: {} };
+	const dsWithNull = { dataStructure: {}, dataPoints: { col1: [1, 2, null] } };
+	const dsResWithNull = { dataStructure: {}, dataPoints: { col1: [null] } };
 	it('should count observations in a dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: {} };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [1, 2, 3] },
+		const ds = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [1, 2, 3] },
 		};
-		expect(interpret('count(ds)', { ds })).toEqual(0);
-		expect(interpret('count(ds2)', { ds2 })).toEqual(3);
+		const dsRes = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [3] },
+		};
+		expect(interpret('count(dsDefault)', { dsDefault })).toEqual(dsDefault);
+		expect(interpret('count(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return first value of a dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: {} };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [1, 2, 3] },
+		const ds = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [1, 2, 3] },
 		};
-		expect(interpret('first_value(ds over())', { ds })).toBeNull();
-		expect(interpret('first_value(ds2 over())', { ds2 })).toEqual([1]);
+		const dsRes = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [1] },
+		};
+		expect(interpret('first_value(dsDefault over())', { dsDefault })).toEqual(
+			dsDefault
+		);
+		expect(interpret('first_value(ds over())', { ds })).toEqual(dsRes);
 	});
 	it('should return last value of a dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: {} };
-		const ds2 = {
-			dataStructure: { col_1: 'truc', col_2: 'troc' },
-			dataPoints: { col_1: [1, 2, 3], col_2: [10, 20, 30] },
+		const ds = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [1, 2, 3], col2: [10, 20, 30] },
 		};
-		expect(interpret('last_value(ds over())', { ds })).toBeNull();
-		expect(interpret('last_value(ds2 over())', { ds2 })).toEqual([3, 30]);
+		const dsRes = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [3], col2: [30] },
+		};
+		expect(interpret('last_value(dsDefault over())', { dsDefault })).toEqual(
+			dsDefault
+		);
+		expect(interpret('last_value(ds over())', { ds })).toEqual(dsRes);
 	});
 	it('should return simple sum over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc', col_2: 'troc' },
-			dataPoints: { col_1: [1, 2, 3], col_2: [10, 20, 30] },
+		const ds = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [1, 2, 3], col2: [10, 20, 30] },
 		};
-		expect(interpret('sum(ds)', { ds })[0]).toBeNull();
-		expect(interpret('sum(ds2)', { ds2 })).toEqual([6, 60]);
+		const dsRes = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [6], col2: [60] },
+		};
+		expect(interpret('sum(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
+		expect(interpret('sum(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple median over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [3, 10, 7] },
+		const ds = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [3, 10, 7] },
+		};
+		const dsRes = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [7] },
 		};
 		const ds3 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [2, 4] },
+			dataStructure: { col2: {} },
+			dataPoints: { col2: [2, 4] },
 		};
-		expect(interpret('median(ds)', { ds })[0]).toBeNull();
-		expect(interpret('median(ds2)', { ds2 })).toEqual([7]);
-		expect(interpret('median(ds3)', { ds3 })).toEqual([3]);
+		const ds3Res = {
+			dataStructure: { col2: {} },
+			dataPoints: { col2: [3] },
+		};
+		expect(interpret('median(dsWithNull)', { dsWithNull })).toEqual(
+			dsResWithNull
+		);
+		expect(interpret('median(ds)', { ds })).toEqual(dsRes);
+		expect(interpret('median(ds3)', { ds3 })).toEqual(ds3Res);
 	});
 	it('should return simple average over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc', col_2: 'troc' },
-			dataPoints: { col_1: [3, 5, 7], col_2: [2, 4, 15] },
+		const ds = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [3, 5, 7], col2: [2, 4, 15] },
 		};
-		expect(interpret('avg(ds)', { ds })[0]).toBeNull();
-		expect(interpret('avg(ds2)', { ds2 })).toEqual([5, 7]);
+		const dsRes = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [5], col2: [7] },
+		};
+		expect(interpret('avg(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
+		expect(interpret('avg(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple standard deviation over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [3, 5, 7] },
+		const ds = {
+			dataStructure: { col2: {} },
+			dataPoints: { col2: [2, 4] },
 		};
-		const ds3 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [2, 4] },
-		};
-		expect(interpret('stddev_pop(ds)', { ds })[0]).toBeNull();
-		expect(interpret('stddev_pop(ds2)', { ds2 })[0]).toBeCloseTo(1.63, 2);
-		expect(interpret('stddev_pop(ds3)', { ds3 })).toEqual([1]);
+		expect(interpret('stddev_pop(dsWithNull)', { dsWithNull })).toEqual(
+			dsResWithNull
+		);
+		expect(interpret('stddev_pop(ds)', { ds })).toEqual([1]);
 	});
 	it('should return simple sample deviation over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [3, 5, 7] },
+		const ds = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [3, 5, 7] },
 		};
-		const ds3 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [2, 4] },
+		const dsRes = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [2] },
 		};
-		const ds4 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [4] },
-		};
-		expect(interpret('stddev_samp(ds)', { ds })[0]).toBeNull();
-		expect(interpret('stddev_samp(ds2)', { ds2 })).toEqual([2]);
-		expect(interpret('stddev_samp(ds3)', { ds3 })[0]).toBeCloseTo(1.414, 3);
-		expect(interpret('stddev_samp(ds4)', { ds4 })).toEqual([0]);
+		expect(interpret('stddev_samp(dsWithNull)', { dsWithNull })).toEqual(
+			dsResWithNull
+		);
+		expect(interpret('stddev_samp(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple variance over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [3, 5, 7] },
+		const ds = {
+			dataStructure: { col2: {} },
+			dataPoints: { col2: [2, 4] },
 		};
-		const ds3 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [2, 4] },
+		const dsRes = {
+			dataStructure: { col2: {} },
+			dataPoints: { col2: [2, 4] },
 		};
-		expect(interpret('var_pop(ds)', { ds })[0]).toBeNull();
-		expect(interpret('var_pop(ds2)', { ds2 })[0]).toBeCloseTo(2.6667, 4);
-		expect(interpret('var_pop(ds3)', { ds3 })).toEqual([1]);
+		expect(interpret('var_pop(dsWithNull)', { dsWithNull })).toEqual(
+			dsResWithNull
+		);
+		expect(interpret('var_pop(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple sample variance over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc' },
-			dataPoints: { col_1: [3, 5, 7] },
+		const ds = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [3, 5, 7] },
 		};
-		const ds3 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [2, 4] },
+		const dsRes = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [4] },
 		};
-		const ds4 = {
-			dataStructure: { col_2: 'troc' },
-			dataPoints: { col_2: [4] },
-		};
-		expect(interpret('var_samp(ds)', { ds })[0]).toBeNull();
-		expect(interpret('var_samp(ds2)', { ds2 })).toEqual([4]);
-		expect(interpret('var_samp(ds3)', { ds3 })[0]).toBeCloseTo(2, 5);
-		expect(interpret('var_samp(ds4)', { ds4 })).toEqual([0]);
+		expect(interpret('var_samp(dsWithNull)', { dsWithNull })[0]).toEqual(
+			dsResWithNull
+		);
+		expect(interpret('var_samp(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple min over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc', col_2: 'troc' },
-			dataPoints: { col_1: [1, 2, 3], col_2: [10, 20, 30] },
+		const ds = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [1, 2, 3], col2: [10, 20, 30] },
 		};
-		expect(interpret('min(ds)', { ds })[0]).toBeNull();
-		expect(interpret('min(ds2)', { ds2 })).toEqual([1, 10]);
+		const dsRes = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [1], col2: [10] },
+		};
+		expect(interpret('min(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
+		expect(interpret('min(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple max over dataset', () => {
-		const ds = { dataStructure: {}, dataPoints: { col_1: [1, 2, null] } };
-		const ds2 = {
-			dataStructure: { col_1: 'truc', col_2: 'troc' },
-			dataPoints: { col_1: [1, 2, 3], col_2: [10, 20, 30] },
+		const ds = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [1, 2, 3], col2: [10, 20, 30] },
 		};
-		expect(interpret('max(ds)', { ds })[0]).toBeNull();
-		expect(interpret('max(ds2)', { ds2 })).toEqual([3, 30]);
+		const dsRes = {
+			dataStructure: { col1: {}, col2: {} },
+			dataPoints: { col1: [3], col2: [30] },
+		};
+		expect(interpret('max(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
+		expect(interpret('max(ds)', { ds })).toEqual(dsRes);
 	});
 });
