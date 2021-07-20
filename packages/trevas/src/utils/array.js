@@ -1,8 +1,3 @@
-export const transpose = (array) =>
-	Array.isArray(array[0])
-		? array[0].map((_, colIndex) => array.map((row) => row[colIndex]))
-		: [];
-
 export const getArraySum = (array) => {
 	if (!Array.isArray(array) || array.includes(null)) return null;
 	return array.reduce((acc, a) => acc + a, 0);
@@ -13,6 +8,7 @@ export const getArrayMin = (array) => {
 	return array.reduce((acc, a) => (acc < a ? acc : a), array[0]);
 };
 
+//handle null
 export const getArrayMax = (array) => {
 	if (!Array.isArray(array) || array.includes(null)) return null;
 	return array.reduce((acc, a) => (acc > a ? acc : a), array[0]);
@@ -25,6 +21,11 @@ export const getArrayMedian = (array) => {
 	return array.length % 2 !== 0
 		? sortedArray[mid]
 		: (sortedArray[mid - 1] + sortedArray[mid]) / 2;
+};
+
+export const getArrayAvg = (array) => {
+	if (!Array.isArray(array) || array.includes(null)) return null;
+	return array.reduce((acc, a) => acc + a, 0) / array.length;
 };
 
 // usePopulation = true: population deviation

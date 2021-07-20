@@ -20,57 +20,46 @@ class DatasetVisitor extends VtlVisitor {
 		// TODO: has to check dataPoint content
 
 		let operatorFunction;
-		let type;
 
 		switch (opCtx.type) {
 			case VtlParser.COUNT: {
-				operatorFunction = (e) => e.count();
-				type = VtlParser.NUMBER;
+				operatorFunction = (e) => U.getCount(e);
 				break;
 			}
 			case VtlParser.SUM: {
 				operatorFunction = (e) => U.getSum(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.MIN: {
 				operatorFunction = (e) => U.getMin(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.MAX: {
 				operatorFunction = (e) => U.getMax(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.MEDIAN: {
 				operatorFunction = (e) => U.getMedian(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.AVG: {
 				operatorFunction = (e) => U.getAvg(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.STDDEV_POP: {
 				operatorFunction = (e) => U.getStdDevPop(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.STDDEV_SAMP: {
 				operatorFunction = (e) => U.getStdDevSamp(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.VAR_POP: {
 				operatorFunction = (e) => U.getVarPop(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			case VtlParser.VAR_SAMP: {
 				operatorFunction = (e) => U.getVarSamp(e);
-				type = VtlParser.NUMBER;
 				break;
 			}
 			default:
@@ -79,7 +68,7 @@ class DatasetVisitor extends VtlVisitor {
 
 		return {
 			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
-			type,
+			type: VtlParser.DATASET,
 		};
 	};
 
@@ -93,16 +82,13 @@ class DatasetVisitor extends VtlVisitor {
 		}
 
 		let operatorFunction;
-		let type;
 
 		switch (opCtx.type) {
 			case VtlParser.FIRST_VALUE:
 				operatorFunction = (e) => U.getDatasetFirstValue(e);
-				type = VtlParser.DATASET;
 				break;
 			case VtlParser.LAST_VALUE:
 				operatorFunction = (e) => U.getDatasetLastValue(e);
-				type = VtlParser.DATASET;
 				break;
 			default:
 				throw new Error(`unknown operator ${opCtx.getText()}`);
@@ -110,7 +96,7 @@ class DatasetVisitor extends VtlVisitor {
 
 		return {
 			resolve: (bindings) => operatorFunction(expr.resolve(bindings)),
-			type,
+			type: VtlParser.DATASET,
 		};
 	};
 }

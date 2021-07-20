@@ -1,9 +1,14 @@
 import interpret from '../../../interpretor';
 
 describe('dataset-functions', () => {
-	const dsDefault = { dataStructure: {}, dataPoints: {} };
-	const dsWithNull = { dataStructure: {}, dataPoints: { col1: [1, 2, null] } };
-	const dsResWithNull = { dataStructure: {}, dataPoints: { col1: [null] } };
+	const dsWithNull = {
+		dataStructure: { col1: {} },
+		dataPoints: { col1: [1, 2, null] },
+	};
+	const dsResWithNull = {
+		dataStructure: { col1: {} },
+		dataPoints: { col1: [null] },
+	};
 	it('should count observations in a dataset', () => {
 		const ds = {
 			dataStructure: { col1: {} },
@@ -13,7 +18,7 @@ describe('dataset-functions', () => {
 			dataStructure: { col1: {} },
 			dataPoints: { col1: [3] },
 		};
-		expect(interpret('count(dsDefault)', { dsDefault })).toEqual(dsDefault);
+		expect(interpret('count(dsWithNull)', { dsWithNull })).toEqual(dsRes);
 		expect(interpret('count(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return first value of a dataset', () => {
@@ -25,12 +30,16 @@ describe('dataset-functions', () => {
 			dataStructure: { col1: {} },
 			dataPoints: { col1: [1] },
 		};
-		expect(interpret('first_value(dsDefault over())', { dsDefault })).toEqual(
-			dsDefault
+		expect(interpret('first_value(dsWithNull over())', { dsWithNull })).toEqual(
+			dsRes
 		);
 		expect(interpret('first_value(ds over())', { ds })).toEqual(dsRes);
 	});
 	it('should return last value of a dataset', () => {
+		const dsRes0 = {
+			dataStructure: { col1: {} },
+			dataPoints: { col1: [null] },
+		};
 		const ds = {
 			dataStructure: { col1: {}, col2: {} },
 			dataPoints: { col1: [1, 2, 3], col2: [10, 20, 30] },
@@ -39,8 +48,8 @@ describe('dataset-functions', () => {
 			dataStructure: { col1: {}, col2: {} },
 			dataPoints: { col1: [3], col2: [30] },
 		};
-		expect(interpret('last_value(dsDefault over())', { dsDefault })).toEqual(
-			dsDefault
+		expect(interpret('last_value(dsWithNull over())', { dsWithNull })).toEqual(
+			dsRes0
 		);
 		expect(interpret('last_value(ds over())', { ds })).toEqual(dsRes);
 	});
@@ -96,10 +105,14 @@ describe('dataset-functions', () => {
 			dataStructure: { col2: {} },
 			dataPoints: { col2: [2, 4] },
 		};
+		const dsRes = {
+			dataStructure: { col2: {} },
+			dataPoints: { col2: [1] },
+		};
 		expect(interpret('stddev_pop(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
 		);
-		expect(interpret('stddev_pop(ds)', { ds })).toEqual([1]);
+		expect(interpret('stddev_pop(ds)', { ds })).toEqual(dsRes);
 	});
 	it('should return simple sample deviation over dataset', () => {
 		const ds = {
@@ -122,7 +135,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col2: {} },
-			dataPoints: { col2: [2, 4] },
+			dataPoints: { col2: [1] },
 		};
 		expect(interpret('var_pop(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
@@ -138,7 +151,7 @@ describe('dataset-functions', () => {
 			dataStructure: { col1: {} },
 			dataPoints: { col1: [4] },
 		};
-		expect(interpret('var_samp(dsWithNull)', { dsWithNull })[0]).toEqual(
+		expect(interpret('var_samp(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
 		);
 		expect(interpret('var_samp(ds)', { ds })).toEqual(dsRes);
