@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Griddle from 'griddle-react';
-import { AntlrEditor } from 'antlr-editor';
-import * as tools from 'vtl-2-0-antlr-tools-ts';
+import { AntlrEditor as VTLEditor } from '@eurostat/vtl-editor';
+import * as VTLTools from 'vtl-2-0-antlr-tools-ts';
 import { JsonEditor } from 'jsoneditor-react';
 import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
 import { getSuggestions } from './vtl-suggestions';
@@ -17,23 +17,23 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 	const [bindings, setBindings] = useState(initialBindings);
 	const [res, setRes] = useState(null);
 	const [type, setType] = useState('');
-	const [error, setError] = useState('');
+	const [errors, setErrors] = useState([]);
 
 	const onClick = () => {
 		try {
 			const result = interpretVar(input, bindings);
 			setRes(result);
 			setType(result.type);
-			setError('');
+			setErrors('');
 		} catch (e) {
 			setRes('');
 			setType('');
-			setError(e.message);
+			setErrors(e.message);
 		}
 	};
 
 	const customTools = {
-		...tools,
+		...VTLTools,
 		getSuggestionsFromRange: getSuggestions,
 		initialRule: 'expr',
 	};
@@ -42,12 +42,12 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 		<>
 			<h2 className="centered">VTL Exec</h2>
 			<h3>Expressions</h3>
-			<AntlrEditor
+			<VTLEditor
 				script={input}
 				setScript={setInput}
 				languageVersion="vtl-2-0"
 				tools={customTools}
-				setErrors={console.log}
+				onListErrors={console.log}
 				height="10em"
 			/>
 			<h3>Bindings</h3>
@@ -80,10 +80,10 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 					</h1>
 				</div>
 			)}
-			{error && (
+			{errors && (
 				<div className="res">
 					<h2>Error:</h2>
-					<h1 className="res-text">{error}</h1>
+					<h1 className="res-text">{errors}</h1>
 				</div>
 			)}
 			{type && (
@@ -92,7 +92,7 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 					<h1 className="res-text">{getTokenName(type)}</h1>
 				</div>
 			)}
-			{(res || error) && (
+			{(res || errors) && (
 				<div className="res">
 					<h2>Tree</h2>
 					<TreeView value={input} />
