@@ -80,7 +80,7 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 					</h1>
 				</div>
 			)}
-			{errors && (
+			{errors.length > 0 && (
 				<div className="res">
 					<h2>Error:</h2>
 					<h1 className="res-text">{errors}</h1>
