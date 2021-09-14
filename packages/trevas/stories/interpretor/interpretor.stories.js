@@ -373,10 +373,10 @@ storiesOf('Interpretor/Function/Dataset', module).add('Sum', () => {
 			},
 		},
 		dataPoints: {
-			col_1: [1, 2, 3],
+			col_1: ['1', '2', '3'],
 		},
 	};
-	return <Interpretor expression="sum(ds)" bindings={{ ds }} />;
+	return <Interpretor expression="sum(cast(ds, integer))" bindings={{ ds }} />;
 });
 
 storiesOf('Interpretor/Function/Dataset', module).add(
