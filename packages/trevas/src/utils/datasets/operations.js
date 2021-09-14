@@ -72,9 +72,10 @@ const handleArithmetic =
 		if (!data) return null;
 		return columnNames.reduce((acc, col, i) => {
 			const values = getColValues(fn)(data[i])(canContainNull);
+			// TODO: refine the way to extract or not thanks to metadata
 			return {
 				dataStructure: { ...acc.dataStructure, [col]: {} },
-				dataPoints: { ...acc.dataPoints, [col]: [values] },
+				dataPoints: { ...acc.dataPoints, [col]: values },
 			};
 		}, defaultDataset);
 	};

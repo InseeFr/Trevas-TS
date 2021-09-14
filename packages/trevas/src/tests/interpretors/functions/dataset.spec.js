@@ -7,7 +7,7 @@ describe('dataset-functions', () => {
 	};
 	const dsResWithNull = {
 		dataStructure: { col1: {} },
-		dataPoints: { col1: [null] },
+		dataPoints: { col1: null },
 	};
 	it('should count observations in a dataset', () => {
 		const ds = {
@@ -16,7 +16,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {} },
-			dataPoints: { col1: [3] },
+			dataPoints: { col1: 3 },
 		};
 		expect(interpret('count(dsWithNull)', { dsWithNull })).toEqual(dsRes);
 		expect(interpret('count(ds)', { ds })).toEqual(dsRes);
@@ -28,7 +28,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {} },
-			dataPoints: { col1: [1] },
+			dataPoints: { col1: 1 },
 		};
 		expect(interpret('first_value(dsWithNull over())', { dsWithNull })).toEqual(
 			dsRes
@@ -38,7 +38,7 @@ describe('dataset-functions', () => {
 	it('should return last value of a dataset', () => {
 		const dsRes0 = {
 			dataStructure: { col1: {} },
-			dataPoints: { col1: [null] },
+			dataPoints: { col1: null },
 		};
 		const ds = {
 			dataStructure: { col1: {}, col2: {} },
@@ -46,7 +46,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {}, col2: {} },
-			dataPoints: { col1: [3], col2: [30] },
+			dataPoints: { col1: 3, col2: 30 },
 		};
 		expect(interpret('last_value(dsWithNull over())', { dsWithNull })).toEqual(
 			dsRes0
@@ -60,7 +60,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {}, col2: {} },
-			dataPoints: { col1: [6], col2: [60] },
+			dataPoints: { col1: 6, col2: 60 },
 		};
 		expect(interpret('sum(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
 		expect(interpret('sum(ds)', { ds })).toEqual(dsRes);
@@ -72,7 +72,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {} },
-			dataPoints: { col1: [7] },
+			dataPoints: { col1: 7 },
 		};
 		const ds3 = {
 			dataStructure: { col2: {} },
@@ -80,7 +80,7 @@ describe('dataset-functions', () => {
 		};
 		const ds3Res = {
 			dataStructure: { col2: {} },
-			dataPoints: { col2: [3] },
+			dataPoints: { col2: 3 },
 		};
 		expect(interpret('median(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
@@ -95,7 +95,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {}, col2: {} },
-			dataPoints: { col1: [5], col2: [7] },
+			dataPoints: { col1: 5, col2: 7 },
 		};
 		expect(interpret('avg(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
 		expect(interpret('avg(ds)', { ds })).toEqual(dsRes);
@@ -107,7 +107,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col2: {} },
-			dataPoints: { col2: [1] },
+			dataPoints: { col2: 1 },
 		};
 		expect(interpret('stddev_pop(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
@@ -121,7 +121,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {} },
-			dataPoints: { col1: [2] },
+			dataPoints: { col1: 2 },
 		};
 		expect(interpret('stddev_samp(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
@@ -135,7 +135,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col2: {} },
-			dataPoints: { col2: [1] },
+			dataPoints: { col2: 1 },
 		};
 		expect(interpret('var_pop(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
@@ -149,7 +149,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {} },
-			dataPoints: { col1: [4] },
+			dataPoints: { col1: 4 },
 		};
 		expect(interpret('var_samp(dsWithNull)', { dsWithNull })).toEqual(
 			dsResWithNull
@@ -163,7 +163,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {}, col2: {} },
-			dataPoints: { col1: [1], col2: [10] },
+			dataPoints: { col1: 1, col2: 10 },
 		};
 		expect(interpret('min(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
 		expect(interpret('min(ds)', { ds })).toEqual(dsRes);
@@ -175,7 +175,7 @@ describe('dataset-functions', () => {
 		};
 		const dsRes = {
 			dataStructure: { col1: {}, col2: {} },
-			dataPoints: { col1: [3], col2: [30] },
+			dataPoints: { col1: 3, col2: 30 },
 		};
 		expect(interpret('max(dsWithNull)', { dsWithNull })).toEqual(dsResWithNull);
 		expect(interpret('max(ds)', { ds })).toEqual(dsRes);
