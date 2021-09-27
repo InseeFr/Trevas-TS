@@ -61,10 +61,14 @@ storiesOf('Interpretor/Comparison', module).add('Not equal to', () => (
 	<Interpretor expression="100 <> 1" />
 ));
 
-// ternary
+// Conditional
 
-storiesOf('Interpretor/Ternary', module).add('IfThenElse', () => (
+storiesOf('Interpretor/Conditional', module).add('IfThenElse', () => (
 	<Interpretor expression='if 100 > 0 then "positive" else "negative"' />
+));
+
+storiesOf('Interpretor/Conditional', module).add('Nvl', () => (
+	<Interpretor expression="nvl(null, 5)" />
 ));
 
 // Boolean
