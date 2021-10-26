@@ -76,4 +76,12 @@ describe('comparison', () => {
 		expect(interpret('true <> true', {})).toBeFalsy();
 		expect(interpret('false <> true', {})).toBeTruthy();
 	});
+	it('should compare integer & number', () => {
+		expect(interpret('1.1 < 1', {})).toBeFalsy();
+		expect(interpret('1.1 <= 1', {})).toBeFalsy();
+		expect(interpret('1.1 > 1', {})).toBeTruthy();
+		expect(interpret('1.1 >= 1', {})).toBeTruthy();
+		expect(interpret('1.1 = 1', {})).toBeFalsy();
+		expect(interpret('1.1 <> 1', {})).toBeTruthy();
+	});
 });
