@@ -58,9 +58,18 @@ class ComparisonVisitor extends VtlVisitor {
 		if (!expectedTypes.includes(rightExpr.type))
 			throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
 
+		const handleIntegerAndNumber = (leftType, rightType) => {
+			if (
+				[VtlParser.INTEGER, VtlParser.NUMBER].includes(leftType) &&
+				[VtlParser.INTEGER, VtlParser.NUMBER].includes(rightType)
+			)
+				return false;
+			return leftType !== rightType;
+		};
+
 		if (
-			leftExpr.type !== rightExpr.type &&
-			![leftExpr.type, rightExpr.type].includes(VtlParser.NULL_CONSTANT)
+			![leftExpr.type, rightExpr.type].includes(VtlParser.NULL_CONSTANT) &&
+			handleIntegerAndNumber(leftExpr.type, rightExpr.type)
 		)
 			throw new TypeMismatchError(left, expectedTypes, rightExpr.type);
 

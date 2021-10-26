@@ -28,16 +28,33 @@ class ConditionalVisitor extends VtlVisitor {
 		const thenOperand = this.exprVisitor.visit(thenExpr);
 		const elseOperand = this.exprVisitor.visit(elseExpr);
 
+		const handleIntegerAndNumber = (thenType, elseType) => {
+			if (
+				[VtlParser.INTEGER, VtlParser.NUMBER].includes(thenType) &&
+				[VtlParser.INTEGER, VtlParser.NUMBER].includes(elseType)
+			)
+				return false;
+			return thenType !== elseType;
+		};
+
 		if (
 			![thenOperand.type, elseOperand.type].includes(VtlParser.NULL_CONSTANT) &&
-			thenOperand.type !== elseOperand.type
+			handleIntegerAndNumber(thenOperand.type, elseOperand.type)
 		)
 			throw new IncompatibleTypeError(ctx, thenOperand.type, elseOperand.type);
 
-		const type =
-			thenOperand.type === VtlParser.NULL_CONSTANT
-				? elseOperand.type
-				: thenOperand.type;
+		const getType = (thenType, elseType) => {
+			if (thenType === elseType) return thenType;
+			if ([thenType, elseType].includes(VtlParser.NULL_CONSTANT))
+				return thenOperand.type === VtlParser.NULL_CONSTANT
+					? elseOperand.type
+					: thenOperand.type;
+			if (
+				[thenType, elseType].includes(VtlParser.INTEGER) &&
+				[thenType, elseType].includes(VtlParser.NUMBER)
+			)
+				return VtlParser.NUMBER;
+		};
 
 		return {
 			resolve: (bindings) => {
@@ -49,7 +66,7 @@ class ConditionalVisitor extends VtlVisitor {
 				const thenValue = thenOperand.resolve(bindings);
 				return conditionValue ? thenValue : elseValue;
 			},
-			type,
+			type: getType(thenOperand.type, elseOperand.type),
 		};
 	};
 
