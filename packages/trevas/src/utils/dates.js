@@ -1,7 +1,14 @@
-import moment from 'moment';
+import { format } from 'date-fns';
 
-export const getCurrentDate = () => moment();
+export const getCurrentDate = () => new Date();
 
-export const getDate = (dateStr, mask) => moment(dateStr).format(mask);
+const buildDateFnsMask = (mask) =>
+	mask.replace(/YYYY/g, 'yyyy').replace(/YYYY/g, 'yyyy').replace(/DD/g, 'dd');
 
-export const getStringFromDate = (date, mask) => moment(date).format(mask);
+export const getDate = (dateStr, mask) =>
+	mask ? format(new Date(dateStr), buildDateFnsMask(mask)) : new Date(dateStr);
+
+export const getStringFromDate = (date, mask) =>
+	mask
+		? format(new Date(`${date}`), buildDateFnsMask(mask))
+		: new Date(`${date}`);

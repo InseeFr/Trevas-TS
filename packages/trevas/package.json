@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/trevas",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"description": "JavaScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",
@@ -28,6 +28,6 @@
 		"@inseefr/vtl-2.0-antlr-tools": "0.1.0",
 		"antlr4": "4.8.0",
 		"data-forge": "^1.8.8",
-		"moment": "^2.26.0"
+		"date-fns": "^2.27.0"
 	}
 }
