@@ -1,7 +1,7 @@
-import moment from 'moment';
+import { format } from 'date-fns';
 
-export const getCurrentDate = () => moment();
+export const getCurrentDate = () => new Date();
 
-export const getDate = (dateStr, mask) => moment(dateStr).format(mask);
+export const getDate = (dateStr, mask) => format(dateStr, mask);
 
-export const getStringFromDate = (date, mask) => moment(date).format(mask);
+export const getStringFromDate = (date, mask) => format(date, mask);
