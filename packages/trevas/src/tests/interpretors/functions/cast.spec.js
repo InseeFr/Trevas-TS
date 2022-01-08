@@ -133,15 +133,19 @@ describe('cast', () => {
 		it('cast time into duration', () => {});
 	});
 	describe('date', () => {
+		// There's no date literal. We use a first cast to define the date.
+		const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {});
 		it('cast date into integer', () => {});
 		it('cast date into number', () => {});
 		it('cast date into boolean', () => {});
 		it('cast date into time', () => {});
-		it('cast date into date', () => {});
+		it('cast date into date', () => {
+			expect(interpret('cast(aDate, date, "YYYY-MM")', { aDate })).toEqual(
+				interpret('cast("1998-07-12", date, "YYYY-MM")', {})
+			);
+		});
 		it('cast date into time_period', () => {});
 		it('cast date into string', () => {
-			// There's no date literal. We use a first cast to define the date.
-			const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {});
 			expect(interpret('cast(aDate, string, "YYYY-DD-MM")', { aDate })).toEqual(
 				'1998-12-07'
 			);
