@@ -50,6 +50,7 @@ class ComparisonVisitor extends VtlVisitor {
 			VtlParser.STRING,
 			VtlParser.BOOLEAN,
 			VtlParser.NULL_CONSTANT,
+			VtlParser.DATE,
 		];
 
 		if (!expectedTypes.includes(leftExpr.type))

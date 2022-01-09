@@ -61,6 +61,31 @@ storiesOf('Interpretor/Comparison', module).add('Not equal to', () => (
 	<Interpretor expression="100 <> 1" />
 ));
 
+storiesOf('Interpretor/Comparison/Dates', module).add('Equal to', () => (
+	<Interpretor expression='cast("2020-01-01", date, "YYYY-MM-DD") = cast(current_date(), date, "YYYY-MM-DD")' />
+));
+storiesOf('Interpretor/Comparison/Dates', module).add('Less than', () => (
+	<Interpretor expression='cast("2020-01-01", date, "YYYY-MM-DD") < cast("2020-01-02", date, "YYYY-MM-DD")' />
+));
+storiesOf('Interpretor/Comparison/Dates', module).add(
+	'Less than or equal to',
+	() => (
+		<Interpretor expression='cast("2020-01-01", date, "YYYY-MM-DD") <= cast("2020-01-02", date, "YYYY-MM-DD")' />
+	)
+);
+storiesOf('Interpretor/Comparison/Dates', module).add('More than', () => (
+	<Interpretor expression='cast("2020-01-01", date, "YYYY-MM-DD") > cast("2020-01-02", date, "YYYY-MM-DD")' />
+));
+storiesOf('Interpretor/Comparison/Dates', module).add(
+	'More than or equal to',
+	() => (
+		<Interpretor expression='cast("2020-01-01", date, "YYYY-MM-DD") >= cast("2020-01-02", date, "YYYY-MM-DD")' />
+	)
+);
+storiesOf('Interpretor/Comparison/Dates', module).add('Not equal to', () => (
+	<Interpretor expression='cast("2020-01-01", date, "YYYY-MM-DD") <> cast("2020-01-01", date, "YYYY-MM-DD")' />
+));
+
 // Conditional
 
 storiesOf('Interpretor/Conditional', module).add('IfThenElse', () => (

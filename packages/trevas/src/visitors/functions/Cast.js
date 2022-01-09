@@ -76,7 +76,7 @@ class CastVisitor extends VtlVisitor {
 			[VtlParser.DATE, VtlParser.NUMBER, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.BOOLEAN, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.TIME, () => 'TODO'],
-			[VtlParser.DATE, VtlParser.DATE, () => 'TODO'],
+			[VtlParser.DATE, VtlParser.DATE, (op, m) => getDate(`${op}`, m)],
 			[VtlParser.DATE, VtlParser.TIME_PERIOD, () => 'TODO'],
 			[VtlParser.DATE, VtlParser.STRING, (op, m) => getStringFromDate(op, m)],
 			[VtlParser.DATE, VtlParser.DURATION, () => 'TODO'],
