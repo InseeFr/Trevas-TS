@@ -165,6 +165,15 @@ storiesOf('Interpretor/Function/Cast/Dataset', module).add(
 storiesOf('Interpretor/Function/Comparison', module).add('Between', () => (
 	<Interpretor expression="between(10, 1, 100)" bindings={{}} />
 ));
+storiesOf('Interpretor/Function/Comparison', module).add(
+	'Match characters',
+	() => (
+		<Interpretor
+			expression='match_characters("test", "(.*)(es)(.*)?")'
+			bindings={{}}
+		/>
+	)
+);
 storiesOf('Interpretor/Function/Comparison', module).add('Null', () => (
 	<Interpretor expression="isnull(test)" bindings={{ test: null }} />
 ));

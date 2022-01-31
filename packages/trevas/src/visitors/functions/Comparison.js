@@ -54,6 +54,34 @@ class ComparisonVisitor extends VtlVisitor {
 			type: VtlParser.BOOLEAN,
 		};
 	};
+
+	visitCharsetMatchAtom = (ctx) => {
+		const { op, pattern } = ctx;
+
+		const opOperand = this.exprVisitor.visit(op);
+		const patternOperand = this.exprVisitor.visit(pattern);
+
+		[
+			[opOperand, op],
+			[patternOperand, pattern],
+		].forEach(([o, c]) => {
+			if (![VtlParser.STRING, VtlParser.NULL_CONSTANT].includes(o.type)) {
+				throw new TypeMismatchError(c, VtlParser.STRING, o.type);
+			}
+		});
+
+		return {
+			resolve: (bindings) => {
+				const opValue = opOperand.resolve(bindings);
+				const patternValue = patternOperand.resolve(bindings);
+				if (hasNullArgs(opValue, patternValue)) return null;
+				const regex = new RegExp(patternValue, 'g');
+				const match = opValue.match(regex);
+				return match && opValue === match[0];
+			},
+			type: VtlParser.BOOLEAN,
+		};
+	};
 }
 
 export default ComparisonVisitor;

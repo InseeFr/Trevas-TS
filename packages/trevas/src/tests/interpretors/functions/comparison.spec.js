@@ -8,6 +8,8 @@ describe('comparison-functions', () => {
 		expect(interpret('between(null, 1, 100)')).toBeNull();
 		expect(interpret('between(10, null, 100)')).toBeNull();
 		expect(interpret('between(null, 1, 100)')).toBeNull();
+		expect(interpret('match_characters("ko", null)')).toBeNull();
+		expect(interpret('match_characters(null, "test")')).toBeNull();
 	});
 	it('should check isnull', () => {
 		expect(interpret('isnull("ko")', {})).toBeFalsy();
@@ -21,6 +23,21 @@ describe('comparison-functions', () => {
 	it('should throw an error for string argument into between function', () => {
 		expect(() => {
 			interpret('between(10, "ko", 100)', {});
+		}).toThrow();
+	});
+	it('should check match_characters', () => {
+		expect(
+			interpret('match_characters("test", "(.*)(es)(.*)?")', {})
+		).toBeTruthy();
+		expect(interpret('match_characters("test", "tes.")', {})).toBeTruthy();
+		expect(interpret('match_characters("test", "tes")', {})).toBeFalsy();
+		expect(
+			interpret('match_characters("test", "(.*)(aaaaa)(.*)?")', {})
+		).toBeFalsy();
+	});
+	it('should throw an error for number argument into match_characters function', () => {
+		expect(() => {
+			interpret('match_characters(10.5, "pattern")', {});
 		}).toThrow();
 	});
 });
