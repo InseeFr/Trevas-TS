@@ -32,6 +32,9 @@ describe('comparison-functions', () => {
 		expect(interpret('match_characters("test", "tes.")', {})).toBeTruthy();
 		expect(interpret('match_characters("test", "tes")', {})).toBeFalsy();
 		expect(
+			interpret('match_characters("test", "[a-z]et[a-z]")', {})
+		).toBeFalsy();
+		expect(
 			interpret('match_characters("test", "(.*)(aaaaa)(.*)?")', {})
 		).toBeFalsy();
 	});
