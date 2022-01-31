@@ -62,9 +62,9 @@
 | Not equal to     | <>               | :heavy_check_mark: |
 | Greater than     | > >=             | :heavy_check_mark: |
 | Less than        | < <=             | :heavy_check_mark: |
-| Between          | between          |        :x:         |
+| Between          | between          | :heavy_check_mark: |
 | Element of       | in / not_in      |        :x:         |
-| Match characters | match_characters |        :x:         |
+| Match characters | match_characters | :heavy_check_mark: |
 | Is null          | isnull           | :heavy_check_mark: |
 | Exists in        | exists_in        |        :x:         |
 
