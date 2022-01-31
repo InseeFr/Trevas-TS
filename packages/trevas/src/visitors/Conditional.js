@@ -59,12 +59,9 @@ class ConditionalVisitor extends VtlVisitor {
 		return {
 			resolve: (bindings) => {
 				const conditionValue = conditionalOperand.resolve(bindings);
-				const elseValue = elseOperand.resolve(bindings);
-
 				if (hasNullArgs(conditionValue)) return null;
-
-				const thenValue = thenOperand.resolve(bindings);
-				return conditionValue ? thenValue : elseValue;
+				if (conditionValue) return thenOperand.resolve(bindings);
+				return elseOperand.resolve(bindings);
 			},
 			type: getType(thenOperand.type, elseOperand.type),
 		};
