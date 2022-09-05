@@ -2,6 +2,14 @@ import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { IncompatibleTypeError, TypeMismatchError } from '../errors';
 import { hasNullArgs } from '../utils';
 
+const handleIntegerAndNumber = (aType, bType) => {
+	if (
+		[VtlParser.INTEGER, VtlParser.NUMBER].includes(aType) &&
+		[VtlParser.INTEGER, VtlParser.NUMBER].includes(bType)
+	)
+		return false;
+	return aType !== bType;
+};
 class ConditionalVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
@@ -27,15 +35,6 @@ class ConditionalVisitor extends VtlVisitor {
 
 		const thenOperand = this.exprVisitor.visit(thenExpr);
 		const elseOperand = this.exprVisitor.visit(elseExpr);
-
-		const handleIntegerAndNumber = (thenType, elseType) => {
-			if (
-				[VtlParser.INTEGER, VtlParser.NUMBER].includes(thenType) &&
-				[VtlParser.INTEGER, VtlParser.NUMBER].includes(elseType)
-			)
-				return false;
-			return thenType !== elseType;
-		};
 
 		if (
 			![thenOperand.type, elseOperand.type].includes(VtlParser.NULL_CONSTANT) &&
@@ -77,7 +76,7 @@ class ConditionalVisitor extends VtlVisitor {
 			![leftOperand.type, rightOperand.type].includes(
 				VtlParser.NULL_CONSTANT
 			) &&
-			leftOperand.type !== rightOperand.type
+			handleIntegerAndNumber(leftOperand.type, rightOperand.type)
 		)
 			throw new IncompatibleTypeError(ctx, leftOperand.type, rightOperand.type);
 
