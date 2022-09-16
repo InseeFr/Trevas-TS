@@ -38,6 +38,12 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 		initialRule: 'expr',
 	};
 
+	const updateBindings = (b) => {
+		setRes('');
+		setType('');
+		setBindings(b);
+	};
+
 	return (
 		<>
 			<h2 className="centered">VTL Exec</h2>
@@ -51,7 +57,7 @@ const Interpretor = ({ expression, bindings: initialBindings }) => {
 				height="10em"
 			/>
 			<h3>Bindings</h3>
-			<Bindings bindings={bindings} onChange={setBindings} />
+			<Bindings bindings={bindings} onChange={updateBindings} />
 			<div className="btn-res">
 				<button type="button" onClick={onClick}>
 					Get Result!
