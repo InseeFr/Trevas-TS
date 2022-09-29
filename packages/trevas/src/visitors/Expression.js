@@ -39,17 +39,18 @@ class ExpressionVisitor extends VtlVisitor {
 	// Since the grammar groups the binary expression we need to "route" to our
 	// own visitor groups.
 	visitArithmeticExpr = (ctx) => this.arithmeticVisitor.visit(ctx);
+
 	visitArithmeticExprOrConcat = (ctx) => {
 		const { op } = ctx;
 		if (op.type === VtlParser.CONCAT)
 			return new ConcatenationVisitor(this).visit(ctx);
-		else return this.arithmeticVisitor.visit(ctx);
+		return this.arithmeticVisitor.visit(ctx);
 	};
 
 	visitUnaryExpr = (ctx) => {
 		const { op } = ctx;
 		if (op.type === VtlParser.NOT) return this.booleanAlgebraVisitor.visit(ctx);
-		else return this.arithmeticVisitor.visit(ctx);
+		return this.arithmeticVisitor.visit(ctx);
 	};
 
 	visitBooleanExpr = (ctx) => this.booleanAlgebraVisitor.visit(ctx);
@@ -57,14 +58,19 @@ class ExpressionVisitor extends VtlVisitor {
 	visitParenthesisExpr = (ctx) => this.visit(ctx.expr());
 
 	visitIfExpr = (ctx) => this.ifThenElseVisitor.visit(ctx);
+
 	visitConditionalFunctions = (ctx) => this.visit(ctx.conditionalOperators());
+
 	visitNvlAtom = (ctx) => this.ifThenElseVisitor.visit(ctx);
 
 	// TODO: Optional expression should handle missing values.
 	visitOptionalExpr = (ctx) =>
 		ctx.expr() === null ? null : this.visit(ctx.expr());
+
 	visitFunctionsExpression = (ctx) => this.visit(ctx.functions());
+
 	visitGenericFunctions = (ctx) => this.visit(ctx.genericOperators());
+
 	visitTimeFunctions = (ctx) => this.visit(ctx.timeOperators());
 
 	visitVarIdExpr = (ctx) => this.variableVisitor.visit(ctx);
@@ -73,17 +79,23 @@ class ExpressionVisitor extends VtlVisitor {
 
 	// Functions
 	visitCastExprDataset = (ctx) => this.castFunctionVisitor.visit(ctx);
+
 	visitCurrentDateAtom = (ctx) => this.dateFunctionVisitor.visit(ctx);
+
 	visitConcatExpr = (ctx) => this.concatenationVisitor.visit(ctx);
+
 	visitStringFunctions = (ctx) =>
 		this.stringFunctionVisitor.visit(ctx.stringOperators());
+
 	visitComparisonFunctions = (ctx) =>
 		this.comparisonFunctionVisitor.visit(ctx.comparisonOperators());
+
 	visitNumericFunctions = (ctx) =>
 		this.numericFunctionVisitor.visit(ctx.numericOperators());
 
 	visitAggregateFunctions = (ctx) =>
 		this.datasetFunctionsVisitor.visit(ctx.aggrOperatorsGrouping());
+
 	visitAnalyticFunctions = (ctx) =>
 		this.datasetFunctionsVisitor.visit(ctx.anFunction());
 }
