@@ -5,6 +5,7 @@ import IfThenElse from './Conditional';
 import VariableVisitor from './Variable';
 import LiteralVisitor from './Literal';
 import ComparisonVisitor from './Comparison';
+import InNotInVisitor from './InNotInVisitor';
 import {
 	CastVisitor,
 	ComparisonFunctionVisitor,
@@ -31,6 +32,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.numericFunctionVisitor = new NumericFunctionsVisitor(this);
 		this.stringFunctionVisitor = new StringFunctionsVisitor(this);
 		this.variableVisitor = new VariableVisitor(this.bindings);
+		this.inNotInVisitor = new InNotInVisitor(this);
 		this.datasetFunctionsVisitor = new DatasetFunctionsVisitor(this);
 	}
 
@@ -76,6 +78,8 @@ class ExpressionVisitor extends VtlVisitor {
 	visitVarIdExpr = (ctx) => this.variableVisitor.visit(ctx);
 
 	visitConstantExpr = (ctx) => this.literalVisitor.visit(ctx);
+
+	visitInNotInExpr = (ctx) => this.inNotInVisitor.visit(ctx);
 
 	// Functions
 	visitCastExprDataset = (ctx) => this.castFunctionVisitor.visit(ctx);

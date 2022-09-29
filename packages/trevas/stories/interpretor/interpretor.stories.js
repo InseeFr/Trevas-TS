@@ -45,6 +45,13 @@ storiesOf('Interpretor/Arithmetic', module).add('Plus', () => (
 storiesOf('Interpretor/Comparison', module).add('Equal to', () => (
 	<Interpretor expression="100 = 1" />
 ));
+const ELEMENTS = {
+	dataStructure: { col_1: {} },
+	dataPoints: { col_1: ['B', 'C', 'D'] },
+};
+storiesOf('Interpretor/Comparison', module).add('In / Not in', () => (
+	<Interpretor expression='"A" not_in ELEMENTS' bindings={{ ELEMENTS }} />
+));
 storiesOf('Interpretor/Comparison', module).add('Less than', () => (
 	<Interpretor expression="100 < 1" />
 ));
