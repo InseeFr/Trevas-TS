@@ -1,6 +1,4 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
-import { IncompatibleTypeError, TypeMismatchError } from '../errors';
-import { hasNullArgs } from '../utils';
 
 class InNotInVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
