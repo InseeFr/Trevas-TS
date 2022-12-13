@@ -40,6 +40,12 @@ storiesOf('Interpretor/Arithmetic', module).add('Minus', () => (
 storiesOf('Interpretor/Arithmetic', module).add('Plus', () => (
 	<Interpretor expression="10 + 2" />
 ));
+storiesOf('Interpretor/Arithmetic/Dates', module).add('Minus', () => (
+	<Interpretor
+		expression='cast(a, date, "YYYY-MM-DD") - cast(b, date, "YYYY-MM-DD")'
+		bindings={{ a: '1988-03-01', b: '1988-02-28' }}
+	/>
+));
 
 // Comparison
 storiesOf('Interpretor/Comparison', module).add('Equal to', () => (

@@ -5,6 +5,7 @@ import { hasNullArgs } from '../utils';
 const getType = (...args) => {
 	const types = args.map((a) => a.type);
 	if (types.includes(VtlParser.NULL_CONSTANT)) return VtlParser.NUMBER;
+	if (types.includes(VtlParser.DATE)) return VtlParser.INTEGER;
 	return types.includes(VtlParser.NUMBER)
 		? VtlParser.NUMBER
 		: VtlParser.INTEGER;
@@ -103,6 +104,7 @@ class ArithmeticVisitor extends VtlVisitor {
 			VtlParser.NUMBER,
 			VtlParser.DATASET,
 			VtlParser.NULL_CONSTANT,
+			VtlParser.DATE,
 		];
 
 		if (!expectedTypes.includes(leftExpr.type))
@@ -169,6 +171,11 @@ class ArithmeticVisitor extends VtlVisitor {
 				const leftValue = leftExpr.resolve(bindings);
 				const rightValue = rightExpr.resolve(bindings);
 				if (hasNullArgs(leftValue, rightValue)) return null;
+				if (
+					leftExpr.type === VtlParser.DATE &&
+					rightExpr.type === VtlParser.DATE
+				)
+					return operatorFunction(new Date(leftValue), new Date(rightValue));
 				return operatorFunction(leftValue, rightValue);
 			},
 			type,

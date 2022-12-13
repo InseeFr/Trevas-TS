@@ -188,5 +188,30 @@ describe('arithmetic', () => {
 		it('dividing by 0 should return infinity', () => {
 			expect(interpret('3/0', {})).toEqual(Infinity);
 		});
+		it('handle minus with dates (default result ms)', () => {
+			expect(
+				interpret('cast(a, date, "YYYY-MM-DD") - cast(b, date, "YYYY-MM-DD")', {
+					a: '1988-03-01',
+					b: '1988-02-28',
+				})
+			).toEqual(172800000);
+			expect(
+				interpret('cast(a, date, "YYYY-MM-DD") - cast(b, date, "YYYY-MM-DD")', {
+					a: '1989-03-01',
+					b: '1989-02-28',
+				})
+			).toEqual(86400000);
+		});
+		it('handle minus with dates (result days)', () => {
+			expect(
+				interpret(
+					'round((cast(a, date, "YYYY-MM-DD") - cast(b, date, "YYYY-MM-DD")) / 1000 / 3600 /24)',
+					{
+						a: '1988-03-01',
+						b: '1988-02-28',
+					}
+				)
+			).toEqual(2);
+		});
 	});
 });
