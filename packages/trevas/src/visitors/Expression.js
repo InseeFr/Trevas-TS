@@ -79,6 +79,8 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitConstant = (ctx) => this.literalVisitor.visit(ctx);
 
+	visitConstantExpr = (ctx) => this.literalVisitor.visit(ctx);
+
 	visitInNotInExpr = (ctx) => this.inNotInVisitor.visit(ctx);
 
 	// Functions
