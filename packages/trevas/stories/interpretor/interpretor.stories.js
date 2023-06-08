@@ -56,6 +56,9 @@ const ELEMENTS = {
 	dataPoints: { col_1: ['B', 'C', 'D'] },
 };
 storiesOf('Interpretor/Comparison', module).add('In / Not in', () => (
+	<Interpretor expression='"1" not_in {"2", "3"}' bindings={{}} />
+));
+storiesOf('Interpretor/Comparison', module).add('In / Not in (Dataset)', () => (
 	<Interpretor expression='"A" not_in ELEMENTS' bindings={{ ELEMENTS }} />
 ));
 storiesOf('Interpretor/Comparison', module).add('Less than', () => (
