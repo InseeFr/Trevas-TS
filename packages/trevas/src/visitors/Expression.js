@@ -77,7 +77,7 @@ class ExpressionVisitor extends VtlVisitor {
 
 	visitVarIdExpr = (ctx) => this.variableVisitor.visit(ctx);
 
-	visitConstantExpr = (ctx) => this.literalVisitor.visit(ctx);
+	visitConstant = (ctx) => this.literalVisitor.visit(ctx);
 
 	visitInNotInExpr = (ctx) => this.inNotInVisitor.visit(ctx);
 

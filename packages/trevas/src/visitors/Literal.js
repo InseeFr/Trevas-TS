@@ -2,7 +2,7 @@ import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
 import { getTokenType, replaceConstantType } from '../utils';
 
 class LiteralVisitor extends VtlVisitor {
-	visitConstantExpr = (ctx) => {
+	visitConstant = (ctx) => {
 		let value;
 		switch (getTokenType(ctx)) {
 			case VtlParser.STRING_CONSTANT: {
