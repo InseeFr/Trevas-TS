@@ -14,21 +14,26 @@ class InNotInVisitor extends VtlVisitor {
 	visitInNotInExpr = (ctx) => {
 		const { left, op } = ctx;
 		const leftExpr = this.exprVisitor.visit(left);
+		const listExpr = ctx.lists()
+			? this.exprVisitor.visit(ctx.lists().constant())
+			: null;
 		// Add babel loader for ??
 		const value = ctx.valueDomainID()
 			? ctx.valueDomainID().children[0].getText()
 			: null;
 		return {
 			resolve: (bindings) => {
-				const list = bindings[value];
-				if (!list) return null;
-				const listData = Object.values(list.dataPoints)[0];
+				let list;
+				if (listExpr) {
+					list = listExpr.map((a) => a.resolve(bindings));
+				} else if (value && bindings[value]) {
+					list = Object.values(bindings[value].dataPoints)[0];
+				} else return null;
 				const resolvedLeftExpr = leftExpr.resolve(bindings);
 				if (resolvedLeftExpr === null) return null;
-				if (op.type === VtlParser.IN)
-					return listData.includes(resolvedLeftExpr);
+				if (op.type === VtlParser.IN) return list.includes(resolvedLeftExpr);
 				if (op.type === VtlParser.NOT_IN)
-					return !listData.includes(resolvedLeftExpr);
+					return !list.includes(resolvedLeftExpr);
 				throw new Error(`unknown operator ${op.getText()}`);
 			},
 			type: VtlParser.BOOLEAN,
