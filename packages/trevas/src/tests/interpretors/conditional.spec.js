@@ -3,7 +3,7 @@ import { IncompatibleTypeError } from '../../errors';
 
 describe('conditional', () => {
 	it('supports if-then-else with null', () => {
-		expect(interpret('if null then "true" else "false"')).toBeNull();
+		expect(interpret('if null then "not null" else "null"')).toEqual('null');
 		expect(interpret('if true then null else "false"')).toBeNull();
 		expect(interpret('if false then true else null')).toBeNull();
 	});
