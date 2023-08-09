@@ -1,8 +1,7 @@
-import antlr4 from 'antlr4';
-import { ErrorListener } from 'antlr4/error';
 import { VtlLexer, VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
-import ExpressionVisitor from './visitors/Expression';
+import antlr4, { ErrorListener } from 'antlr4';
 import { getTokenName } from './utils/parser';
+import ExpressionVisitor from './visitors/Expression';
 
 class ErrorCollector extends ErrorListener {
 	constructor() {

@@ -1,4 +1,4 @@
-import { RecognitionException } from 'antlr4/error';
+import { RecognitionException } from 'antlr4';
 import { getTokenName } from '../utils';
 
 class OperatorTypeError extends RecognitionException {

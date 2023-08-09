@@ -1,4 +1,4 @@
-import { RecognitionException } from 'antlr4/error';
+import { RecognitionException } from 'antlr4';
 
 class CastTypeError extends RecognitionException {
 	constructor(ctx, source, target) {
