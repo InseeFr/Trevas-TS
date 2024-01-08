@@ -141,26 +141,31 @@ describe('replace', () => {
 	});
 });
 describe('instr', () => {
+	it('issue 124', () => {
+		expect(interpret('instr("124", "3")', {})).toEqual(0);
+		expect(interpret('instr("124", "1")', {})).toEqual(1);
+	});
+
 	it('should find string', () => {
-		expect(interpret('instr("Hello world", "world")', {})).toEqual(6);
+		expect(interpret('instr("Hello world", "world")', {})).toEqual(7);
 	});
 
 	it('should find string after start', () => {
 		expect(interpret('instr("Hello world world", "world", 11)', {})).toEqual(
-			12
+			13
 		);
 	});
 
 	it('should find string occurrence', () => {
 		expect(
 			interpret('instr("Hello world world world", "world", _, 2)', {})
-		).toEqual(12);
+		).toEqual(13);
 	});
 
 	it('should find string occurrence with start', () => {
 		expect(
 			interpret('instr("Hello world world world", "world", 11, 2)', {})
-		).toEqual(18);
+		).toEqual(19);
 	});
 
 	it('should fail with type validation', () => {

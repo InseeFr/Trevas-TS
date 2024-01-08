@@ -7,17 +7,17 @@ jobs:
     name: Test & build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 15
+          node-version: 16
       - run: yarn
       # Build modules
       - run: yarn build
       # Build sonar reports
       - run: yarn test --coverage
       - name: Upload deploy artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: coverage/
@@ -26,11 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Download coverage artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: coverage
           path: coverage
@@ -45,10 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: sonarcloud
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 15
+          node-version: 16
       - run: yarn
       # Build modules
       - run: yarn build
@@ -61,7 +61,7 @@ jobs:
       - run: mkdir -p deploy/bundle-report
       - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
       - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           # Because of gitbook support
           node-version: 10
@@ -72,18 +72,18 @@ jobs:
         working-directory: ./docs/
       - run: cp -a ./docs/_book/. ./deploy/
       - name: Upload deploy artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: deploy
-          path: deploy/  
-                
+          path: deploy/
+
   deploy:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: build-assets
     steps:
       - name: Download deploy artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: deploy
       - name: Deploy

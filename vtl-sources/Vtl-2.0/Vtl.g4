@@ -1,6 +1,7 @@
 // VTL 2.0 06/2020 SDMX
 // Remove component duplication
 // Add distance operators (levenshtein)
+// Add random operator (optionalNumeric group)
 
 grammar Vtl;
 import VtlTokens;
@@ -187,7 +188,8 @@ stringOperators:
 //;
 
 numericOperators:
-    op=(CEIL | FLOOR | ABS | EXP | LN | SQRT) LPAREN expr RPAREN						        # unaryNumeric
+    op=RANDOM LPAREN (optionalExpr)? RPAREN                                                     # optionalNumeric
+    | op=(CEIL | FLOOR | ABS | EXP | LN | SQRT) LPAREN expr RPAREN						        # unaryNumeric
     | op=(ROUND | TRUNC) LPAREN expr (COMMA optionalExpr)? RPAREN							    # unaryWithOptionalNumeric
     | op=(MOD | POWER|LOG) LPAREN left=expr COMMA right=expr RPAREN							    # binaryNumeric
 ;

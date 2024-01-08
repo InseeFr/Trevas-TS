@@ -148,7 +148,7 @@ class StringVisitor extends VtlVisitor {
 					}
 					startValue = result + 1;
 				}
-				return result;
+				return result + 1;
 			},
 			type: VtlParser.INTEGER,
 		};
