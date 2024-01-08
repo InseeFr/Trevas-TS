@@ -132,6 +132,7 @@ lexer grammar VtlTokens;
   CEIL							          : 'ceil';
   FLOOR							          : 'floor';
   SQRT							          : 'sqrt';
+  RANDOM							        : 'random';
   ANY							            : 'any';
   SETDIFF						          : 'setdiff';
   STDDEV_POP					        : 'stddev_pop';
