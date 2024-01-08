@@ -1,6 +1,6 @@
 {
 	"name": "@inseefr/vtl-2.0-antlr-tools",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"description": "JavaScript tools for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
 	"repository": {
 		"type": "git",

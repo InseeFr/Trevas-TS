@@ -318,6 +318,12 @@ VtlVisitor.prototype.visitInstrAtom = function(ctx) {
 };
 
 
+// Visit a parse tree produced by VtlParser#optionalNumeric.
+VtlVisitor.prototype.visitOptionalNumeric = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by VtlParser#unaryNumeric.
 VtlVisitor.prototype.visitUnaryNumeric = function(ctx) {
   return this.visitChildren(ctx);

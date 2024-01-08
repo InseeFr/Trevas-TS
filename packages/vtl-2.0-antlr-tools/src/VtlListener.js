@@ -470,6 +470,15 @@ VtlListener.prototype.exitInstrAtom = function(ctx) {
 };
 
 
+// Enter a parse tree produced by VtlParser#optionalNumeric.
+VtlListener.prototype.enterOptionalNumeric = function(ctx) {
+};
+
+// Exit a parse tree produced by VtlParser#optionalNumeric.
+VtlListener.prototype.exitOptionalNumeric = function(ctx) {
+};
+
+
 // Enter a parse tree produced by VtlParser#unaryNumeric.
 VtlListener.prototype.enterUnaryNumeric = function(ctx) {
 };
