@@ -223,15 +223,6 @@ storiesOf('Interpretor/Function/Numeric', module).add('Floor', () => (
 storiesOf('Interpretor/Function/Numeric', module).add('Ln', () => (
 	<Interpretor expression="ln(5)" />
 ));
-storiesOf('Interpretor/Function/Numeric', module).add('Sqrt', () => (
-	<Interpretor expression="sqrt(5)" />
-));
-storiesOf('Interpretor/Function/Numeric', module).add('Round', () => (
-	<Interpretor expression="round(2.618, 2)" />
-));
-storiesOf('Interpretor/Function/Numeric', module).add('Trunc', () => (
-	<Interpretor expression="trunc(2.618, 2)" />
-));
 storiesOf('Interpretor/Function/Numeric', module).add('Log', () => (
 	<Interpretor expression="log(2048, 2)" />
 ));
@@ -240,6 +231,18 @@ storiesOf('Interpretor/Function/Numeric', module).add('Mod', () => (
 ));
 storiesOf('Interpretor/Function/Numeric', module).add('Power', () => (
 	<Interpretor expression="power(3, 2)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Abs', () => (
+	<Interpretor expression="random()" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Round', () => (
+	<Interpretor expression="round(2.618, 2)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Sqrt', () => (
+	<Interpretor expression="sqrt(5)" />
+));
+storiesOf('Interpretor/Function/Numeric', module).add('Trunc', () => (
+	<Interpretor expression="trunc(2.618, 2)" />
 ));
 
 // String
