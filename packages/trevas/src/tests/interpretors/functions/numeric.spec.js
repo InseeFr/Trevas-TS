@@ -2,6 +2,9 @@ import interpret from '../../../interpretor';
 
 describe('numeric-functions', () => {
 	describe('supports numeric functions with null', () => {
+		it('supports random with null', () => {
+			expect(interpret('random(null)', {})).toBeNull();
+		});
 		it('supports abs with null', () => {
 			expect(interpret('abs(null)', {})).toBeNull();
 		});
@@ -37,6 +40,21 @@ describe('numeric-functions', () => {
 		it('supports power with null', () => {
 			expect(interpret('power(null, 2)', {})).toBeNull();
 			expect(interpret('power(5, null)', {})).toBeNull();
+		});
+	});
+
+	describe('optional operators', () => {
+		describe('tests on the random function', () => {
+			it('should throw an error for string operands', () => {
+				expect(() => {
+					interpret('random("test")', {});
+				}).toThrow();
+			});
+			it('should return random numbers', () => {
+				const res = interpret('random()', {});
+				expect(res).toBeGreaterThanOrEqual(0);
+				expect(res).toBeLessThan(1);
+			});
 		});
 	});
 

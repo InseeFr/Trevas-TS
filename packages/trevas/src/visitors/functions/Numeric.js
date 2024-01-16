@@ -8,6 +8,50 @@ class NumericVisitor extends VtlVisitor {
 		this.exprVisitor = exprVisitor;
 	}
 
+	visitOptionalNumeric = (ctx) => {
+		const { op: opCtx } = ctx;
+
+		const optionalExpr = ctx.optionalExpr()
+			? this.exprVisitor.visit(ctx.optionalExpr())
+			: { resolve: () => 0, type: VtlParser.INTEGER };
+
+		const expectedTypes = [
+			VtlParser.INTEGER,
+			VtlParser.NUMBER,
+			VtlParser.NULL_CONSTANT,
+		];
+
+		if (ctx.optionalExpr() && !expectedTypes.includes(optionalExpr.type)) {
+			throw new TypeMismatchError(
+				ctx.optionalExpr(),
+				expectedTypes,
+				opCtx.type
+			);
+		}
+
+		let operatorFunction;
+		let type;
+
+		switch (opCtx.type) {
+			// handle better when input param is not null
+			case VtlParser.RANDOM:
+				operatorFunction = () => Math.random();
+				type = optionalExpr.type;
+				break;
+			default:
+				throw new Error(`unknown operator ${opCtx.getText()}`);
+		}
+
+		return {
+			resolve: (bindings) => {
+				const exprValue = optionalExpr.resolve(bindings);
+				if (hasNullArgs(exprValue)) return null;
+				return operatorFunction(exprValue);
+			},
+			type,
+		};
+	};
+
 	visitUnaryNumeric = (ctx) => {
 		const { op: opCtx } = ctx;
 
