@@ -29,7 +29,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.ifThenElseVisitor = new IfThenElse(this);
 		this.literalVisitor = new LiteralVisitor();
 		this.comparisonFunctionVisitor = new ComparisonFunctionVisitor(this);
-		this.numericFunctionVisitor = new NumericFunctionsVisitor(this);
+		this.numericFunctionsVisitor = new NumericFunctionsVisitor(this);
 		this.stringFunctionVisitor = new StringFunctionsVisitor(this);
 		this.variableVisitor = new VariableVisitor(this.bindings);
 		this.inNotInVisitor = new InNotInVisitor(this);
@@ -97,7 +97,7 @@ class ExpressionVisitor extends VtlVisitor {
 		this.comparisonFunctionVisitor.visit(ctx.comparisonOperators());
 
 	visitNumericFunctions = (ctx) =>
-		this.numericFunctionVisitor.visit(ctx.numericOperators());
+		this.numericFunctionsVisitor.visit(ctx.numericOperators());
 
 	visitAggregateFunctions = (ctx) =>
 		this.datasetFunctionsVisitor.visit(ctx.aggrOperatorsGrouping());
