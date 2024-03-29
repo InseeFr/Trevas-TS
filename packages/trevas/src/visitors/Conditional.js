@@ -10,6 +10,7 @@ const handleIntegerAndNumber = (aType, bType) => {
 		return false;
 	return aType !== bType;
 };
+
 class ConditionalVisitor extends VtlVisitor {
 	constructor(exprVisitor) {
 		super();
@@ -82,7 +83,7 @@ class ConditionalVisitor extends VtlVisitor {
 
 		return {
 			resolve: (bindings) =>
-				leftOperand.resolve(bindings)
+				leftOperand.resolve(bindings) !== null
 					? leftOperand.resolve(bindings)
 					: rightOperand.resolve(bindings),
 			type: rightOperand.type,
