@@ -19,6 +19,9 @@ describe('conditional', () => {
 		expect(interpret('nvl(5, null)', {})).toEqual(5);
 		expect(interpret('nvl(null, 0)', {})).toEqual(0);
 		expect(interpret('nvl(null, null)', {})).toBeNull();
+		expect(interpret('nvl(0, 12)', {})).toEqual(0);
+		expect(interpret('nvl("foo", "bar")', {})).toEqual("foo");
+		expect(interpret('nvl(null, "bar")', {})).toEqual("bar");
 	});
 	it('supports if-then-else with integer & number', () => {
 		expect(interpret('if true then 1.1 else 0')).toEqual(1.1);
