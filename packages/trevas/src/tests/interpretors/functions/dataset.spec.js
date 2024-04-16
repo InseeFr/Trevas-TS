@@ -9,6 +9,14 @@ describe('dataset-functions', () => {
 		dataStructure: { col1: {} },
 		dataPoints: { col1: null },
 	};
+	const dsEmpty = {
+		dataStructure: { col1: {} },
+		dataPoints: { col1: [] },
+	};
+	const dsResEmpty = {
+		dataStructure: { col1: {} },
+		dataPoints: { col1: 0 },
+	};
 	it('should count observations in a dataset', () => {
 		const ds = {
 			dataStructure: { col1: {} },
@@ -20,6 +28,7 @@ describe('dataset-functions', () => {
 		};
 		expect(interpret('count(dsWithNull)', { dsWithNull })).toEqual(dsRes);
 		expect(interpret('count(ds)', { ds })).toEqual(dsRes);
+		expect(interpret('count(dsEmpty)', { dsEmpty })).toEqual(dsResEmpty);
 	});
 	it('should return first value of a dataset', () => {
 		const ds = {

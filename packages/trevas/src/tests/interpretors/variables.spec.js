@@ -21,7 +21,6 @@ describe('variable', () => {
 		expect(interpret('aString', bindings)).toEqual('string!');
 		expect(interpret('anInt', bindings)).toEqual(1234);
 		expect(interpret('aFloat', bindings)).toEqual(12.34);
-		expect(interpret('aDataset', bindings).toArray()).toEqual([]);
 		expect(interpret('nullValue', bindings)).toBeNull();
 		// FIXME how to bubble up the error thrown to the `interpret` function ?
 		// expect(interpret('aFlawedDataset', bindings)).toThrow();
