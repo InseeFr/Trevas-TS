@@ -1,5 +1,4 @@
 import { VtlParser, VtlVisitor } from '@inseefr/vtl-2.0-antlr-tools';
-import { fromDatasetToDataframe } from '../utils';
 
 // TODO: Support integers here.
 const types = {
@@ -43,7 +42,7 @@ const varTransformer = (variable, bindings) => {
 		return bindings[variable];
 	}
 	if (type === VtlParser.DATASET) {
-		return fromDatasetToDataframe(bindings[variable]);
+		return bindings[variable];
 	}
 	throw new Error(`Cannot transform variable of type ${type}`);
 };
