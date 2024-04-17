@@ -1,36 +1,16 @@
 import { VtlParser } from '@inseefr/vtl-2.0-antlr-tools';
-import { getTokenName } from '../parser';
-import { fromDatasetToDataframe } from './dataframe-builder';
 import * as U from '../array';
+import { getTokenName } from '../parser';
 
 const defaultDataset = {
 	dataStructure: {},
 	dataPoints: {},
 };
 
-// TODO: handle better dataStructure thanks to roles & types
-
-/**
- * Binding datasets are already transformed as DataFrame
- * Calculated datasets have the following shape: {dataStructure: {...}, dataPoints:{...}}
- */
-const getExprAsDataFrame = (expr) => {
-	if (expr.dataStructure) return fromDatasetToDataframe(expr);
-	return expr;
-};
-
 export const transpose = (array) =>
 	Array.isArray(array[0])
 		? array[0].map((_, colIndex) => array.map((row) => row[colIndex]))
 		: [];
-
-export const getDFContent = (expr) => {
-	const df = getExprAsDataFrame(expr);
-	const dfElements = df && df.content && df.content.values && df.content.values;
-	if (!dfElements) throw new Error('Malformed dataset into bindings');
-	const { columnNames, rows } = dfElements;
-	return { columnNames, data: transpose(rows) };
-};
 
 const handleNullElement = (element) => (fn) => {
 	if (element === null) return null;
@@ -49,10 +29,14 @@ const getDatasetCastTransformation = (type) => {
 };
 
 export const getDatasetCast = (outputType) => (expr) => {
-	const { columnNames, data } = getDFContent(expr);
+	const { dataStructure, dataPoints } = expr;
 	const transformer = getDatasetCastTransformation(outputType);
-	return columnNames.reduce((acc, col, i) => {
-		const values = data[i].map((d) => handleNullElement(d)(transformer));
+
+	const columnNames = Object.keys(dataStructure);
+	return columnNames.reduce((acc, col) => {
+		const values = dataPoints[col].map((d) =>
+			handleNullElement(d)(transformer)
+		);
 		return {
 			dataStructure: { ...acc.dataStructure, [col]: {} },
 			dataPoints: { ...acc.dataPoints, [col]: values },
@@ -68,10 +52,11 @@ const getColValues = (fn) => (colData) => (canContainNull) => {
 const handleArithmetic =
 	(expr) =>
 	(fn, canContainNull = false) => {
-		const { columnNames, data } = getDFContent(expr);
-		if (!data) return null;
-		return columnNames.reduce((acc, col, i) => {
-			const values = getColValues(fn)(data[i])(canContainNull);
+		const { dataStructure, dataPoints } = expr;
+		if (!Object.keys(dataPoints).length === 0) return null;
+		const columnNames = Object.keys(dataStructure);
+		return columnNames.reduce((acc, col) => {
+			const values = getColValues(fn)(dataPoints[col])(canContainNull);
 			// TODO: refine the way to extract or not thanks to metadata
 			return {
 				dataStructure: { ...acc.dataStructure, [col]: {} },
