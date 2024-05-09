@@ -123,28 +123,28 @@ describe('cast', () => {
 		});
 	});
 	describe('time', () => {
-		it('cast time into integer', () => {});
-		it('cast time into number', () => {});
-		it('cast time into boolean', () => {});
-		it('cast time into time', () => {});
-		it('cast time into date', () => {});
-		it('cast time into time_period', () => {});
-		it('cast time into string', () => {});
-		it('cast time into duration', () => {});
+		it('cast time into integer', () => { });
+		it('cast time into number', () => { });
+		it('cast time into boolean', () => { });
+		it('cast time into time', () => { });
+		it('cast time into date', () => { });
+		it('cast time into time_period', () => { });
+		it('cast time into string', () => { });
+		it('cast time into duration', () => { });
 	});
 	describe('date', () => {
 		// There's no date literal. We use a first cast to define the date.
 		const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {});
-		it('cast date into integer', () => {});
-		it('cast date into number', () => {});
-		it('cast date into boolean', () => {});
-		it('cast date into time', () => {});
+		it('cast date into integer', () => { });
+		it('cast date into number', () => { });
+		it('cast date into boolean', () => { });
+		it('cast date into time', () => { });
 		it('cast date into date', () => {
 			expect(interpret('cast(aDate, date, "YYYY-MM")', { aDate })).toEqual(
 				interpret('cast("1998-07-12", date, "YYYY-MM")', {})
 			);
 		});
-		it('cast date into time_period', () => {});
+		it('cast date into time_period', () => { });
 		it('cast date into string', () => {
 			expect(interpret('cast(aDate, string, "YYYY-DD-MM")', { aDate })).toEqual(
 				'1998-12-07'
@@ -156,17 +156,26 @@ describe('cast', () => {
 			// 	'1998-12-31'
 			// );
 		});
-		it('cast date into duration', () => {});
+		it('cast date into duration', () => { });
+		it("cast date to string with localization", () => {
+			navigatorLanguageSpy = jest.spyOn(Object.getPrototypeOf(navigator), 'language', 'get');
+			expect(interpret('cast(aDate, string, "MMMM")', { aDate })).toEqual("July");
+			navigatorLanguageSpy.mockReturnValue("fr");
+			expect(interpret('cast(aDate, string, "MMMM")', { aDate })).toEqual("juillet");
+			navigatorLanguageSpy.mockReturnValue("es");
+			expect(interpret('cast(aDate, string, "MMMM")', { aDate })).toEqual("July");
+			navigatorLanguageSpy.mockRestore();
+		});
 	});
 	describe('time_period', () => {
-		it('cast time_period into integer', () => {});
-		it('cast time_period into number', () => {});
-		it('cast time_period into boolean', () => {});
-		it('cast time_period into time', () => {});
-		it('cast time_period into date', () => {});
-		it('cast time_period into time_period', () => {});
-		it('cast time_period into string', () => {});
-		it('cast time_period into duration', () => {});
+		it('cast time_period into integer', () => { });
+		it('cast time_period into number', () => { });
+		it('cast time_period into boolean', () => { });
+		it('cast time_period into time', () => { });
+		it('cast time_period into date', () => { });
+		it('cast time_period into time_period', () => { });
+		it('cast time_period into string', () => { });
+		it('cast time_period into duration', () => { });
 	});
 	describe('string', () => {
 		it('cast string into integer', () => {
@@ -186,7 +195,7 @@ describe('cast', () => {
 				CastTypeError
 			);
 		});
-		it('cast string into time', () => {});
+		it('cast string into time', () => { });
 		it('should cast string into date', () => {
 			expect(interpret('cast("1998-07-12", date, "YYYY-MM-DD")', {})).toEqual(
 				'1998-07-12'
@@ -195,11 +204,11 @@ describe('cast', () => {
 				'1998-07-12'
 			);
 		});
-		it('cast string into time_period', () => {});
+		it('cast string into time_period', () => { });
 		it('cast string into string', () => {
 			expect(interpret('cast("aaa", string)', {})).toEqual('aaa');
 		});
-		it('cast string into duration', () => {});
+		it('cast string into duration', () => { });
 		const dsI = {
 			dataStructure: { col_1: {}, col_2: {} },
 			dataPoints: { col_1: ['1', '2', '3'], col_2: ['-1', null, null] },
@@ -224,13 +233,13 @@ describe('cast', () => {
 		});
 	});
 	describe('duration', () => {
-		it('cast duration into integer', () => {});
-		it('cast duration into number', () => {});
-		it('cast duration into boolean', () => {});
-		it('cast duration into time', () => {});
-		it('cast duration into date', () => {});
-		it('cast duration into time_period', () => {});
-		it('cast duration into string', () => {});
-		it('cast duration into duration', () => {});
+		it('cast duration into integer', () => { });
+		it('cast duration into number', () => { });
+		it('cast duration into boolean', () => { });
+		it('cast duration into time', () => { });
+		it('cast duration into date', () => { });
+		it('cast duration into time_period', () => { });
+		it('cast duration into string', () => { });
+		it('cast duration into duration', () => { });
 	});
 });

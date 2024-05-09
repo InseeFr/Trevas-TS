@@ -214,4 +214,10 @@ describe('arithmetic', () => {
 			).toEqual(2);
 		});
 	});
+	describe('issues', () => {
+		it('#134', () => {
+			// currently stops at `10`, probably considering `-9` as another integer, dropping it
+			expect(interpret('10 -9')).toEqual(1);
+		});
+	});
 });
