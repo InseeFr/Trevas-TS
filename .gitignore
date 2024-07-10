@@ -14,7 +14,7 @@ antlr-4*-complete.jar
 **/bundle-report
 
 # production
-**/lib
+**/dist
 
 # storybook
 /built-storybook
