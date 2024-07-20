@@ -1,5 +1,5 @@
 import interpret from "../../interpretor";
-import { IncompatibleTypeError } from "errors";
+import { IncompatibleTypeError } from "@errors";
 
 describe("conditional", () => {
     it("supports if-then-else with null", () => {
