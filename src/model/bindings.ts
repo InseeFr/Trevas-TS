@@ -1,3 +1,3 @@
-import { BasicScalarTypes } from "./vtl";
+import { BasicScalarTypes, Dataset } from "./vtl";
 
-export type Bindings = Record<string, BasicScalarTypes>;
+export type Bindings = Record<string, BasicScalarTypes | Dataset>;
