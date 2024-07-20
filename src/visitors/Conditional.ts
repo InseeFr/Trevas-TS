@@ -9,7 +9,6 @@ import { IncompatibleTypeError, TypeMismatchError } from "../errors";
 import { ensureContextAreDefined, hasNullArgs } from "../utils";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
-import { th } from "date-fns/locale";
 
 const handleIntegerAndNumber = (aType: number | undefined, bType: number | undefined) => {
     if (!aType || !bType) return false;
@@ -49,8 +48,8 @@ class ConditionalVisitor extends VtlVisitor<VisitorResult> {
         )
             throw new IncompatibleTypeError(ctx, thenOperand?.type, elseOperand?.type);
 
-        const getType = (thenType: number | undefined, elseType: number | undefined) => {
-            if (thenType === elseType) return thenType;
+        const getType = (thenType: number | undefined, elseType: number | undefined): number => {
+            if (thenType === elseType && thenType !== undefined) return thenType;
             if ([thenType, elseType].includes(VtlParser.NULL_CONSTANT))
                 return thenOperand?.type === VtlParser.NULL_CONSTANT
                     ? elseOperand?.type
@@ -76,8 +75,10 @@ class ConditionalVisitor extends VtlVisitor<VisitorResult> {
     visitNvlAtom = (ctx: NvlAtomContext) => {
         const { _left: left, _right: right } = ctx;
 
-        const leftOperand = this.exprVisitor.visit(left);
-        const rightOperand = this.exprVisitor.visit(right);
+        ensureContextAreDefined(left, right);
+
+        const leftOperand = this.exprVisitor.visit(left as ExprContext);
+        const rightOperand = this.exprVisitor.visit(right as ExprContext);
 
         if (
             !rightOperand?.type ||
