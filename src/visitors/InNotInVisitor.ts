@@ -1,14 +1,20 @@
 import {
+    ConstantContext,
     ExprContext,
     InNotInExprContext,
+    ListsContext,
+    ValueDomainIDContext,
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { Bindings, VisitorResult } from "model";
+import { Dataset } from "model/vtl";
+import { ensureContextAreDefined } from "utils";
+import ExpressionVisitor from "./Expression";
 
 class InNotInVisitor extends VtlVisitor<VisitorResult> {
-    exprVisitor: ExprContext;
-    constructor(exprVisitor: ExprContext) {
+    exprVisitor: ExpressionVisitor;
+    constructor(exprVisitor: ExpressionVisitor) {
         super();
         this.exprVisitor = exprVisitor;
     }
@@ -20,23 +26,29 @@ class InNotInVisitor extends VtlVisitor<VisitorResult> {
      */
     visitInNotInExpr = (ctx: InNotInExprContext) => {
         const { _left: left, _op: op } = ctx;
-        const leftExpr = this.exprVisitor.visit(left);
-        const listExpr = ctx.lists() ? this.exprVisitor.visit(ctx.lists().constant()) : null;
+
+        ensureContextAreDefined(left);
+
+        const leftExpr = this.exprVisitor.visit(left as ExprContext);
+        const listConstants = (ctx.lists() as ListsContext).constant();
         // Add babel loader for ??
-        const value = ctx.valueDomainID() ? ctx.valueDomainID().children[0].getText() : null;
+        const value = ctx.valueDomainID()
+            ? (ctx.valueDomainID() as ValueDomainIDContext).children[0].getText()
+            : null;
         return {
             resolve: (bindings: Bindings) => {
                 let list;
-                if (listExpr) {
-                    list = listExpr.map(a => a.resolve(bindings));
+                if (listConstants) {
+                    list = listConstants.map((a: ConstantContext) => this.exprVisitor.visit(a));
                 } else if (value && bindings[value]) {
-                    list = Object.values(bindings[value].dataPoints)[0];
+                    const ds = bindings[value] as Dataset;
+                    list = Object.values(ds.dataPoints)[0];
                 } else return null;
-                const resolvedLeftExpr = leftExpr.resolve(bindings);
+                const resolvedLeftExpr = leftExpr?.resolve(bindings);
                 if (resolvedLeftExpr === null) return null;
-                if (op.type === VtlParser.IN) return list.includes(resolvedLeftExpr);
-                if (op.type === VtlParser.NOT_IN) return !list.includes(resolvedLeftExpr);
-                throw new Error(`unknown operator ${op.getText()}`);
+                if (op?.type === VtlParser.IN) return list.includes(resolvedLeftExpr);
+                if (op?.type === VtlParser.NOT_IN) return !list.includes(resolvedLeftExpr);
+                throw new Error(`unknown operator ${op?.text}`);
             },
             type: VtlParser.BOOLEAN
         };
