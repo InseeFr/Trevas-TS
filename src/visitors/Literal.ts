@@ -1,8 +1,14 @@
-import { Parser as VtlParser, Visitor as VtlVisitor } from "@making-sense/vtl-2-0-antlr-tools-ts";
+import {
+    ConstantContext,
+    ConstantExprContext,
+    Parser as VtlParser,
+    Visitor as VtlVisitor
+} from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { getTokenType, replaceConstantType } from "../utils";
+import { VisitorResult } from "model";
 
-class LiteralVisitor extends VtlVisitor {
-    visitConstant = ctx => {
+class LiteralVisitor extends VtlVisitor<VisitorResult> {
+    visitConstant = (ctx: ConstantContext) => {
         let value;
         switch (getTokenType(ctx)) {
             case VtlParser.STRING_CONSTANT: {
@@ -19,7 +25,7 @@ class LiteralVisitor extends VtlVisitor {
             case VtlParser.BOOLEAN_CONSTANT:
                 value = JSON.parse(ctx.getText());
                 break;
-            case VtlParser.DATE_FORMAT:
+            case VtlParser.DATE:
                 value = ctx.getText();
                 break;
             case VtlParser.NULL_CONSTANT:
@@ -36,7 +42,7 @@ class LiteralVisitor extends VtlVisitor {
         };
     };
 
-    visitConstantExpr = ctx => {
+    visitConstantExpr = (ctx: ConstantExprContext) => {
         let value;
         switch (getTokenType(ctx)) {
             case VtlParser.STRING_CONSTANT: {
@@ -53,7 +59,7 @@ class LiteralVisitor extends VtlVisitor {
             case VtlParser.BOOLEAN_CONSTANT:
                 value = JSON.parse(ctx.getText());
                 break;
-            case VtlParser.DATE_FORMAT:
+            case VtlParser.DATE:
                 value = ctx.getText();
                 break;
             case VtlParser.NULL_CONSTANT:
