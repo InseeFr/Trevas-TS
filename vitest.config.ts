@@ -11,7 +11,8 @@ export default defineConfig({
     "plugins": [tsconfigPaths()],
     resolve: {
         alias: {
-            "@errors": path.resolve(__dirname, "./src/errors/")
+            "@errors": path.resolve(__dirname, "./src/errors/"),
+            "@utils": path.resolve(__dirname, "./src/utils/")
         }
     }
 });

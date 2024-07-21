@@ -8,7 +8,7 @@ import {
 import { TypeMismatchError } from "../errors";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
-import { ensureContextAreDefined } from "utils";
+import { ensureContextAreDefined } from "@utils";
 
 const resolve = (
     operand: ComparisonOperandContext | undefined,

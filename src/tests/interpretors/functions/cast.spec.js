@@ -1,5 +1,5 @@
 import interpret, { interpretVar } from "../../../interpretor";
-import CastTypeError from "../errors/CastTypeError";
+import { CastTypeError } from "@errors";
 
 describe("cast", () => {
     describe("null", () => {

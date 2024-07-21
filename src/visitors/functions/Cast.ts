@@ -6,7 +6,7 @@ import {
 import ExpressionVisitor from "visitors/Expression";
 import { CastTypeError, OperatorTypeError } from "errors";
 import { Bindings, VisitorResult } from "model";
-import { getDate, getStringFromDate, hasNullArgs, getDatasetCast } from "utils";
+import { getDate, getStringFromDate, hasNullArgs, getDatasetCast } from "@utils";
 import { Dataset } from "model/vtl";
 
 class CastVisitor extends VtlVisitor<VisitorResult> {

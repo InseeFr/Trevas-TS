@@ -5,7 +5,7 @@ import {
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { TypeMismatchError } from "errors";
-import * as U from "utils";
+import * as U from "@utils";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "visitors/Expression";
 import { Dataset } from "model/vtl";

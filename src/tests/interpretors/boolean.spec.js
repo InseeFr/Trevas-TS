@@ -1,5 +1,5 @@
 import interpret from "../../interpretor";
-import { transpose } from "utils";
+import { transpose } from "@utils";
 
 describe("boolean", () => {
     describe("supports basic boolean logic with null", () => {
