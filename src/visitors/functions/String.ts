@@ -65,10 +65,10 @@ class StringVisitor extends VtlVisitor<VisitorResult> {
 
     checkTypes = (exprCtx: any, expectedTypes: number | number[]) => {
         const operand = this.exprVisitor.visit(exprCtx) as VisitorResult;
-        if (
-            (Array.isArray(expectedTypes) && !expectedTypes.includes(operand.type)) ||
-            expectedTypes !== operand.type
-        ) {
+        const condition = Array.isArray(expectedTypes)
+            ? !expectedTypes.includes(operand.type)
+            : expectedTypes !== operand.type;
+        if (condition) {
             throw new TypeMismatchError(exprCtx, expectedTypes, operand.type);
         }
         return operand;
