@@ -36,11 +36,35 @@ class CastVisitor extends VtlVisitor<VisitorResult> {
             [VtlParser.INTEGER, VtlParser.INTEGER, (op: number) => op],
             [VtlParser.INTEGER, VtlParser.NUMBER, (op: number) => op],
             [VtlParser.INTEGER, VtlParser.BOOLEAN, (op: number) => op !== 0],
-            [VtlParser.INTEGER, VtlParser.TIME, () => "ERROR"],
-            [VtlParser.INTEGER, VtlParser.DATE, () => "ERROR"],
-            [VtlParser.INTEGER, VtlParser.TIME_PERIOD, () => "ERROR"],
+            [
+                VtlParser.INTEGER,
+                VtlParser.TIME,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.INTEGER, VtlParser.TIME);
+                }
+            ],
+            [
+                VtlParser.INTEGER,
+                VtlParser.DATE,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.INTEGER, VtlParser.DATE);
+                }
+            ],
+            [
+                VtlParser.INTEGER,
+                VtlParser.TIME_PERIOD,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.INTEGER, VtlParser.TIME_PERIOD);
+                }
+            ],
             [VtlParser.INTEGER, VtlParser.STRING, (op: number) => `${op}`],
-            [VtlParser.INTEGER, VtlParser.DURATION, () => "ERROR"],
+            [
+                VtlParser.INTEGER,
+                VtlParser.DURATION,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.INTEGER, VtlParser.DURATION);
+                }
+            ],
             [
                 VtlParser.NUMBER,
                 VtlParser.INTEGER,
@@ -51,19 +75,67 @@ class CastVisitor extends VtlVisitor<VisitorResult> {
             ],
             [VtlParser.NUMBER, VtlParser.NUMBER, (op: number) => op],
             [VtlParser.NUMBER, VtlParser.BOOLEAN, (op: number) => op !== 0],
-            [VtlParser.NUMBER, VtlParser.TIME, () => "ERROR"],
-            [VtlParser.NUMBER, VtlParser.DATE, () => "ERROR"],
-            [VtlParser.NUMBER, VtlParser.TIME_PERIOD, () => "ERROR"],
+            [
+                VtlParser.NUMBER,
+                VtlParser.TIME,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.NUMBER, VtlParser.TIME);
+                }
+            ],
+            [
+                VtlParser.NUMBER,
+                VtlParser.DATE,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.NUMBER, VtlParser.DATE);
+                }
+            ],
+            [
+                VtlParser.NUMBER,
+                VtlParser.TIME_PERIOD,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.NUMBER, VtlParser.TIME_PERIOD);
+                }
+            ],
             [VtlParser.NUMBER, VtlParser.STRING, (op: number) => `${op}`],
-            [VtlParser.NUMBER, VtlParser.DURATION, () => "ERROR"],
+            [
+                VtlParser.NUMBER,
+                VtlParser.DURATION,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.NUMBER, VtlParser.DURATION);
+                }
+            ],
             [VtlParser.BOOLEAN, VtlParser.INTEGER, (op: boolean) => (op ? 1 : 0)],
             [VtlParser.BOOLEAN, VtlParser.NUMBER, (op: boolean) => (op ? 1 : 0)],
             [VtlParser.BOOLEAN, VtlParser.BOOLEAN, (op: boolean) => op],
-            [VtlParser.BOOLEAN, VtlParser.TIME, () => "ERROR"],
-            [VtlParser.BOOLEAN, VtlParser.DATE, () => "ERROR"],
-            [VtlParser.BOOLEAN, VtlParser.TIME_PERIOD, () => "ERROR"],
+            [
+                VtlParser.BOOLEAN,
+                VtlParser.TIME,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.BOOLEAN, VtlParser.TIME);
+                }
+            ],
+            [
+                VtlParser.BOOLEAN,
+                VtlParser.DATE,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.BOOLEAN, VtlParser.DATE);
+                }
+            ],
+            [
+                VtlParser.BOOLEAN,
+                VtlParser.TIME_PERIOD,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.BOOLEAN, VtlParser.TIME_PERIOD);
+                }
+            ],
             [VtlParser.BOOLEAN, VtlParser.STRING, (op: boolean) => `${op}`],
-            [VtlParser.BOOLEAN, VtlParser.DURATION, () => "ERROR"],
+            [
+                VtlParser.BOOLEAN,
+                VtlParser.DURATION,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.BOOLEAN, VtlParser.DURATION);
+                }
+            ],
             [VtlParser.TIME, VtlParser.INTEGER, () => "TODO"],
             [VtlParser.TIME, VtlParser.NUMBER, () => "TODO"],
             [VtlParser.TIME, VtlParser.BOOLEAN, () => "TODO"],
@@ -106,18 +178,60 @@ class CastVisitor extends VtlVisitor<VisitorResult> {
                     return parseFloat(op);
                 }
             ],
-            [VtlParser.STRING, VtlParser.BOOLEAN, () => "ERROR"],
+            [
+                VtlParser.STRING,
+                VtlParser.BOOLEAN,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.STRING, VtlParser.BOOLEAN);
+                }
+            ],
             [VtlParser.STRING, VtlParser.TIME, () => "TODO"],
             [VtlParser.STRING, VtlParser.DATE, (op: string, m: string) => getDate(op, m)],
             [VtlParser.STRING, VtlParser.TIME_PERIOD, () => "TODO"],
             [VtlParser.STRING, VtlParser.STRING, (op: string) => op],
             [VtlParser.STRING, VtlParser.DURATION, () => "TODO"],
-            [VtlParser.DURATION, VtlParser.INTEGER, () => "ERROR"],
-            [VtlParser.DURATION, VtlParser.NUMBER, () => "ERROR"],
-            [VtlParser.DURATION, VtlParser.BOOLEAN, () => "ERROR"],
-            [VtlParser.DURATION, VtlParser.TIME, () => "ERROR"],
-            [VtlParser.DURATION, VtlParser.DATE, () => "ERROR"],
-            [VtlParser.DURATION, VtlParser.TIME_PERIOD, () => "ERROR"],
+            [
+                VtlParser.DURATION,
+                VtlParser.INTEGER,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.DURATION, VtlParser.INTEGER);
+                }
+            ],
+            [
+                VtlParser.DURATION,
+                VtlParser.NUMBER,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.DURATION, VtlParser.NUMBER);
+                }
+            ],
+            [
+                VtlParser.DURATION,
+                VtlParser.BOOLEAN,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.DURATION, VtlParser.BOOLEAN);
+                }
+            ],
+            [
+                VtlParser.DURATION,
+                VtlParser.TIME,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.DURATION, VtlParser.TIME);
+                }
+            ],
+            [
+                VtlParser.DURATION,
+                VtlParser.DATE,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.DURATION, VtlParser.DATE);
+                }
+            ],
+            [
+                VtlParser.DURATION,
+                VtlParser.TIME_PERIOD,
+                () => {
+                    throw new CastTypeError(ctx, VtlParser.DURATION, VtlParser.TIME_PERIOD);
+                }
+            ],
             [VtlParser.DURATION, VtlParser.STRING, (op: string) => `${op}`],
             [VtlParser.DURATION, VtlParser.DURATION, (op: string) => op]
         ];
