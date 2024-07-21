@@ -1,11 +1,12 @@
-import { RecognitionException } from "@making-sense/antlr4ng";
+import { ParserRuleContext, RecognitionException } from "@making-sense/antlr4ng";
 
 class CastTypeError extends RecognitionException {
-    constructor(ctx: any, source: number | undefined, target: number) {
+    constructor(ctx: ParserRuleContext, source: number | undefined, target: number) {
+        // TODO: refine access to input & recognizer
         super({
             message: `Can not cast '${source}' into '${target}'`,
-            input: ctx.parser.getInputStream(),
-            recognizer: ctx.parser,
+            input: null,
+            recognizer: null,
             ctx
         });
     }

@@ -1,14 +1,15 @@
-import { RecognitionException } from "@making-sense/antlr4ng";
+import { ParserRuleContext, RecognitionException } from "@making-sense/antlr4ng";
 import { getTokenName } from "../utils";
 
 class IncompatibleTypeError extends RecognitionException {
-    constructor(ctx: any, expected: number | undefined, found: number | undefined) {
+    constructor(ctx: ParserRuleContext, expected: number | undefined, found: number | undefined) {
         const expectedStr = getTokenName(expected);
         const foundStr = getTokenName(found);
+        // TODO: refine access to input & recognizer
         super({
             message: `incompatible type, required '${expectedStr}' but found '${foundStr}' for then operand`,
-            input: ctx.parser.getInputStream(),
-            recognizer: ctx.parser,
+            input: null,
+            recognizer: null,
             ctx
         });
     }
