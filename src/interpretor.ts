@@ -1,16 +1,23 @@
-import { CharStream, CommonTokenStream } from "@making-sense/antlr4ng";
+import {
+    BaseErrorListener,
+    CharStream,
+    CommonTokenStream,
+    DFA,
+    Parser,
+    RecognitionException
+} from "@making-sense/antlr4ng";
 import { Lexer as VtlLexer, Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import ExpressionVisitor from "./visitors/Expression";
 import { getTokenName } from "./utils/parser";
 import { Bindings } from "model";
 
-class ErrorCollector {
+class ErrorCollector extends BaseErrorListener {
     constructor() {
         super();
         this.errors = [];
     }
 
-    syntaxError(_, __, ___, ____, msg, e) {
+    syntaxError(_: any, __: any, ___: any, ____: any, msg: string, e: RecognitionException | null) {
         if (e === null) {
             this.errors.push(new Error(msg));
         } else {
@@ -18,18 +25,15 @@ class ErrorCollector {
         }
     }
 
-    reportAmbiguity(_, __, startIndex, stopIndex) {
-        // eslint-disable-next-line no-undef
+    reportAmbiguity(_: Parser, __: DFA, startIndex: number, stopIndex: number) {
         console.warn(`ambiguity ${startIndex}:${stopIndex}`);
     }
 
-    reportAttemptingFullContext(_, __, startIndex, stopIndex) {
-        // eslint-disable-next-line no-undef
+    reportAttemptingFullContext(_: Parser, __: DFA, startIndex: number, stopIndex: number) {
         console.warn(`full context ${startIndex}:${stopIndex}`);
     }
 
-    reportContextSensitivity(_: any, ___: any, startIndex, stopIndex) {
-        // eslint-disable-next-line no-undef
+    reportContextSensitivity(_: Parser, ___: DFA, startIndex: number, stopIndex: number) {
         console.debug(`context sensitivity ${startIndex}:${stopIndex}`);
     }
 }
@@ -54,12 +58,12 @@ const errorCheck = (stream: CharStream, collector: ErrorCollector) => {
 export const interpretVar = (expr: string, bindings: Bindings) => {
     const inputStream = CharStream.fromString(expr);
 
-    const syntaxErrors = new ErrorCollector();
-    errorCheck(inputStream, syntaxErrors);
-    if (syntaxErrors.errors.length > 0) {
-        throw new Error(`Syntax errors: ${syntaxErrors.errors}`);
-    }
-    inputStream.reset();
+    // const syntaxErrors = new ErrorCollector();
+    // errorCheck(inputStream, syntaxErrors);
+    // if (syntaxErrors.errors.length > 0) {
+    //     throw new Error(`Syntax errors: ${syntaxErrors.errors}`);
+    // }
+    // inputStream.reset();
 
     const typeErrors = new ErrorCollector();
     const parser = errorCheck(inputStream, typeErrors);
@@ -72,8 +76,8 @@ export const interpretVar = (expr: string, bindings: Bindings) => {
     }
 
     return {
-        type: expression.type,
-        resolve: () => expression.resolve(bindings)
+        type: expression?.type,
+        resolve: () => expression?.resolve(bindings)
     };
 };
 
