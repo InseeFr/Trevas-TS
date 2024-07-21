@@ -6,9 +6,8 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { TypeMismatchError } from "errors";
+import { TypeMismatchError, hasNullArgs } from "errors";
 import { VisitorResult, Bindings } from "model";
-import { hasNullArgs } from "@utils";
 import ExpressionVisitor from "visitors/Expression";
 
 class StringVisitor extends VtlVisitor<VisitorResult> {

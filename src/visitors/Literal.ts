@@ -4,7 +4,7 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { getTokenType, replaceConstantType } from "../utils";
+import { getTokenType, replaceConstantType } from "utilities";
 import { VisitorResult } from "model";
 
 class LiteralVisitor extends VtlVisitor<VisitorResult> {

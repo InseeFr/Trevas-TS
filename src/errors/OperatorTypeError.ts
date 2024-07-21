@@ -1,5 +1,5 @@
 import { ParserRuleContext, RecognitionException } from "@making-sense/antlr4ng";
-import { getTokenName } from "../utils";
+import { getTokenName } from "utilities";
 
 class OperatorTypeError extends RecognitionException {
     constructor(

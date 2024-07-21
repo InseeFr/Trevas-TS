@@ -1,7 +1,7 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import * as dataForge from "data-forge";
 import interpret from "../../interpretor";
-import TypeMismatchError from "@errors/TypeMismatchError";
+import TypeMismatchError from "errors/TypeMismatchError";
 
 describe("arithmetic", () => {
     describe("dataset", () => {

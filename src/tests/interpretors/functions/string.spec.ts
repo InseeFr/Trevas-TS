@@ -1,5 +1,5 @@
 import interpret from "../../../interpretor";
-import { TypeMismatchError } from "@errors";
+import { TypeMismatchError } from "errors";
 
 describe("string-functions", () => {
     describe("supports string functions with null", () => {

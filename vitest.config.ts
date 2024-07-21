@@ -12,7 +12,7 @@ export default defineConfig({
     resolve: {
         alias: {
             "@errors": path.resolve(__dirname, "./src/errors/"),
-            "@utils": path.resolve(__dirname, "./src/utils/")
+            "@utilities": path.resolve(__dirname, "./src/utilities/")
         }
     }
 });

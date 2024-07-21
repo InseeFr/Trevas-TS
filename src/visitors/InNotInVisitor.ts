@@ -9,7 +9,7 @@ import {
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { Bindings, VisitorResult } from "model";
 import { Dataset } from "model/vtl";
-import { ensureContextAreDefined } from "@utils";
+import { ensureContextAreDefined } from "utilities";
 import ExpressionVisitor from "./Expression";
 
 class InNotInVisitor extends VtlVisitor<VisitorResult> {

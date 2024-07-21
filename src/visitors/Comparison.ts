@@ -5,10 +5,10 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { TypeMismatchError } from "../errors";
+import { TypeMismatchError } from "errors";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
-import { ensureContextAreDefined } from "@utils";
+import { ensureContextAreDefined } from "utilities";
 
 const resolve = (
     operand: ComparisonOperandContext | undefined,

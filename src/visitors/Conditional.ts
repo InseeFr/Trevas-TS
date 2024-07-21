@@ -5,8 +5,8 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { IncompatibleTypeError, TypeMismatchError } from "../errors";
-import { ensureContextAreDefined, hasNullArgs } from "../utils";
+import { IncompatibleTypeError, TypeMismatchError } from "errors";
+import { ensureContextAreDefined, hasNullArgs } from "utilities";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
 
