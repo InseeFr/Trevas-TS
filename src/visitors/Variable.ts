@@ -3,7 +3,7 @@ import {
     Visitor as VtlVisitor,
     VarIdExprContext
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { type Bindings } from "model";
+import { VisitorResult, type Bindings } from "model";
 
 // TODO: Support integers here.
 const types = {
@@ -47,7 +47,7 @@ const varTransformer = (variable: string, bindings: Bindings) => {
     throw new Error(`Cannot transform variable of type ${type}`);
 };
 
-class VariableVisitor<Result> extends VtlVisitor<Result> {
+class VariableVisitor extends VtlVisitor<VisitorResult> {
     bindings: Bindings;
     constructor(bindings: Bindings) {
         super();

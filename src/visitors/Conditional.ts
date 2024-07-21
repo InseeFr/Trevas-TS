@@ -10,7 +10,7 @@ import { ensureContextAreDefined, hasNullArgs } from "../utils";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
 
-const handleIntegerAndNumber = (aType: number | undefined, bType: number | undefined) => {
+const handleIntegerAndNumber = (aType: any | undefined, bType: any | undefined) => {
     if (!aType || !bType) return false;
     if (
         [VtlParser.INTEGER, VtlParser.NUMBER].includes(aType) &&

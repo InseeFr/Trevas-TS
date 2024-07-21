@@ -58,7 +58,7 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
     comparisonFunctionVisitor: ComparisonFunctionVisitor;
     numericFunctionsVisitor: NumericFunctionsVisitor;
     stringFunctionVisitor: StringFunctionsVisitor;
-    variableVisitor: VariableVisitor<Bindings>;
+    variableVisitor: VariableVisitor;
     inNotInVisitor: InNotInVisitor;
     datasetFunctionsVisitor: DatasetFunctionsVisitor;
     constructor(bindings: Bindings) {
@@ -133,8 +133,6 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
     visitCastExprDataset = (ctx: CastExprDatasetContext) => this.castFunctionVisitor.visit(ctx);
 
     visitCurrentDateAtom = (ctx: CurrentDateAtomContext) => this.dateFunctionVisitor.visit(ctx);
-
-    visitConcatExpr = (ctx: ConcatExprContext) => this.concatenationVisitor.visit(ctx);
 
     visitStringFunctions = (ctx: StringFunctionsContext) =>
         this.stringFunctionVisitor.visit(ctx.stringOperators());
