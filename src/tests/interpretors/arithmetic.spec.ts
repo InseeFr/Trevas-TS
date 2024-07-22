@@ -148,8 +148,8 @@ describe("arithmetic", () => {
             expect(interpret("-(0 + 1.5)", {})).toEqual(-1.5);
             expect(interpret("+(0 + 1.5)", {})).toEqual(+1.5);
 
-            expect(() => interpret('-("not" || "number")')).toThrow(TypeMismatchError);
-            expect(() => interpret('+("not" || "number")')).toThrow(TypeMismatchError);
+            expect(() => interpret('-("not" || "number")', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('+("not" || "number")', {})).toThrow(TypeMismatchError);
         });
         it("test basic arithmetic operations", () => {
             expect(interpret("1 + 2", {})).toEqual(3);
@@ -162,14 +162,14 @@ describe("arithmetic", () => {
             expect(interpret("1 + 3 - 2", {})).toEqual(2);
             expect(interpret("2 * 3 / 4", {})).toEqual(1.5);
 
-            expect(() => interpret('1 + "number"')).toThrow(TypeMismatchError);
-            expect(() => interpret('"number" + 1')).toThrow(TypeMismatchError);
-            expect(() => interpret('1 - "number"')).toThrow(TypeMismatchError);
-            expect(() => interpret('"number" - 1')).toThrow(TypeMismatchError);
-            expect(() => interpret('1 * "number"')).toThrow(TypeMismatchError);
-            expect(() => interpret('"number" * 1')).toThrow(TypeMismatchError);
-            expect(() => interpret('1 / "number"')).toThrow(TypeMismatchError);
-            expect(() => interpret('"number" / 1')).toThrow(TypeMismatchError);
+            expect(() => interpret('1 + "number"', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('"number" + 1', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('1 - "number"', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('"number" - 1', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('1 * "number"', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('"number" * 1', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('1 / "number"', {})).toThrow(TypeMismatchError);
+            expect(() => interpret('"number" / 1', {})).toThrow(TypeMismatchError);
         });
         it("test basic arithmetic operations with parentheses", () => {
             expect(interpret("(1 + 2) * 5", {})).toEqual(15);

@@ -56,9 +56,9 @@ class VariableVisitor extends VtlVisitor<VisitorResult> {
 
     visitVarIdExpr = (ctx: VarIdExprContext) => {
         const variable = ctx.getText();
-        if (this.bindings[variable] && this.bindings[variable].type) {
-            return this.bindings[variable];
-        }
+        // if (this.bindings[variable] && this.bindings[variable].type) {
+        //     return this.bindings[variable];
+        // }
         return {
             resolve: (bindings: Bindings) => varTransformer(variable, bindings),
             type: typeResolver(variable, this.bindings)

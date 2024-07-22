@@ -82,7 +82,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.NULL_CONSTANT];
 
         if (!expectedTypes.includes(rightExpr.type))
-            throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
+            throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
         const type = getType(rightExpr);
 
@@ -120,10 +120,10 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         ];
 
         if (!expectedTypes.includes(leftExpr.type))
-            throw new TypeMismatchError(left, expectedTypes, leftExpr.type);
+            throw new TypeMismatchError(left as ExprContext, expectedTypes, leftExpr.type);
 
         if (!expectedTypes.includes(rightExpr.type))
-            throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
+            throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
         let operatorFunction;
 

@@ -30,13 +30,13 @@ describe("comparison", () => {
         expect(interpret("null >= current_date()", {})).toBeNull();
     });
     it("should fail to compare wrong types", () => {
-        expect(() => interpret('"string" < 1')).toThrow(TypeMismatchError);
-        expect(() => interpret('"string" > 1')).toThrow(TypeMismatchError);
-        expect(() => interpret('"string" <= 1')).toThrow(TypeMismatchError);
-        expect(() => interpret('"string" >= 1')).toThrow(TypeMismatchError);
-        expect(() => interpret('"string" = 1')).toThrow(TypeMismatchError);
-        expect(() => interpret('"string" <> 1')).toThrow(TypeMismatchError);
-        expect(() => interpret("current_date() <> 1")).toThrow(TypeMismatchError);
+        expect(() => interpret('"string" < 1', {})).toThrow(TypeMismatchError);
+        expect(() => interpret('"string" > 1', {})).toThrow(TypeMismatchError);
+        expect(() => interpret('"string" <= 1', {})).toThrow(TypeMismatchError);
+        expect(() => interpret('"string" >= 1', {})).toThrow(TypeMismatchError);
+        expect(() => interpret('"string" = 1', {})).toThrow(TypeMismatchError);
+        expect(() => interpret('"string" <> 1', {})).toThrow(TypeMismatchError);
+        expect(() => interpret("current_date() <> 1", {})).toThrow(TypeMismatchError);
     });
     it("should compare integers", () => {
         expect(interpret("1 < 2", {})).toEqual(true);

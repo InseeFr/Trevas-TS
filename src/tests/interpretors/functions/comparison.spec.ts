@@ -5,11 +5,11 @@ describe("comparison-functions", () => {
         expect(interpret("isnull(null)", {})).toBeTruthy();
         expect(interpret("isnull(false)", {})).toBeFalsy();
         expect(interpret("isnull(test)", { test: null })).toBeTruthy();
-        expect(interpret("between(null, 1, 100)")).toBeNull();
-        expect(interpret("between(10, null, 100)")).toBeNull();
-        expect(interpret("between(null, 1, 100)")).toBeNull();
-        expect(interpret('match_characters("ko", null)')).toBeNull();
-        expect(interpret('match_characters(null, "test")')).toBeNull();
+        expect(interpret("between(null, 1, 100)", {})).toBeNull();
+        expect(interpret("between(10, null, 100)", {})).toBeNull();
+        expect(interpret("between(null, 1, 100)", {})).toBeNull();
+        expect(interpret('match_characters("ko", null)', {})).toBeNull();
+        expect(interpret('match_characters(null, "test")', {})).toBeNull();
     });
     it("should check isnull", () => {
         expect(interpret('isnull("ko")', {})).toBeFalsy();

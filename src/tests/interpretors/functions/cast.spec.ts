@@ -124,7 +124,7 @@ describe("cast", () => {
     });
     describe("date", () => {
         // There's no date literal. We use a first cast to define the date.
-        const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {});
+        const aDate = interpretVar('cast("1998-07-12", date, "YYYY-MM-DD")', {}).resolve({});
         it("cast date into integer", () => {});
         it("cast date into number", () => {});
         it("cast date into boolean", () => {});

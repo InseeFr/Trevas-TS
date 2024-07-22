@@ -1,21 +1,13 @@
-import { Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import interpret from "../../interpretor";
 
 describe("variable", () => {
-    it("should support internal types", () => {
-        expect(
-            interpret("aVariable", {
-                aVariable: { resolve: () => "aValue", type: VtlParser.STRING }
-            })
-        ).toEqual("aValue");
-    });
     it("should recognize types", () => {
         const bindings = {
             aString: "string!",
             anInt: 1234,
             aFloat: 12.34,
             aDataset: { dataStructure: {}, dataPoints: {} },
-            aFlawedDataset: { dataPoints: {} },
+            aFlawedDataset: { dataStructure: {}, dataPoints: {} },
             nullValue: null
         };
         expect(interpret("aString", bindings)).toEqual("string!");

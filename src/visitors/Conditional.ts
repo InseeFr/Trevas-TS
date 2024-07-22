@@ -39,7 +39,11 @@ class ConditionalVisitor extends VtlVisitor<VisitorResult> {
         const elseOperand = this.exprVisitor.visit(elseExpr as ExprContext) as VisitorResult;
 
         if (![VtlParser.BOOLEAN, VtlParser.NULL_CONSTANT].includes(conditionalOperand.type)) {
-            throw new TypeMismatchError(conditionalExpr, VtlParser.BOOLEAN, conditionalOperand?.type);
+            throw new TypeMismatchError(
+                conditionalExpr as ExprContext,
+                VtlParser.BOOLEAN,
+                conditionalOperand?.type
+            );
         }
 
         if (

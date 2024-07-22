@@ -88,9 +88,9 @@ class BooleanVisitor extends VtlVisitor<VisitorResult> {
         const rightExpr = this.exprVisitor.visit(right as ExprContext) as VisitorResult;
 
         if (![VtlParser.BOOLEAN, VtlParser.NULL_CONSTANT].includes(leftExpr?.type))
-            throw new TypeMismatchError(left, VtlParser.BOOLEAN, leftExpr?.type);
+            throw new TypeMismatchError(left as ExprContext, VtlParser.BOOLEAN, leftExpr?.type);
         if (![VtlParser.BOOLEAN, VtlParser.NULL_CONSTANT].includes(rightExpr?.type))
-            throw new TypeMismatchError(right, VtlParser.BOOLEAN, rightExpr?.type);
+            throw new TypeMismatchError(right as ExprContext, VtlParser.BOOLEAN, rightExpr?.type);
 
         if (op?.type === VtlParser.AND) return handleAnd(leftExpr, rightExpr);
         if (op?.type === VtlParser.OR) return handleOr(leftExpr, rightExpr);

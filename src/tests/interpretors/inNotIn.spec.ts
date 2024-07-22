@@ -7,7 +7,7 @@ const ELEMENTS = {
 
 describe("conditional", () => {
     it("supports in with null", () => {
-        expect(() => interpret('"A" in null')).toThrow(Error);
+        expect(() => interpret('"A" in null', {})).toThrow(Error);
         expect(interpret("null in ELEMENTS", { ELEMENTS })).toBeNull();
     });
     it("supports in", () => {

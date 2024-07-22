@@ -71,10 +71,10 @@ class ComparisonVisitor extends VtlVisitor<VisitorResult | null> {
         ];
 
         if (!expectedTypes.includes(leftExpr.type))
-            throw new TypeMismatchError(left, expectedTypes, leftExpr.type);
+            throw new TypeMismatchError(left as ExprContext, expectedTypes, leftExpr.type);
 
         if (!expectedTypes.includes(rightExpr.type))
-            throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
+            throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
         const handleIntegerAndNumber = (leftType: number | undefined, rightType: number | undefined) => {
             if (!leftType || !rightType) return false;
@@ -90,7 +90,7 @@ class ComparisonVisitor extends VtlVisitor<VisitorResult | null> {
             ![leftExpr?.type, rightExpr?.type].includes(VtlParser.NULL_CONSTANT) &&
             handleIntegerAndNumber(leftExpr?.type, rightExpr?.type)
         )
-            throw new TypeMismatchError(left, expectedTypes, rightExpr?.type);
+            throw new TypeMismatchError(left as ExprContext, expectedTypes, rightExpr?.type);
 
         return {
             resolve: resolve(op, leftExpr, rightExpr),

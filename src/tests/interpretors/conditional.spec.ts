@@ -3,14 +3,16 @@ import { IncompatibleTypeError } from "errors";
 
 describe("conditional", () => {
     it("supports if-then-else with null", () => {
-        expect(interpret('if null then "not null" else "null"')).toEqual("null");
-        expect(interpret('if true then null else "false"')).toBeNull();
-        expect(interpret("if false then true else null")).toBeNull();
+        expect(interpret('if null then "not null" else "null"', {})).toEqual("null");
+        expect(interpret('if true then null else "false"', {})).toBeNull();
+        expect(interpret("if false then true else null", {})).toBeNull();
     });
     it("supports if-then-else", () => {
-        expect(interpret('if (true) then "true" else "false"')).toEqual("true");
-        expect(interpret('if (false) then "true" else "false"')).toEqual("false");
-        expect(() => interpret('if (false) then "notnumber" else 42')).toThrow(IncompatibleTypeError);
+        expect(interpret('if (true) then "true" else "false"', {})).toEqual("true");
+        expect(interpret('if (false) then "true" else "false"', {})).toEqual("false");
+        expect(() => interpret('if (false) then "notnumber" else 42', {})).toThrow(
+            IncompatibleTypeError
+        );
     });
     it("tests on the nvl function", () => {
         expect(interpret("nvl(5, 0)", {})).toEqual(5);
@@ -22,6 +24,6 @@ describe("conditional", () => {
         expect(interpret('nvl(null, "bar")', {})).toEqual("bar");
     });
     it("supports if-then-else with integer & number", () => {
-        expect(interpret("if true then 1.1 else 0")).toEqual(1.1);
+        expect(interpret("if true then 1.1 else 0", {})).toEqual(1.1);
     });
 });
