@@ -6,10 +6,11 @@ import {
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { getTokenType, replaceConstantType } from "utilities";
 import { VisitorResult } from "model";
+import { BasicScalarTypes } from "model/vtl";
 
 class LiteralVisitor extends VtlVisitor<VisitorResult> {
     visitConstant = (ctx: ConstantContext) => {
-        let value;
+        let value: BasicScalarTypes;
         switch (getTokenType(ctx)) {
             case VtlParser.STRING_CONSTANT: {
                 const text = ctx.getText();
@@ -37,13 +38,13 @@ class LiteralVisitor extends VtlVisitor<VisitorResult> {
 
         // Unused bindings param
         return {
-            resolve: () => value,
+            resolve: (): BasicScalarTypes => value,
             type: replaceConstantType(getTokenType(ctx))
         };
     };
 
     visitConstantExpr = (ctx: ConstantExprContext) => {
-        let value;
+        let value: BasicScalarTypes;
         switch (getTokenType(ctx)) {
             case VtlParser.STRING_CONSTANT: {
                 const text = ctx.getText();
@@ -71,7 +72,7 @@ class LiteralVisitor extends VtlVisitor<VisitorResult> {
 
         // Unused bindings param
         return {
-            resolve: () => value,
+            resolve: (): BasicScalarTypes => value,
             type: replaceConstantType(getTokenType(ctx))
         };
     };

@@ -35,7 +35,7 @@ class NumericVisitor extends VtlVisitor<VisitorResult> {
             throw new TypeMismatchError(ctx.optionalExpr(), expectedTypes, op?.type);
         }
 
-        let operatorFunction;
+        let operatorFunction: () => number;
         let type;
 
         switch (op?.type) {
@@ -71,8 +71,8 @@ class NumericVisitor extends VtlVisitor<VisitorResult> {
             throw new TypeMismatchError(ctx.expr(), expectedTypes, op?.type);
         }
 
-        let operatorFunction;
-        let type;
+        let operatorFunction: (a: number) => number;
+        let type: number;
 
         switch (op?.type) {
             case VtlParser.ABS:
@@ -133,7 +133,7 @@ class NumericVisitor extends VtlVisitor<VisitorResult> {
         if (optionalExpr && optionalExpr.type !== VtlParser.INTEGER)
             throw new Error("The second operand should be an integer");
 
-        let operatorFunction;
+        let operatorFunction: (a: number, b: number) => number;
         let type;
 
         switch (op?.type) {
@@ -179,11 +179,11 @@ class NumericVisitor extends VtlVisitor<VisitorResult> {
         const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.NULL_CONSTANT];
 
         if (!expectedTypes.includes(leftExpr.type))
-            throw new TypeMismatchError(left, expectedTypes, leftExpr.type);
+            throw new TypeMismatchError(left as ExprContext, expectedTypes, leftExpr.type);
         if (!expectedTypes.includes(rightExpr.type))
-            throw new TypeMismatchError(right, expectedTypes, rightExpr.type);
+            throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
-        let operatorFunction;
+        let operatorFunction: (a: number, b: number) => number;
         let type = VtlParser.NUMBER;
 
         switch (op?.type) {

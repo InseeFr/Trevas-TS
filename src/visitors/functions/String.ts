@@ -27,7 +27,7 @@ class StringVisitor extends VtlVisitor<VisitorResult> {
             throw new TypeMismatchError(ctx.expr(), VtlParser.STRING, op?.type);
         }
 
-        let operatorFunction;
+        let operatorFunction: (e: string) => string | number;
         let type = VtlParser.STRING;
 
         switch (op?.type) {
