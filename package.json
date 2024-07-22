@@ -1,87 +1,87 @@
 {
-  "name": "@inseefr/trevas",
-  "version": "3.0.0",
-  "description": "TypeScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/InseeFr/Trevas-TS"
-  },
-  "license": "MIT",
-  "author": "INSEE (http://www.insee.fr)",
-  "scripts": {
-    "build": "tsc",
-    "test": "vitest",
-    "test-coverage": "vitest run --coverage",
-    "lint:check": "eslint . --ext .ts,.tsx",
-    "lint": "npm run lint:check -- --fix",
-    "_format": "prettier '**/*.{js,ts,json,md}'",
-    "format": "npm run _format -- --write",
-    "format:check": "npm run _format -- --list-different"
-  },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*.js",
-    "./tools": "./dist/tools/index.js"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix"
+    "name": "@inseefr/trevas",
+    "version": "3.0.0",
+    "description": "TypeScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/InseeFr/Trevas-TS"
+    },
+    "license": "MIT",
+    "author": "INSEE (http://www.insee.fr)",
+    "scripts": {
+        "build": "tsc",
+        "test": "vitest",
+        "test-coverage": "vitest run --coverage",
+        "lint:check": "eslint . --ext .ts,.tsx",
+        "lint": "npm run lint:check -- --fix",
+        "_format": "prettier '**/*.{js,ts,json,md}'",
+        "format": "npm run _format -- --write",
+        "format:check": "npm run _format -- --list-different"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": "./dist/index.js",
+        "./*": "./dist/*.js",
+        "./tools": "./dist/tools/index.js"
+    },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "eslint --fix"
+        ],
+        "*.{ts,tsx,json,md}": [
+            "prettier --write"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged -v"
+        }
+    },
+    "files": [
+        "src/",
+        "dist/",
+        "!dist/tsconfig.tsbuildinfo"
     ],
-    "*.{ts,tsx,json,md}": [
-      "prettier --write"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged -v"
-    }
-  },
-  "files": [
-    "src/",
-    "dist/",
-    "!dist/tsconfig.tsbuildinfo"
-  ],
-  "keywords": [],
-  "homepage": "https://github.com/InseeFr/Trevas-TS",
-  "contributor": [
-    {
-      "name": "Hadrien Kohl",
-      "email": "hadrien.kohl@gmail.com"
+    "keywords": [],
+    "homepage": "https://github.com/InseeFr/Trevas-TS",
+    "contributor": [
+        {
+            "name": "Hadrien Kohl",
+            "email": "hadrien.kohl@gmail.com"
+        },
+        {
+            "name": "Nicolas Laval",
+            "email": "nicolas.laval@making-sense.info"
+        },
+        {
+            "name": "Renaud Genevois",
+            "email": "renaud.genevois@insee.fr"
+        }
+    ],
+    "devDependencies": {
+        "@babel/preset-env": "^7.24.8",
+        "@babel/preset-typescript": "^7.24.7",
+        "@making-sense/antlr4ng": "^3.0.4",
+        "@making-sense/vtl-2-0-antlr-tools-ts": "^2.0.1",
+        "@types/node": "^20.14.11",
+        "@typescript-eslint/eslint-plugin": "^5.59.6",
+        "@typescript-eslint/parser": "^5.59.6",
+        "babel-jest": "^29.7.0",
+        "data-forge": "^1.8.8",
+        "date-fns": "^2.27.0",
+        "eslint": "^8.41.0",
+        "eslint-config-prettier": "^8.8.0",
+        "husky": "^4.3.8",
+        "jest": "^29.7.0",
+        "jest-sonar-reporter": "^2.0.0",
+        "lint-staged": "^11.1.1",
+        "prettier": "^3.3.3",
+        "typescript": "^4.9.5",
+        "vite-tsconfig-paths": "^4.3.2",
+        "vitest": "^2.0.3"
     },
-    {
-      "name": "Nicolas Laval",
-      "email": "nicolas.laval@making-sense.info"
-    },
-    {
-      "name": "Renaud Genevois",
-      "email": "renaud.genevois@insee.fr"
+    "publishConfig": {
+        "access": "public"
     }
-  ],
-  "devDependencies": {
-    "@babel/preset-env": "^7.24.8",
-    "@babel/preset-typescript": "^7.24.7",
-    "@making-sense/antlr4ng": "^3.0.4",
-    "@making-sense/vtl-2-0-antlr-tools-ts": "^2.0.1",
-    "@types/node": "^20.14.11",
-    "@typescript-eslint/eslint-plugin": "^5.59.6",
-    "@typescript-eslint/parser": "^5.59.6",
-    "babel-jest": "^29.7.0",
-    "data-forge": "^1.8.8",
-    "date-fns": "^2.27.0",
-    "eslint": "^8.41.0",
-    "eslint-config-prettier": "^8.8.0",
-    "husky": "^4.3.8",
-    "jest": "^29.7.0",
-    "jest-sonar-reporter": "^2.0.0",
-    "lint-staged": "^11.1.1",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.3",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.3"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
 }
