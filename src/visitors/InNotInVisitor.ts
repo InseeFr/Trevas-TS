@@ -30,7 +30,7 @@ class InNotInVisitor extends VtlVisitor<VisitorResult> {
         ensureContextAreDefined(left);
 
         const leftExpr = this.exprVisitor.visit(left as ExprContext);
-        const listConstants = (ctx.lists() as ListsContext).constant();
+        const listConstants = (ctx.lists() as ListsContext)?.constant();
         // Add babel loader for ??
         const value = ctx.valueDomainID()
             ? (ctx.valueDomainID() as ValueDomainIDContext).children[0].getText()
