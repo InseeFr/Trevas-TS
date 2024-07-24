@@ -1,3 +1,4 @@
+import { Dataset } from "model/vtl";
 import interpret, { interpretVar } from "../../../interpretor";
 import { CastTypeError } from "errors";
 
@@ -189,8 +190,8 @@ describe("cast", () => {
         it("cast string dataset into integer dataset", () => {
             expect(interpret("cast(dsI, integer)", { dsI })).toEqual(dsResI);
         });
-        const dsN = {
-            dataStructure: { col_1: {} },
+        const dsN: Dataset = {
+            dataStructure: { "col_1": {} },
             dataPoints: { col_1: ["1", null, "3.3"] }
         };
         const dsResN = {
