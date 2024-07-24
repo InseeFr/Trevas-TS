@@ -131,13 +131,11 @@ describe("cast", () => {
         it("cast date into boolean", () => {});
         it("cast date into time", () => {});
         it("cast date into date", () => {
-            expect(interpret('cast(aDate, date, "YYYY-MM")', { aDate })).toEqual(
-                interpret('cast("1998-07-12", date, "YYYY-MM")', {})
-            );
+            expect(interpret('cast(aDate, date, "YYYY-MM")', { aDate })).toEqual("1998-07");
         });
         it("cast date into time_period", () => {});
         it("cast date into string", () => {
-            expect(interpret('cast(aDate, string, "YYYY-DD-MM")', { aDate })).toEqual("1998-12-07");
+            expect(interpret('cast(aDate, string, "YYYY-MM-DD")', { aDate })).toEqual("1998-07-12");
         });
         it("cast date into string", () => {
             // TO FIX into Literal Visitor
