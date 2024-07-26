@@ -15,7 +15,8 @@ const resolve = (
     leftExpr: VisitorResult | null,
     rightExpr: VisitorResult | null
 ) => {
-    let operatorFunction;
+    let operatorFunction: (l: any, r: any) => boolean;
+    // @ts-ignore:next-line
     switch (operand?.children[0].symbol.type) {
         case VtlParser.MT:
             operatorFunction = (l: any, r: any) => l > r;

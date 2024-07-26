@@ -10,7 +10,7 @@ import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, hasNullArgs } from "utilities";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
-import { Component } from "model/vtl";
+import { BasicScalarTypes, Component, Dataset } from "model/vtl";
 
 const getType = (...args: (VisitorResult | null)[]) => {
     const types = args.map(a => a?.type);
@@ -125,7 +125,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         if (!expectedTypes.includes(rightExpr.type))
             throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
-        let operatorFunction;
+        let operatorFunction: (left: any, right: any) => BasicScalarTypes | Dataset;
 
         let type = getType(leftExpr, rightExpr);
 

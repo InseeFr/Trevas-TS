@@ -29,7 +29,7 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
 
         // TODO: has to check dataPoint content
 
-        let operatorFunction;
+        let operatorFunction: (e: Dataset) => Dataset | null;
 
         switch (opCtx?.type) {
             case VtlParser.COUNT: {
@@ -91,7 +91,7 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
             throw new TypeMismatchError(ctx.expr(), VtlParser.DATASET, opCtx?.type);
         }
 
-        let operatorFunction;
+        let operatorFunction: (e: Dataset) => Dataset | null;
 
         switch (opCtx?.type) {
             case VtlParser.FIRST_VALUE:

@@ -24,6 +24,7 @@ class CastVisitor extends VtlVisitor<VisitorResult> {
 
         const mask = maskCtx ? maskCtx.getText().substring(1, maskCtx.getText().length - 1) : undefined;
 
+        // @ts-ignore:next-line
         const castOutputType = scalarTypeCtx?.children[0]?.symbol.type;
 
         const combinations = [

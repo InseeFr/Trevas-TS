@@ -46,7 +46,11 @@ class ComparisonVisitor extends VtlVisitor<VisitorResult> {
             const o = el[0] as VisitorResult;
             const c = el[1];
             if (![VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.NULL_CONSTANT].includes(o?.type)) {
-                throw new TypeMismatchError(c, [VtlParser.INTEGER, VtlParser.NUMBER], o?.type);
+                throw new TypeMismatchError(
+                    c as ExprContext,
+                    [VtlParser.INTEGER, VtlParser.NUMBER],
+                    o?.type
+                );
             }
         });
 
@@ -79,7 +83,7 @@ class ComparisonVisitor extends VtlVisitor<VisitorResult> {
             const o = el[0] as VisitorResult;
             const c = el[1];
             if (![VtlParser.STRING, VtlParser.NULL_CONSTANT].includes(o?.type)) {
-                throw new TypeMismatchError(c, VtlParser.STRING, o?.type);
+                throw new TypeMismatchError(c as ExprContext, VtlParser.STRING, o?.type);
             }
         });
 
