@@ -7,10 +7,10 @@ jobs:
         name: Test & build
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
               with:
-                  node-version: 16
+                  node-version: 21
             - run: yarn
             # Build modules
             - run: yarn build
@@ -26,7 +26,7 @@ jobs:
         runs-on: ubuntu-latest
         needs: test-build
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
             - name: Download coverage artifact
@@ -45,10 +45,10 @@ jobs:
         runs-on: ubuntu-latest
         needs: sonarcloud
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
               with:
-                  node-version: 16
+                  node-version: 21
             - run: yarn
             # Build modules
             - run: yarn build
@@ -61,7 +61,7 @@ jobs:
             - run: mkdir -p deploy/bundle-report
             - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
             - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
-            - uses: actions/setup-node@v3
+            - uses: actions/setup-node@v4
               with:
                   # Because of gitbook support
                   node-version: 10
