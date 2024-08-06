@@ -1,11 +1,70 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
+import * as dfd from "danfojs";
+import isEqual from "lodash.isequal";
 import * as U from "./array";
 import { getTokenName } from "./parser";
-import { BasicScalarTypes, Dataset } from "model/vtl";
+import { BasicScalarTypes, Dataset, InternalDataset } from "model";
+
+const fromVtlTypesToDTypes = (vtlType: number): string => {
+    switch (vtlType) {
+        case VtlParser.STRING:
+            return "string";
+        case VtlParser.INTEGER:
+            return "int32";
+        case VtlParser.NUMBER:
+            return "float32";
+        case VtlParser.BOOLEAN:
+            return "boolean";
+        default:
+            throw new Error("Bad type");
+    }
+};
+
+export const getInternalDatasetFromDataset = (dataset: Dataset): InternalDataset => {
+    const { dataStructure, dataPoints } = dataset;
+    const columns = dataStructure.map(({ name }) => name);
+    const dtypes = dataStructure.map(({ type }) => fromVtlTypesToDTypes(type));
+    const df: dfd.DataFrame = new dfd.DataFrame(dataPoints, { columns, dtypes });
+    return { dataStructure, dataset: df };
+};
+
+export const getDatasetFromInternalDataset = (internalDataset: InternalDataset): Dataset => {
+    const { dataStructure, dataset } = internalDataset;
+    const dataPoints = dataset.values as BasicScalarTypes[][];
+    return { dataStructure, dataPoints };
+};
+
+export const hasSameStructure = (ds1: InternalDataset, ds2: InternalDataset): boolean => {
+    const { dataStructure: dataStructureDs1 } = ds1;
+    const { dataStructure: dataStructureDs2 } = ds2;
+    return isEqual(dataStructureDs1, dataStructureDs2);
+};
+
+export const validateMeasuresTypes = (ds: InternalDataset, types: number[]): boolean =>
+    ds.dataStructure.filter(({ role, type }) => role === VtlParser.MEASURE && !types.includes(type))
+        .length === 0;
+
+export const getInternalDatasetIds = (ds: InternalDataset): string[] =>
+    ds.dataStructure.filter(({ role }) => role === VtlParser.IDENTIFIER).map(({ name }) => name);
+
+export const getInternalDatasetMeasures = (ds: InternalDataset): string[] =>
+    ds.dataStructure.filter(({ role }) => role === VtlParser.MEASURES).map(({ name }) => name);
+
+export const getMeasureNames = (ds: InternalDataset): Array<string> =>
+    ds.dataStructure.filter(({ role }) => role === VtlParser.MEASURE).map(({ name }) => name);
+
+export const getRenameMeasuresConfig = (ds: InternalDataset, dsName: string): Record<string, string> =>
+    ds.dataStructure.reduce((acc, component) => {
+        const { role, name } = component;
+        if (role === VtlParser.MEASURE) {
+            return { ...acc, [name]: `${name}#${dsName}` };
+        }
+        return acc;
+    }, {});
 
 const defaultDataset = {
-    dataStructure: {},
-    dataPoints: {}
+    dataStructure: [],
+    dataPoints: []
 };
 
 export const transpose = (array: BasicScalarTypes[][]) =>
@@ -43,65 +102,3 @@ export const getDatasetCast = (outputType: number) => (expr: Dataset) => {
         };
     }, defaultDataset);
 };
-
-const getColValues =
-    (fn: (a: (BasicScalarTypes | null)[]) => BasicScalarTypes | null) =>
-    (colData: (BasicScalarTypes | null)[]) =>
-    (canContainNull: boolean): BasicScalarTypes | null => {
-        if (!canContainNull && colData.includes(null)) return null;
-        return fn(colData);
-    };
-
-const handleArithmetic =
-    (expr: Dataset) =>
-    (
-        fn: (a: (BasicScalarTypes | null)[]) => BasicScalarTypes | null,
-        canContainNull = false
-    ): Dataset | null => {
-        const { dataStructure, dataPoints } = expr;
-        if (Object.keys(dataPoints).length === 0) return null;
-        const columnNames = Object.keys(dataStructure);
-        return columnNames.reduce((acc, col) => {
-            const values = getColValues(fn)(dataPoints[col])(canContainNull);
-            // TODO: refine the way to extract or not thanks to metadata
-            return {
-                dataStructure: { ...acc.dataStructure, [col]: {} },
-                dataPoints: { ...acc.dataPoints, [col]: values }
-            };
-        }, defaultDataset);
-    };
-
-export const getCount = (expr: Dataset): Dataset | null => handleArithmetic(expr)(r => r.length, true);
-
-export const getDatasetFirstValue = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(r => r[0], true);
-
-export const getDatasetLastValue = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(r => r[r.length - 1], true);
-
-export const getSum = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getArraySum(c as number[]));
-
-export const getMin = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getArrayMin(c as number[]));
-
-export const getMax = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getArrayMax(c as number[]));
-
-export const getMedian = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getArrayMedian(c as number[]));
-
-export const getAvg = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getArrayAvg(c as number[]));
-
-export const getStdDevPop = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getDeviation(c as number[]));
-
-export const getStdDevSamp = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getDeviation(c as number[], false));
-
-export const getVarPop = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getVariance(c as number[]));
-
-export const getVarSamp = (expr: Dataset): Dataset | null =>
-    handleArithmetic(expr)(c => U.getVariance(c as number[], false));

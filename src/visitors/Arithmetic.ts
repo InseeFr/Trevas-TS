@@ -6,11 +6,19 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
+import * as dfd from "danfojs";
 import { TypeMismatchError } from "errors";
-import { ensureContextAreDefined, hasNullArgs } from "utilities";
-import { Bindings, VisitorResult } from "model";
+import {
+    validateMeasuresTypes,
+    ensureContextAreDefined,
+    hasNullArgs,
+    hasSameStructure,
+    getInternalDatasetIds,
+    getMeasureNames,
+    getRenameMeasuresConfig
+} from "utilities";
+import { Bindings, InternalDataset, VisitorResult } from "model";
 import ExpressionVisitor from "./Expression";
-import { BasicScalarTypes, Component, Dataset } from "model/vtl";
 
 const getType = (...args: (VisitorResult | null)[]) => {
     const types = args.map(a => a?.type);
@@ -18,52 +26,6 @@ const getType = (...args: (VisitorResult | null)[]) => {
     if (types.includes(VtlParser.DATE)) return VtlParser.INTEGER;
     return types.includes(VtlParser.NUMBER) ? VtlParser.NUMBER : VtlParser.INTEGER;
 };
-
-/**
- * Util function that creates a key extractor for the columns.
- * @param columns columns to extract.
- * @return a key extractor function.
- */
-function keyExtractorFor(columns: string[]) {
-    if (columns.length < 1) {
-        throw new Error("column list was empty");
-    }
-    return (row: string) =>
-        Object.entries(row)
-            .filter(([key]: any) => columns.includes(key))
-            .map(([_, value]) => value)
-            .reduce((a, v) => a + v, "");
-}
-
-/**
- * Creates a merger function that uses op on all measures.
- * @param identifiers the identifier columns
- * @param measures the measure columns
- * @param op the operator
- */
-function rowMerger(identifiers: any, measures: any, op: any) {
-    return (left: any, right: any) => {
-        const result: Record<string, any> = {};
-        for (const identifier of identifiers) {
-            result[identifier] = left[identifier];
-        }
-        for (const measure of measures) {
-            result[measure] = op(left[measure], right[measure]);
-        }
-        return result;
-    };
-}
-
-function intersectColumns(leftColumns: Component[] | undefined, rightColumns: Component[] | undefined) {
-    if (!leftColumns || !rightColumns) return {};
-    return Object.fromEntries(
-        Object.entries(leftColumns).filter(([_, l]) =>
-            Object.entries(rightColumns).some(
-                ([__, r]) => l.name === r.name && l.role === r.role && l.type === r.type
-            )
-        )
-    );
-}
 
 class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;
@@ -125,10 +87,104 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         if (!expectedTypes.includes(rightExpr.type))
             throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
-        let operatorFunction: (left: any, right: any) => BasicScalarTypes | Dataset;
-
         let type = getType(leftExpr, rightExpr);
 
+        if ([leftExpr.type, rightExpr.type].includes(VtlParser.DATASET)) {
+            let operatorFunction: (left: dfd.Series, right: dfd.Series | number) => dfd.Series;
+            switch (op?.type) {
+                case VtlParser.PLUS:
+                    operatorFunction = (left, right) => left.add(right);
+                    break;
+                case VtlParser.MINUS:
+                    operatorFunction = (left, right) => left.sub(right);
+                    break;
+                case VtlParser.MUL:
+                    operatorFunction = (left, right) => left.mul(right);
+                    break;
+                case VtlParser.DIV:
+                    operatorFunction = (left, right) => left.div(right);
+                    type = VtlParser.NUMBER;
+                    break;
+                default:
+                    throw new Error(`unknown operator ${op?.text}`);
+            }
+            if ([VtlParser.INTEGER, VtlParser.NUMBER].includes(rightExpr.type)) {
+                return {
+                    type: VtlParser.DATASET,
+                    resolve: (bindings: Bindings) => {
+                        const leftInternalDataset = leftExpr.resolve(bindings) as InternalDataset;
+                        if (
+                            !validateMeasuresTypes(leftInternalDataset, [
+                                VtlParser.INTEGER,
+                                VtlParser.NUMBER
+                            ])
+                        ) {
+                            throw new Error("Measure types have to be INTEGER or NUMBER");
+                        }
+                        const rightNumber = rightExpr.resolve(bindings) as number;
+                        const res = new dfd.DataFrame(dfd.toJSON(leftInternalDataset.dataset));
+                        getMeasureNames(leftInternalDataset).forEach(m => {
+                            const mLeft = res.column(m);
+                            res.addColumn(m, operatorFunction(mLeft, rightNumber));
+                        });
+                        if (rightExpr.type === VtlParser.NUMBER) {
+                            const dataStructure = leftInternalDataset.dataStructure.map(
+                                ({ role, type }) =>
+                                    role === VtlParser.MEASURE ? VtlParser.NUMBER : type
+                            );
+                            return { dataStructure, dataset: res };
+                        }
+                        return { dataStructure: leftInternalDataset.dataStructure, dataset: res };
+                    }
+                };
+            }
+            return {
+                type: VtlParser.DATASET,
+                resolve: (bindings: Bindings) => {
+                    const leftInternalDataset = leftExpr.resolve(bindings) as InternalDataset;
+                    const rightInternalDataset = rightExpr.resolve(bindings) as InternalDataset;
+                    if (!hasSameStructure(leftInternalDataset, rightInternalDataset)) {
+                        throw new Error("visitArithmeticExpr requires datasets with same struture");
+                    }
+                    if (
+                        !validateMeasuresTypes(leftInternalDataset, [
+                            VtlParser.INTEGER,
+                            VtlParser.NUMBER
+                        ])
+                    ) {
+                        throw new Error("Measure types have to be INTEGER or NUMBER");
+                    }
+                    // rename input datasets
+                    const leftMeasuresConfig = getRenameMeasuresConfig(leftInternalDataset, "left");
+                    const rightMeasuresConfig = getRenameMeasuresConfig(rightInternalDataset, "right");
+                    const renamedLeftDs = leftInternalDataset.dataset.rename(leftMeasuresConfig);
+                    const renamedRightDs = rightInternalDataset.dataset.rename(rightMeasuresConfig);
+                    // inner join ds
+                    const mergedDs = dfd.merge({
+                        left: renamedLeftDs,
+                        right: renamedRightDs,
+                        on: getInternalDatasetIds(leftInternalDataset),
+                        how: "inner"
+                    });
+                    // apply operatorFunction
+
+                    const calcDs = new dfd.DataFrame(dfd.toJSON(mergedDs));
+                    Object.keys(leftMeasuresConfig).forEach(m => {
+                        const mLeft = calcDs.column(`${m}#left`);
+                        const mRight = calcDs.column(`${m}#right`);
+                        calcDs.addColumn(m, operatorFunction(mLeft, mRight), { inplace: true });
+                    });
+                    // Drop useless measures
+                    const measuresToDrop = [
+                        ...Object.values(leftMeasuresConfig),
+                        ...Object.values(rightMeasuresConfig)
+                    ];
+                    const res = calcDs.drop({ columns: measuresToDrop });
+                    return { dataStructure: leftInternalDataset.dataStructure, dataset: res };
+                }
+            };
+        }
+        let operatorFunction: (left: any, right: any) => any;
         switch (op?.type) {
             case VtlParser.PLUS:
                 operatorFunction = (left: any, right: any) => left + right;
@@ -145,32 +201,6 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                 break;
             default:
                 throw new Error(`unknown operator ${op?.text}`);
-        }
-
-        if (leftExpr.type === VtlParser.DATASET && rightExpr.type === VtlParser.DATASET) {
-            const commonColumns = intersectColumns(leftExpr.columns, rightExpr.columns);
-
-            const commonIdentifiers = Object.entries(commonColumns)
-                .filter(([_, { role }]: any) => role === VtlParser.DIMENSION)
-                .map(([name]) => name);
-            const commonMeasures = Object.entries(commonColumns)
-                .filter(([_, { role }]: any) => role === VtlParser.MEASURE)
-                .map(([name]) => name);
-
-            return {
-                type: VtlParser.DATASET,
-                columns: leftExpr.columns,
-                resolve: (bindings: Bindings) => {
-                    const leftDataset = leftExpr.resolve(bindings);
-                    const rightDataset = rightExpr.resolve(bindings);
-                    return leftDataset.join(
-                        rightDataset,
-                        keyExtractorFor(commonIdentifiers),
-                        keyExtractorFor(commonIdentifiers),
-                        rowMerger(commonIdentifiers, commonMeasures, operatorFunction)
-                    );
-                }
-            };
         }
         return {
             resolve: (bindings: Bindings) => {

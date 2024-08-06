@@ -25,7 +25,7 @@ const typeResolver = (variable: string, bindings: Bindings): number => {
     }
     if (jsType === "object") {
         const dsKeys = Object.keys(boundVar);
-        if (dsKeys.includes("dataStructure") && dsKeys.includes("dataPoints")) {
+        if (dsKeys.includes("dataStructure") && dsKeys.includes("dataset")) {
             return VtlParser.DATASET;
         }
         throw new Error("The dataset shape is not good.");
@@ -37,11 +37,14 @@ const typeResolver = (variable: string, bindings: Bindings): number => {
 const varTransformer = (variable: string, bindings: Bindings) => {
     const type = typeResolver(variable, bindings);
     if (
-        [VtlParser.NUMBER, VtlParser.STRING, VtlParser.BOOLEAN, VtlParser.NULL_CONSTANT].includes(type)
+        [
+            VtlParser.NUMBER,
+            VtlParser.STRING,
+            VtlParser.BOOLEAN,
+            VtlParser.NULL_CONSTANT,
+            VtlParser.DATASET
+        ].includes(type)
     ) {
-        return bindings[variable];
-    }
-    if (type === VtlParser.DATASET) {
         return bindings[variable];
     }
     throw new Error(`Cannot transform variable of type ${type}`);

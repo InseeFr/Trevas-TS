@@ -8,8 +8,13 @@ import {
 } from "@making-sense/antlr4ng";
 import { Lexer as VtlLexer, Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import ExpressionVisitor from "./visitors/Expression";
-import { getTokenName } from "utilities";
-import { Bindings, VisitorResult } from "model";
+import {
+    buildInternalBindingsFromBindings,
+    getDatasetFromInternalDataset,
+    getTokenName
+} from "utilities";
+import { Bindings, InternalDataset, VisitorResult } from "model";
+import { VTLBindings } from "model/bindings";
 
 class ErrorCollector extends BaseErrorListener {
     errors: Error[];
@@ -56,18 +61,13 @@ const errorCheck = (stream: CharStream, collector: ErrorCollector) => {
 /**
  * Interpret but do not resolve.
  */
-export const interpretVar = (expr: string, bindings: Bindings): VisitorResult => {
+export const interpretVar = (expr: string, vtlBindings: VTLBindings): VisitorResult => {
     const inputStream = CharStream.fromString(expr);
-
-    // const syntaxErrors = new ErrorCollector();
-    // errorCheck(inputStream, syntaxErrors);
-    // if (syntaxErrors.errors.length > 0) {
-    //     throw new Error(`Syntax errors: ${syntaxErrors.errors}`);
-    // }
-    // inputStream.reset();
 
     const typeErrors = new ErrorCollector();
     const parser = errorCheck(inputStream, typeErrors);
+
+    const bindings: Bindings = buildInternalBindingsFromBindings(vtlBindings);
 
     const visitor = new ExpressionVisitor(bindings);
     const expression = visitor.visit(parser.expr());
@@ -80,16 +80,23 @@ export const interpretVar = (expr: string, bindings: Bindings): VisitorResult =>
 
     return {
         type: expression.type,
-        resolve: () => expression.resolve(bindings)
+        resolve: () => {
+            const res = expression.resolve(bindings);
+            if (typeof res === "object" && Array.isArray(res?.dataStructure) && res?.dataset) {
+                return getDatasetFromInternalDataset(res as InternalDataset);
+            }
+            return res;
+        }
     };
 };
 
 /**
  * Interpret and resolve the value.
  */
-const interpret = (expr: string, bindings: Bindings) => interpretVar(expr, bindings).resolve({});
+const interpret = (expr: string, vtlBindings: VTLBindings) =>
+    interpretVar(expr, vtlBindings).resolve({});
 
-export const getType = (expr: string, bindings: Bindings): string =>
+export const getType = (expr: string, bindings: VTLBindings): string =>
     getTokenName(interpretVar(expr, bindings).type);
 
 export default interpret;
