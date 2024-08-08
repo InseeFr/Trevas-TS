@@ -1,6 +1,6 @@
-import { Bindings } from "./bindings";
+import { VTLBindings } from "./bindings";
 
 export type VisitorResult = {
-    resolve: (bindings: Bindings) => any;
+    resolve: (bindings: VTLBindings) => any;
     type: number;
 };

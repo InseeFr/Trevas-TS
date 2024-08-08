@@ -8,12 +8,8 @@ import {
 } from "@making-sense/antlr4ng";
 import { Lexer as VtlLexer, Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import ExpressionVisitor from "./visitors/Expression";
-import {
-    buildInternalBindingsFromBindings,
-    getDatasetFromInternalDataset,
-    getTokenName
-} from "utilities";
-import { Bindings, InternalDataset, VisitorResult } from "model";
+import { getTokenName } from "utilities";
+import { VisitorResult } from "model";
 import { VTLBindings } from "model/bindings";
 
 class ErrorCollector extends BaseErrorListener {
@@ -67,9 +63,9 @@ export const interpretVar = (expr: string, vtlBindings: VTLBindings): VisitorRes
     const typeErrors = new ErrorCollector();
     const parser = errorCheck(inputStream, typeErrors);
 
-    const bindings: Bindings = buildInternalBindingsFromBindings(vtlBindings);
+    //const bindings: Bindings = buildInternalBindingsFromBindings(vtlBindings);
 
-    const visitor = new ExpressionVisitor(bindings);
+    const visitor = new ExpressionVisitor(vtlBindings);
     const expression = visitor.visit(parser.expr());
 
     if (expression === null) throw new Error("Null expression");
@@ -81,10 +77,7 @@ export const interpretVar = (expr: string, vtlBindings: VTLBindings): VisitorRes
     return {
         type: expression.type,
         resolve: () => {
-            const res = expression.resolve(bindings);
-            if (typeof res === "object" && Array.isArray(res?.dataStructure) && res?.dataset) {
-                return getDatasetFromInternalDataset(res as InternalDataset);
-            }
+            const res = expression.resolve(vtlBindings);
             return res;
         }
     };

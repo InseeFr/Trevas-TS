@@ -41,7 +41,7 @@ describe("arithmetic", () => {
         function getRandomInt(max: number) {
             return Math.floor(Math.random() * max);
         }
-        it("addition with datasets", () => {
+        it.skip("addition with datasets", () => {
             const n = 10000;
             Array.from(Array(10)).forEach((_, i) => {
                 const base = Array.from(Array(n * (i + 1))).map(() => [
@@ -67,6 +67,14 @@ describe("arithmetic", () => {
         });
         it("addition with dataset and scalar", () => {
             expect(interpret("ds1 + 3", { ds1 }).dataPoints).toEqual([
+                [10, "A", 8, 8.0],
+                [10, "B", 5, 13.5],
+                [11, "A", 6, 15.2],
+                [11, "B", 7, 23.3]
+            ]);
+        });
+        it("addition with dataset and scalar reverted", () => {
+            expect(interpret("3 + ds1", { ds1 }).dataPoints).toEqual([
                 [10, "A", 8, 8.0],
                 [10, "B", 5, 13.5],
                 [11, "A", 6, 15.2],

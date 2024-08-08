@@ -43,10 +43,10 @@ import {
     DatasetFunctionsVisitor,
     DateVisitor
 } from "./functions";
-import { Bindings, VisitorResult } from "model";
+import { VisitorResult, VTLBindings } from "model";
 
 class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
-    bindings: Bindings;
+    bindings: VTLBindings;
     arithmeticVisitor: ArithmeticVisitor;
     booleanAlgebraVisitor: BooleanVisitor;
     castFunctionVisitor: CastVisitor;
@@ -61,7 +61,7 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
     variableVisitor: VariableVisitor;
     inNotInVisitor: InNotInVisitor;
     datasetFunctionsVisitor: DatasetFunctionsVisitor;
-    constructor(bindings: Bindings) {
+    constructor(bindings: VTLBindings) {
         super();
         this.bindings = bindings;
         this.arithmeticVisitor = new ArithmeticVisitor(this);

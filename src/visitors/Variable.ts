@@ -3,7 +3,7 @@ import {
     Visitor as VtlVisitor,
     VarIdExprContext
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { VisitorResult, type Bindings } from "model";
+import { VisitorResult, VTLBindings, type Bindings } from "model";
 
 // TODO: Support integers here.
 const types = {
@@ -13,7 +13,7 @@ const types = {
 };
 
 /** Variable duck typing and type checking */
-const typeResolver = (variable: string, bindings: Bindings): number => {
+const typeResolver = (variable: string, bindings: VTLBindings): number => {
     const boundVar = bindings[variable];
 
     if (boundVar === null) return VtlParser.NULL_CONSTANT;
@@ -25,7 +25,7 @@ const typeResolver = (variable: string, bindings: Bindings): number => {
     }
     if (jsType === "object") {
         const dsKeys = Object.keys(boundVar);
-        if (dsKeys.includes("dataStructure") && dsKeys.includes("dataset")) {
+        if (dsKeys.includes("dataStructure") && dsKeys.includes("dataPoints")) {
             return VtlParser.DATASET;
         }
         throw new Error("The dataset shape is not good.");
@@ -34,7 +34,7 @@ const typeResolver = (variable: string, bindings: Bindings): number => {
 };
 
 /** Variable transformation */
-const varTransformer = (variable: string, bindings: Bindings) => {
+const varTransformer = (variable: string, bindings: VTLBindings) => {
     const type = typeResolver(variable, bindings);
     if (
         [
@@ -51,19 +51,16 @@ const varTransformer = (variable: string, bindings: Bindings) => {
 };
 
 class VariableVisitor extends VtlVisitor<VisitorResult> {
-    bindings: Bindings;
-    constructor(bindings: Bindings) {
+    bindings: VTLBindings;
+    constructor(bindings: VTLBindings) {
         super();
         this.bindings = bindings;
     }
 
     visitVarIdExpr = (ctx: VarIdExprContext) => {
         const variable = ctx.getText();
-        // if (this.bindings[variable] && this.bindings[variable].type) {
-        //     return this.bindings[variable];
-        // }
         return {
-            resolve: (bindings: Bindings) => varTransformer(variable, bindings),
+            resolve: (bindings: VTLBindings) => varTransformer(variable, bindings),
             type: typeResolver(variable, this.bindings)
         };
     };
