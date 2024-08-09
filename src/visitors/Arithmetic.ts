@@ -21,7 +21,7 @@ import {
     executeDrop,
     revertObj
 } from "utilities";
-import { Dataset, InternalDataset, Param, VisitorResult, VTLBindings } from "model";
+import { Dataset, Param, VisitorResult, VTLBindings } from "model";
 import ExpressionVisitor from "./Expression";
 
 const getType = (...args: (VisitorResult | null)[]) => {

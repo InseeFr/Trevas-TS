@@ -9,7 +9,7 @@ import { Token } from "@making-sense/antlr4ng";
 import * as dfd from "danfojs";
 import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, validateMeasuresTypes } from "utilities";
-import { Bindings, VisitorResult } from "model";
+import { BasicScalarTypes, Dataset, VisitorResult, VTLBindings } from "model";
 import ExpressionVisitor from "visitors/Expression";
 import { InternalDataset } from "model";
 import GroupVisitor from "visitors/Group";
@@ -97,7 +97,7 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
         }
 
         return {
-            resolve: (bindings: Bindings) => {
+            resolve: (bindings: VTLBindings) => {
                 const exprInternalDataset = expr.resolve(bindings) as InternalDataset;
                 if (!validateMeasuresTypes(exprInternalDataset, [VtlParser.INTEGER, VtlParser.NUMBER])) {
                     throw new Error("Measure types have to be INTEGER or NUMBER");
@@ -126,33 +126,44 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
         };
     };
 
+    // support only null analyticClause for now
     visitAnSimpleFunction = (ctx: AnSimpleFunctionContext) => {
         // TODO: implement over support
-        const { _op: opCtx, expr: exprCtx } = ctx;
+        const { _op: opCtx } = ctx;
 
-        ensureContextAreDefined(exprCtx());
+        const exprCtx = ctx.expr();
 
-        const expr = this.exprVisitor.visit(exprCtx() as ExprContext) as VisitorResult;
+        ensureContextAreDefined(exprCtx);
+
+        const expr = this.exprVisitor.visit(exprCtx as ExprContext) as VisitorResult;
 
         if (expr.type !== VtlParser.DATASET) {
-            throw new TypeMismatchError(exprCtx(), VtlParser.DATASET, opCtx?.type);
+            throw new TypeMismatchError(exprCtx, VtlParser.DATASET, opCtx?.type);
         }
 
-        let operatorFunction: (ds: dfd.DataFrame) => dfd.DataFrame;
+        let operatorFunction: (ds: Dataset) => Dataset;
 
         switch (opCtx?.type) {
             case VtlParser.FIRST_VALUE:
-                //operatorFunction = ds => U.getDatasetFirstValue(e);
+                operatorFunction = ds => {
+                    const { dataPoints, dataStructure } = ds;
+                    const [firstRow] = dataPoints;
+                    return { dataStructure, dataPoints: [firstRow] };
+                };
                 break;
             case VtlParser.LAST_VALUE:
-                //operatorFunction = ds => U.getDatasetLastValue(e);
+                operatorFunction = ds => {
+                    const { dataPoints, dataStructure } = ds;
+                    const lastRow = [...dataPoints].pop() as BasicScalarTypes[];
+                    return { dataStructure, dataPoints: [lastRow] };
+                };
                 break;
             default:
                 throw new Error(`unknown operator ${opCtx?.text}`);
         }
 
         return {
-            resolve: (bindings: Bindings) => operatorFunction(expr.resolve(bindings)),
+            resolve: (bindings: VTLBindings) => operatorFunction(expr.resolve(bindings)),
             type: VtlParser.DATASET
         };
     };
