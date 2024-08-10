@@ -6,23 +6,18 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import * as dfd from "danfojs";
 import { TypeMismatchError } from "errors";
 import {
     validateMeasuresTypes,
     ensureContextAreDefined,
     hasNullArgs,
     hasSameStructure,
-    getMeasureNames,
     getRenameMeasuresConfig,
-    executeRename,
-    executeInnerJoin,
-    executeCalc,
-    executeDrop,
     revertObj
 } from "utilities";
 import { Dataset, Param, VisitorResult, VTLBindings } from "model";
 import ExpressionVisitor from "./Expression";
+import { DatasetImplementations } from "processing-engine";
 
 const getType = (...args: (VisitorResult | null)[]) => {
     const types = args.map(a => a?.type);
@@ -33,9 +28,11 @@ const getType = (...args: (VisitorResult | null)[]) => {
 
 class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;
-    constructor(exprVisitor: ExpressionVisitor) {
+    datasetImplementations: DatasetImplementations;
+    constructor(exprVisitor: ExpressionVisitor, datasetImplementations: DatasetImplementations) {
         super();
         this.exprVisitor = exprVisitor;
+        this.datasetImplementations = datasetImplementations;
     }
 
     visitUnaryExpr = (ctx: UnaryExprContext) => {
@@ -130,11 +127,14 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                             ];
                             return { name: leftMeasuresConfig[m], params, operatorFunction, type };
                         });
-                        const calcDs = executeCalc(leftDataset, calcConfig);
+                        const calcDs = this.datasetImplementations.executeCalc(leftDataset, calcConfig);
                         // Drop useless measures
                         const measuresToDrop = [...Object.keys(leftMeasuresConfig)];
-                        const dropedDs = executeDrop(calcDs, measuresToDrop);
-                        const renamedLeftDs = executeRename(dropedDs, revertObj(leftMeasuresConfig));
+                        const dropedDs = this.datasetImplementations.executeDrop(calcDs, measuresToDrop);
+                        const renamedLeftDs = this.datasetImplementations.executeRename(
+                            dropedDs,
+                            revertObj(leftMeasuresConfig)
+                        );
                         return renamedLeftDs;
                     }
                 };
@@ -158,11 +158,14 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                             ];
                             return { name: rightMeasuresConfig[m], params, operatorFunction, type };
                         });
-                        const calcDs = executeCalc(rightDataset, calcConfig);
+                        const calcDs = this.datasetImplementations.executeCalc(rightDataset, calcConfig);
                         // Drop useless measures
                         const measuresToDrop = [...Object.keys(rightMeasuresConfig)];
-                        const dropedDs = executeDrop(calcDs, measuresToDrop);
-                        const renamedLeftDs = executeRename(dropedDs, revertObj(rightMeasuresConfig));
+                        const dropedDs = this.datasetImplementations.executeDrop(calcDs, measuresToDrop);
+                        const renamedLeftDs = this.datasetImplementations.executeRename(
+                            dropedDs,
+                            revertObj(rightMeasuresConfig)
+                        );
                         return renamedLeftDs;
                     }
                 };
@@ -181,10 +184,19 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                     // rename input datasets
                     const leftMeasuresConfig = getRenameMeasuresConfig(leftDataset, "#left");
                     const rightMeasuresConfig = getRenameMeasuresConfig(rightDataset, "#right");
-                    const renamedLeftDs = executeRename(leftDataset, leftMeasuresConfig);
-                    const renamedRightDs = executeRename(rightDataset, rightMeasuresConfig);
+                    const renamedLeftDs = this.datasetImplementations.executeRename(
+                        leftDataset,
+                        leftMeasuresConfig
+                    );
+                    const renamedRightDs = this.datasetImplementations.executeRename(
+                        rightDataset,
+                        rightMeasuresConfig
+                    );
                     // inner join ds
-                    const joinedDs = executeInnerJoin(renamedLeftDs, renamedRightDs);
+                    const joinedDs = this.datasetImplementations.executeInnerJoin(
+                        renamedLeftDs,
+                        renamedRightDs
+                    );
                     // apply operatorFunction
                     const calcConfig = Object.keys(leftMeasuresConfig).map(m => {
                         const params: Param[] = [
@@ -193,13 +205,13 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                         ];
                         return { name: m, params, operatorFunction, type };
                     });
-                    const calcDs = executeCalc(joinedDs, calcConfig);
+                    const calcDs = this.datasetImplementations.executeCalc(joinedDs, calcConfig);
                     // Drop useless measures
                     const measuresToDrop = [
                         ...Object.values(leftMeasuresConfig),
                         ...Object.values(rightMeasuresConfig)
                     ];
-                    const res = executeDrop(calcDs, measuresToDrop);
+                    const res = this.datasetImplementations.executeDrop(calcDs, measuresToDrop);
                     return res;
                 }
             };

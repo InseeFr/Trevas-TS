@@ -44,9 +44,11 @@ import {
     DateVisitor
 } from "./functions";
 import { VisitorResult, VTLBindings } from "model";
+import { DatasetImplementations, getDatasetImplementations } from "processing-engine";
 
 class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
     bindings: VTLBindings;
+    datasetImplementations: DatasetImplementations;
     arithmeticVisitor: ArithmeticVisitor;
     booleanAlgebraVisitor: BooleanVisitor;
     castFunctionVisitor: CastVisitor;
@@ -64,7 +66,8 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
     constructor(bindings: VTLBindings) {
         super();
         this.bindings = bindings;
-        this.arithmeticVisitor = new ArithmeticVisitor(this);
+        this.datasetImplementations = getDatasetImplementations(bindings);
+        this.arithmeticVisitor = new ArithmeticVisitor(this, this.datasetImplementations);
         this.booleanAlgebraVisitor = new BooleanVisitor(this);
         this.castFunctionVisitor = new CastVisitor(this);
         this.comparisonVisitor = new ComparisonVisitor(this);
