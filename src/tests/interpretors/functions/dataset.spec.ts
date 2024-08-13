@@ -8,7 +8,7 @@ describe("dataset-functions", () => {
     };
     const dsResWithNull = {
         dataStructure: [{ name: "col1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }],
-        dataPoints: [null]
+        dataPoints: [[null]]
     };
 
     it.skip("should count observations in a dataset", () => {
@@ -60,7 +60,7 @@ describe("dataset-functions", () => {
         expect(interpret("last_value(dsWithNull over())", { dsWithNull })).toEqual(dsRes0);
         expect(interpret("last_value(ds over())", { ds })).toEqual(dsRes);
     });
-    it.skip("should return simple sum over dataset", () => {
+    it("should return simple sum over dataset", () => {
         const ds = {
             dataStructure: [
                 { name: "id1", type: VtlParser.INTEGER, role: VtlParser.IDENTIFIER },
@@ -74,6 +74,13 @@ describe("dataset-functions", () => {
         };
         const dsRes = {
             dataStructure: [
+                { name: "id1", type: VtlParser.INTEGER, role: VtlParser.MEASURE },
+                { name: "col1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }
+            ],
+            dataPoints: [[4, 60]]
+        };
+        const dsResGroupBy = {
+            dataStructure: [
                 { name: "id1", type: VtlParser.INTEGER, role: VtlParser.IDENTIFIER },
                 { name: "col1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }
             ],
@@ -82,8 +89,9 @@ describe("dataset-functions", () => {
                 [2, 30]
             ]
         };
-        expect(interpret("sum(dsWithNull)", { dsWithNull })).toEqual(dsResWithNull);
-        //expect(interpret("sum(ds)", { ds })).toEqual(dsRes);
+        // expect(interpret("sum(dsWithNull)", { dsWithNull })).toEqual(dsResWithNull);
+        // expect(interpret("sum(ds)", { ds })).toEqual(dsRes);
+        expect(interpret("sum(ds group by id1)", { ds })).toEqual(dsResGroupBy);
     });
     it.skip("should return simple median over dataset", () => {
         const ds = {

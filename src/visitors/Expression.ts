@@ -80,7 +80,7 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
         this.stringFunctionVisitor = new StringFunctionsVisitor(this);
         this.variableVisitor = new VariableVisitor(this.bindings);
         this.inNotInVisitor = new InNotInVisitor(this);
-        this.datasetFunctionsVisitor = new DatasetFunctionsVisitor(this);
+        this.datasetFunctionsVisitor = new DatasetFunctionsVisitor(this, this.datasetImplementations);
     }
 
     visitComparisonExpr = (ctx: ComparisonExprContext) => this.comparisonVisitor.visit(ctx);

@@ -3,7 +3,7 @@ import {
     Visitor as VtlVisitor,
     VarIdExprContext
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { VisitorResult, VTLBindings, type Bindings } from "model";
+import { VisitorResult, VTLBindings } from "model";
 
 // TODO: Support integers here.
 const types = {

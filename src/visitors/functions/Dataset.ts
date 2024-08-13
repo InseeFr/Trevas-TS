@@ -5,20 +5,20 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { Token } from "@making-sense/antlr4ng";
-import * as dfd from "danfojs";
 import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, validateMeasuresTypes } from "utilities";
 import { BasicScalarTypes, Dataset, VisitorResult, VTLBindings } from "model";
 import ExpressionVisitor from "visitors/Expression";
-import { InternalDataset } from "model";
 import GroupVisitor from "visitors/Group";
+import { DatasetImplementations } from "processing-engine";
 
 class DatasetVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;
-    constructor(exprVisitor: ExpressionVisitor) {
+    datasetImplementations: DatasetImplementations;
+    constructor(exprVisitor: ExpressionVisitor, datasetImplementations: DatasetImplementations) {
         super();
         this.exprVisitor = exprVisitor;
+        this.datasetImplementations = datasetImplementations;
     }
 
     visitAggrDataset = (ctx: AggrDatasetContext) => {
@@ -33,94 +33,22 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
         if (expr.type !== VtlParser.DATASET) {
             throw new TypeMismatchError(exprCtx, VtlParser.DATASET, opCtx?.type);
         }
-
-        // gb has Groupby type, bad defined in danfo?
-        let operatorFunction: (gb: any) => dfd.DataFrame;
-        let measureColumnTypes: number | null = null;
-
-        switch (opCtx?.type) {
-            case VtlParser.COUNT: {
-                operatorFunction = gb => gb.count();
-                measureColumnTypes = VtlParser.INTEGER;
-                break;
-            }
-            case VtlParser.SUM: {
-                operatorFunction = gb => {
-                    const danfoDs = gb.sum();
-                    // rename _sum columns
-
-                    // handle null
-                    return gb.sum();
-                };
-                break;
-            }
-            case VtlParser.MIN: {
-                operatorFunction = gb => gb.min();
-                break;
-            }
-            case VtlParser.MAX: {
-                operatorFunction = gb => gb.max();
-                break;
-            }
-            case VtlParser.MEDIAN: {
-                //operatorFunction = ds => U.getMedian(e);
-                measureColumnTypes = VtlParser.NUMBER;
-                break;
-            }
-            case VtlParser.AVG: {
-                operatorFunction = gb => gb.mean();
-                measureColumnTypes = VtlParser.NUMBER;
-                break;
-            }
-            case VtlParser.STDDEV_POP: {
-                //operatorFunction = ds => U.getStdDevPop(e);
-                measureColumnTypes = VtlParser.NUMBER;
-                break;
-            }
-            case VtlParser.STDDEV_SAMP: {
-                //operatorFunction = ds => U.getStdDevSamp(e);
-                measureColumnTypes = VtlParser.NUMBER;
-                break;
-            }
-            case VtlParser.VAR_POP: {
-                //operatorFunction = ds => U.getVarPop(e);
-                measureColumnTypes = VtlParser.NUMBER;
-                break;
-            }
-            case VtlParser.VAR_SAMP: {
-                //operatorFunction = ds => U.getVarSamp(e);
-                measureColumnTypes = VtlParser.NUMBER;
-                break;
-            }
-            default:
-                throw new Error(`unknown operator ${(opCtx as Token).text}`);
+        if (!opCtx) {
+            throw new Error("Unknow operator for aggregation");
         }
 
         return {
             resolve: (bindings: VTLBindings) => {
-                const exprInternalDataset = expr.resolve(bindings) as InternalDataset;
-                if (!validateMeasuresTypes(exprInternalDataset, [VtlParser.INTEGER, VtlParser.NUMBER])) {
+                const exprDataset = expr.resolve(bindings) as Dataset;
+                if (
+                    !validateMeasuresTypes(exprDataset, [VtlParser.INTEGER, VtlParser.NUMBER]) &&
+                    opCtx.type !== VtlParser.COUNT
+                ) {
                     throw new Error("Measure types have to be INTEGER or NUMBER");
                 }
-                const groupBy = new GroupVisitor(exprInternalDataset.dataStructure).visit(ctx);
-                const exprDatasetCopy = new dfd.DataFrame(dfd.toJSON(exprInternalDataset.dataset));
-                const groupbyObject = exprDatasetCopy.groupby(groupBy || []);
-                const res = operatorFunction(groupbyObject);
-
-                // TODO: handle role mutation
-                if (measureColumnTypes) {
-                    const updatedDataStructre = exprInternalDataset.dataStructure.map(
-                        ({ type, role, name, ...others }) => {
-                            const newRole = groupBy?.includes(name) ? VtlParser.IDENTIFIER : role;
-                            return type === VtlParser.MEASURE
-                                ? { type: measureColumnTypes, role: newRole, name, ...others }
-                                : { type, role: newRole, name, ...others };
-                        }
-                    );
-                    return { dataStructure: updatedDataStructre, dataset: res };
-                }
-
-                return { dataStructure: exprInternalDataset.dataStructure, dataPoints: res };
+                const groupBy = new GroupVisitor(exprDataset.dataStructure).visit(ctx);
+                const res = this.datasetImplementations.executeAggr(exprDataset, groupBy, opCtx.type);
+                return res;
             },
             type: VtlParser.DATASET
         };

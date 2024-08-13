@@ -15,3 +15,7 @@ export const executeRename = (ds: Dataset, config: Record<string, string>): Data
 export const executeInnerJoin = (ds1: Dataset, ds2: Dataset): Dataset => {
     throw new Error("executeInnerJoin is not yet implemented for Wasm");
 };
+
+export const executeAggr = (ds: Dataset, groupBy: string[] | null, opType: number): Dataset => {
+    throw new Error("executeAggr is not yet implemented for Wasm");
+};
