@@ -6,8 +6,8 @@ describe("variable", () => {
             aString: "string!",
             anInt: 1234,
             aFloat: 12.34,
-            aDataset: { dataStructure: {}, dataPoints: {} },
-            aFlawedDataset: { dataStructure: {}, dataPoints: {} },
+            aDataset: { dataStructure: [], dataPoints: [] },
+            aFlawedDataset: { dataStructure: [], dataPoints: [] },
             nullValue: null
         };
         expect(interpret("aString", bindings)).toEqual("string!");

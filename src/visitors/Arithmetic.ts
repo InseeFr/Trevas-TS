@@ -15,7 +15,7 @@ import {
     getRenameMeasuresConfig,
     revertObj
 } from "utilities";
-import { Dataset, Param, VisitorResult, VTLBindings } from "model";
+import { Dataset, Param, VisitorResult, Bindings } from "model";
 import ExpressionVisitor from "./Expression";
 import { DatasetImplementations } from "processing-engine";
 
@@ -50,7 +50,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         const type = getType(rightExpr);
 
         return {
-            resolve: (bindings: VTLBindings) => {
+            resolve: (bindings: Bindings) => {
                 const value = rightExpr.resolve(bindings);
                 if (value === null) return null;
                 return op?.type === VtlParser.PLUS ? value : -value;
@@ -113,7 +113,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
             if ([VtlParser.INTEGER, VtlParser.NUMBER].includes(rightExpr.type)) {
                 return {
                     type: VtlParser.DATASET,
-                    resolve: (bindings: VTLBindings) => {
+                    resolve: (bindings: Bindings) => {
                         const leftDataset = leftExpr.resolve(bindings) as Dataset;
                         const rightValue = rightExpr.resolve(bindings) as number;
                         if (!validateMeasuresTypes(leftDataset, [VtlParser.INTEGER, VtlParser.NUMBER])) {
@@ -142,7 +142,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
             if ([VtlParser.INTEGER, VtlParser.NUMBER].includes(leftExpr.type)) {
                 return {
                     type: VtlParser.DATASET,
-                    resolve: (bindings: VTLBindings) => {
+                    resolve: (bindings: Bindings) => {
                         const leftValue = leftExpr.resolve(bindings) as number;
                         const rightDataset = rightExpr.resolve(bindings) as Dataset;
                         if (
@@ -172,7 +172,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
             }
             return {
                 type: VtlParser.DATASET,
-                resolve: (bindings: VTLBindings) => {
+                resolve: (bindings: Bindings) => {
                     const leftDataset = leftExpr.resolve(bindings) as Dataset;
                     const rightDataset = rightExpr.resolve(bindings) as Dataset;
                     if (!hasSameStructure(leftDataset, rightDataset)) {
@@ -235,7 +235,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                 throw new Error(`unknown operator ${op?.text}`);
         }
         return {
-            resolve: (bindings: VTLBindings) => {
+            resolve: (bindings: Bindings) => {
                 const leftValue = leftExpr.resolve(bindings);
                 const rightValue = rightExpr.resolve(bindings);
                 if (hasNullArgs(leftValue, rightValue)) return null;

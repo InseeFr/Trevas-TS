@@ -7,7 +7,7 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { Bindings, VisitorResult } from "model";
+import { VisitorResult, Bindings } from "model";
 import { Dataset } from "model/vtl";
 import { ensureContextAreDefined } from "utilities";
 import ExpressionVisitor from "./Expression";

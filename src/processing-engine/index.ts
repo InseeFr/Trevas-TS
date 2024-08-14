@@ -1,8 +1,8 @@
-import { CalcConfig, Dataset, VTLBindings } from "model";
+import { CalcConfig, Dataset, Bindings } from "model";
 import * as InMemory from "./in-memory";
 import * as Wasm from "./wasm";
 
-export const getDatasetImplementations = (bindings: VTLBindings): DatasetImplementations => {
+export const getDatasetImplementations = (bindings: Bindings): DatasetImplementations => {
     const mode = bindings["$vtl.engine.processing_engine_names"];
     if (mode === "wasm") return Wasm;
     return InMemory;

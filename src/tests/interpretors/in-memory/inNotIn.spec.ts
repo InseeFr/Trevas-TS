@@ -1,8 +1,9 @@
+import { VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import interpret from "../../../interpretor";
 
 const ELEMENTS = {
-    dataStructure: { col_1: {} },
-    dataPoints: { col_1: ["B", "C", "D"] }
+    dataStructure: [{ name: "col_1", type: VtlParser.STRING, role: VtlParser.MEASURE }],
+    dataPoints: [["B", "C", "D"]]
 };
 
 describe("conditional", () => {

@@ -4,7 +4,7 @@ import { BasicScalarTypes, Dataset, CalcConfig } from "model";
 import {
     buildDataStructureIndexes,
     getDeviation,
-    getIdTuples,
+    // getIdTuples,
     getInternalDatasetFromDataset,
     getInternalDatasetIds,
     getMeasures,
@@ -176,7 +176,7 @@ export const executeAggr = (ds: Dataset, groupBy: string[] | null, opType: numbe
         return { dataStructure: newDataStructure, dataPoints: newDataPoints };
     } else {
         // TODO
-        const idTuples = getIdTuples();
+        // const idTuples = getIdTuples();
     }
     return { dataStructure: newDataStructure, dataPoints };
 };

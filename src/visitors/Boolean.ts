@@ -7,7 +7,7 @@ import {
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, hasNullArgs } from "utilities";
-import { Bindings, VisitorResult } from "model";
+import { VisitorResult, Bindings } from "model";
 import ExpressionVisitor from "./Expression";
 
 const handleAnd = (leftExpr: VisitorResult, rightExpr: VisitorResult) => ({

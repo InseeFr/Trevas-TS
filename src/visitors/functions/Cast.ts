@@ -6,8 +6,7 @@ import {
 import ExpressionVisitor from "visitors/Expression";
 import { CastTypeError, OperatorTypeError } from "errors";
 import { Bindings, VisitorResult } from "model";
-import { getDate, getStringFromDate, hasNullArgs, getDatasetCast } from "utilities";
-import { Dataset } from "model/vtl";
+import { getDate, getStringFromDate, hasNullArgs } from "utilities";
 
 class CastVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;
@@ -28,12 +27,6 @@ class CastVisitor extends VtlVisitor<VisitorResult> {
         const castOutputType = scalarTypeCtx?.children[0]?.symbol.type;
 
         const combinations = [
-            // Dataset: temp hack to return casted array
-            [
-                VtlParser.DATASET,
-                [VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.STRING],
-                (op: Dataset) => getDatasetCast(castOutputType)(op)
-            ],
             [VtlParser.INTEGER, VtlParser.INTEGER, (op: number) => op],
             [VtlParser.INTEGER, VtlParser.NUMBER, (op: number) => op],
             [VtlParser.INTEGER, VtlParser.BOOLEAN, (op: number) => op !== 0],

@@ -3,7 +3,7 @@ import {
     Visitor as VtlVisitor,
     VarIdExprContext
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import { VisitorResult, VTLBindings } from "model";
+import { VisitorResult, Bindings } from "model";
 
 // TODO: Support integers here.
 const types = {
@@ -13,7 +13,7 @@ const types = {
 };
 
 /** Variable duck typing and type checking */
-const typeResolver = (variable: string, bindings: VTLBindings): number => {
+const typeResolver = (variable: string, bindings: Bindings): number => {
     const boundVar = bindings[variable];
 
     if (boundVar === null) return VtlParser.NULL_CONSTANT;
@@ -34,7 +34,7 @@ const typeResolver = (variable: string, bindings: VTLBindings): number => {
 };
 
 /** Variable transformation */
-const varTransformer = (variable: string, bindings: VTLBindings) => {
+const varTransformer = (variable: string, bindings: Bindings) => {
     const type = typeResolver(variable, bindings);
     if (
         [
@@ -51,8 +51,8 @@ const varTransformer = (variable: string, bindings: VTLBindings) => {
 };
 
 class VariableVisitor extends VtlVisitor<VisitorResult> {
-    bindings: VTLBindings;
-    constructor(bindings: VTLBindings) {
+    bindings: Bindings;
+    constructor(bindings: Bindings) {
         super();
         this.bindings = bindings;
     }
@@ -60,7 +60,7 @@ class VariableVisitor extends VtlVisitor<VisitorResult> {
     visitVarIdExpr = (ctx: VarIdExprContext) => {
         const variable = ctx.getText();
         return {
-            resolve: (bindings: VTLBindings) => varTransformer(variable, bindings),
+            resolve: (bindings: Bindings) => varTransformer(variable, bindings),
             type: typeResolver(variable, this.bindings)
         };
     };

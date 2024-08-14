@@ -7,7 +7,7 @@ import {
 } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, validateMeasuresTypes } from "utilities";
-import { BasicScalarTypes, Dataset, VisitorResult, VTLBindings } from "model";
+import { BasicScalarTypes, Dataset, VisitorResult, Bindings } from "model";
 import ExpressionVisitor from "visitors/Expression";
 import GroupVisitor from "visitors/Group";
 import { DatasetImplementations } from "processing-engine";
@@ -38,7 +38,7 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
         }
 
         return {
-            resolve: (bindings: VTLBindings) => {
+            resolve: (bindings: Bindings) => {
                 const exprDataset = expr.resolve(bindings) as Dataset;
                 if (
                     !validateMeasuresTypes(exprDataset, [VtlParser.INTEGER, VtlParser.NUMBER]) &&
@@ -91,7 +91,7 @@ class DatasetVisitor extends VtlVisitor<VisitorResult> {
         }
 
         return {
-            resolve: (bindings: VTLBindings) => operatorFunction(expr.resolve(bindings)),
+            resolve: (bindings: Bindings) => operatorFunction(expr.resolve(bindings)),
             type: VtlParser.DATASET
         };
     };

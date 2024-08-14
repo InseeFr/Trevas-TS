@@ -1,7 +1,6 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
 import * as dfd from "danfojs";
 import isEqual from "lodash.isequal";
-import { getTokenName } from "./parser";
 import { BasicScalarTypes, Component, Dataset, InternalDataset } from "model";
 
 const fromVtlTypesToDTypes = (vtlType: number): string => {
@@ -67,49 +66,10 @@ export const getRenameMeasuresConfig = (ds: Dataset, suffix: string): Record<str
 export const buildDataStructureIndexes = (dataStructure: Component[]): Record<string, number> =>
     dataStructure.reduce((acc, c, i) => ({ ...acc, [c.name]: i }), {});
 
-const defaultDataset = {
-    dataStructure: [],
-    dataPoints: []
-};
-
 export const revertObj = (obj: Record<string, string>) =>
     Object.fromEntries(Object.entries(obj).map(a => a.reverse()));
 
 export const transpose = (array: BasicScalarTypes[][]) =>
     Array.isArray(array[0]) ? array[0].map((_, colIndex) => array.map(row => row[colIndex])) : [];
 
-const handleNullElement =
-    (element: BasicScalarTypes) => (fn: (a: BasicScalarTypes) => BasicScalarTypes) => {
-        if (element === null) return null;
-        return fn(element);
-    };
-
-const getDatasetCastTransformation = (type: number): ((a: BasicScalarTypes) => BasicScalarTypes) => {
-    switch (type) {
-        case VtlParser.INTEGER:
-            return (e: BasicScalarTypes): BasicScalarTypes =>
-                e === null ? null : parseInt(e.toString(), 10);
-        case VtlParser.NUMBER:
-            return (e: BasicScalarTypes): BasicScalarTypes =>
-                e === null ? null : parseFloat(e.toString());
-        default:
-            throw new Error(`Can't cast dataset as ${getTokenName(type)} for now`);
-    }
-};
-
-export const getDatasetCast = (outputType: number) => (expr: Dataset) => {
-    const { dataStructure, dataPoints } = expr;
-    const transformer = getDatasetCastTransformation(outputType);
-
-    const columnNames = Object.keys(dataStructure);
-    return columnNames.reduce((acc, col) => {
-        const values = dataPoints[col].map(d => handleNullElement(d)(transformer));
-        return {
-            dataStructure: { ...acc.dataStructure, [col]: {} },
-            dataPoints: { ...acc.dataPoints, [col]: values }
-        };
-    }, defaultDataset);
-};
-
-// TODO
 export const getIdTuples = () => null;

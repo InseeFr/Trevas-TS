@@ -10,7 +10,7 @@ import { Lexer as VtlLexer, Parser as VtlParser } from "@making-sense/vtl-2-0-an
 import ExpressionVisitor from "./visitors/Expression";
 import { getTokenName } from "utilities";
 import { VisitorResult } from "model";
-import { VTLBindings } from "model/bindings";
+import { Bindings } from "model/bindings";
 
 class ErrorCollector extends BaseErrorListener {
     errors: Error[];
@@ -57,13 +57,11 @@ const errorCheck = (stream: CharStream, collector: ErrorCollector) => {
 /**
  * Interpret but do not resolve.
  */
-export const interpretVar = (expr: string, vtlBindings: VTLBindings): VisitorResult => {
+export const interpretVar = (expr: string, vtlBindings: Bindings): VisitorResult => {
     const inputStream = CharStream.fromString(expr);
 
     const typeErrors = new ErrorCollector();
     const parser = errorCheck(inputStream, typeErrors);
-
-    //const bindings: Bindings = buildInternalBindingsFromBindings(vtlBindings);
 
     const visitor = new ExpressionVisitor(vtlBindings);
     const expression = visitor.visit(parser.expr());
@@ -86,10 +84,9 @@ export const interpretVar = (expr: string, vtlBindings: VTLBindings): VisitorRes
 /**
  * Interpret and resolve the value.
  */
-const interpret = (expr: string, vtlBindings: VTLBindings) =>
-    interpretVar(expr, vtlBindings).resolve({});
+const interpret = (expr: string, vtlBindings: Bindings) => interpretVar(expr, vtlBindings).resolve({});
 
-export const getType = (expr: string, bindings: VTLBindings): string =>
+export const getType = (expr: string, bindings: Bindings): string =>
     getTokenName(interpretVar(expr, bindings).type);
 
 export default interpret;
