@@ -1,4 +1,4 @@
-import interpret from "../../interpretor";
+import interpret from "../../../interpretor";
 
 const ELEMENTS = {
     dataStructure: { col_1: {} },

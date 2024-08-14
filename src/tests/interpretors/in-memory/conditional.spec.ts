@@ -1,4 +1,4 @@
-import interpret from "../../interpretor";
+import interpret from "../../../interpretor";
 import { IncompatibleTypeError } from "errors";
 
 describe("conditional", () => {

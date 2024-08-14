@@ -1,5 +1,5 @@
 import { VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
-import interpret from "../../../interpretor";
+import interpret from "../../../../interpretor";
 
 describe("dataset-functions", () => {
     const dsWithNull = {
@@ -89,9 +89,10 @@ describe("dataset-functions", () => {
                 [2, 30]
             ]
         };
-        // expect(interpret("sum(dsWithNull)", { dsWithNull })).toEqual(dsResWithNull);
-        // expect(interpret("sum(ds)", { ds })).toEqual(dsRes);
-        expect(interpret("sum(ds group by id1)", { ds })).toEqual(dsResGroupBy);
+        expect(interpret("sum(dsWithNull)", { dsWithNull })).toEqual(dsResWithNull);
+        expect(interpret("sum(ds)", { ds })).toEqual(dsRes);
+        // TODO
+        //expect(interpret("sum(ds group by id1)", { ds })).toEqual(dsResGroupBy);
     });
     it.skip("should return simple median over dataset", () => {
         const ds = {

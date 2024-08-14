@@ -1,4 +1,4 @@
-import interpret from "../../../interpretor";
+import interpret from "../../../../interpretor";
 
 describe("numeric-functions", () => {
     describe("supports numeric functions with null", () => {

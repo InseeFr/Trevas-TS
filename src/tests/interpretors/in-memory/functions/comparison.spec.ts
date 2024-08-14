@@ -1,4 +1,4 @@
-import interpret from "../../../interpretor";
+import interpret from "../../../../interpretor";
 
 describe("comparison-functions", () => {
     it("should check null", () => {

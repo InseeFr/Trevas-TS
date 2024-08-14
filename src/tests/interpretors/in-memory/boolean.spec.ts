@@ -1,4 +1,4 @@
-import interpret from "../../interpretor";
+import interpret from "../../../interpretor";
 import { transpose } from "utilities";
 
 describe("boolean", () => {

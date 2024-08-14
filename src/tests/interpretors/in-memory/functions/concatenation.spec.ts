@@ -1,4 +1,4 @@
-import interpret from "../../../interpretor";
+import interpret from "../../../../interpretor";
 
 describe("concatenation", () => {
     it("supports concat with null", () => {

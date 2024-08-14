@@ -1,4 +1,4 @@
-import interpret from "../../interpretor";
+import interpret from "../../../interpretor";
 
 describe("literal", () => {
     it("supports literal with null", () => {
