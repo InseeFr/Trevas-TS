@@ -71,5 +71,3 @@ export const revertObj = (obj: Record<string, string>) =>
 
 export const transpose = (array: BasicScalarTypes[][]) =>
     Array.isArray(array[0]) ? array[0].map((_, colIndex) => array.map(row => row[colIndex])) : [];
-
-export const getIdTuples = () => null;

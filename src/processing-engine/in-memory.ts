@@ -4,7 +4,6 @@ import { BasicScalarTypes, Dataset, CalcConfig } from "model";
 import {
     buildDataStructureIndexes,
     getDeviation,
-    // getIdTuples,
     getInternalDatasetFromDataset,
     getInternalDatasetIds,
     getMeasures,
@@ -156,27 +155,61 @@ export const executeAggr = (ds: Dataset, groupBy: string[] | null, opType: numbe
             break;
         }
     }
-    const operatorFunctionWithNull = (component: BasicScalarTypes[]) => {
-        if (component.includes(null)) return [null];
-        return [operatorFunction(component)];
+    const operatorFunctionWithNull = (component: BasicScalarTypes[]): BasicScalarTypes => {
+        // TODO exclude count?
+        if (component.includes(null)) return null;
+        return operatorFunction(component);
     };
     // Update role fn(groupBy) & type fn(opType)
-    const newDataStructure = dataStructure.map(c => {
-        const { name, type } = c;
-        const newType = measureColumnTypes || type;
-        if (groupBy?.includes(name)) return { ...c, type: newType, role: VtlParser.IDENTIFIER };
-        return { ...c, type: newType, role: VtlParser.MEASURE };
-    });
+    // Sort by role, IDENTIFIER first
+    const newDataStructure = dataStructure
+        .map(c => {
+            const { name, type } = c;
+            const newType = measureColumnTypes || type;
+            if (groupBy?.includes(name)) return { ...c, role: VtlParser.IDENTIFIER };
+            return { ...c, type: newType, role: VtlParser.MEASURE };
+        })
+        .sort((a, b) => {
+            if (b.role !== VtlParser.IDENTIFIER && a.role === VtlParser.IDENTIFIER) return -1;
+            return 1;
+        });
     if (groupBy?.length === 0) {
         const transposedDataPoints = transpose(dataPoints);
         const transformedDataPoints = transposedDataPoints.map(d =>
-            operatorFunctionWithNull(d)
-        ) as BasicScalarTypes[][];
-        const newDataPoints = transpose(transformedDataPoints);
-        return { dataStructure: newDataStructure, dataPoints: newDataPoints };
+            opType === VtlParser.COUNT ? operatorFunction(d) : operatorFunctionWithNull(d)
+        ) as BasicScalarTypes[];
+        return { dataStructure: newDataStructure, dataPoints: [transformedDataPoints] };
     } else {
-        // TODO
-        // const idTuples = getIdTuples();
+        const idPositions = dataStructure.reduce<Array<number>>((acc, component, index) => {
+            if (component.role === VtlParser.IDENTIFIER) return [...acc, index];
+            return acc;
+        }, []);
+        const groupedDataPoints = dataPoints.reduce<Record<string, BasicScalarTypes[][]>>(
+            (acc, line) => {
+                const id = idPositions.map(p => line[p]).join("-");
+                const measureLine = line.filter((_, i) => !idPositions.includes(i));
+                if (!(id in acc)) return { ...acc, [id]: [measureLine] };
+                return { ...acc, [id]: [...acc[id], measureLine] };
+            },
+            {}
+        );
+        const aggregatedDataPoints = Object.entries(groupedDataPoints).reduce<
+            Record<string, (BasicScalarTypes | null)[]>
+        >((acc, entry) => {
+            const [key, value] = entry;
+            const columns = transpose(value);
+            const aggregatedColumns = columns.map(c => operatorFunctionWithNull(c));
+            return { ...acc, [key]: aggregatedColumns };
+        }, {});
+        const idTuples = dataPoints.reduce<Record<string, BasicScalarTypes[]>>((acc, line) => {
+            const id = idPositions.map(p => line[p]).join("-");
+            if (id in acc) return acc;
+            return { ...acc, [id]: idPositions.map(i => line[i]) };
+        }, {});
+        const newDataPoints = Object.entries(aggregatedDataPoints).map(([id, values]) => {
+            const idValues = idTuples[id];
+            return [...idValues, ...values];
+        });
+        return { dataStructure: newDataStructure, dataPoints: newDataPoints };
     }
-    return { dataStructure: newDataStructure, dataPoints };
 };
