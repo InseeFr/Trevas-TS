@@ -97,6 +97,34 @@ describe("dataset-functions", () => {
         expect(interpret("sum(ds)", { ds })).toEqual(dsRes);
         expect(interpret("sum(ds group by id1)", { ds })).toEqual(dsResGroupBy);
     });
+    it("should return sum over dataset", () => {
+        const ds = {
+            dataStructure: [
+                { name: "Id_1", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Id_2", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Me_1", type: VtlParser.INTEGER, role: VtlParser.MEASURE },
+                { name: "Id_3", type: VtlParser.STRING, role: VtlParser.IDENTIFIER }
+            ],
+            dataPoints: [
+                ["2011", "A", 3, "XX"],
+                ["2011", "A", 5, "YY"],
+                ["2011", "B", 7, "YY"],
+                ["2012", "A", 2, "XX"],
+                ["2012", "B", 4, "YY"]
+            ]
+        };
+        const dsRes = {
+            dataStructure: [
+                { name: "Id_1", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Me_1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }
+            ],
+            dataPoints: [
+                ["2011", 15],
+                ["2012", 6]
+            ]
+        };
+        expect(interpret("sum(ds group by Id_1)", { ds })).toEqual(dsRes);
+    });
     it("should return simple median over dataset", () => {
         const ds = {
             dataStructure: [{ name: "col1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }],

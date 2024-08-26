@@ -69,7 +69,15 @@ export const executeInnerJoin = (ds1: Dataset, ds2: Dataset): Dataset => {
 };
 
 export const executeAggr = (ds: Dataset, groupBy: string[] | null, opType: number): Dataset => {
-    const { dataPoints, dataStructure } = ds;
+    let dsWithoutUselessIds = ds;
+    if (Array.isArray(groupBy) && groupBy.length > 0) {
+        const uselessIds = ds.dataStructure
+            .filter(c => c.role === VtlParser.IDENTIFIER && !groupBy.includes(c.name))
+            .map(c => c.name);
+        dsWithoutUselessIds = executeDrop(ds, uselessIds);
+    }
+
+    const { dataPoints, dataStructure } = dsWithoutUselessIds;
 
     let operatorFunction: (component: BasicScalarTypes[]) => BasicScalarTypes;
     let measureColumnTypes: number | null = null;
@@ -167,7 +175,7 @@ export const executeAggr = (ds: Dataset, groupBy: string[] | null, opType: numbe
             const { name, type } = c;
             const newType = measureColumnTypes || type;
             if (groupBy?.includes(name)) return { ...c, role: VtlParser.IDENTIFIER };
-            return { ...c, type: newType, role: VtlParser.MEASURE };
+            return { ...c, type: newType };
         })
         .sort((a, b) => {
             if (b.role !== VtlParser.IDENTIFIER && a.role === VtlParser.IDENTIFIER) return -1;
