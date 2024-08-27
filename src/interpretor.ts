@@ -84,7 +84,8 @@ export const interpretVar = (expr: string, vtlBindings: Bindings): VisitorResult
 /**
  * Interpret and resolve the value.
  */
-const interpret = (expr: string, vtlBindings: Bindings) => interpretVar(expr, vtlBindings).resolve({});
+const interpret = (expr: string, vtlBindings: Bindings): Bindings =>
+    interpretVar(expr, vtlBindings).resolve({});
 
 export const getType = (expr: string, bindings: Bindings): string =>
     getTokenName(interpretVar(expr, bindings).type);
