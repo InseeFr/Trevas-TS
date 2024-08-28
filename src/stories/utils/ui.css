@@ -21,6 +21,11 @@
     margin-bottom: 1em;
 }
 
+.res-error {
+    color: red;
+    font-size: 200%;
+}
+
 .res-btn {
     background-color: #9211ff;
     border: 0;

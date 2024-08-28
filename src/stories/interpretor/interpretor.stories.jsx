@@ -7,4 +7,10 @@ export default {
 
 export const Default = {};
 
-export const Bindings = { args: { inputBindings: '{ NAME: "Mauro", AGE: 26 }' } };
+export const Bindings = {
+    args: {
+        inputScript:
+            '"Welcome " || NAME || ", you are " || (if cast(AGE, integer) >= 18 then "major" else "minor") || "."',
+        inputBindings: { "NAME": "Mauro", "AGE": 26 }
+    }
+};

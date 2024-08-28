@@ -1,19 +1,21 @@
+import { useState } from "react";
 import { AntlrEditor } from "@making-sense/antlr-editor";
 import * as VTLTools from "@making-sense/vtl-2-0-antlr-tools-ts";
 import * as JSONTools from "json-antlr-tools-ts";
 import { getSuggestionsFromRange, monarchDefinition } from "@making-sense/vtl-2-0-monaco-tools-ts";
-import { useState } from "react";
-import "./ui.css";
 import interpret from "../../interpretor";
+import { buildVtlBindings, buildJSONBindings } from "./ds";
+import "./ui.css";
 
 const customVTLTools = { ...VTLTools, initialRule: "expr", getSuggestionsFromRange, monarchDefinition };
 
-const UI = ({ inputScript = "", inputBindings = "{}" }) => {
+const UI = ({ inputScript = "", inputBindings = {} }) => {
     const [script, setScript] = useState<string>(inputScript);
     const [hasScriptError, setHasScriptError] = useState<boolean>(false);
-    const [bindings, setBindings] = useState<string>(inputBindings);
+    const [bindings, setBindings] = useState<string>(JSON.stringify(inputBindings, null, 2));
     const [hasBindingsError, setHasBindingsError] = useState<boolean>(false);
     const [result, setResult] = useState<string>("");
+    const [error, setError] = useState(null);
 
     const updateScript = (s: string): void => {
         result && setResult("");
@@ -26,14 +28,21 @@ const UI = ({ inputScript = "", inputBindings = "{}" }) => {
     };
 
     const getResult = () => {
-        setResult(JSON.stringify(interpret(script, JSON.parse(bindings))));
+        try {
+            const vtlBindings = buildVtlBindings(JSON.parse(bindings));
+            const res = interpret(script, vtlBindings);
+            setResult(JSON.stringify(buildJSONBindings(res), null, 2));
+        } catch (e: any) {
+            console.warn(e.stack);
+            setError(e.message);
+        }
     };
 
     return (
         <>
             <div className="editors">
                 <div className="vtl-editor">
-                    <h2 className="centered">VTL script</h2>
+                    <h2 className="centered">VTL expression</h2>
                     <AntlrEditor
                         tools={customVTLTools}
                         script={script}
@@ -78,6 +87,7 @@ const UI = ({ inputScript = "", inputBindings = "{}" }) => {
                         />
                     </>
                 )}
+                {error && <div className="res-error">{error}</div>}
             </div>
         </>
     );
