@@ -70,12 +70,15 @@ export const executeInnerJoin = (ds1: Dataset, ds2: Dataset): Dataset => {
 
 export const executeAggr = (ds: Dataset, groupBy: string[] | null, opType: number): Dataset => {
     let dsWithoutUselessIds = ds;
+    let uselessIds = null;
     if (Array.isArray(groupBy) && groupBy.length > 0) {
-        const uselessIds = ds.dataStructure
+        uselessIds = ds.dataStructure
             .filter(c => c.role === VtlParser.IDENTIFIER && !groupBy.includes(c.name))
             .map(c => c.name);
-        dsWithoutUselessIds = executeDrop(ds, uselessIds);
+    } else {
+        uselessIds = ds.dataStructure.filter(c => c.role === VtlParser.IDENTIFIER).map(c => c.name);
     }
+    dsWithoutUselessIds = executeDrop(ds, uselessIds);
 
     const { dataPoints, dataStructure } = dsWithoutUselessIds;
 

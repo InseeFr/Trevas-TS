@@ -77,11 +77,8 @@ describe("dataset-functions", () => {
             ]
         };
         const dsRes = {
-            dataStructure: [
-                { name: "col1", type: VtlParser.INTEGER, role: VtlParser.MEASURE },
-                { name: "id1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }
-            ],
-            dataPoints: [[60, 4]]
+            dataStructure: [{ name: "col1", type: VtlParser.INTEGER, role: VtlParser.MEASURE }],
+            dataPoints: [[60]]
         };
         const dsResGroupBy = {
             dataStructure: [

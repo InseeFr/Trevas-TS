@@ -63,7 +63,7 @@ export const getRenameMeasuresConfig = (ds: Dataset, suffix: string): Record<str
         return acc;
     }, {});
 
-export const getComponentType = (ds: Dataset, componentName) => {
+export const getComponentType = (ds: Dataset, componentName: string): number => {
     const { dataStructure } = ds;
     const component = dataStructure.find(({ name }) => name === componentName);
     if (!component) throw new Error(`${componentName} not prensent in data structure`);
@@ -76,5 +76,5 @@ export const buildDataStructureIndexes = (dataStructure: Component[]): Record<st
 export const revertObj = (obj: Record<string, string>) =>
     Object.fromEntries(Object.entries(obj).map(a => a.reverse()));
 
-export const transpose = (array: BasicScalarTypes[][]) =>
+export const transpose = (array: BasicScalarTypes[][]): BasicScalarTypes[][] =>
     Array.isArray(array[0]) ? array[0].map((_, colIndex) => array.map(row => row[colIndex])) : [];

@@ -89,7 +89,6 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         if (!expectedTypes.includes(rightExpr.type))
             throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
-        let type = getType(leftExpr);
         let forcedType: number | null = null;
 
         if ([leftExpr.type, rightExpr.type].includes(VtlParser.DATASET)) {
@@ -238,6 +237,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
             };
         }
         let operatorFunction: (left: any, right: any) => any;
+        forcedType = null;
         switch (op?.type) {
             case VtlParser.PLUS:
                 operatorFunction = (left: any, right: any) => left + right;
@@ -250,11 +250,14 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                 break;
             case VtlParser.DIV:
                 operatorFunction = (left: any, right: any) => left / right;
-                type = VtlParser.NUMBER;
+                forcedType = VtlParser.NUMBER;
                 break;
             default:
                 throw new Error(`unknown operator ${op?.text}`);
         }
+        const resType = [getType(leftExpr), getType(rightExpr)].includes(VtlParser.NUMBER)
+            ? VtlParser.NUMBER
+            : VtlParser.INTEGER;
         return {
             resolve: (bindings: Bindings) => {
                 const leftValue = leftExpr.resolve(bindings);
@@ -264,7 +267,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                     return operatorFunction(new Date(leftValue), new Date(rightValue));
                 return operatorFunction(leftValue, rightValue);
             },
-            type
+            type: forcedType || resType
         };
     };
 }
