@@ -5,7 +5,7 @@ export default {
     component: UI
 };
 
-export const Default = {};
+export const Default = { args: { inputScript: '"default"', inputBindings: {} } };
 
 export const Bindings = {
     args: {
