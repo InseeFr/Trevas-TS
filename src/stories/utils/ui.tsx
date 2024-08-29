@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AntlrEditor } from "@making-sense/antlr-editor";
 import * as VTLTools from "@making-sense/vtl-2-0-antlr-tools-ts";
 import * as JSONTools from "json-antlr-tools-ts";
@@ -31,12 +31,19 @@ const UI = ({ inputScript = "", inputBindings = {} }) => {
         try {
             const vtlBindings = buildVtlBindings(JSON.parse(bindings));
             const res = interpret(script, vtlBindings);
+            setError(null);
             setResult(JSON.stringify(buildJSONBindings(res), null, 2));
         } catch (e: any) {
             console.warn(e.stack);
+            setResult("");
             setError(e.message);
         }
     };
+
+    useEffect(() => {
+        setScript(inputScript);
+        setBindings(JSON.stringify(inputBindings, null, 2));
+    }, [inputScript, inputBindings]);
 
     return (
         <>
