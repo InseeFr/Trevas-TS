@@ -13,7 +13,8 @@ import {
     hasNullArgs,
     hasSameStructure,
     getRenameMeasuresConfig,
-    revertObj
+    revertObj,
+    getComponentType
 } from "utilities";
 import { Dataset, Param, VisitorResult, Bindings } from "model";
 import ExpressionVisitor from "./Expression";
@@ -88,7 +89,8 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
         if (!expectedTypes.includes(rightExpr.type))
             throw new TypeMismatchError(right as ExprContext, expectedTypes, rightExpr.type);
 
-        let type = getType(leftExpr, rightExpr);
+        let type = getType(leftExpr);
+        let forcedType: number | null = null;
 
         if ([leftExpr.type, rightExpr.type].includes(VtlParser.DATASET)) {
             let operatorFunction: ([left, right]: number[]) => number;
@@ -104,7 +106,7 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                     break;
                 case VtlParser.DIV:
                     operatorFunction = ([left, right]) => left / right;
-                    type = VtlParser.NUMBER;
+                    forcedType = VtlParser.NUMBER;
                     break;
                 default:
                     throw new Error(`unknown operator ${op?.text}`);
@@ -125,7 +127,16 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                                 { type: "COLUMN", value: m },
                                 { type: "VALUE", value: rightValue }
                             ];
-                            return { name: leftMeasuresConfig[m], params, operatorFunction, type };
+                            const columnType = getComponentType(leftDataset, m);
+                            const crossedType = [rightExpr.type, columnType].includes(VtlParser.NUMBER)
+                                ? VtlParser.NUMBER
+                                : VtlParser.INTEGER;
+                            return {
+                                name: leftMeasuresConfig[m],
+                                params,
+                                operatorFunction,
+                                type: forcedType || crossedType
+                            };
                         });
                         const calcDs = this.datasetImplementations.executeCalc(leftDataset, calcConfig);
                         // Drop useless measures
@@ -156,7 +167,16 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                                 { type: "COLUMN", value: m },
                                 { type: "VALUE", value: leftValue }
                             ];
-                            return { name: rightMeasuresConfig[m], params, operatorFunction, type };
+                            const columnType = getComponentType(rightDataset, m);
+                            const crossedType = [leftExpr.type, columnType].includes(VtlParser.NUMBER)
+                                ? VtlParser.NUMBER
+                                : VtlParser.INTEGER;
+                            return {
+                                name: rightMeasuresConfig[m],
+                                params,
+                                operatorFunction,
+                                type: forcedType || crossedType
+                            };
                         });
                         const calcDs = this.datasetImplementations.executeCalc(rightDataset, calcConfig);
                         // Drop useless measures
@@ -203,7 +223,8 @@ class ArithmeticVisitor extends VtlVisitor<VisitorResult> {
                             { type: "COLUMN", value: leftMeasuresConfig[m] },
                             { type: "COLUMN", value: rightMeasuresConfig[m] }
                         ];
-                        return { name: m, params, operatorFunction, type };
+                        const columnType = getComponentType(leftDataset, m);
+                        return { name: m, params, operatorFunction, type: forcedType || columnType };
                     });
                     const calcDs = this.datasetImplementations.executeCalc(joinedDs, calcConfig);
                     // Drop useless measures

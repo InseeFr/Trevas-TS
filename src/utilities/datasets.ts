@@ -63,6 +63,13 @@ export const getRenameMeasuresConfig = (ds: Dataset, suffix: string): Record<str
         return acc;
     }, {});
 
+export const getComponentType = (ds: Dataset, componentName) => {
+    const { dataStructure } = ds;
+    const component = dataStructure.find(({ name }) => name === componentName);
+    if (!component) throw new Error(`${componentName} not prensent in data structure`);
+    return component.type;
+};
+
 export const buildDataStructureIndexes = (dataStructure: Component[]): Record<string, number> =>
     dataStructure.reduce((acc, c, i) => ({ ...acc, [c.name]: i }), {});
 

@@ -33,10 +33,36 @@ describe("arithmetic", () => {
         };
 
         it("addition with datasets", () => {
-            expect(interpret("ds1 + ds2", { ds1, ds2 }).dataPoints).toEqual([
+            const ds = interpret("ds1 + ds2", { ds1, ds2 });
+            expect(ds.dataPoints).toEqual([
                 [10, "A", 15, 8],
                 [11, "B", 10, 27.3]
             ]);
+            expect(ds.dataStructure).toEqual([
+                { name: "Id_1", type: VtlParser.INTEGER, role: VtlParser.IDENTIFIER },
+                { name: "Id_2", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Me_1", type: VtlParser.INTEGER, role: VtlParser.MEASURE },
+                { name: "Me_2", type: VtlParser.NUMBER, role: VtlParser.MEASURE }
+            ]);
+        });
+
+        it("addition between dataset and scalar", () => {
+            const ds = interpret("ds1 + 2.1", { ds1 });
+            const mutedDataStructure = [
+                { name: "Id_1", type: VtlParser.INTEGER, role: VtlParser.IDENTIFIER },
+                { name: "Id_2", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Me_1", type: VtlParser.NUMBER, role: VtlParser.MEASURE },
+                { name: "Me_2", type: VtlParser.NUMBER, role: VtlParser.MEASURE }
+            ];
+            expect(ds.dataStructure).toEqual(mutedDataStructure);
+            const dsA = interpret("ds1 + 2", { ds1 });
+            expect(dsA.dataStructure).toEqual(ds1.dataStructure);
+            const dsB = interpret("1.0 + ds1", { ds1 });
+            expect(dsB.dataStructure).toEqual(mutedDataStructure);
+            const dsC = interpret("2 + ds1", { ds1 });
+            expect(dsC.dataStructure).toEqual(ds1.dataStructure);
+            const dsD = interpret("ds1 / 1", { ds1 });
+            expect(dsD.dataStructure).toEqual(mutedDataStructure);
         });
         function getRandomInt(max: number) {
             return Math.floor(Math.random() * max);
