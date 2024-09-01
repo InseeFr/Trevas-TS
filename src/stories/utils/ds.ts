@@ -60,7 +60,7 @@ export const buildVtlBindings = (b: Record<string, any>): Record<string, any> =>
             });
             return { ...acc, [k]: { ...v, dataStructure: newDataStructure } };
         }
-        return acc;
+        return { ...acc, [k]: v };
     }, {});
 
 export const buildJSONBindings = (b: Record<string, any>): Record<string, any> => {

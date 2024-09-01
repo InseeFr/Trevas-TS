@@ -32,7 +32,11 @@ const UI = ({ inputScript = "", inputBindings = {} }) => {
             const vtlBindings = buildVtlBindings(JSON.parse(bindings));
             const res = interpret(script, vtlBindings);
             setError(null);
-            setResult(JSON.stringify(buildJSONBindings(res), null, 2));
+            if (typeof res === "object") {
+                setResult(JSON.stringify(buildJSONBindings(res), null, 2));
+            } else {
+                setResult(res);
+            }
         } catch (e: any) {
             console.warn(e.stack);
             setResult("");
