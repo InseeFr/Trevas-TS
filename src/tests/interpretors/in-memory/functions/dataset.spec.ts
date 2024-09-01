@@ -26,6 +26,32 @@ describe("dataset-functions", () => {
         };
         expect(interpret("count(dsWithNull)", { dsWithNull })).toEqual(dsRes);
         expect(interpret("count(ds)", { ds })).toEqual(dsRes);
+        const DS_1 = {
+            dataStructure: [
+                { name: "Id_1", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Id_2", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Id_3", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Me_2", type: VtlParser.STRING, role: VtlParser.MEASURE }
+            ],
+            dataPoints: [
+                ["2011", "A", "XX", "iii"],
+                ["2011", "A", "YY", "jjj"],
+                ["2011", "B", "YY", "iii"],
+                ["2012", "A", "XX", "kkk"],
+                ["2012", "B", "YY", "iii"]
+            ]
+        };
+        const DS_1_res = {
+            dataStructure: [
+                { name: "Id_1", type: VtlParser.STRING, role: VtlParser.IDENTIFIER },
+                { name: "Me_2", type: VtlParser.INTEGER, role: VtlParser.MEASURE }
+            ],
+            dataPoints: [
+                ["2011", 3],
+                ["2012", 2]
+            ]
+        };
+        expect(interpret("count(DS_1 group by Id_1)", { DS_1 })).toEqual(DS_1_res);
     });
     it("should return first value of a dataset", () => {
         const ds = {

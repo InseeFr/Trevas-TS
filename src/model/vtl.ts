@@ -1,6 +1,5 @@
 export type BasicScalarTypes = string | number | boolean | null;
 
-// TODO: be more script deleting "?"
 export type Component = {
     name: string;
     role: number;
