@@ -52,7 +52,7 @@ const intToString = (i: number): string => {
 
 export const buildVtlBindings = (b: Record<string, any>): Record<string, any> =>
     Object.entries(b).reduce((acc, [k, v]) => {
-        if (typeof v === "object" && "dataStructure" in v && "dataPoints" in v) {
+        if (typeof v === "object" && v !== null && "dataStructure" in v && "dataPoints" in v) {
             const { dataStructure } = v;
             const newDataStructure = dataStructure.map((c: any) => {
                 const { role, type } = c;
