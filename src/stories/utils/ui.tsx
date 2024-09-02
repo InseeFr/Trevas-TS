@@ -9,7 +9,9 @@ import "./ui.css";
 
 const customVTLTools = { ...VTLTools, initialRule: "expr", getSuggestionsFromRange, monarchDefinition };
 
-const UI = ({ inputScript = "", inputBindings = {} }) => {
+const defaultInputBindings = {};
+
+const UI = ({ inputScript = "", inputBindings = defaultInputBindings }) => {
     const [script, setScript] = useState<string>(inputScript);
     const [hasScriptError, setHasScriptError] = useState<boolean>(false);
     const [bindings, setBindings] = useState<string>(JSON.stringify(inputBindings, null, 2));
@@ -35,7 +37,7 @@ const UI = ({ inputScript = "", inputBindings = {} }) => {
             if (typeof res === "object") {
                 setResult(JSON.stringify(buildJSONBindings(res), null, 2));
             } else {
-                setResult(res);
+                setResult((res as any).toString());
             }
         } catch (e: any) {
             console.warn(e.stack);
