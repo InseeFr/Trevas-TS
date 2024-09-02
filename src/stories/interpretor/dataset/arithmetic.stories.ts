@@ -35,9 +35,9 @@ const inputBindings = {
     }
 };
 
-export const Plus = {
+export const Div = {
     args: {
-        inputScript: "ds1 + ds2",
+        inputScript: "ds1 / ds2",
         inputBindings
     }
 };
@@ -56,9 +56,9 @@ export const Mul = {
     }
 };
 
-export const Div = {
+export const Plus = {
     args: {
-        inputScript: "ds1 / ds2",
+        inputScript: "ds1 + ds2 - 2",
         inputBindings
     }
 };

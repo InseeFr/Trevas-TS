@@ -5,7 +5,7 @@ export default {
     component: UI
 };
 
-export const Default = { args: { inputScript: '"default"', inputBindings: {} } };
+export const Default = { args: { inputScript: '"default"' } };
 
 export const Bindings = {
     args: {
@@ -14,3 +14,7 @@ export const Bindings = {
         inputBindings: { "NAME": "Mauro", "AGE": 26 }
     }
 };
+
+export const CurrentDate = { args: { inputScript: "current_date()" } };
+
+export const Parenthesis = { args: { inputScript: "(10 + 2) * 123456" } };

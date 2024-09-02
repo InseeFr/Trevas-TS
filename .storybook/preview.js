@@ -18,7 +18,7 @@ const preview = {
         "current": "dark"
     },
     "options": {
-        storySort: (a, b) => (a[0] < b[0] ? -1 : 1)
+        storySort: { method: "alphabetical" }
     }
 };
 
