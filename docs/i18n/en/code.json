@@ -7,14 +7,6 @@
     "message": "Back to homepage",
     "description": "404 Back to homepage"
   },
-  "Trevas": {
-    "message": "Trevas",
-    "description": "Box title Trevas"
-  },
-  "Getting started with Trevas Java VTL engine": {
-    "message": "Getting started with Trevas Java VTL engine",
-    "description": "Box description Trevas"
-  },
   "See more": {
     "message": "See more",
     "description": "See more"
@@ -22,18 +14,6 @@
   "Engine coverage": {
     "message": "Engine coverage",
     "description": "Box title coverage"
-  },
-  "Check the current coverage of VTL in Trevas engine": {
-    "message": "Check the current coverage of VTL in Trevas engine",
-    "description": "Box description coverage"
-  },
-  "Trevas releases": {
-    "message": "Trevas releases",
-    "description": "Release title VTL"
-  },
-  "Explore the Trevas Maven releases": {
-    "message": "Explore the Trevas Maven releases",
-    "description": "Release description VTL"
   },
   "Search": {
     "message": "Search",
@@ -313,5 +293,37 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "Trevas TS": {
+    "message": "Trevas TS",
+    "description": "Box title Trevas"
+  },
+  "Getting started with Trevas TypeScript VTL engine": {
+    "message": "Getting started with Trevas TypeScript VTL engine",
+    "description": "Box description Trevas"
+  },
+  "Check the current coverage of VTL in Trevas TypeScript engine": {
+    "message": "Check the current coverage of VTL in Trevas TypeScript engine",
+    "description": "Box description coverage"
+  },
+  "Developper guide": {
+    "message": "Developper guide",
+    "description": "Developper guide title VTL"
+  },
+  "Explore how to use Trevas TS": {
+    "message": "Explore how to use Trevas TS",
+    "description": "Developper guide description VTL"
+  },
+  "Showcase": {
+    "message": "Showcase",
+    "description": "Showcase title VTL"
+  },
+  "Run through Storybook to try Trevas TypeScript engine": {
+    "message": "Run through Storybook to try Trevas TypeScript engine",
+    "description": "Showcase description VTL"
+  },
+  "Explore": {
+    "message": "Explore",
+    "description": "See more"
   }
 }
