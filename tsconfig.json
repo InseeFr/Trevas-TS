@@ -20,5 +20,6 @@
         "skipLibCheck": true,
         "baseUrl": "src",
         "types": ["vitest/globals"]
-    }
+    },
+    "exclude": ["docs"]
 }
