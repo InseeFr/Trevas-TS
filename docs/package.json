@@ -33,8 +33,6 @@
 		"@docusaurus/plugin-sitemap": "^3.5.2",
 		"@docusaurus/preset-classic": "^3.5.2",
 		"@docusaurus/theme-search-algolia": "^3.5.2",
-		"@making-sense/antlr-editor": "^2.0.0",
-		"@making-sense/vtl-2-0-antlr-tools-ts": "^2.0.1",
 		"@mdx-js/react": "^3.0.1",
 		"clsx": "^2.1.1",
 		"docusaurus-lunr-search": "^3.5.2",
