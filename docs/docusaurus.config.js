@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-	title: 'Trevas',
+	title: 'Trevas TS',
 	tagline: '',
 	url: 'https://trevas-ts.info',
 	baseUrl: '/Trevas-TS/docs',

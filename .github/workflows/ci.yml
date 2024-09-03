@@ -61,21 +61,13 @@ jobs:
             - run: yarn build-storybook
             - run: mkdir -p deploy/storybook
             - run: cp -R ./storybook-static. ./deploy/storybook
-            # Build bundle reports
-            - run: yarn analyze
-            - run: mkdir -p deploy/bundle-report
-            - run: cp -a ./packages/vtl-2.0-antlr-tools/bundle-report/. ./deploy/bundle-report
-            - run: cp -a ./packages/trevas/bundle-report/. ./deploy/bundle-report
-            - uses: actions/setup-node@v4
-              with:
-                  # Because of gitbook support
-                  node-version: 10
+            # Build documentation
             - run: |
-                  npm i -g gitbook-cli
-                  gitbook install
-                  gitbook build
+                  yarn install --frozen-lockfile
+                  yarn build
               working-directory: ./docs/
-            - run: cp -a ./docs/_book/. ./deploy/
+            - run: mkdir -p deploy/docs
+            - run: cp -R ./docs/build/. ./deploy/docs
             - name: Upload deploy artifact
               uses: actions/upload-artifact@v4
               with:
