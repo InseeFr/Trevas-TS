@@ -1,0 +1,42 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category Introduction in sidebar docs"
+  },
+  "sidebar.docs.category.Modules": {
+    "message": "Modules",
+    "description": "The label for category Modules in sidebar docs"
+  },
+  "sidebar.docs.category.Releases": {
+    "message": "Releases",
+    "description": "The label for category Releases in sidebar docs"
+  },
+  "sidebar.docs.category.Coverage": {
+    "message": "Coverage",
+    "description": "The label for category Coverage in sidebar docs"
+  },
+  "sidebar.docs.category.Developer guide": {
+    "message": "Developer guide",
+    "description": "The label for category Developer guide in sidebar docs"
+  },
+  "sidebar.docs.category.Basic mode": {
+    "message": "Basic mode",
+    "description": "The label for category Basic mode in sidebar docs"
+  },
+  "sidebar.docs.category.Data sources": {
+    "message": "Data sources",
+    "description": "The label for category Data sources in sidebar docs"
+  },
+  "sidebar.docs.category.Spark mode": {
+    "message": "Spark mode",
+    "description": "The label for category Spark mode in sidebar docs"
+  },
+  "sidebar.docs.link.Home": {
+    "message": "Home",
+    "description": "The label for link Home in sidebar docs, linking to /"
+  }
+}

@@ -1,0 +1,34 @@
+---
+id: index-webassembly-mode
+title: WebAssembly mode
+sidebar_label: WebAssembly mode
+slug: /developer-guide/webassembly-mode
+custom_edit_url: null
+---
+
+_Please note, this new feature is in the development phase_
+
+### Import the Trevas TS engine
+
+```bash
+yarn add @inseefr/trevas
+```
+
+### Configure WebAssembly mode and call the Trevas TS engine
+
+By default, Trevas TS engine will run `In-memory`.
+
+To configure an other implementation, you have to add the key `$vtl.engine.processing_engine_names` to your bindings.
+
+For WebAssembly mode, the value has to be `wasm`.
+
+```typescript
+import { interpret, type Bindings } from 'trevas';
+
+const bindings: Bindings = {
+	k: 'v',
+	'$vtl.engine.processing_engine_names': 'wasm',
+};
+
+const result = interpret('VTL expression', bindings);
+```
