@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 [![npm version](https://badge.fury.io/js/%40inseefr%2Ftrevas.svg)](https://badge.fury.io/js/%40inseefr%2Ftrevas)
 [![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@main/badge/badge-storybook.svg)](https://inseefr.github.io/Trevas-TS/storybook)
 
-[Trevas TS](https://github.com/InseeFr/Trevas-TS) is a TypeScript library for transforming and validating statistical data using the [VTL 2.0](https://sdmx.org/?page_id=5096) language.
+[Trevas TS](https://github.com/InseeFr/Trevas-TS) is a TypeScript library for transforming and validating statistical data using the [VTL 2.1](https://sdmx.org/?page_id=5096) language.
 
 ## What is VTL?
 
@@ -29,6 +29,8 @@ Have a look to the <a href={useBaseUrl('/coverage')}>coverage</a> section for mo
 
 ### Trevas TS >= 1.0.0
 
+The version of VTL is 2.1.
+
 The library exposes the `interpret` function, taking 2 arguments, the VTL expression and a bindings object.
 
 `BasicScalarTypes`, `Bindings`, `Component` and `Dataset` types are also exposed.
@@ -36,6 +38,8 @@ The library exposes the `interpret` function, taking 2 arguments, the VTL expres
 For more informations, a <a href={useBaseUrl('/developer-guide/webassembly-mode')}>developer guide</a> is available.
 
 ### Trevas TS < 1.0.0
+
+The version of VTL is 2.0.
 
 Versions below version 1.0.0 of Trevas were implemented in `JavaScript`, using `antlr4` and an inconsistent Dataset model.
 

@@ -53,18 +53,6 @@ export const Count = {
     }
 };
 
-export const FirstValue = {
-    args: {
-        inputScript: "first_value(DS_1 over())",
-        inputBindings: {
-            DS_1: {
-                dataStructure: [{ name: "col1", type: "INTEGER", role: "MEASURE" }],
-                dataPoints: [[1], [2], [3]]
-            }
-        }
-    }
-};
-
 export const Max = {
     args: {
         inputScript: "max(DS_1 group by Id_1)",
@@ -88,18 +76,6 @@ export const Min = {
         inputScript: "min(DS_1 group by Id_1)",
         inputBindings: {
             DS_1
-        }
-    }
-};
-
-export const LastValue = {
-    args: {
-        inputScript: "last_value(DS_1 over())",
-        inputBindings: {
-            DS_1: {
-                dataStructure: [{ name: "col1", type: "INTEGER", role: "MEASURE" }],
-                dataPoints: [[1], [2], [3]]
-            }
         }
     }
 };

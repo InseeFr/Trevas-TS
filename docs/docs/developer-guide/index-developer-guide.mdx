@@ -20,9 +20,23 @@ yarn add @inseefr/trevas
 ```typescript
 import { interpret, type Bindings } from 'trevas';
 
-const bindings: Bindings = { k: 'v' };
+const bindings: Bindings = {
+	sca: 1,
+	DS_1: {
+		dataStructure: [
+			{ name: 'id', type: 'STRING', role: 'IDENTIFIER' },
+			{ name: 'col1', type: 'INTEGER', role: 'MEASURE' },
+			{ name: 'col2', type: 'NUMBER', role: 'MEASURE' },
+		],
+		dataPoints: [
+			['a', 1, 1.1],
+			['b', 2, 2.2],
+			['c', 3, 303.33],
+		],
+	},
+};
 
-const result = interpret('VTL expression', bindings);
+const result = interpret('sca + DS_1', bindings);
 ```
 
 ### WebAssembly mode
