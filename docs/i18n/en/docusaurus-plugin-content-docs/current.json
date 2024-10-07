@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category Introduction in sidebar docs"
+  },
+  "sidebar.docs.category.Coverage": {
+    "message": "Coverage",
+    "description": "The label for category Coverage in sidebar docs"
+  },
+  "sidebar.docs.category.Developer guide": {
+    "message": "Developer guide",
+    "description": "The label for category Developer guide in sidebar docs"
+  },
+  "sidebar.docs.link.Home": {
+    "message": "Home",
+    "description": "The label for link Home in sidebar docs, linking to /"
+  }
+}
