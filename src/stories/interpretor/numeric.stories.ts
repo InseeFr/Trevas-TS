@@ -55,7 +55,7 @@ export const Power = {
 
 export const Random = {
     args: {
-        inputScript: "random()"
+        inputScript: "random(10, 10)"
     }
 };
 
