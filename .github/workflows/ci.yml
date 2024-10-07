@@ -1,4 +1,4 @@
-name: Trevas JS CI
+name: Trevas TS CI
 
 on: [push, pull_request]
 
