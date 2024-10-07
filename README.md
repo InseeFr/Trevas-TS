@@ -10,11 +10,17 @@ Trevas TS is a TypeScript engine for the [Validation and Transformation Language
 
 The documentation can be found in the [docs](https://github.com/InseeFr/Trevas-TS/tree/master/docs) folder and [browsed online](https://inseefr.github.io/Trevas-TS).
 
-### @inseefr/trevas
+## @inseefr/trevas
 
 [![npm version](https://badge.fury.io/js/%40inseefr%2Ftrevas.svg)](https://badge.fury.io/js/%40inseefr%2Ftrevas)
 
-The `trevas` package is the VTL engine itself, which exposes the `interpret` function root (named export).
+The `@inseefrtrevas` package is the VTL engine itself, which exposes the `interpret` function root (named export).
+
+### Versions
+
+VTL 2.1 is supported since Trevas TS >= 1.0.0
+
+VTL 2.0 was supported for Trevas TS < 1.0.0
 
 ## Getting started
 
@@ -62,7 +68,17 @@ yarn test-watch
 Run storybook:
 
 ```
-yarn start-storybook
+yarn storybook
+```
+
+### Documentation
+
+Run docusaurus documentation:
+
+```
+cd docs
+yarn
+yarn start
 ```
 
 ## Archived packages
@@ -84,7 +100,11 @@ The last version is 0.1.15.
 This library is deprecated and no longer maintained.
 The last version is 0.1.9.
 
+`@inseefr/trevas` is the next engine.
+
 ### @inseefr/vtl-2.1-antlr-tools
 
 This library is deprecated and no longer maintained.
 The last version is 1.0.0-rc2.
+
+See [here](https://github.com/Making-Sense-Info/VTL-2.1-ANTLR-Tools-TS) for replacing tools.
