@@ -6,7 +6,7 @@ import {
     Parser,
     RecognitionException
 } from "@making-sense/antlr4ng";
-import { Lexer as VtlLexer, Parser as VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
+import { Lexer as VtlLexer, Parser as VtlParser } from "@making-sense/vtl-2-1-antlr-tools-ts";
 import ExpressionVisitor from "./visitors/Expression";
 import { getTokenName } from "utilities";
 import { VisitorResult } from "model";

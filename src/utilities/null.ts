@@ -1,4 +1,4 @@
-import { ExprContext } from "@making-sense/vtl-2-0-antlr-tools-ts";
+import { ExprContext } from "@making-sense/vtl-2-1-antlr-tools-ts";
 import { VisitorResult } from "model";
 import { BasicScalarTypes } from "model/vtl";
 

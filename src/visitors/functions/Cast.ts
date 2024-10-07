@@ -2,7 +2,7 @@ import {
     CastExprDatasetContext,
     Parser as VtlParser,
     Visitor as VtlVisitor
-} from "@making-sense/vtl-2-0-antlr-tools-ts";
+} from "@making-sense/vtl-2-1-antlr-tools-ts";
 import ExpressionVisitor from "visitors/Expression";
 import { CastTypeError, OperatorTypeError } from "errors";
 import { Bindings, VisitorResult } from "model";

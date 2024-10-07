@@ -2,7 +2,7 @@ import {
     GroupByOrExceptContext,
     VtlParser,
     Visitor as VtlVisitor
-} from "@making-sense/vtl-2-0-antlr-tools-ts";
+} from "@making-sense/vtl-2-1-antlr-tools-ts";
 import { Component } from "model";
 
 class GroupVisitor extends VtlVisitor<string[]> {

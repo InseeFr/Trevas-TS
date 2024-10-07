@@ -2165,15 +2165,15 @@
   resolved "https://registry.yarnpkg.com/@making-sense/antlr4ng/-/antlr4ng-3.0.4.tgz#0669cfe4b8b0dccde1deebfb658e13595410034b"
   integrity sha512-grrhXCk7f5On2xC+xenRjPmb7b+Z10mnrSD7aa19Pn4cMv19HJuW2eAJNSWqgX++4zjvCHOovwiyBufEQVfcxg==
 
-"@making-sense/vtl-2-0-antlr-tools-ts@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-0-antlr-tools-ts/-/vtl-2-0-antlr-tools-ts-2.0.1.tgz#00312fa71a6bf35f39405268b57e339901f63ace"
-  integrity sha512-FIuIVgfPt0IUfDdhwWiaEi8bDVr1SltafiNONj+2iosTi6JPb1VZTkv1wb7qm1IZ+ylFoz5qeW0y52gJKPYSzQ==
+"@making-sense/vtl-2-1-antlr-tools-ts@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-1-antlr-tools-ts/-/vtl-2-1-antlr-tools-ts-1.0.1.tgz#e721e14d554d0c24accb39e2da846f231092d761"
+  integrity sha512-wa9nx8svCJC+NoU7gre6YRtO7V/nKiLdCZwrEa6c+Xb9gr77EPZCi1yGkcfytF6+KPatNJ0eboO4n5aZJdpNfA==
 
-"@making-sense/vtl-2-0-monaco-tools-ts@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-0-monaco-tools-ts/-/vtl-2-0-monaco-tools-ts-0.1.0.tgz#1c5e9740b0af5837a236924eca737a7e447cd238"
-  integrity sha512-q+k3A+TaHRXDR0bxh0wdb7xuTc8dG1CBn6ljzGcJwE9t3GppXJB69uoMGZyNRHz3NMaxsJTP61Gt3mjBFKHswQ==
+"@making-sense/vtl-2-1-monaco-tools-ts@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-1-monaco-tools-ts/-/vtl-2-1-monaco-tools-ts-1.0.0.tgz#fc7a9e8f0965a6c0ce3f84c268e9cec171ffae2e"
+  integrity sha512-79BzZ7CFEuIsOoTHPWP5RUTgd1yWRW9BynJ/xsZwlt8MdEhxTTm38JCcZdKlYDDCq5SRujks2a2fHV4Yueafqg==
 
 "@monaco-editor/loader@^1.4.0":
   version "1.4.0"
@@ -6877,6 +6877,7 @@ string-length@^4.0.1:
     strip-ansi "^6.0.0"
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.2.3:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -6920,6 +6921,7 @@ stringify-object@^3.3.0:
     is-regexp "^1.0.0"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==

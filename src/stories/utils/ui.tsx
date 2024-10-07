@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { AntlrEditor } from "@making-sense/antlr-editor";
-import * as VTLTools from "@making-sense/vtl-2-0-antlr-tools-ts";
+import * as VTLTools from "@making-sense/vtl-2-1-antlr-tools-ts";
 import * as JSONTools from "json-antlr-tools-ts";
-import { getSuggestionsFromRange, monarchDefinition } from "@making-sense/vtl-2-0-monaco-tools-ts";
+import { getSuggestionsFromRange, monarchDefinition } from "@making-sense/vtl-2-1-monaco-tools-ts";
 import interpret from "../../interpretor";
 import { buildVtlBindings, buildJSONBindings } from "./ds";
 import "./ui.css";

@@ -3,7 +3,7 @@ import {
     ConstantExprContext,
     Parser as VtlParser,
     Visitor as VtlVisitor
-} from "@making-sense/vtl-2-0-antlr-tools-ts";
+} from "@making-sense/vtl-2-1-antlr-tools-ts";
 import { getTokenType, replaceConstantType } from "utilities";
 import { VisitorResult } from "model";
 import { BasicScalarTypes } from "model/vtl";

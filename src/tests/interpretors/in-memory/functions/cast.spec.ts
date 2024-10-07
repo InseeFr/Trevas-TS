@@ -1,4 +1,4 @@
-import { VtlParser } from "@making-sense/vtl-2-0-antlr-tools-ts";
+import { VtlParser } from "@making-sense/vtl-2-1-antlr-tools-ts";
 import { Dataset } from "model/vtl";
 import interpret, { interpretVar } from "../../../../interpretor";
 import { CastTypeError } from "errors";

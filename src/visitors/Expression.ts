@@ -26,7 +26,7 @@ import {
     AggregateFunctionsContext,
     AnalyticFunctionsContext,
     ExprContext
-} from "@making-sense/vtl-2-0-antlr-tools-ts";
+} from "@making-sense/vtl-2-1-antlr-tools-ts";
 import ArithmeticVisitor from "./Arithmetic";
 import BooleanVisitor from "./Boolean";
 import IfThenElse from "./Conditional";

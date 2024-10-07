@@ -7,7 +7,7 @@ import {
     UnaryWithOptionalNumericContext,
     Parser as VtlParser,
     Visitor as VtlVisitor
-} from "@making-sense/vtl-2-0-antlr-tools-ts";
+} from "@making-sense/vtl-2-1-antlr-tools-ts";
 import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, hasNullArgs } from "utilities";
 import { Bindings, VisitorResult } from "model";
