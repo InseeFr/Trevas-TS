@@ -284,9 +284,8 @@ describe("numeric-functions", () => {
                     }).toThrow();
                 });
                 it("should return random numbers", () => {
-                    const res = interpret("random(111, 1)", {});
-                    expect(res).toBeGreaterThanOrEqual(0);
-                    expect(res).toBeLessThan(1);
+                    const res = interpret("round(random(111, 1), 2)", {});
+                    expect(res).toEqual(0.25);
                 });
             });
         });
