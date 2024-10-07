@@ -1,8 +1,6 @@
 import {
     BinaryNumericContext,
     ExprContext,
-    OptionalExprContext,
-    OptionalNumericContext,
     UnaryNumericContext,
     UnaryWithOptionalNumericContext,
     Parser as VtlParser,
@@ -12,6 +10,7 @@ import { TypeMismatchError } from "errors";
 import { ensureContextAreDefined, hasNullArgs } from "utilities";
 import { Bindings, VisitorResult } from "model";
 import ExpressionVisitor from "visitors/Expression";
+import Rand, { PRNG } from "rand-seed";
 
 class NumericVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;
@@ -19,44 +18,6 @@ class NumericVisitor extends VtlVisitor<VisitorResult> {
         super();
         this.exprVisitor = exprVisitor;
     }
-
-    visitOptionalNumeric = (ctx: OptionalNumericContext) => {
-        const { _op: op } = ctx;
-
-        const optionalExpr = (
-            ctx.optionalExpr()
-                ? this.exprVisitor.visit(ctx.optionalExpr() as OptionalExprContext)
-                : { resolve: () => 0, type: VtlParser.INTEGER }
-        ) as VisitorResult;
-
-        const expectedTypes = [VtlParser.INTEGER, VtlParser.NUMBER, VtlParser.NULL_CONSTANT];
-
-        if (ctx.optionalExpr() && !expectedTypes.includes(optionalExpr.type)) {
-            throw new TypeMismatchError(ctx.optionalExpr(), expectedTypes, op?.type);
-        }
-
-        let operatorFunction: () => number;
-        let type;
-
-        switch (op?.type) {
-            // handle better when input param is not null
-            case VtlParser.RANDOM:
-                operatorFunction = () => Math.random();
-                type = optionalExpr?.type;
-                break;
-            default:
-                throw new Error(`unknown operator ${op?.text}`);
-        }
-
-        return {
-            resolve: (bindings: Bindings) => {
-                const exprValue = optionalExpr?.resolve(bindings);
-                if (hasNullArgs(exprValue)) return null;
-                return operatorFunction();
-            },
-            type
-        };
-    };
 
     visitUnaryNumeric = (ctx: UnaryNumericContext) => {
         const { _op: op } = ctx;
@@ -207,6 +168,14 @@ class NumericVisitor extends VtlVisitor<VisitorResult> {
                     leftExpr.type === VtlParser.INTEGER && rightExpr.type === VtlParser.INTEGER
                         ? VtlParser.INTEGER
                         : VtlParser.NUMBER;
+                break;
+            case VtlParser.RANDOM:
+                operatorFunction = (lE: number, rE: number) => {
+                    const rand = new Rand(lE.toString(), PRNG.sfc32);
+                    const array = Array.from({ length: rE }, () => rand.next());
+                    return array.pop() as number;
+                };
+                type = VtlParser.NUMBER;
                 break;
             default:
                 throw new Error(`unknown operator ${op?.text}`);

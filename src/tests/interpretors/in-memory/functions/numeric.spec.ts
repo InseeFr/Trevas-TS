@@ -3,7 +3,7 @@ import interpret from "../../../../interpretor";
 describe("numeric-functions", () => {
     describe("supports numeric functions with null", () => {
         it("supports random with null", () => {
-            expect(interpret("random(null)", {})).toBeNull();
+            expect(interpret("random(null, null)", {})).toBeNull();
         });
         it("supports abs with null", () => {
             expect(interpret("abs(null)", {})).toBeNull();
@@ -40,21 +40,6 @@ describe("numeric-functions", () => {
         it("supports power with null", () => {
             expect(interpret("power(null, 2)", {})).toBeNull();
             expect(interpret("power(5, null)", {})).toBeNull();
-        });
-    });
-
-    describe("optional operators", () => {
-        describe("tests on the random function", () => {
-            it("should throw an error for string operands", () => {
-                expect(() => {
-                    interpret('random("test")', {});
-                }).toThrow();
-            });
-            it("should return random numbers", () => {
-                const res = interpret("random()", {});
-                expect(res).toBeGreaterThanOrEqual(0);
-                expect(res).toBeLessThan(1);
-            });
         });
     });
 
@@ -290,6 +275,18 @@ describe("numeric-functions", () => {
                 it("should return power on numbers", () => {
                     expect(interpret("power(5.0, 2)", {})).toEqual(25.0);
                     expect(interpret("power( 5, -1.0)", {})).toEqual(0.2);
+                });
+            });
+            describe("tests on the random function", () => {
+                it("should throw an error for string operands", () => {
+                    expect(() => {
+                        interpret('random("111", 1)', {});
+                    }).toThrow();
+                });
+                it("should return random numbers", () => {
+                    const res = interpret("random(111, 1)", {});
+                    expect(res).toBeGreaterThanOrEqual(0);
+                    expect(res).toBeLessThan(1);
                 });
             });
         });
