@@ -2165,15 +2165,15 @@
   resolved "https://registry.yarnpkg.com/@making-sense/antlr4ng/-/antlr4ng-3.0.4.tgz#0669cfe4b8b0dccde1deebfb658e13595410034b"
   integrity sha512-grrhXCk7f5On2xC+xenRjPmb7b+Z10mnrSD7aa19Pn4cMv19HJuW2eAJNSWqgX++4zjvCHOovwiyBufEQVfcxg==
 
-"@making-sense/vtl-2-1-antlr-tools-ts@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-1-antlr-tools-ts/-/vtl-2-1-antlr-tools-ts-1.0.1.tgz#e721e14d554d0c24accb39e2da846f231092d761"
-  integrity sha512-wa9nx8svCJC+NoU7gre6YRtO7V/nKiLdCZwrEa6c+Xb9gr77EPZCi1yGkcfytF6+KPatNJ0eboO4n5aZJdpNfA==
+"@making-sense/vtl-2-1-antlr-tools-ts@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-1-antlr-tools-ts/-/vtl-2-1-antlr-tools-ts-1.0.2.tgz#4c57a99c3c90ae38fa478cbb2e2f29232ad42386"
+  integrity sha512-NYp4YbTUbvT1+IlgEPrci3qC5FwdUW2lcoxLV5220gahmOLizmIbRcBOMIHuuFtNwHajla78a3fzKmPVZgNPYw==
 
-"@making-sense/vtl-2-1-monaco-tools-ts@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-1-monaco-tools-ts/-/vtl-2-1-monaco-tools-ts-1.0.0.tgz#fc7a9e8f0965a6c0ce3f84c268e9cec171ffae2e"
-  integrity sha512-79BzZ7CFEuIsOoTHPWP5RUTgd1yWRW9BynJ/xsZwlt8MdEhxTTm38JCcZdKlYDDCq5SRujks2a2fHV4Yueafqg==
+"@making-sense/vtl-2-1-monaco-tools-ts@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@making-sense/vtl-2-1-monaco-tools-ts/-/vtl-2-1-monaco-tools-ts-1.0.1.tgz#21b4528f7e8cc990627524533104ed1e12c0d69f"
+  integrity sha512-elZlvqp8wt6I3Pp8dLsckFt9ISy6GycvVtLJkovFIZbpV0jEA1u2XosdQGUthzJFdZh16rLjWvr8+0NuGAdaxQ==
 
 "@monaco-editor/loader@^1.4.0":
   version "1.4.0"
