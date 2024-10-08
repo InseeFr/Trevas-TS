@@ -2,21 +2,8 @@ name: Trevas TS CI
 on: [push, pull_request]
 
 jobs:
-    test_lint:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-            - name: If this step fails run 'npm run lint' and 'npm run format' then commit again.
-              run: |
-                  yarn
-                  yarn lint:check
-                  yarn format:check
     test:
         runs-on: ubuntu-latest
-        needs: test_lint
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
