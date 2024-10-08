@@ -68,8 +68,6 @@
         "@babel/preset-react": "^7.25.7",
         "@babel/preset-typescript": "^7.25.7",
         "@making-sense/antlr-editor": "^2.0.1",
-        "@making-sense/antlr4ng": "^3.0.4",
-        "@making-sense/vtl-2-1-antlr-tools-ts": "^1.0.3",
         "@making-sense/vtl-2-1-monaco-tools-ts": "^1.0.1",
         "@storybook/react": "^8.3.5",
         "@storybook/react-vite": "^8.3.5",
@@ -103,6 +101,8 @@
         "access": "public"
     },
     "dependencies": {
+        "@making-sense/antlr4ng": "^3.0.4",
+        "@making-sense/vtl-2-1-antlr-tools-ts": "^1.0.3",
         "danfojs": "^1.1.2",
         "lodash.isequal": "^4.5.0",
         "rand-seed": "^2.1.7"
