@@ -1,6 +1,6 @@
 {
     "name": "@inseefr/trevas",
-    "version": "1.0.0-rc4",
+    "version": "1.0.0-rc5",
     "description": "TypeScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
     "repository": {
         "type": "git",
