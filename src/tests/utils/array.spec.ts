@@ -1,4 +1,4 @@
-import { transpose } from "utilities";
+import { transpose } from "../../utilities";
 
 describe("array utils functions", () => {
     it("transpose", () => {

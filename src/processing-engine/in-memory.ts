@@ -9,7 +9,7 @@ import {
     getMeasures,
     getVariance,
     transpose
-} from "utilities";
+} from "../utilities";
 
 export const executeDrop = (ds: Dataset, measuresToDrop: string[]): Dataset => {
     const { dataPoints, dataStructure } = ds;

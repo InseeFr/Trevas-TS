@@ -44,7 +44,7 @@ import {
     DatasetFunctionsVisitor,
     DateVisitor
 } from "./functions";
-import { VisitorResult, Bindings } from "model";
+import { VisitorResult, Bindings } from "../model";
 import { DatasetImplementations, getDatasetImplementations } from "processing-engine";
 
 class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {

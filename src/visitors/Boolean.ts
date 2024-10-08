@@ -5,9 +5,9 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import { TypeMismatchError } from "errors";
-import { ensureContextAreDefined, hasNullArgs } from "utilities";
-import { VisitorResult, Bindings } from "model";
+import { TypeMismatchError } from "../errors";
+import { ensureContextAreDefined, hasNullArgs } from "../utilities";
+import { VisitorResult, Bindings } from "../model";
 import ExpressionVisitor from "./Expression";
 
 const handleAnd = (leftExpr: VisitorResult, rightExpr: VisitorResult) => ({

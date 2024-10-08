@@ -1,5 +1,5 @@
 import { ParserRuleContext, RecognitionException } from "@making-sense/antlr4ng";
-import { getTokenName } from "utilities";
+import { getTokenName } from "../utilities";
 
 class IncompatibleTypeError extends RecognitionException {
     constructor(ctx: ParserRuleContext, expected: number | undefined, found: number | undefined) {

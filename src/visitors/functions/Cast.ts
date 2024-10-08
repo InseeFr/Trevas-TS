@@ -4,9 +4,9 @@ import {
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
 import ExpressionVisitor from "visitors/Expression";
-import { CastTypeError, OperatorTypeError } from "errors";
-import { Bindings, VisitorResult } from "model";
-import { getDate, getStringFromDate, hasNullArgs } from "utilities";
+import { CastTypeError, OperatorTypeError } from "../../errors";
+import { Bindings, VisitorResult } from "../../model";
+import { getDate, getStringFromDate, hasNullArgs } from "../../utilities";
 
 class CastVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;

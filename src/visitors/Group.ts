@@ -3,7 +3,7 @@ import {
     VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import { Component } from "model";
+import { Component } from "../model";
 
 class GroupVisitor extends VtlVisitor<string[]> {
     dataStructure;

@@ -5,9 +5,9 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import { TypeMismatchError } from "errors";
-import { ensureContextAreDefined, validateMeasuresTypes } from "utilities";
-import { BasicScalarTypes, Dataset, VisitorResult, Bindings } from "model";
+import { TypeMismatchError } from "../../errors";
+import { ensureContextAreDefined, validateMeasuresTypes } from "../../utilities";
+import { BasicScalarTypes, Dataset, VisitorResult, Bindings } from "../../model";
 import ExpressionVisitor from "visitors/Expression";
 import GroupVisitor from "visitors/Group";
 import { DatasetImplementations } from "processing-engine";

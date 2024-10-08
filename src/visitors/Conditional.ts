@@ -5,9 +5,9 @@ import {
     Parser as VtlParser,
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import { IncompatibleTypeError, TypeMismatchError } from "errors";
-import { ensureContextAreDefined, hasNullArgs } from "utilities";
-import { Bindings, VisitorResult } from "model";
+import { IncompatibleTypeError, TypeMismatchError } from "../errors";
+import { ensureContextAreDefined, hasNullArgs } from "../utilities";
+import { Bindings, VisitorResult } from "../model";
 import ExpressionVisitor from "./Expression";
 
 const handleIntegerAndNumber = (aType: any | undefined, bType: any | undefined) => {
