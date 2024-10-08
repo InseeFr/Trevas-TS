@@ -14,6 +14,21 @@ describe("conditional", () => {
             IncompatibleTypeError
         );
     });
+    it.skip("supports case with null", () => {
+        expect(interpret('case when null then "then" else "else"', {})).toEqual("else");
+        expect(interpret('case when true then null else "else"', {})).toBeNull();
+        expect(interpret('case when false then "then" else null', {})).toBeNull();
+    });
+    it.skip("supports case", () => {
+        expect(interpret('case when true then "then1" else "else"', {})).toEqual("then1");
+        expect(interpret('case when false then "then1" when true then "then2" else "else"', {})).toEqual(
+            "then2"
+        );
+        expect(
+            interpret('case when false then "then1" when 1 = 2 then "then2" else "else"', {})
+        ).toEqual("else");
+        expect(() => interpret('case when true then "then1" else 1', {})).toThrow(IncompatibleTypeError);
+    });
     it("tests on the nvl function", () => {
         expect(interpret("nvl(5, 0)", {})).toEqual(5);
         expect(interpret("nvl(5, null)", {})).toEqual(5);

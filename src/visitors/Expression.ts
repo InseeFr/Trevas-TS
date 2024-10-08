@@ -25,11 +25,12 @@ import {
     NumericFunctionsContext,
     AggregateFunctionsContext,
     AnalyticFunctionsContext,
-    ExprContext
+    ExprContext,
+    CaseExprContext
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
 import ArithmeticVisitor from "./Arithmetic";
 import BooleanVisitor from "./Boolean";
-import IfThenElse from "./Conditional";
+import ConditionalVisitor from "./Conditional";
 import VariableVisitor from "./Variable";
 import LiteralVisitor from "./Literal";
 import ComparisonVisitor from "./Comparison";
@@ -55,7 +56,7 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
     comparisonVisitor: ComparisonVisitor;
     concatenationVisitor: ConcatenationVisitor;
     dateFunctionVisitor: DateVisitor;
-    ifThenElseVisitor: IfThenElse;
+    conditionalVisitor: ConditionalVisitor;
     literalVisitor: LiteralVisitor;
     comparisonFunctionVisitor: ComparisonFunctionVisitor;
     numericFunctionsVisitor: NumericFunctionsVisitor;
@@ -73,7 +74,7 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
         this.comparisonVisitor = new ComparisonVisitor(this);
         this.concatenationVisitor = new ConcatenationVisitor(this);
         this.dateFunctionVisitor = new DateVisitor();
-        this.ifThenElseVisitor = new IfThenElse(this);
+        this.conditionalVisitor = new ConditionalVisitor(this);
         this.literalVisitor = new LiteralVisitor();
         this.comparisonFunctionVisitor = new ComparisonFunctionVisitor(this);
         this.numericFunctionsVisitor = new NumericFunctionsVisitor(this);
@@ -105,14 +106,16 @@ class ExpressionVisitor extends VtlVisitor<VisitorResult | null> {
 
     visitParenthesisExpr = (ctx: ParenthesisExprContext) => this.visit(ctx.expr());
 
-    visitIfExpr = (ctx: IfExprContext) => this.ifThenElseVisitor.visit(ctx);
-
     visitConditionalFunctions = (ctx: ConditionalFunctionsContext) => {
         const o = ctx.conditionalOperators();
         return o === null ? null : this.visit(o);
     };
 
-    visitNvlAtom = (ctx: NvlAtomContext) => this.ifThenElseVisitor.visit(ctx);
+    visitIfExpr = (ctx: IfExprContext) => this.conditionalVisitor.visit(ctx);
+
+    visitCaseExpr = (ctx: CaseExprContext) => this.conditionalVisitor.visit(ctx);
+
+    visitNvlAtom = (ctx: NvlAtomContext) => this.conditionalVisitor.visit(ctx);
 
     // TODO: Optional expression should handle missing values.
     visitOptionalExpr = (ctx: OptionalExprContext) =>
