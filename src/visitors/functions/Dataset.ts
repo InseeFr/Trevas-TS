@@ -8,9 +8,9 @@ import {
 import { TypeMismatchError } from "../../errors";
 import { ensureContextAreDefined, validateMeasuresTypes } from "../../utilities";
 import { BasicScalarTypes, Dataset, VisitorResult, Bindings } from "../../model";
-import ExpressionVisitor from "visitors/Expression";
-import GroupVisitor from "visitors/Group";
-import { DatasetImplementations } from "processing-engine";
+import ExpressionVisitor from "../Expression";
+import GroupVisitor from "../Group";
+import { DatasetImplementations } from "../../processing-engine";
 
 class DatasetVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;

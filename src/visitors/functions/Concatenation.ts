@@ -5,7 +5,7 @@ import {
     Visitor as VtlVisitor
 } from "@making-sense/vtl-2-1-antlr-tools-ts";
 import { Bindings, VisitorResult } from "../../model";
-import ExpressionVisitor from "visitors/Expression";
+import ExpressionVisitor from "../Expression";
 import { ensureContextAreDefined, ensureHadTypes } from "../../utilities";
 
 class ConcatenationVisitor extends VtlVisitor<VisitorResult> {

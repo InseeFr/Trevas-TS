@@ -18,7 +18,7 @@ import {
 } from "../utilities";
 import { Dataset, Param, VisitorResult, Bindings } from "../model";
 import ExpressionVisitor from "./Expression";
-import { DatasetImplementations } from "processing-engine";
+import { DatasetImplementations } from "../processing-engine";
 
 const getType = (...args: (VisitorResult | null)[]) => {
     const types = args.map(a => a?.type);

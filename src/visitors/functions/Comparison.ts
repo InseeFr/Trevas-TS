@@ -9,7 +9,7 @@ import {
 import { TypeMismatchError } from "../../errors";
 import { ensureContextAreDefined, ensureHadTypes, hasNullArgs } from "../../utilities";
 import { Bindings, VisitorResult } from "../../model";
-import ExpressionVisitor from "visitors/Expression";
+import ExpressionVisitor from "../Expression";
 
 class ComparisonVisitor extends VtlVisitor<VisitorResult> {
     exprVisitor: ExpressionVisitor;

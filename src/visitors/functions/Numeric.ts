@@ -9,7 +9,7 @@ import {
 import { TypeMismatchError } from "../../errors";
 import { ensureContextAreDefined, hasNullArgs } from "../../utilities";
 import { Bindings, VisitorResult } from "../../model";
-import ExpressionVisitor from "visitors/Expression";
+import ExpressionVisitor from "../Expression";
 import Rand, { PRNG } from "rand-seed";
 
 class NumericVisitor extends VtlVisitor<VisitorResult> {
