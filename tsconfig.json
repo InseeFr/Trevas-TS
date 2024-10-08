@@ -18,7 +18,8 @@
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "baseUrl": "src",
-        "types": ["vitest/globals"]
+        "types": ["vitest/globals"],
+        "moduleResolution": "Node"
     },
     "include": ["src"],
     "exclude": ["docs"]
