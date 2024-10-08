@@ -20,5 +20,6 @@
         "baseUrl": "src",
         "types": ["vitest/globals"]
     },
+    "include": ["src"],
     "exclude": ["docs"]
 }
