@@ -145,7 +145,7 @@ jobs:
             # Build Storybook
             - run: yarn build-storybook
             - run: mkdir -p deploy/storybook
-            - run: cp -R ./storybook-static. ./deploy/storybook
+            - run: cp -R ./storybook-static ./deploy/storybook
             # Build documentation
             - run: |
                   yarn install --frozen-lockfile
