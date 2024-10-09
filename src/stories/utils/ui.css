@@ -1,0 +1,84 @@
+.editors {
+    display: flex;
+}
+
+.vtl-editor {
+    width: 59%;
+    margin-right: 2%;
+}
+
+.json-editor {
+    width: 39%;
+}
+
+.centered {
+    text-align: center;
+}
+
+.res-btn-container {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.res-error {
+    color: red;
+    font-size: 200%;
+}
+
+.res-btn {
+    background-color: #9211ff;
+    border: 0;
+    border-radius: 56px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    outline: 0;
+    padding: 16px 21px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.res-btn:before {
+    background-color: initial;
+    background-image: linear-gradient(#fff 0, rgba(255, 255, 255, 0) 100%);
+    border-radius: 125px;
+    content: "";
+    height: 50%;
+    left: 4%;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    transition: all 0.3s;
+    width: 92%;
+}
+
+.res-btn:hover {
+    box-shadow:
+        rgba(255, 255, 255, 0.2) 0 3px 15px inset,
+        rgba(0, 0, 0, 0.1) 0 3px 5px,
+        rgba(0, 0, 0, 0.1) 0 10px 13px;
+    transform: scale(1.05);
+}
+
+.res-btn:disabled {
+    background-color: gray;
+}
+.res-btn:hover:disabled {
+    box-shadow: none;
+    transform: none;
+    cursor: default;
+}
+
+@media (min-width: 768px) {
+    .res-btn {
+        padding: 16px 48px;
+    }
+}
