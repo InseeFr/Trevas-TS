@@ -1,6 +1,6 @@
 {
     "presets": [
-        ["@babel/preset-env", { "modules": false, "target": { "node": true } }],
+        ["@babel/preset-env", { "modules": false, "targets": { "node": true } }],
         "@babel/preset-react"
     ],
     "plugins": [
