@@ -6,9 +6,9 @@ Trevas TS is a TypeScript engine for the [Validation and Transformation Language
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-TS&metric=coverage)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-TS)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-TS&metric=alert_status)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-TS)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@main/badge/badge-storybook.svg)](https://inseefr.github.io/Trevas-TS/storybook)
+[![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@main/badge/badge-storybook.svg)](https://inseefr.github.io/Trevas-TS/storybook/storybook-static)
 
-The documentation can be found in the [docs](https://github.com/InseeFr/Trevas-TS/tree/master/docs) folder and [browsed online](https://inseefr.github.io/Trevas-TS).
+The documentation can be found in the [docs](https://github.com/InseeFr/Trevas-TS/tree/master/docs) folder and [browsed online](https://inseefr.github.io/Trevas-TS/docs).
 
 ## @inseefr/trevas
 
