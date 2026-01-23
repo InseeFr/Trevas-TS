@@ -16,16 +16,16 @@
 		"build": "docusaurus build",
 		"swizzle": "docusaurus swizzle",
 		"deploy": "docusaurus deploy",
-		"postinstall": "yarn write-translations",
+		"postinstall": "pnpm write-translations",
 		"format:js": "prettier --loglevel warn --write \"src/**/*.{js,ts,jsx,tsx}\" \"docs/**/*.{md,mdx}\"",
 		"format:docs": "prettier --loglevel warn --write \"docs/**/*.{md,mdx}\"",
-		"format": "yarn format:js && yarn format:docs",
+		"format": "pnpm format:js && pnpm format:docs",
 		"lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json --fix",
 		"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --parser-options=project:tsconfig.json",
 		"clear": "docusaurus clear",
 		"serve": "docusaurus serve",
-		"build-serve": "yarn build && yarn serve",
-		"write-translations": "docusaurus write-translations & yarn format:docs"
+		"build-serve": "pnpm build && pnpm serve",
+		"write-translations": "docusaurus write-translations & pnpm format:docs"
 	},
 	"dependencies": {
 		"@docusaurus/core": "^3.5.2",

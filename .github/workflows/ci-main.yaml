@@ -1,0 +1,153 @@
+name: Main CI
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.head_commit.author.name != 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - run: pnpm run build
+
+  build-deploy-assets:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: "pnpm"
+      # Build Storybook v2
+      - run: pnpm install --frozen-lockfile && pnpm run build-storybook
+      # Add json to fetch for suggester stories
+      - run: cp -a ./public/. ./storybook-static
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          destination_dir: ./storybook
+      - name: build docs website
+        working-directory: ./docs/
+        run: pnpm install --frozen-lockfile && pnpm run build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build
+          destination_dir: ./docs
+
+  check_if_version_upgraded:
+    name: Check if version upgrade
+    needs: build
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event.pull_request.head.repo.owner.login == github.event.pull_request.base.repo.owner.login
+    outputs:
+      version: ${{ steps.version.outputs.prop }}
+      is_version_changed: ${{ steps.check.outputs.exists == 'false' }}
+      is_pre_release: ${{ contains(steps.version.outputs.prop, '-rc' ) }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "package.json"
+          prop_path: "version"
+      ## we check if repo contains already this tag, if not version, has changed
+      - uses: mukunku/tag-exists-action@v1.7.0
+        id: check
+        with:
+          tag: ${{ steps.version.outputs.prop }}
+
+  create_github_release:
+    runs-on: ubuntu-latest
+    # We create release only if the version in the package.json have been upgraded and this CI is running against the main branch.
+    # We allow branches with a PR open on main to publish pre-release (x.y.z-rc.u) but not actual releases.
+    if: |
+      (github.event_name == 'push' || needs.check_if_version_upgraded.outputs.is_pre_release == 'true') && 
+      needs.check_if_version_upgraded.outputs.is_version_changed == 'true'
+    needs:
+      - check_if_version_upgraded
+    steps:
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ needs.check_if_version_upgraded.outputs.version }}
+          tag_name: ${{ needs.check_if_version_upgraded.outputs.version }}
+          target_commitish: ${{ github.head_ref || github.ref }}
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ needs.check_if_version_upgraded.outputs.is_pre_release == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish_on_npm:
+    runs-on: ubuntu-latest
+    needs:
+      - create_github_release
+      - check_if_version_upgraded
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - run: pnpm run build
+      - run: npx -y -p denoify@1.6.13 enable_short_npm_import_path
+        env:
+          DRY_RUN: "0"
+      - uses: garronej/ts-ci@v2.1.5
+        with:
+          action_name: remove_dark_mode_specific_images_from_readme
+      - name: Publishing on NPM
+        run: |
+          if [ "$(npm show . version)" = "$VERSION" ]; then
+            echo "This version is already published"
+            exit 0
+          fi
+          if [ "$NODE_AUTH_TOKEN" = "" ]; then
+            echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
+            false
+          fi
+          EXTRA_ARGS=""
+          if [ "$IS_PRE_RELEASE" = "true" ]; then
+              EXTRA_ARGS="--tag beta"
+          fi
+          npm publish $EXTRA_ARGS
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          VERSION: ${{ needs.check_if_version_upgraded.outputs.version }}
+          IS_PRE_RELEASE: ${{ needs.check_if_version_upgraded.outputs.is_pre_release }}

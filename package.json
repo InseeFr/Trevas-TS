@@ -8,10 +8,11 @@
     },
     "license": "MIT",
     "author": "INSEE (http://www.insee.fr)",
+    "packageManager": "pnpm@10.28.1",
     "scripts": {
         "build": "tsc",
         "test": "vitest",
-        "test-coverage": "vitest run --coverage",
+        "test:coverage": "vitest run --coverage",
         "storybook": "storybook dev",
         "build-storybook": "storybook build",
         "lint:check": "eslint . --ext .ts,.tsx",
