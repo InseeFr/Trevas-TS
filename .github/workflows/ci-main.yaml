@@ -13,8 +13,6 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
           node-version: 24
@@ -23,42 +21,40 @@ jobs:
         run: pnpm install
       - run: pnpm run build
 
-  build-deploy-assets:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    steps:
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v8
-      - uses: actions/checkout@v6
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: "pnpm"
-      # Build Storybook v2
-      - run: pnpm install --frozen-lockfile && pnpm run build-storybook
-      # Add json to fetch for suggester stories
-      - run: cp -a ./public/. ./storybook-static
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./storybook-static
-          destination_dir: ./storybook
-      - name: build docs website
-        working-directory: ./docs/
-        run: pnpm install --frozen-lockfile && pnpm run build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/build
-          destination_dir: ./docs
+  # build-deploy-assets:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push'
+  #   steps:
+  #     - name: Get branch name
+  #       id: branch-name
+  #       uses: tj-actions/branch-names@v8
+  #     - uses: actions/checkout@v6
+  #     - name: Install pnpm
+  #       uses: pnpm/action-setup@v4
+  #     - uses: actions/setup-node@v6
+  #       with:
+  #         node-version: 24
+  #         cache: "pnpm"
+  #     # Build Storybook v2
+  #     - run: pnpm install --frozen-lockfile && pnpm run build-storybook
+  #     # Add json to fetch for suggester stories
+  #     - run: cp -a ./public/. ./storybook-static
+  #     - name: Deploy to GitHub Pages
+  #       uses: peaceiris/actions-gh-pages@v4
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         publish_dir: ./storybook-static
+  #         destination_dir: ./storybook
+  #     - name: build docs website
+  #       working-directory: ./docs/
+  #       run: pnpm install --frozen-lockfile && pnpm run build
+  #     - name: Deploy to GitHub Pages
+  #       uses: peaceiris/actions-gh-pages@v4
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         publish_dir: ./docs/build
+  #         destination_dir: ./docs
 
   check_if_version_upgraded:
     name: Check if version upgrade
@@ -116,8 +112,6 @@ jobs:
           ref: ${{ github.ref }}
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
           node-version: 24

@@ -63,7 +63,7 @@ Run with hot reloading:
 pnpm test-watch
 ```
 
-### Storybook
+### Storybook - ⚠️ Temporarily not working
 
 Run storybook:
 
@@ -71,7 +71,7 @@ Run storybook:
 pnpm storybook
 ```
 
-### Documentation
+### Documentation - ⚠️ Temporarily not working
 
 Run docusaurus documentation:
 
