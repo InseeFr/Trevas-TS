@@ -1,5 +1,5 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import * as dfd from "danfojs/dist/danfojs-browser/src";
+import { merge } from "danfojs";
 import { BasicScalarTypes, Dataset, CalcConfig } from "model";
 import {
     buildDataStructureIndexes,
@@ -58,7 +58,7 @@ export const executeInnerJoin = (ds1: Dataset, ds2: Dataset): Dataset => {
     // TODO throw if common measures
     const ds1InternalDataset = getInternalDatasetFromDataset(ds1);
     const ds2InternalDataset = getInternalDatasetFromDataset(ds2);
-    const mergedDs = dfd.merge({
+    const mergedDs = merge({
         left: ds1InternalDataset.dataset,
         right: ds2InternalDataset.dataset,
         on: getInternalDatasetIds(ds1InternalDataset),

@@ -1,6 +1,6 @@
-import * as dfd from "danfojs/dist/danfojs-browser/src";
+import { DataFrame } from "danfojs";
 import { BasicScalarTypes, Component, Dataset } from "./vtl";
 
-export type InternalDataset = { dataStructure: Component[]; dataset: dfd.DataFrame };
+export type InternalDataset = { dataStructure: Component[]; dataset: DataFrame };
 
 export type Bindings = Record<string, BasicScalarTypes | Dataset>;
