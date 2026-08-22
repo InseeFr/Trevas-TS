@@ -25,7 +25,8 @@ class InNotInVisitor extends VtlVisitor<VisitorResult> {
      * @returns
      */
     visitInNotInExpr = (ctx: InNotInExprContext) => {
-        const { _left: left, _op: op } = ctx;
+        const left = ctx.expr();
+        const op = ctx._op;
 
         ensureContextAreDefined(left);
 
