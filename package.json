@@ -57,7 +57,7 @@
         }
     ],
     "devDependencies": {
-        "@making-sense/antlr-editor": "^2.9.3",
+        "@making-sense/antlr-editor": "^2.9.4",
         "@making-sense/vtl-2-1-monaco-tools-ts": "^1.0.2",
         "@storybook/addon-docs": "10.5.10",
         "@storybook/addon-links": "10.5.10",
