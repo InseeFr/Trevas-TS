@@ -55,7 +55,8 @@ const config: StorybookConfig = {
         webpackConfig.resolve ??= {};
         webpackConfig.resolve.alias = {
             ...webpackConfig.resolve.alias,
-            "monaco-editor": path.resolve(storybookDir, "../node_modules/monaco-editor")
+            // Prefer ESM entry: CJS require of monaco resolves to AMD min build otherwise
+            "monaco-editor": path.resolve(storybookDir, "../node_modules/monaco-editor/esm/vs/index.js")
         };
 
         webpackConfig.module ??= { rules: [] };
