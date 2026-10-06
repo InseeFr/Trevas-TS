@@ -1,5 +1,5 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import { DataFrame } from "danfojs";
+import { DataFrame } from "danfojs/dist/danfojs-browser/src";
 import isEqual from "lodash.isequal";
 import { BasicScalarTypes, Component, Dataset, InternalDataset } from "model";
 

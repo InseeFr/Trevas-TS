@@ -2,7 +2,7 @@
 
 Trevas TS is a TypeScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096). It is part of the Trevas family, together with the [Trevas](https://github.com/InseeFr/Trevas) Java engine.
 
-[![Trevas TS CI](https://github.com/InseeFr/Trevas-TS/actions/workflows/ci.yml/badge.svg)](https://github.com/InseeFr/Trevas-TS/actions/workflows/ci.yml)
+[![Trevas TS CI](https://github.com/InseeFr/Trevas-TS/actions/workflows/ci-main.yaml/badge.svg)](https://github.com/InseeFr/Trevas-TS/actions/workflows/ci-main.yaml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-TS&metric=coverage)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-TS)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=InseeFr_Trevas-TS&metric=alert_status)](https://sonarcloud.io/dashboard?id=InseeFr_Trevas-TS)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -14,7 +14,7 @@ The documentation can be found in the [docs](https://github.com/InseeFr/Trevas-T
 
 [![npm version](https://badge.fury.io/js/%40inseefr%2Ftrevas.svg)](https://badge.fury.io/js/%40inseefr%2Ftrevas)
 
-The `@inseefrtrevas` package is the VTL engine itself, which exposes the `interpret` function root (named export).
+The `@inseefr/trevas` package is the VTL engine itself. It exposes the `interpret` named export.
 
 ### Versions
 
@@ -26,17 +26,18 @@ VTL 2.0 was supported for Trevas TS < 1.0.0
 
 ### Use Trevas TS
 
-To use Trevas TS in your JavaScript project, just run:
-
-```
+```bash
 pnpm add @inseefr/trevas
+# or: npm install @inseefr/trevas
 ```
 
-or
+```ts
+import { interpret } from "@inseefr/trevas";
 
+const result = interpret("a + b", { a: 1, b: 2 });
 ```
-npm install @inseefr/trevas
-```
+
+Bindings may be scalars or datasets (`{ dataStructure, dataPoints }`). The published package only exposes the root entry (`@inseefr/trevas`); do not import deep paths from the package.
 
 ### Build Trevas TS
 
