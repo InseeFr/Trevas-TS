@@ -22,5 +22,5 @@
         "moduleResolution": "Node"
     },
     "include": ["src"],
-    "exclude": ["docs"]
+    "exclude": ["docs", "src/stories"]
 }

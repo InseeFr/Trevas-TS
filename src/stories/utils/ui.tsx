@@ -4,7 +4,7 @@ import * as VTLTools from "@making-sense/vtl-2-1-antlr-tools-ts";
 import * as JSONTools from "json-antlr-tools-ts";
 import { getSuggestionsFromRange, monarchDefinition } from "@making-sense/vtl-2-1-monaco-tools-ts";
 import interpret from "../../interpretor";
-import { buildVtlBindings, buildJSONBindings } from "./ds";
+import { buildVtlBindings, buildJSONBindings, isDatasetResult } from "./ds";
 import "./ui.css";
 
 const customVTLTools = { ...VTLTools, initialRule: "expr", getSuggestionsFromRange, monarchDefinition };
@@ -20,12 +20,12 @@ const UI = ({ inputScript = "", inputBindings = defaultInputBindings }) => {
     const [error, setError] = useState(null);
 
     const updateScript = (s: string): void => {
-        result && setResult("");
+        if (result) setResult("");
         setScript(s);
     };
 
     const updateBindings = (b: string): void => {
-        result && setResult("");
+        if (result) setResult("");
         setBindings(b);
     };
 
@@ -34,10 +34,12 @@ const UI = ({ inputScript = "", inputBindings = defaultInputBindings }) => {
             const vtlBindings = buildVtlBindings(JSON.parse(bindings));
             const res = interpret(script, vtlBindings);
             setError(null);
-            if (typeof res === "object") {
+            if (isDatasetResult(res)) {
                 setResult(JSON.stringify(buildJSONBindings(res), null, 2));
+            } else if (res === null) {
+                setResult("null");
             } else {
-                setResult((res as any).toString());
+                setResult(String(res));
             }
         } catch (e: any) {
             console.warn(e.stack);

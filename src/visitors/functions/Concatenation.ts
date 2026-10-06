@@ -19,7 +19,8 @@ class ConcatenationVisitor extends VtlVisitor<VisitorResult> {
         if (ctx._op?.type !== VtlParser.CONCAT) {
             throw new Error("Concat visitor got arithmetic context");
         }
-        const { _left: left, _right: right } = ctx;
+        const left = ctx.expr(0);
+        const right = ctx._right ?? ctx.expr(1);
 
         ensureContextAreDefined(left, right);
 

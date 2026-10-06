@@ -8,18 +8,19 @@
     },
     "license": "MIT",
     "author": "INSEE (http://www.insee.fr)",
-    "packageManager": "pnpm@10.28.1",
+    "packageManager": "pnpm@12.10.1",
     "scripts": {
         "build": "tsc",
-        "test": "vitest",
+        "test": "vitest run",
         "test:coverage": "vitest run --coverage",
-        "storybook": "storybook dev",
+        "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "lint:check": "eslint . --ext .ts,.tsx",
-        "lint": "npm run lint:check -- --fix",
-        "_format": "prettier '**/*.{js,ts,json,md}'",
-        "format": "npm run _format -- --write",
-        "format:check": "npm run _format -- --list-different"
+        "lint:check": "eslint .",
+        "lint": "pnpm run lint:check -- --fix",
+        "_format": "prettier '**/*.{js,ts,tsx,json,md}'",
+        "format": "pnpm run _format -- --write",
+        "format:check": "pnpm run _format -- --list-different",
+        "prepare": "husky"
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -34,11 +35,6 @@
         "*.{ts,tsx,json,md}": [
             "prettier --write"
         ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged -v"
-        }
     },
     "files": [
         "src/",
@@ -62,49 +58,50 @@
         }
     ],
     "devDependencies": {
-        "@babel/plugin-proposal-class-properties": "^7.18.6",
-        "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-        "@babel/preset-env": "^7.25.7",
-        "@babel/preset-react": "^7.25.7",
-        "@babel/preset-typescript": "^7.25.7",
-        "@making-sense/antlr-editor": "^2.0.1",
-        "@making-sense/vtl-2-1-monaco-tools-ts": "^1.0.1",
-        "@storybook/react": "^8.3.5",
-        "@storybook/react-vite": "^8.3.5",
+        "@making-sense/antlr-editor": "^2.9.5",
+        "@making-sense/vtl-2-1-monaco-tools-ts": "^1.0.2",
+        "@storybook/addon-docs": "10.6.1",
+        "@storybook/addon-links": "10.6.1",
+        "@storybook/addon-webpack5-compiler-swc": "^4.0.3",
+        "@storybook/react": "10.6.1",
+        "@storybook/react-webpack5": "10.6.1",
         "@types/lodash.isequal": "^4.5.8",
-        "@types/node": "^22.7.5",
-        "@types/react": "^18.3.11",
-        "@typescript-eslint/eslint-plugin": "^8.8.1",
-        "@typescript-eslint/parser": "^8.8.1",
-        "@vitest/coverage-v8": "^2.1.2",
-        "babel-jest": "^29.7.0",
-        "eslint": "^8.41.0",
-        "eslint-config-prettier": "^8.8.0",
-        "eslint-plugin-storybook": "^0.8.0",
-        "husky": "^4.3.8",
-        "jest": "^29.7.0",
-        "jest-sonar-reporter": "^2.0.0",
+        "@types/node": "^22.20.5",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@typescript-eslint/eslint-plugin": "^8.71.1",
+        "@typescript-eslint/parser": "^8.71.1",
+        "@vitest/coverage-v8": "^5.0.3",
+        "eslint": "^10.12.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react-hooks": "^7.1.1",
+        "eslint-plugin-storybook": "10.6.1",
+        "husky": "^9.1.7",
         "json-antlr-tools-ts": "^1.0.0",
-        "lint-staged": "^11.1.1",
-        "prettier": "^3.3.3",
-        "react": "^18.3.1",
-        "react-docgen-typescript": "^2.2.2",
-        "react-dom": "^18.3.1",
-        "storybook": "^8.3.5",
-        "storybook-dark-mode": "^4.0.2",
-        "typescript": "^4.9.5",
-        "vite-tsconfig-paths": "^4.3.2",
-        "vitest": "^2.1.2"
+        "lint-staged": "^17.6.0",
+        "prettier": "^3.9.9",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "storybook": "10.6.1",
+        "storybook-dark-mode": "^5.0.0",
+        "typescript": "^5.9.3",
+        "vite": "^8.3.3",
+        "vite-tsconfig-paths": "^6.1.1",
+        "vitest": "^5.0.3",
+        "webpack": "5.111.1"
     },
     "publishConfig": {
         "access": "public"
     },
+    "engines": {
+        "node": ">=20.19.0"
+    },
     "dependencies": {
-        "@making-sense/antlr4ng": "^3.0.4",
-        "@making-sense/vtl-2-1-antlr-tools-ts": "^1.0.3",
-        "danfojs": "^1.1.2",
-        "date-fns": "^2.27.0",
+        "@making-sense/antlr4ng": "^3.0.16",
+        "@making-sense/vtl-2-1-antlr-tools-ts": "^1.0.6",
+        "danfojs": "1.1.2",
+        "date-fns": "^4.4.0",
         "lodash.isequal": "^4.5.0",
-        "rand-seed": "^2.1.7"
+        "rand-seed": "^3.0.0"
     }
 }
