@@ -80,7 +80,9 @@ class BooleanVisitor extends VtlVisitor<VisitorResult> {
     };
 
     visitBooleanExpr = (ctx: BooleanExprContext) => {
-        const { _left: left, _right: right, _op: op } = ctx;
+        const left = ctx.expr(0);
+        const right = ctx._right ?? ctx.expr(1);
+        const op = ctx._op;
 
         ensureContextAreDefined(left, right);
 

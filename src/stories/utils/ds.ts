@@ -63,6 +63,14 @@ export const buildVtlBindings = (b: Record<string, any>): Record<string, any> =>
         return { ...acc, [k]: v };
     }, {});
 
+export const isDatasetResult = (value: unknown): value is Record<string, any> =>
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    !(value instanceof Date) &&
+    "dataStructure" in value &&
+    "dataPoints" in value;
+
 export const buildJSONBindings = (b: Record<string, any>): Record<string, any> => {
     const { dataStructure, dataPoints } = b;
     const newDataStructure = dataStructure.map((c: any) => {

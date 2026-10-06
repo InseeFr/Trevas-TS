@@ -1,5 +1,5 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import * as dfd from "danfojs/dist/danfojs-browser/src";
+import { DataFrame } from "danfojs";
 import isEqual from "lodash.isequal";
 import { BasicScalarTypes, Component, Dataset, InternalDataset } from "model";
 
@@ -22,7 +22,7 @@ export const getInternalDatasetFromDataset = (dataset: Dataset): InternalDataset
     const { dataStructure, dataPoints } = dataset;
     const columns = dataStructure.map(({ name }) => name);
     const dtypes = dataStructure.map(({ type }) => fromVtlTypesToDTypes(type));
-    const df: dfd.DataFrame = new dfd.DataFrame(dataPoints, { columns, dtypes });
+    const df: DataFrame = new DataFrame(dataPoints, { columns, dtypes });
     return { dataStructure, dataset: df };
 };
 
