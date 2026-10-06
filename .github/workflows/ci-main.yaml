@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: write # GitHub releases
+  id-token: write # npm trusted publishing (OIDC)
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -106,6 +110,12 @@ jobs:
     needs:
       - create_github_release
       - check_if_version_upgraded
+    concurrency:
+      group: npm-publish-main
+      cancel-in-progress: false
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v6
         with:
@@ -126,22 +136,29 @@ jobs:
       - uses: garronej/ts-ci@v2.1.5
         with:
           action_name: remove_dark_mode_specific_images_from_readme
-      - name: Publishing on NPM
+      - name: Check if version already exists on npm
+        id: npm_version_check
+        shell: bash
         run: |
-          if [ "$(npm show . version)" = "$VERSION" ]; then
-            echo "This version is already published"
-            exit 0
+          PKG_NAME=$(node -p "require('./package.json').name")
+          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "Package ${PKG_NAME}@${VERSION} already published. Skipping publish."
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Package ${PKG_NAME}@${VERSION} not found on npm. Publish enabled."
+            echo "should_publish=true" >> "$GITHUB_OUTPUT"
           fi
-          if [ "$NODE_AUTH_TOKEN" = "" ]; then
-            echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
-            false
-          fi
-          EXTRA_ARGS=""
+        env:
+          VERSION: ${{ needs.check_if_version_upgraded.outputs.version }}
+      - name: Publish package (trusted publishing)
+        if: steps.npm_version_check.outputs.should_publish == 'true'
+        run: |
+          EXTRA_ARGS="--access public --provenance"
           if [ "$IS_PRE_RELEASE" = "true" ]; then
-              EXTRA_ARGS="--tag beta"
+            EXTRA_ARGS="$EXTRA_ARGS --tag beta"
           fi
           npm publish $EXTRA_ARGS
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          VERSION: ${{ needs.check_if_version_upgraded.outputs.version }}
+          # Empty token so npm uses OIDC trusted publishing instead of a classic NPM_TOKEN.
+          NODE_AUTH_TOKEN: ""
           IS_PRE_RELEASE: ${{ needs.check_if_version_upgraded.outputs.is_pre_release }}
