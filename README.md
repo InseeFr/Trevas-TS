@@ -29,7 +29,7 @@ VTL 2.0 was supported for Trevas TS < 1.0.0
 To use Trevas TS in your JavaScript project, just run:
 
 ```
-yarn add @inseefr/trevas
+pnpm add @inseefr/trevas
 ```
 
 or
@@ -45,8 +45,8 @@ If you prefer to build Trevas TS locally, first clone the Github repository:
 ```
 git clone https://github.com/InseeFr/Trevas-TS.git
 cd Trevas-TS
-yarn
-yarn build
+pnpm i
+pnpm build
 ```
 
 ### Tests
@@ -54,31 +54,31 @@ yarn build
 Run once:
 
 ```
-yarn test
+pnpm test
 ```
 
 Run with hot reloading:
 
 ```
-yarn test-watch
+pnpm test-watch
 ```
 
-### Storybook
+### Storybook - ⚠️ Temporarily not working
 
 Run storybook:
 
 ```
-yarn storybook
+pnpm storybook
 ```
 
-### Documentation
+### Documentation - ⚠️ Temporarily not working
 
 Run docusaurus documentation:
 
 ```
 cd docs
-yarn
-yarn start
+pnpm i
+pnpm start
 ```
 
 ## Archived packages
