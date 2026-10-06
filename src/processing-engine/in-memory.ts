@@ -1,5 +1,5 @@
 import { Parser as VtlParser } from "@making-sense/vtl-2-1-antlr-tools-ts";
-import { merge } from "danfojs";
+import { merge } from "danfojs/dist/danfojs-browser/src";
 import { BasicScalarTypes, Dataset, CalcConfig } from "model";
 import {
     buildDataStructureIndexes,

@@ -1,6 +1,6 @@
 {
     "name": "@inseefr/trevas",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "TypeScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
     "repository": {
         "type": "git",
@@ -25,8 +25,11 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
-        ".": "./dist/index.js",
-        "./*": "./dist/*.js"
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/index.js",
+            "default": "./dist/index.js"
+        }
     },
     "lint-staged": {
         "*.{ts,tsx}": [
@@ -37,9 +40,13 @@
         ]
     },
     "files": [
-        "src/",
-        "dist/",
-        "!dist/tsconfig.tsbuildinfo"
+        "dist",
+        "!dist/tsconfig.tsbuildinfo",
+        "!dist/tests/**",
+        "!dist/stories/**",
+        "!dist/**/*.spec.js",
+        "!dist/**/*.spec.d.ts",
+        "!dist/**/*.spec.js.map"
     ],
     "keywords": [],
     "homepage": "https://github.com/InseeFr/Trevas-TS",

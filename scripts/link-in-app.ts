@@ -37,7 +37,16 @@ fs.writeFileSync(
                         : Object.fromEntries(
                               Object.entries(packageJsonParsed["exports"]).map(([key, value]) => [
                                   key,
-                                  (value as string).replace(/^\.\/dist\//, "./")
+                                  typeof value === "string"
+                                      ? value.replace(/^\.\/dist\//, "./")
+                                      : Object.fromEntries(
+                                            Object.entries(value as Record<string, string>).map(
+                                                ([condition, path]) => [
+                                                    condition,
+                                                    path.replace(/^\.\/dist\//, "./")
+                                                ]
+                                            )
+                                        )
                               ])
                           )
                 };
