@@ -1,6 +1,6 @@
 {
     "name": "@inseefr/trevas",
-    "version": "1.0.2",
+    "version": "1.1.0-rc.0",
     "description": "TypeScript engine for the [Validation and Transformation Language](https://sdmx.org/?page_id=5096)",
     "repository": {
         "type": "git",
@@ -8,17 +8,18 @@
     },
     "license": "MIT",
     "author": "INSEE (http://www.insee.fr)",
+    "packageManager": "pnpm@10.34.6",
     "scripts": {
         "build": "tsc",
         "test": "vitest run",
-        "test-coverage": "vitest run --coverage",
+        "test:coverage": "vitest run --coverage",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "lint:check": "eslint .",
-        "lint": "npm run lint:check -- --fix",
+        "lint": "pnpm run lint:check -- --fix",
         "_format": "prettier '**/*.{js,ts,tsx,json,md}'",
-        "format": "npm run _format -- --write",
-        "format:check": "npm run _format -- --list-different",
+        "format": "pnpm run _format -- --write",
+        "format:check": "pnpm run _format -- --list-different",
         "prepare": "husky"
     },
     "main": "dist/index.js",
@@ -103,8 +104,10 @@
         "lodash.isequal": "^4.5.0",
         "rand-seed": "^3.0.0"
     },
-    "resolutions": {
-        "@making-sense/antlr4ng": "^3.0.16",
-        "monaco-editor": "^0.56.0"
+    "pnpm": {
+        "overrides": {
+            "@making-sense/antlr4ng": "^3.0.16",
+            "monaco-editor": "^0.56.0"
+        }
     }
 }

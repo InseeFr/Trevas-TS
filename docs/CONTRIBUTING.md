@@ -4,8 +4,8 @@
 
 ### Install dependencies
 
-Run `yarn`
+Run `pnpm i`
 
 ### Start local server
 
-`yarn start` script will display docs content (defined [here](docs/)).
+`pnpm start` script will display docs content (defined [here](docs/)).
